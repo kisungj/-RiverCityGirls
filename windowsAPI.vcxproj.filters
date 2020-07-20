@@ -216,6 +216,9 @@
     <ClInclude Include="iEvent.h">
       <Filter>2DGameFramework\event</Filter>
     </ClInclude>
+    <ClInclude Include="testBossScene.h">
+      <Filter>playGround\stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -346,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="iEvent.cpp">
       <Filter>2DGameFramework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="testBossScene.cpp">
+      <Filter>playGround\stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
