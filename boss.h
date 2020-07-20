@@ -5,6 +5,7 @@ enum STATEBOSS
 {
 	BOSS_LEFT_IDLE,         BOSS_RIGHT_IDLE,         // 기본 상태
 	BOSS_LEFT_WALK,         BOSS_RIGHT_WALK,         // 걷는 상태
+	BOSS_LEFT_DASH,		    BOSS_RIGHT_DASH,         // 대쉬 공격
 	BOSS_LEFT_HIT,          BOSS_RIGHT_HIT,			 // 맞았을 때
 	BOSS_LEFT_HIT_GETUP,    BOSS_RIGHT_HIT_GETUP,	 // 맞고 다시 일어나면서 공격
 	BOSS_LEFT_HIT_GROUND,   BOSS_RIGHT_HIT_GROUND,   // 땅에서 플레이어한테 맞았을 때
@@ -13,6 +14,8 @@ enum STATEBOSS
 	BOSS_LEFT_ATTACK_ELBOW, BOSS_RIGHT_ATTACK_ELBOW, // 엘보우 공격
 	BOSS_LEFT_DEATH,        BOSS_RIGHT_DEATH,		 // 죽었을 때
 	BOSS_LEFT_BLOCK,        BOSS_RIGHT_BLOCK,		 // 막았을 때
+	BOSS_LEFT_JUMP_ATTACK,  BOSS_RIGHT_JUMP_ATTACK,  // 점프 공격
+	BOSS_LEFT_ANGRY,        BOSS_RIGHT_ANGRY,        // 화남
 	BOSS_END,	
 };
 
@@ -20,7 +23,7 @@ enum STATEBOSS
 class boss : public gameNode
 {
 private:		
-	float      _x, _y;                 // 보스 중심점
+	float      _x, _y, _z;             // 보스 중심점
 	float      _jumpPower, _gravity;   // 보스 점프 관련 변수		
 	STATEBOSS  _state;                 // 보스 상태 저장용
 	RECT       _rc;                    // 보스 충돌 렉트
@@ -28,8 +31,12 @@ private:
 
 	int        _count;
 
+	int        _frameCount;
+
 	animation* _anim[BOSS_END];
-	animation* _animPlay;
+	animation* _animPlayer;
+
+
 	// ============ 임시 변수 ============ //
 	float       _playerX,_playerY;    
 public:
@@ -42,5 +49,7 @@ public:
 	void    update();
 public:
 	void    loadImage();
+	void    loadAnimation();
+	void    think();
 };
 
