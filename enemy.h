@@ -8,11 +8,17 @@ enum class CONDITION
 	CLOSE
 };
 
+enum class HITSTATE
+{
+	HIT1, HIT2, HIT3
+};
+
 class enemy : public gameNode
 {
 private:
 	enemyState* _state;				//현재 클래스 상태
 	CONDITION _condition;			//상태
+	//HITSTATE _hitState;				//맞은 상태
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
