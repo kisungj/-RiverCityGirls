@@ -180,6 +180,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 //===================================================가드 클래스===================================================//
 void enemyGuardState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {
+
 }
 
 //===================================================힛 클래스===================================================//
@@ -296,14 +297,12 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		_downCount++;
 	}
 
-	cout << _downCount << endl;
-
-	if (_downCount > 300)
+	if (_downCount > 100)
 	{
 		enemy.setStop(false);
 	}
 
-	if (!_isDown && _downCount >= 300)
+	if (!_isDown && _downCount >= 100)
 	{
 		//==================무브 클래스로 이동==================//
 		if (enemy.getCondition() == CONDITION::SEARCH)
@@ -330,6 +329,20 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 			enemy.setState(enemy.getAttack());
 			_downCount = 0;
 		}
+
+		int _rndstun = RND->getInt(100);
+
+		//if (_rndstun >= 0 && _rndstun <= 30)
+		{
+			if (enemyType == ENEMYTYPE::BOY)
+			{
+				enemy.setImage(IMAGEMANAGER->findImage("boy_dizzy"));
+				if (enemy.getRight()) enemy.setFrameX(0);
+				if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+			}
+			enemy.setState(enemy.getDizzy());
+			_downCount = 0;
+		}
 	}
 
 	//cout << "down class" << endl;
@@ -339,11 +352,60 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 void enemyBegState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {
 	//데미지
-
 }
 
 //===================================================어질어질 클래스===================================================//
 void enemyDizzyState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {
+	_dizzyCount++;
+	_frameCount++;
+
+	enemy.setStop(true);
+
+	if (_frameCount % 7 == 0)
+	{
+		if (enemy.getFrameY() == 0)
+		{
+			enemy.setFrameX(enemy.getFrameX() + 1);
+			if (enemy.getFrameX() >= enemy.getImage()->getMaxFrameX()) enemy.setFrameX(0);
+		}
+
+		if (enemy.getFrameY() == 1)
+		{
+			enemy.setFrameX(enemy.getFrameX() - 1);
+			if (enemy.getFrameX() <= 0) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+		}
+		_frameCount = 0;
+	}	
+
+	//==================힛 클래스로 이동==================//
+	if (enemy.getOuch())
+	{
+		if (enemyType == ENEMYTYPE::BOY)
+		{
+			enemy.setImage(IMAGEMANAGER->findImage("boy_hit1"));
+		}
+		if (enemy.getRight()) enemy.setFrameX(0);
+		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+		enemy.setState(enemy.getHit());
+		enemy.setStop(false);
+	}
+
+	if (_dizzyCount > 300)
+	{
+		//==================무브 클래스로 이동==================//
+			if (enemy.getCondition() == CONDITION::SEARCH)
+			{
+				if (enemyType == ENEMYTYPE::BOY)
+				{
+					enemy.setImage(IMAGEMANAGER->findImage("boy_walk"));
+					if (enemy.getRight()) enemy.setFrameX(0);
+					if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+				}
+				enemy.setState(enemy.getMove());
+				enemy.setStop(false);
+				_dizzyCount = 0;
+			}
+	}
 
 }

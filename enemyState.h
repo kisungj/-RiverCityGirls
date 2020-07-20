@@ -99,6 +99,11 @@ public:
 
 class enemyDizzyState : public enemyState
 {
+private:
+	int _dizzyCount;
+	int _frameCount;
 public:
+	enemyDizzyState() { _dizzyCount = 0; _frameCount = 0; }
+
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

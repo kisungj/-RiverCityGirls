@@ -18,7 +18,7 @@ class enemy : public gameNode
 private:
 	enemyState* _state;				//현재 클래스 상태
 	CONDITION _condition;			//상태
-	//HITSTATE _hitState;				//맞은 상태
+	//HITSTATE _hitState;			//맞은 상태
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
@@ -49,8 +49,6 @@ private:
 	enemyState* _beg;
 	enemyState* _dizzy;
 
-	bool _test;
-
 public:
 	enemy();
 	~enemy();
@@ -65,40 +63,46 @@ public:
 
 	void addImage();											//이미지매니저 한곳에 모아두기
 
-	float getX() { return _x; }									//x축 가져가기
-	void setX(float x) { _x = x; }								//x축 움직이게 하기
-	float getY() { return _y; }									//y축 가져가기
-	void setY(float y) { _y = y; }								//y축 움직이게 하기
 
-	RECT getShadow() { return _shadow; }						//그림자 가져가기
-	void setJump(float power) { _jumpPower = power; }			//점프파워 정해주기
-	void setGravity(float g) { _gravity = g; }					//그래비티 정해주기
-
+public:
 	RECT getRC() { return _rc; }								//에너미 렉트 가져가기
+	RECT getShadow() { return _shadow; }						//그림자 가져가기
+	image* getImage() { return _image; }						//이미지 가져가기
+	CONDITION getCondition() { return _condition; }				//CONDITION 가져가기
+
+	float getX() { return _x; }									//x축 가져가기
+	float getY() { return _y; }									//y축 가져가기
+
+	bool getRight() { return _right; }							//_right 가져가기
+	bool getStop() { return _isStop; }							//_isStop 가져가기
+	bool getOuch() { return _isHit; }							//_isHit 가져가기
+
+	int getHitCount() { return _hitCount; }						//_hitCount 가져가기
+	int getFrameX() { return _currentX; }						//프레임X 가져가기
+	int getFrameY() { return _currentY; }						//프레임Y 가져가기
+	
+
+public:
 	void setRC(float x, float y, float width, float height)		//에너미 렉트 설정해주기
 	{
 		_rc = RectMakeCenter(x, y, width, height);
 	}
 
-	bool getRight() { return _right; }							//_right 가져가기
-	CONDITION getCondition() { return _condition; }				//CONDITION 가져가기
-	bool getStop() { return _isStop; }							//_isStop 가져가기
-	void setStop(BOOL stop = FALSE) { _isStop = stop; }			//_isStop 세팅해주기
-
-	bool getOuch() { return _isHit; }							//_isHit 가져가기
-	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기
-	int getHitCount() { return _hitCount; }						//_hitCount 가져가기
-	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기
-
 	void setState(enemyState* state) { this->_state = state; }	//상태 클래스 변경해주기
-	image* getImage() { return _image; }						//이미지 가져가기
 	void setImage(image* image) { this->_image = image; }		//이미지 변경해주기
-	int getFrameX() { return _currentX; }						//프레임 가져가기
-	void setFrameX(int x) { _currentX = x; }					//프레임 변경해주기
 
+	void setX(float x) { _x = x; }								//x축 움직이게 하기
+	void setY(float y) { _y = y; }								//y축 움직이게 하기
 
+	void setStop(BOOL stop = FALSE) { _isStop = stop; }			//_isStop 세팅해주기
+	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기
 
+	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기
+	void setFrameX(int x) { _currentX = x; }					//프레임X 변경해주기
+	void setFrameY(int y) { _currentY = y; }					//프레임y 변경해주기
 
+	void setJump(float power) { _jumpPower = power; }			//점프파워 정해주기
+	void setGravity(float g) { _gravity = g; }					//그래비티 정해주기
 
 
 	enemyState* getMove() { return _move; }						//상태 클래스 변경할 때 필요
