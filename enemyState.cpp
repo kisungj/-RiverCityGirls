@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "enemyState.h"
 #include "enemy.h"
-#include "jump.h"
 
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 
@@ -46,7 +45,9 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 	{
 		if (enemyType == ENEMYTYPE::BOY)
 		{
-			enemy.setImage(IMAGEMANAGER->findImage("boy_hit"));
+			enemy.setImage(IMAGEMANAGER->findImage("boy_hit1"));
+			if (enemy.getRight()) enemy.setFrameX(0);
+			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		}
 		enemy.setState(enemy.getHit());
 		_delayCount = 0;
@@ -58,15 +59,15 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		if (enemyType == ENEMYTYPE::BOY)
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("boy_attack1"));
-			/*if (enemy.getRight()) enemy.setFrameX(0);
-			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());*/
+			if (enemy.getRight()) enemy.setFrameX(0);
+			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		}
 		enemy.setState(enemy.getAttack());
 		_delayCount = 0;
 	}
 
 	//cout << _delayCount << endl;
-	cout << "move class" << endl;
+	//cout << "move class" << endl;
 }
 
 //===================================================어택 클래스===================================================//
@@ -155,6 +156,8 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		if (enemyType == ENEMYTYPE::BOY)
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("boy_walk"));
+			if (enemy.getRight()) enemy.setFrameX(0);
+			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		}
 		enemy.setState(enemy.getMove());
 	}
@@ -164,7 +167,9 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 	{
 		if (enemyType == ENEMYTYPE::BOY)
 		{
-			enemy.setImage(IMAGEMANAGER->findImage("boy_hit"));
+			enemy.setImage(IMAGEMANAGER->findImage("boy_hit1")); 
+			if (enemy.getRight()) enemy.setFrameX(0);
+			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		}
 		enemy.setState(enemy.getHit());
 	}
@@ -184,34 +189,33 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 	if (enemy.getRight())
 	{
-		if (enemy.getHitCount() == 1 && enemy.getFrameX() == 2)
-		{
-			enemy.setStop(true);
-			_delayCount++;
-
-			/*if (!enemy.getStop() && enemy.getHitCount() < 2)
-			{
-				enemy.setOuch(false);
-				enemy.setHitCount(-enemy.getHitCount());
-			}*/
-		}
-
-		if (enemy.getHitCount() == 2 && enemy.getFrameX() == 5)
-		{
-			enemy.setStop(true);
-			_delayCount++;
-		}
-
-		if (enemy.getHitCount() == 3 && enemy.getFrameX() == 8)
-		{
-			enemy.setStop(true);
-		}
-
-		//if (enemy.getFrameX() >= enemy.getImage()->getMaxFrameX())
+		//if (enemy.getHitCount() == 1 && enemy.getFrameX() == 2)
 		//{
-		//	enemy.setOuch(false);
-		//	enemy.setHitCount(-enemy.getHitCount());
+		//	enemy.setStop(true);
+		//	_delayCount++;
+		//	
+		//	/*if (!enemy.getStop() && enemy.getHitCount() < 2)
+		//	{
+		//		enemy.setOuch(false);
+		//		enemy.setHitCount(-enemy.getHitCount());
+		//	}*/
 		//}
+
+		//if (enemy.getHitCount() == 2 && enemy.getFrameX() == 5)
+		//{
+		//	enemy.setStop(true);
+		//	_delayCount++;
+		//}
+
+		//if (enemy.getHitCount() == 3 && enemy.getFrameX() == 8)
+		//{
+		//	enemy.setStop(true);
+		//}
+
+		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX())
+		{
+			enemy.setStop(true);
+		}
 	}
 
 	if (!enemy.getRight())
@@ -225,9 +229,31 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 	if (_delayCount > 7)
 	{
 		_delayCount = 0;
-		enemy.setHitCount(0);
+		enemy.setHitCount(-enemy.getHitCount());
 		enemy.setStop(false);
-		enemy.setOuch(false);
+		//enemy.setOuch(false);
+	}
+
+	cout << _delayCount << endl;
+
+	if (enemy.getOuch())
+	{
+		_delayCount++;
+
+		if (enemy.getHitCount() == 1)
+		{
+			enemy.setImage(IMAGEMANAGER->findImage("boy_hit1"));
+		}
+
+		if (enemy.getHitCount() == 2)
+		{
+			enemy.setImage(IMAGEMANAGER->findImage("boy_hit2"));
+		}
+
+		if (enemy.getHitCount() == 3)
+		{
+			enemy.setImage(IMAGEMANAGER->findImage("boy_hit3"));
+		}
 	}
 
 	//==================다운 클래스로 이동==================//
@@ -236,27 +262,38 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		if (enemyType == ENEMYTYPE::BOY)
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("boy_knockdown"));
+			if (enemy.getRight()) enemy.setFrameX(0);
+			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		}
 		enemy.setState(enemy.getDown());
 		enemy.setStop(false);
-		enemy.setOuch(false);
 		_delayCount = 0;
 	}
 
 	//==================무브 클래스로 이동==================//
-	if (enemy.getCondition() == CONDITION::SEARCH && !enemy.getOuch())
+	if (enemy.getCondition() == CONDITION::SEARCH || !enemy.getOuch())
 	{
+		_damageCount++;
+
 		if (enemyType == ENEMYTYPE::BOY)
 		{
-			enemy.setImage(IMAGEMANAGER->findImage("boy_walk"));
+			enemy.setImage(IMAGEMANAGER->findImage("boy_idle"));
 		}
-		enemy.setState(enemy.getMove());
-		enemy.setStop(false);
-		_delayCount = 0;
+		
+		if (_damageCount > 30)
+		{
+			if (enemy.getRight()) enemy.setFrameX(0);
+			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+			enemy.setState(enemy.getMove());
+			enemy.setStop(false);
+			_delayCount = 0;
+			_damageCount = 0;
+		}
 	}
 
 	//1단 맞기 프레임 0~2, 2단 맞기 3~5, 3단 맞기 6~8 (반대로 8~6, 5~3, 2~0)
-	cout << "hit class" << endl;
+	//cout << "hit class" << endl;
+
 }
 
 //===================================================다운 클래스===================================================//
@@ -315,6 +352,8 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 			if (enemyType == ENEMYTYPE::BOY)
 			{
 				enemy.setImage(IMAGEMANAGER->findImage("boy_walk"));
+				if (enemy.getRight()) enemy.setFrameX(0);
+				if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 			}
 			enemy.setState(enemy.getMove());
 			_downCount = 0;
@@ -326,13 +365,15 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 			if (enemyType == ENEMYTYPE::BOY)
 			{
 				enemy.setImage(IMAGEMANAGER->findImage("boy_attack1"));
+				if (enemy.getRight()) enemy.setFrameX(0);
+				if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 			}
 			enemy.setState(enemy.getAttack());
 			_downCount = 0;
 		}
 	}
 
-	cout << "down class" << endl;
+	//cout << "down class" << endl;
 }
 
 //===================================================빌기 클래스===================================================//
