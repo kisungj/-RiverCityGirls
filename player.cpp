@@ -29,18 +29,14 @@ HRESULT player::init()
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_WALK", "PLAYER_WALK", rightRun, 12, 10, true);
 	int leftRun[] = { 11,10,9,8,7,6,5,4,3,2,1,0 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_WALK", "PLAYER_WALK", leftRun, 12, 10, true);
-	int rightJump[] = { 2 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightJump, 1, 3, true);
-	int leftJump[] = { 3 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_JUMP", "PLAYER_JUMP", leftJump, 1, 3, true);
-	int rightFall[] = { 1 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightFall, 1, 3, true);
-	int leftFall[] = { 4 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", leftFall, 1, 3, true);
-	int rightLanding[] = { 0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightLanding, 1, 3, true);
-	int leftLanding[] = { 5 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", leftLanding, 1, 3, true);
+	int rightJump[] = { 2, 1 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightJump, 2, 5, false);
+	int leftJump[] = { 3, 4 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_JUMP", "PLAYER_JUMP", leftJump, 2, 5, false);
+	int rightFall[] = { 0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_FALL", "PLAYER_JUMP", rightFall, 1, 10, false);
+	int leftFall[] = { 5 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_FALL", "PLAYER_JUMP", leftFall, 1, 10, false);
 	_jumpPower = _gravity = 0;
 	_rc = RectMakeCenter(_shadowX, _playerY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, _img->getFrameWidth(), _img->getFrameHeight());
@@ -70,7 +66,7 @@ void player::update()
 
 
 	//ÇÈ¼¿Ãæµ¹
-	for (int i = _probeBottom - 30; i < _probeBottom + 30; ++i)
+	for (int i = _probeBottom - 10; i < _probeBottom; ++i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_rc.right + _rc.left) / 2, i);
 

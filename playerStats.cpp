@@ -62,7 +62,7 @@ void idleState::update(player & player)
 	{
 		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
-			player.setJumpPower(10);
+			player.setJumpPower(15);
 			player.setGravity(0.5f);
 			player.setIsJumping(true);
 			if (!player.getDirection())
@@ -246,7 +246,7 @@ void moveState::update(player & player)
 	{
 		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
-			player.setJumpPower(10);
+			player.setJumpPower(15);
 			player.setGravity(0.5f);
 			player.setIsJumping(true);
 			if (!player.getDirection())
@@ -276,6 +276,18 @@ void jumpState::update(player & player)
 		player.setGravity(player.getGravity());
 	}
 
+
+	if (player.getJumpPower() < 0)
+	{
+		if (player.getDirection())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_FALL"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+		}
+		if (!player.getDirection())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_FALL"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+		}
+	}
 
 	if (player.getPlayerY() >= player.getShadowY() - 110)
 	{
@@ -332,6 +344,7 @@ void jumpState::update(player & player)
 		player.setPlayerY(player.getPlayerY() + 3);
 	}
 
+	
 
 }
 
