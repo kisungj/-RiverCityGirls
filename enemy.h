@@ -80,7 +80,7 @@ public:
 	bool getOuch() { return _isHit; }							//_isHit 가져가기
 	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기
 	int getHitCount() { return _hitCount; }						//_hitCount 가져가기
-	void setHitCount(int count) { _hitCount += count; }		//_hitCount 올려주기
+	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기
 
 	void setState(enemyState* state) { this->_state = state; }	//상태 클래스 변경해주기
 	image* getImage() { return _image; }						//이미지 가져가기

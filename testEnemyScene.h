@@ -7,6 +7,12 @@ class testEnemyScene : public gameNode
 private:
 	enemy* _enemy;
 
+	RECT _testPlayer;
+	RECT _punch;
+	float _x, _y;
+
+	bool _right;
+
 public:
 	testEnemyScene() {}
 	~testEnemyScene() {}

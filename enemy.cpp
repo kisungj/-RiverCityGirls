@@ -55,7 +55,7 @@ void enemy::update()
 
 	_state->update(*this, _playerRC, _playerX, _playerY, ENEMYTYPE::BOY);
 
-	cout << _hitCount << endl;
+	cout << _hitCount << ", " << _isHit << endl;
 	//cout << _jumpPower << ", " << _gravity << endl;
 }
 

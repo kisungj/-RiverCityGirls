@@ -13,6 +13,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 	enemy.setHitCount(-enemy.getHitCount());
 
 	//==================y축 이동==================//
+
 	if (enemy.getY() < y - 100)
 	{
 		enemy.setY(enemy.getY() + 2);
@@ -65,7 +66,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 	}
 
 	//cout << _delayCount << endl;
-	//cout << "move class" << endl;
+	cout << "move class" << endl;
 }
 
 //===================================================어택 클래스===================================================//
@@ -183,47 +184,34 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 	if (enemy.getRight())
 	{
-		if (enemy.getHitCount() >= 1 && enemy.getFrameX() == 2)
+		if (enemy.getHitCount() == 1 && enemy.getFrameX() == 2)
 		{
 			enemy.setStop(true);
 			_delayCount++;
 
-			if (!enemy.getStop() && enemy.getHitCount() < 2)
+			/*if (!enemy.getStop() && enemy.getHitCount() < 2)
 			{
 				enemy.setOuch(false);
 				enemy.setHitCount(-enemy.getHitCount());
-			}
+			}*/
 		}
 
-		if (enemy.getHitCount() >= 2 && enemy.getFrameX() == 5)
+		if (enemy.getHitCount() == 2 && enemy.getFrameX() == 5)
 		{
 			enemy.setStop(true);
 			_delayCount++;
-
-			if (!enemy.getStop() && enemy.getHitCount() < 3)
-			{
-				enemy.setOuch(false);
-				enemy.setHitCount(-enemy.getHitCount());
-			}
 		}
 
-		if (enemy.getHitCount() >= 3 && enemy.getFrameX() == 8)
+		if (enemy.getHitCount() == 3 && enemy.getFrameX() == 8)
 		{
 			enemy.setStop(true);
-			_delayCount++;
-
-			if (!enemy.getStop() && enemy.getHitCount() < 4)
-			{
-				enemy.setOuch(false);
-				enemy.setHitCount(-enemy.getHitCount());
-			}
 		}
 
-		if (enemy.getFrameX() <= 0)
-		{
-			enemy.setOuch(false);
-			enemy.setHitCount(-enemy.getHitCount());
-		}
+		//if (enemy.getFrameX() >= enemy.getImage()->getMaxFrameX())
+		//{
+		//	enemy.setOuch(false);
+		//	enemy.setHitCount(-enemy.getHitCount());
+		//}
 	}
 
 	if (!enemy.getRight())
@@ -234,14 +222,16 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		}
 	}
 
-	if (_delayCount > 5)
+	if (_delayCount > 7)
 	{
 		_delayCount = 0;
+		enemy.setHitCount(-enemy.getHitCount());
 		enemy.setStop(false);
+		enemy.setOuch(false);
 	}
 
 	//==================다운 클래스로 이동==================//
-	if (enemy.getHitCount() >= 3 && !enemy.getOuch())
+	if (enemy.getHitCount() >= 3)
 	{
 		if (enemyType == ENEMYTYPE::BOY)
 		{
@@ -249,11 +239,12 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		}
 		enemy.setState(enemy.getDown());
 		enemy.setStop(false);
+		enemy.setOuch(false);
 		_delayCount = 0;
 	}
 
 	//==================무브 클래스로 이동==================//
-	if (enemy.getCondition() == CONDITION::SEARCH && !enemy.getOuch())
+	if (enemy.getCondition() == CONDITION::SEARCH || !enemy.getOuch())
 	{
 		if (enemyType == ENEMYTYPE::BOY)
 		{
@@ -265,7 +256,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 	}
 
 	//1단 맞기 프레임 0~2, 2단 맞기 3~5, 3단 맞기 6~8 (반대로 8~6, 5~3, 2~0)
-	//cout << "hit class" << endl;
+	cout << "hit class" << endl;
 }
 
 //===================================================다운 클래스===================================================//
@@ -341,7 +332,7 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		}
 	}
 
-	//cout << "down class" << endl;
+	cout << "down class" << endl;
 }
 
 //===================================================빌기 클래스===================================================//
