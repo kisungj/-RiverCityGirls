@@ -43,6 +43,8 @@ private:
 	enemyState* _beg;
 	enemyState* _dizzy;
 
+	bool _test;
+
 public:
 	enemy();
 	~enemy();
@@ -87,6 +89,11 @@ public:
 	void setImage(image* image) { this->_image = image; }		//이미지 변경해주기
 	int getFrameX() { return _currentX; }						//프레임 가져가기
 	void setFrameX(int x) { _currentX = x; }					//프레임 변경해주기
+
+
+
+
+
 
 	enemyState* getMove() { return _move; }						//상태 클래스 변경할 때 필요
 	enemyState* getAttack() { return _attack; }

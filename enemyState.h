@@ -73,8 +73,9 @@ class enemyHitState : public enemyState
 {
 private:
 	int _delayCount;
+	int _damageCount;
 public:
-	enemyHitState() { _delayCount = 0; }
+	enemyHitState() { _delayCount = 0; _damageCount = 0; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
