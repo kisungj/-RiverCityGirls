@@ -70,6 +70,9 @@
     <Filter Include="playGround\stage">
       <UniqueIdentifier>{8d883cd8-de17-4c2c-b17c-ae8617251245}</UniqueIdentifier>
     </Filter>
+    <Filter Include="2DGameFramework\event">
+      <UniqueIdentifier>{a1563921-0b19-4750-9b58-51928dac806f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -207,6 +210,12 @@
     <ClInclude Include="enemyState.h">
       <Filter>playGround\enemy</Filter>
     </ClInclude>
+    <ClInclude Include="eventManager.h">
+      <Filter>2DGameFramework\event</Filter>
+    </ClInclude>
+    <ClInclude Include="iEvent.h">
+      <Filter>2DGameFramework\event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -331,6 +340,12 @@
     </ClCompile>
     <ClCompile Include="enemyState.cpp">
       <Filter>playGround\enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="eventManager.cpp">
+      <Filter>2DGameFramework\event</Filter>
+    </ClCompile>
+    <ClCompile Include="iEvent.cpp">
+      <Filter>2DGameFramework\event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
