@@ -67,6 +67,9 @@ void player::update()
 	//_playerY = _y - 110;
 
 	_state->update(*this);
+
+
+	//픽셀충돌
 	for (int i = _probeBottom - 30; i < _probeBottom + 30; ++i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_rc.right + _rc.left) / 2, i);
@@ -77,19 +80,18 @@ void player::update()
 
 		if (r == 255 && g == 0 && b == 255)
 		{
-			//cout << "들" << endl;
 			_isMove = true;
 			_rc.bottom += 10;
 			_rc.top += 10;
 		}
 		else
 		{
-			//cout << "들" << endl;
 			_isMove = false;
 		}
-
-
 	}
+
+	//cout << _direction << endl;
+
 	if (!_isMove)
 	{
 		_shadowY += 3;
@@ -108,15 +110,19 @@ void player::update()
 
 	CAMERAMANAGER->setX(_shadowX);
 	CAMERAMANAGER->setY(_shadowY);
-	cout << _isJumping << endl;
 }
 
 void player::render()
 {
 	//Rectangle(getMemDC(), (_rc.right + _rc.left) / 2 - 10, _probeBottom, _rc.right + _rc.left / 2, _probeBottom + 10);
 
-	Rectangle(getMemDC(), _player);
-	Rectangle(getMemDC(), _rc);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
+	//CAMERAMANAGER->aniRender(getMemDC(), _img, _player.left, _player.top, _playerMotion);
+	//Rectangle(getMemDC(), _player);
+	//Rectangle(getMemDC(), _rc);
 	_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
 
 }
+
+

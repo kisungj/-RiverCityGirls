@@ -20,6 +20,7 @@ void testPlayerScene::render()
 	//CAMERAMANAGER->render(getMemDC(), )
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("backGround"));
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel1"));
+	//CAMERAMANAGER->render(getMemDC(), _player->getImgge());
 	_player->render();
 }
 
