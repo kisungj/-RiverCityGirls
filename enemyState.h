@@ -1,5 +1,7 @@
 #pragma once
 
+#define DELAYMAX 200	//´Ù¿îµÆÀ» ¶§ µô·¹ÀÌ½Ã°£
+
 class enemy;
 
 class enemyMoveState;
@@ -74,19 +76,17 @@ class enemyHitState : public enemyState
 private:
 	int _delayCount;
 	int _damageCount;
+	int _frameCount;
 public:
-	enemyHitState() { _delayCount = 0; _damageCount = 0; }
+	enemyHitState() { _delayCount = 0; _damageCount = 0; _frameCount = 0; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
 
 class enemyDownState : public enemyState
 {
-private:
-	int _downCount;
-	bool _isDown;
 public:
-	enemyDownState() { _downCount = 0; _isDown = false; }
+	enemyDownState() { }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

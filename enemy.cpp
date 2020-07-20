@@ -61,9 +61,12 @@ void enemy::update()
 
 	//cout << _hitCount << ", " << _isHit << endl;
 	//cout << _jumpPower << ", " << _gravity << endl;
+	//cout << _downCount << ", " <<_isDown << endl;
 
 	//CAMERAMANAGER->setX(_x);
 	//CAMERAMANAGER->setY(_y);
+
+	if (_isLay) _layCount++;
 }
 
 void enemy::render()
@@ -139,7 +142,7 @@ void enemy::addImage()
 	IMAGEMANAGER->addFrameImage("boy_hit1", "image/enemy/boy_hit1.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit2", "image/enemy/boy_hit2.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit3", "image/enemy/boy_hit3.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 2220, 408, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 690, 127, 3, 2, true, RGB(255, 0, 255));
 	// 24, 8
 	IMAGEMANAGER->addFrameImage("boy_knockdown", "image/enemy/boy_knockdown.bmp", 8910, 420, 33, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_dizzy", "image/enemy/boy_dizzy.bmp", 633, 408, 4, 2, true, RGB(255, 0, 255));

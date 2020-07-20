@@ -34,8 +34,10 @@ private:
 	bool _right;					//오른쪽 향하는지
 	bool _isHit;					//맞고 있는지
 	bool _isStop;					//프레임 조절용
+	bool _isLay;					//누웠는지
 
 	int _hitCount;					//맞은 횟수
+	int _layCount;					//누운 시간
 
 	float _playerX, _playerY;		//플레이어 x, y축
 	RECT _playerRC;					//플레이어 렉트
@@ -76,8 +78,10 @@ public:
 	bool getRight() { return _right; }							//_right 가져가기
 	bool getStop() { return _isStop; }							//_isStop 가져가기
 	bool getOuch() { return _isHit; }							//_isHit 가져가기
+	bool getLay() { return _isLay; }							//_isLay 가져가기
 
 	int getHitCount() { return _hitCount; }						//_hitCount 가져가기
+	int getLayCount() { return _layCount; }						//_layCount 가져가기
 	int getFrameX() { return _currentX; }						//프레임X 가져가기
 	int getFrameY() { return _currentY; }						//프레임Y 가져가기
 	
@@ -96,8 +100,10 @@ public:
 
 	void setStop(BOOL stop = FALSE) { _isStop = stop; }			//_isStop 세팅해주기
 	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기
+	void setLay(BOOL lay = FALSE) { _isLay = lay; }				//_isLay 세팅해주기
 
 	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기
+	void setLayCount(int count) { _layCount += count; }			//_layCount 올려주기
 	void setFrameX(int x) { _currentX = x; }					//프레임X 변경해주기
 	void setFrameY(int y) { _currentY = y; }					//프레임y 변경해주기
 

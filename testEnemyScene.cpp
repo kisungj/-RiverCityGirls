@@ -62,7 +62,7 @@ void testEnemyScene::update()
 
 		RECT temp;
 		if (IntersectRect(&temp, &_enemy->getRC(), &_punch))
-		{
+		{			
 			_punch = RectMakeCenter(0, 0, 0, 0);
 			_enemy->setOuch(true);
 			_enemy->setHitCount(1);
