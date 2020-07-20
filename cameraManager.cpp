@@ -34,10 +34,10 @@ void cameraManager::settingCamera(float left, float top, float width, float heig
 void cameraManager::renderRectangle(HDC hdc, RECT rect)
 {
 	RECT rc = rect;
-	calcRelativeLeft(rc.left);
-	calcRelativeLeft(rc.right);
-	calcRelativeTop(rc.top);
-	calcRelativeTop(rc.bottom);
+	rc.left = calcRelativeLeft(rc.left);
+	rc.right = calcRelativeLeft(rc.right);
+	rc.top = calcRelativeTop(rc.top);
+	rc.bottom = calcRelativeTop(rc.bottom);
 
 	Rectangle(hdc, rc);
 }
@@ -45,10 +45,10 @@ void cameraManager::renderRectangle(HDC hdc, RECT rect)
 void cameraManager::renderEllipse(HDC hdc, RECT rect)
 {
 	RECT rc = rect;
-	calcRelativeLeft(rc.left);
-	calcRelativeLeft(rc.right);
-	calcRelativeTop(rc.top);
-	calcRelativeTop(rc.bottom);
+	rc.left = calcRelativeLeft(rc.left);
+	rc.right = calcRelativeLeft(rc.right);
+	rc.top = calcRelativeTop(rc.top);
+	rc.bottom = calcRelativeTop(rc.bottom);
 
 	Ellipse(hdc, rc);
 }
