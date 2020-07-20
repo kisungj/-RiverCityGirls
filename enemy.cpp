@@ -12,13 +12,13 @@ enemy::~enemy()
 HRESULT enemy::init()
 {
 	{
-		_move = new enemyMoveState();
-		_attack = new enemyAttackState();
-		_guard = new enemyGuardState();
-		_hit = new enemyHitState();
-		_down = new enemyDownState();
-		_beg = new enemyBegState();
-		_dizzy = new enemyDizzyState();
+		_move	 = new enemyMoveState();
+		_attack	 = new enemyAttackState();
+		_guard	 = new enemyGuardState();
+		_hit	 = new enemyHitState();
+		_down	 = new enemyDownState();
+		_beg	 = new enemyBegState();
+		_dizzy	 = new enemyDizzyState();
 	}
 
 	addImage();
@@ -135,11 +135,12 @@ void enemy::addImage()
 	IMAGEMANAGER->addFrameImage("boy_attack2", "image/enemy/boy_attack2.bmp", 1386, 510, 7, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_attack3", "image/enemy/boy_attack3.bmp", 1863, 558, 9, 2, true, RGB(255, 0, 255));
 	//1단 맞기 프레임 0~2, 2단 맞기 3~5, 3단 맞기 6~8 (반대로 8~6, 5~3, 2~0)
-	IMAGEMANAGER->addFrameImage("boy_hit", "image/enemy/boy_gethit.bmp", 1728, 450, 9, 2, true, RGB(255, 0, 255));
-
+	//IMAGEMANAGER->addFrameImage("boy_hit", "image/enemy/boy_gethit.bmp", 1728, 450, 9, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit1", "image/enemy/boy_hit1.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit2", "image/enemy/boy_hit2.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit3", "image/enemy/boy_hit3.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 2220, 408, 3, 2, true, RGB(255, 0, 255));
 	// 24, 8
 	IMAGEMANAGER->addFrameImage("boy_knockdown", "image/enemy/boy_knockdown.bmp", 8910, 420, 33, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_dizzy", "image/enemy/boy_dizzy.bmp", 633, 408, 4, 2, true, RGB(255, 0, 255));
 }
