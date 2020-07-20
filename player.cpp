@@ -12,8 +12,17 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK1", "image/player/Kyoko_ComboAttack1.bmp", 1548, 390, 6, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK2", "image/player/Kyoko_ComboAttack2.bmp", 1869, 402, 7, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK3", "image/player/Kyoko_ComboAttack3.bmp", 2970, 462, 9, 2, true, RGB(255, 0, 255));
-	//IMAGEMANAGER->addFrameImage("PLAYER_JUMP", "image/player/Kyoko_Jump.bmp", 405, 414, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_DIVE", "image/player/Kyoko_Dive.bmp", 5040, 360, 21, 2, true, RGB(255, 0, 255));
 
+	IMAGEMANAGER->addFrameImage("PLAYER_START", "image/player/Kyoko_BattleStart.bmp", 2964, 420, 26, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_DOWN", "image/player/Kyoko_Down.bmp", 4896, 366, 24, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_OVER", "image/player/Kyoko_GameOver.bmp", 6240, 282, 26, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_RUARD", "image/player/Kyoko_Guard.bmp", 351, 378, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_HIT", "image/player/Kyoko_Hit.bmp", 246, 348, 2, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_STAND_UP", "image/player/Kyoko_StandUp.bmp", 3315, 330, 17, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_STOMP", "image/player/Kyoko_Stomp.bmp", 1290, 420, 10, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_STUNNED", "image/player/Kyoko_Stunned.bmp", 384, 384, 4, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_KICK", "image/player/Kyoko_HurricaneKick.bmp", 2997, 657, 24, 2, true, RGB(255, 0, 255));
 
 
 	_idle = new idleState();
@@ -38,17 +47,19 @@ HRESULT player::init()
 
 	keyAnimation();
 
+	_attackX = _attackY = _attackSizeX = _attackSizeY = 10;
 
 	_jumpPower = _gravity = 0;
-	_rc = RectMakeCenter(_shadowX, _playerY, 80, 30);
+	_shadow = RectMakeCenter(_shadowX, _playerY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, _img->getFrameWidth(), _img->getFrameHeight());
+	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 	_playerMotion = KEYANIMANAGER->findAnimation("P_RIGHT_IDLE");
 	_playerMotion->start();
 
 	_isJumping = false;
 
 
-	_probeV = _rc.bottom;
+	_probeV = _shadow.bottom;
 	_probeH = _shadowX;
 
 	return S_OK;
@@ -63,18 +74,18 @@ void player::release()
 void player::update()
 {
 	KEYANIMANAGER->update();
-	_probeV = _rc.bottom;
-	_probeH = (_rc.left+ _rc.right)/2;
+	_probeV = _shadow.bottom;
+	_probeH = (_shadow.left+ _shadow.right)/2;
 	_playerX = _shadowX;
 	//_playerY = _y - 110;
 
 	_state->update(*this);
 
-	cout << _runCount << endl;
+	//cout << _runCount << endl;
 	//ÇÈ¼¿Ãæµ¹
 	for (int i = _probeV - 40; i < _probeV -35; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_rc.right + _rc.left) / 2, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -92,7 +103,7 @@ void player::update()
 
 	for (int i = _probeV + 5; i < _probeV +10; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_rc.right + _rc.left) / 2, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -110,7 +121,7 @@ void player::update()
 	}
 	for (int i = _probeH - 40; i < _probeH - 35; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(),i, (_rc.top + _rc.bottom) / 2);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(),i, (_shadow.top + _shadow.bottom) / 2);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -127,7 +138,7 @@ void player::update()
 	}
 	for (int i = _probeH + 55; i < _probeH + 60; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), i, (_rc.top + _rc.bottom) / 2);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -150,8 +161,9 @@ void player::update()
 
 
 
-	_rc = RectMakeCenter(_shadowX, _shadowY, 80, 30);
+	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, _img->getFrameWidth(), _img->getFrameHeight());
+	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 
 
 	CAMERAMANAGER->setX(_shadowX);
@@ -162,7 +174,8 @@ void player::update()
 void player::render()
 {
 	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
 	CAMERAMANAGER->aniRender(getMemDC(), _img, _player.left, _player.top, _playerMotion);
 	//Rectangle(getMemDC(), _player);
 	//Rectangle(getMemDC(), _rc);
@@ -187,20 +200,25 @@ void player::keyAnimation()
 	int leftRun[] = { 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 15, true);
 
-	int leftAttack1[] = { 6,7,8,9,10,11 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK1", "PLAYER_ATTACK1", leftAttack1, 6, 10, false);
-	int rightAttack1[] = { 5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK1", "PLAYER_ATTACK1", rightAttack1, 6, 10, false);
+	int rightAttack1[] = { 6,7,8,9,10,11 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK1", "PLAYER_ATTACK1", rightAttack1, 6, 10, false);
+	int lefttAttack1[] = { 5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK1", "PLAYER_ATTACK1", lefttAttack1, 6, 10, false);
 
-	int leftAttack2[] = { 7,8,9,10,11,12,13 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK2", "PLAYER_ATTACK2", leftAttack2, 7, 10, false);
-	int rightAttack2[] = { 6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK2", "PLAYER_ATTACK2", rightAttack2, 7, 10, false);
+	int rightAttack2[] = { 7,8,9,10,11,12,13 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK2", "PLAYER_ATTACK2", rightAttack2, 7, 10, false);
+	int leftAttack2[] = { 6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK2", "PLAYER_ATTACK2", leftAttack2, 7, 10, false);
 
-	int leftAttack3[] = { 9,10,11,12,13,14,15,16,17 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK3", "PLAYER_ATTACK3", leftAttack3, 9, 10, false);
-	int rightAttack3[] = { 8,7,6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK3", "PLAYER_ATTACK3", rightAttack3, 9, 10, false);
+	int rightAttack3[] = { 9,10,11,12,13,14,15,16,17 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK3", "PLAYER_ATTACK3", rightAttack3, 9, 10, false);
+	int leftAttack3[] = { 8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK3", "PLAYER_ATTACK3", leftAttack3, 9, 10, false);
+
+	int rightDive[] = { 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_DIVE", "PLAYER_DIVE", rightDive, 21, 10, false);
+	int leftDive[] = { 20, 19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_DIVE", "PLAYER_DIVE", leftDive, 21, 10, false);
 
 	int rightJump[] = { 3, 4 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightJump, 2, 5, false);
