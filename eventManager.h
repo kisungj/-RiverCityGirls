@@ -18,5 +18,7 @@ public:
 	void update();
 	// 이벤트 추가
 	void addEvent(iEvent* pEvent);
+
+	bool isEvnet() { mEventQueue.size() > 0 ? true : false; }
 };
 
