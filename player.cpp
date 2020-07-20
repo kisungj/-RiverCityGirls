@@ -114,10 +114,10 @@ void player::render()
 
 	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
-	//CAMERAMANAGER->aniRender(getMemDC(), _img, _player.left, _player.top, _playerMotion);
+	CAMERAMANAGER->aniRender(getMemDC(), _img, _player.left, _player.top, _playerMotion);
 	//Rectangle(getMemDC(), _player);
 	//Rectangle(getMemDC(), _rc);
-	_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
+	//_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
 
 }
 
