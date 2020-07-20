@@ -63,43 +63,51 @@ void cameraManager::render(HDC hdc, image * img)
 
 void cameraManager::render(HDC hdc, image * img, float destX, float destY)
 {
-	float relativeLeft = calcRelativeLeft(destX);
-	float relativeTop = calcRelativeTop(destY);
+	float relativeLeft;
+	float relativeTop;
+	relativeLeft = calcRelativeLeft(destX);
+	relativeTop = calcRelativeTop(destY);
 
 	if (img) img->render(hdc, relativeLeft, relativeTop);
 }
 
 void cameraManager::frameRender(HDC hdc, image * img, float destX, float destY)
 {
-	float relativeLeft = calcRelativeLeft(destX);
-	float relativeTop = calcRelativeTop(destY);
+	float relativeLeft;
+	float relativeTop;
+	relativeLeft = calcRelativeLeft(destX);
+	relativeTop = calcRelativeTop(destY);
 
 	if (img) img->frameRender(hdc, relativeLeft, relativeTop);
 }
 
 void cameraManager::frameRender(HDC hdc, image * img, float destX, float destY, int frameX, int frameY)
 {
-	float relativeLeft = calcRelativeLeft(destX);
-	float relativeTop = calcRelativeTop(destY);
+	float relativeLeft;
+	float relativeTop;
+	relativeLeft = calcRelativeLeft(destX);
+	relativeTop = calcRelativeTop(destY);
 
 	if (img) img->frameRender(hdc, relativeLeft, relativeTop, frameX, frameY);
 }
 
 void cameraManager::loopRender(HDC hdc, image * img, RECT lpRect, int offsetX, int offsetY)
 {
-	RECT rc = lpRect;
-	calcRelativeLeft(rc.left);
-	calcRelativeLeft(rc.right);
-	calcRelativeTop(rc.top);
-	calcRelativeTop(rc.bottom);
+	RECT rc;
+	rc.left = calcRelativeLeft(lpRect.left);
+	rc.right = calcRelativeLeft(lpRect.right);
+	rc.top = calcRelativeTop(lpRect.top);
+	rc.bottom = calcRelativeTop(lpRect.bottom);
 
 	if (img) img->loopRender(hdc, rc, offsetX, offsetY);
 }
 
 void cameraManager::aniRender(HDC hdc, image * img, int destX, int destY, animation * ani)
 {
-	float relativeLeft = calcRelativeLeft(destX);
-	float relativeTop = calcRelativeTop(destY);
+	float relativeLeft;
+	float relativeTop;
+	relativeLeft = calcRelativeLeft(destX);
+	relativeTop = calcRelativeTop(destY);
 
 
 	img->render(hdc, relativeLeft, relativeTop, ani->getFramePos().x, ani->getFramePos().y, ani->getFrameWidth(), ani->getFrameHeight());
