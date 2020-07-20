@@ -103,7 +103,7 @@ void player::update()
 	_rc = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, _img->getFrameWidth(), _img->getFrameHeight());
 
-
+	
 	CAMERAMANAGER->setX(_shadowX);
 	CAMERAMANAGER->setY(_shadowY);
 }
