@@ -65,6 +65,8 @@ void enemy::update()
 
 	//CAMERAMANAGER->setX(_x);
 	//CAMERAMANAGER->setY(_y);
+
+	if (_isLay) _layCount++;
 }
 
 void enemy::render()

@@ -81,7 +81,7 @@ public:
 	bool getLay() { return _isLay; }							//_isLay 가져가기
 
 	int getHitCount() { return _hitCount; }						//_hitCount 가져가기
-	int getlayCount() { return _layCount; }						//_layCount 가져가기
+	int getLayCount() { return _layCount; }						//_layCount 가져가기
 	int getFrameX() { return _currentX; }						//프레임X 가져가기
 	int getFrameY() { return _currentY; }						//프레임Y 가져가기
 	
@@ -103,7 +103,7 @@ public:
 	void setLay(BOOL lay = FALSE) { _isLay = lay; }				//_isLay 세팅해주기
 
 	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기
-	void setlayCount(int count) { _layCount += count; }			//_layCount 올려주기
+	void setLayCount(int count) { _layCount += count; }			//_layCount 올려주기
 	void setFrameX(int x) { _currentX = x; }					//프레임X 변경해주기
 	void setFrameY(int y) { _currentY = y; }					//프레임y 변경해주기
 
