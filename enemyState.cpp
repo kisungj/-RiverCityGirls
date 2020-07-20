@@ -225,7 +225,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 	if (_delayCount > 7)
 	{
 		_delayCount = 0;
-		enemy.setHitCount(-enemy.getHitCount());
+		enemy.setHitCount(0);
 		enemy.setStop(false);
 		enemy.setOuch(false);
 	}
@@ -244,7 +244,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 	}
 
 	//==================무브 클래스로 이동==================//
-	if (enemy.getCondition() == CONDITION::SEARCH || !enemy.getOuch())
+	if (enemy.getCondition() == CONDITION::SEARCH && !enemy.getOuch())
 	{
 		if (enemyType == ENEMYTYPE::BOY)
 		{
