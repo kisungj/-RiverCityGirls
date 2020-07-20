@@ -57,6 +57,10 @@ void enemy::update()
 
 	cout << _hitCount << ", " << _isHit << endl;
 	//cout << _jumpPower << ", " << _gravity << endl;
+
+	//CAMERAMANAGER->setX(_x);
+	//CAMERAMANAGER->setY(_y);
+
 }
 
 void enemy::render()
@@ -65,7 +69,7 @@ void enemy::render()
 
 	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("enemy_shadow"), _shadow.left, _shadow.top);
-	CAMERAMANAGER->frameRender(getMemDC(), _image, _x - _image->getFrameWidth() / 2, _y - _image->getFrameHeight() / 2, _currentX, _currentY);
+	CAMERAMANAGER->frameRender(getMemDC(), _image, _x - _image->getFrameWidth()/ 2, _y - _image->getFrameHeight() / 2, _currentX, _currentY);
 }
 
 void enemy::directionCheck(RECT rc, float x, float y)
