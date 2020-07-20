@@ -37,6 +37,7 @@ private:
 
 	float _jumpPower, _gravity;		//플레이어 점프파워, 중력
 
+	int _runCount;					//빠르게 달리기
 
 
 	animation* _playerMotion;
@@ -65,6 +66,8 @@ public:
 		this->_state = state;
 	}
 
+	void keyAnimation();
+
 public:
 	//=====================GET================================
 	float getShadowX() { return _shadowX; }
@@ -73,6 +76,7 @@ public:
 	float getPlayerY() { return _playerY; }
 	float getJumpPower() { return _jumpPower; }
 	float getGravity() { return _gravity; }
+	int getRunCount() { return _runCount; }
 	bool getDirectionX() { return _directionX; }
 	bool getDirectionY() { return _directionY; }
 	bool getIsBottom() { return _isBottom; }
@@ -101,6 +105,7 @@ public:
 	void setDirectionY(bool direction) { _directionY = direction; }
 	void setJumpPower(float jumpPower) { _jumpPower = jumpPower; }
 	void setGravity(float gravity) { _gravity = gravity; }
+	void setRunCount(int runCount) { _runCount = runCount; }
 	void setIsJumping(bool jumping) { _isJumping = jumping; }
 	void setIsBottom(bool isMove) { _isBottom = isMove; }
 	void setIsTop(bool isMove) { _isTop = isMove; }

@@ -9,10 +9,10 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("PLAYER_RUN", "image/player/Kyoko_Run.bmp", 2736, 384, 16, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_JUMP", "image/player/Kyoko_Jump.bmp", 405, 414, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_RUN", "image/player/Kyoko_Run.bmp", 2736, 384, 16, 2, true, RGB(255, 0, 255));
-	//IMAGEMANAGER->addFrameImage("PLAYER_ATTACK1", "image/player/Kyoko_ComboAttack1.bmp", 1548, 390, 6, 2, true, RGB(255, 0, 255));
-	//IMAGEMANAGER->addFrameImage("PLAYER_ATTACK2", "image/player/Kyoko_ComboAttack2.bmp", 1869, 402, 7, 2, true, RGB(255, 0, 255));
-	//IMAGEMANAGER->addFrameImage("PLAYER_ATTACK3", "image/player/Kyoko_ComboAttack3.bmp", 2970, 462, 9, 2, true, RGB(255, 0, 255));
-	//IMAGEMANAGER->addFrameImage("PLAYER_JUMP", "image/player/Kyoko_Jump.bmp", 405, 414, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK1", "image/player/Kyoko_ComboAttack1.bmp", 1548, 390, 6, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK2", "image/player/Kyoko_ComboAttack2.bmp", 1869, 402, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK3", "image/player/Kyoko_ComboAttack3.bmp", 2970, 462, 9, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_JUMP", "image/player/Kyoko_Jump.bmp", 405, 414, 3, 2, true, RGB(255, 0, 255));
 
 
 
@@ -30,48 +30,12 @@ HRESULT player::init()
 	_shadowY = WINSIZEY / 2 + 100;
 	_playerX = _shadowX;
 	_playerY = _shadowY - 110;
-
-
-	//애니메이션
-	int rightIdle[] = { 12,13,14,15,16,17,18,19,20,21,22,23 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_IDLE", "PLAYER_IDLE", rightIdle, 12, 10, true);
-	int leftIdle[] = { 11,10,9,8,7,6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_IDLE", "PLAYER_IDLE", leftIdle, 12, 10, true);
-
-	int rightWalk[] = { 12,13,14,15,16,17,18,19,20,21,22,23 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_WALK", "PLAYER_WALK", rightWalk, 12, 10, true);
-	int leftWalk[] = { 11,10,9,8,7,6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_WALK", "PLAYER_WALK", leftWalk, 12, 10, true);
-
-	int rightRun[] = { 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_RUN", "PLAYER_RUN", rightRun, 16, 10, true);
-	int leftRun[] = { 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 10, true);
+	_runCount = 0;
 	
-	int leftAttack1[] = { 6,7,8,9,10,11 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK1", "PLAYER_RUN", leftAttack1, 6, 10, true);
-	int rightAttack1[] = { 5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK1", "PLAYER_RUN", rightAttack1, 6, 10, true);
-	
-	int leftAttack2[] = { 7,8,9,10,11,12,13 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK2", "PLAYER_RUN", leftAttack2, 7, 10, true);
-	int rightAttack2[] = { 6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK2", "PLAYER_RUN", rightAttack2, 7, 10, true);
-	
-	int leftAttack3[] = { 9,10,11,12,13,14,15,16,17 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK3", "PLAYER_RUN", leftAttack3, 9, 10, true);
-	int rightAttack3[] = {8,7,6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK3", "PLAYER_RUN", rightAttack3, 9, 10, true);
+	_directionX = true;
 
-	int rightJump[] = { 2, 1 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightJump, 2, 5, false);
-	int leftJump[] = { 3, 4 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_JUMP", "PLAYER_JUMP", leftJump, 2, 5, false);
-	int rightFall[] = { 0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_FALL", "PLAYER_JUMP", rightFall, 1, 10, false);
-	int leftFall[] = { 5 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_FALL", "PLAYER_JUMP", leftFall, 1, 10, false);
 
+	keyAnimation();
 
 
 	_jumpPower = _gravity = 0;
@@ -93,6 +57,8 @@ void player::release()
 {
 }
 
+
+
 void player::update()
 {
 	KEYANIMANAGER->update();
@@ -103,7 +69,7 @@ void player::update()
 
 	_state->update(*this);
 
-
+	cout << _runCount << endl;
 	//픽셀충돌
 	for (int i = _probeV - 40; i < _probeV -35; ++i)
 	{
@@ -200,5 +166,48 @@ void player::render()
 	//Rectangle(getMemDC(), _player);
 	//Rectangle(getMemDC(), _rc);
 	//_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
+
+}
+
+void player::keyAnimation()
+{
+	int rightIdle[] = { 12,13,14,15,16,17,18,19,20,21,22,23 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_IDLE", "PLAYER_IDLE", rightIdle, 12, 10, true);
+	int leftIdle[] = { 11,10,9,8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_IDLE", "PLAYER_IDLE", leftIdle, 12, 10, true);
+
+	int rightWalk[] = { 12,13,14,15,16,17,18,19,20,21,22,23 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_WALK", "PLAYER_WALK", rightWalk, 12, 10, true);
+	int leftWalk[] = { 11,10,9,8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_WALK", "PLAYER_WALK", leftWalk, 12, 10, true);
+
+	int rightRun[] = { 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_RUN", "PLAYER_RUN", rightRun, 16, 15, true);
+	int leftRun[] = { 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 15, true);
+
+	int leftAttack1[] = { 6,7,8,9,10,11 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK1", "PLAYER_RUN", leftAttack1, 6, 10, true);
+	int rightAttack1[] = { 5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK1", "PLAYER_RUN", rightAttack1, 6, 10, true);
+
+	int leftAttack2[] = { 7,8,9,10,11,12,13 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK2", "PLAYER_RUN", leftAttack2, 7, 10, true);
+	int rightAttack2[] = { 6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK2", "PLAYER_RUN", rightAttack2, 7, 10, true);
+
+	int leftAttack3[] = { 9,10,11,12,13,14,15,16,17 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_ATTACK3", "PLAYER_RUN", leftAttack3, 9, 10, true);
+	int rightAttack3[] = { 8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK3", "PLAYER_RUN", rightAttack3, 9, 10, true);
+
+	int rightJump[] = { 3, 4 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightJump, 2, 5, false);
+	int leftJump[] = { 2, 1 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_JUMP", "PLAYER_JUMP", leftJump, 2, 5, false);
+	int rightFall[] = { 0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_FALL", "PLAYER_JUMP", rightFall, 1, 10, false);
+	int leftFall[] = { 5 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_FALL", "PLAYER_JUMP", leftFall, 1, 10, false);
 
 }
