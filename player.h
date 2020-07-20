@@ -27,6 +27,9 @@ private:
 	bool _isLeft;					//왼쪽
 	bool _isRight;					//오른쪽
 	bool _isJumping;				//점프하는지
+	bool _isRun;					//뛰는지
+	bool _isAttack;					//공격할거?
+	bool _attacked;					//공격 3번 이어주기
 
 
 	float _shadowX, _shadowY;		//그림자 중점
@@ -37,6 +40,7 @@ private:
 
 	float _jumpPower, _gravity;		//플레이어 점프파워, 중력
 
+	int _runCount;					//빠르게 달리기
 
 
 	animation* _playerMotion;
@@ -65,6 +69,8 @@ public:
 		this->_state = state;
 	}
 
+	void keyAnimation();
+
 public:
 	//=====================GET================================
 	float getShadowX() { return _shadowX; }
@@ -73,6 +79,7 @@ public:
 	float getPlayerY() { return _playerY; }
 	float getJumpPower() { return _jumpPower; }
 	float getGravity() { return _gravity; }
+	int getRunCount() { return _runCount; }
 	bool getDirectionX() { return _directionX; }
 	bool getDirectionY() { return _directionY; }
 	bool getIsBottom() { return _isBottom; }
@@ -80,7 +87,11 @@ public:
 	bool getIsRight() { return _isRight; }
 	bool getIsLeft() { return _isLeft; }
 	bool getIsJumping() { return _isJumping; }
+	bool getIsRun() { return _isRun; }
+	bool getAttacked() { return _attacked; }
+	bool getIsAttack() { return _isAttack; }
 	image* getImgge() { return _img; }
+	animation* getAni() { return _playerMotion; }
 
 
 
@@ -101,11 +112,15 @@ public:
 	void setDirectionY(bool direction) { _directionY = direction; }
 	void setJumpPower(float jumpPower) { _jumpPower = jumpPower; }
 	void setGravity(float gravity) { _gravity = gravity; }
+	void setRunCount(int runCount) { _runCount = runCount; }
 	void setIsJumping(bool jumping) { _isJumping = jumping; }
 	void setIsBottom(bool isMove) { _isBottom = isMove; }
 	void setIsTop(bool isMove) { _isTop = isMove; }
 	void setIsRight(bool isMove) { _isRight = isMove; }
 	void setIsLeft(bool isMove) { _isLeft = isMove; }
+	void setIsRun(bool isRun) { _isRun = isRun; }
+	void setIsAttack(bool isAttack) { _isAttack = isAttack; }
+	void setAttacked(bool attacked) { _attacked = attacked; }
 };
 
 
