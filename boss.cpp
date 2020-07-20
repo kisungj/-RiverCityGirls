@@ -10,7 +10,7 @@ HRESULT boss::init()
 	_rc = RectMakeCenter(_x, _y, 100, 100);
 	_playerX = WINSIZEX / 2;
 	_playerY = WINSIZEY / 2;
-	_img = IMAGEMANAGER->findImage("boss_idle");
+	_img = IMAGEMANAGER->findImage("boss_walk");
 	// ------------ 임시 변수 ------------ //
 	return S_OK;
 }
@@ -25,7 +25,7 @@ void boss::render()
 	CAMERAMANAGER->frameRender(getMemDC(), _img, WINSIZEX / 2, WINSIZEY / 2, _img->getFrameX(), 0);
 
 	_count++;
-	if (_count % 5 == 0)
+	if (_count % 7 == 0)
 	{
 		_count = 0;
 		_img->setFrameX(_img->getFrameX() + 1);
@@ -60,12 +60,14 @@ void boss::update()
 		_playerY += 3;
 	}
 
-	CAMERAMANAGER->setX(_playerX);
-	CAMERAMANAGER->setY(_playerY);
+	CAMERAMANAGER->setX(_playerX + 200);
+	CAMERAMANAGER->setY(_playerY + 200);
 }
 
 void boss::loadImage()
 {
 	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 2592, 584, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 3792, 776, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 7656, 616, 22, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_walk", "image/boss/boss_walk.bmp", 2360, 736, 10, 2, true, RGB(255, 0, 255));
 }
