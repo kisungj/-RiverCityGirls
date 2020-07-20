@@ -19,6 +19,16 @@ public:
 	// 이벤트 추가
 	void addEvent(iEvent* pEvent);
 
-	bool isEvnet() { mEventQueue.size() > 0 ? true : false; }
+	bool isEvnet()
+	{
+		if (mEventQueue.size() > 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
