@@ -22,7 +22,21 @@ void boss::release()
 void boss::render()
 {
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("보스배경"));
-	CAMERAMANAGER->frameRender(getMemDC(), _img, WINSIZEX / 2, WINSIZEY / 2, 0, 0);
+	CAMERAMANAGER->frameRender(getMemDC(), _img, WINSIZEX / 2, WINSIZEY / 2, _img->getFrameX(), 0);
+
+	_count++;
+	if (_count % 5 == 0)
+	{
+		_count = 0;
+		_img->setFrameX(_img->getFrameX() + 1);
+		if (_img->getFrameX() >= _img->getMaxFrameX())
+		{
+			_img->setFrameX(0);
+		}
+
+	}
+
+
 }
 
 void boss::update()
@@ -53,5 +67,5 @@ void boss::update()
 void boss::loadImage()
 {
 	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 1944, 438, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 2592, 584, 12, 2, true, RGB(255, 0, 255));
 }

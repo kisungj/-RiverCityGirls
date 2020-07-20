@@ -26,6 +26,8 @@ private:
 	RECT       _rc;                    // 보스 충돌 렉트
 	image*     _img;                   // 보스 이미지
 
+	int        _count;
+
 	animation* _anim[BOSS_END];
 	animation* _animPlay;
 	// ============ 임시 변수 ============ //
