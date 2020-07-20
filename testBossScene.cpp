@@ -11,7 +11,6 @@ HRESULT testBossScene::init()
 void testBossScene::render()
 {
 	_boss->render();
-
 }
 
 void testBossScene::update()
