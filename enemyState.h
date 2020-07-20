@@ -82,11 +82,8 @@ public:
 
 class enemyDownState : public enemyState
 {
-private:
-	int _downCount;
-	bool _isDown;
 public:
-	enemyDownState() { _downCount = 0; _isDown = false; }
+	enemyDownState() { }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

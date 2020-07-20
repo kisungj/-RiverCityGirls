@@ -14,8 +14,6 @@ HRESULT player::init()
 	//IMAGEMANAGER->addFrameImage("PLAYER_ATTACK3", "image/player/Kyoko_ComboAttack3.bmp", 2970, 462, 9, 2, true, RGB(255, 0, 255));
 	//IMAGEMANAGER->addFrameImage("PLAYER_JUMP", "image/player/Kyoko_Jump.bmp", 405, 414, 3, 2, true, RGB(255, 0, 255));
 
-
-
 	_idle = new idleState();
 	_walk = new walkState();
 	_run = new runState();
