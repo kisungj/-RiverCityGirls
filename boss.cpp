@@ -81,7 +81,7 @@ void boss::update()
 	// ================================ 임시 ================================ //
 	if (_patternNumber == 0)
 	{
-		attack(_playerX,_playerY);
+		attack(_playerX, _playerY);
 	}
 	else if (_patternNumber == 1)
 	{
@@ -219,8 +219,8 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_DASH]->init(IMAGEMANAGER->findImage("boss_dash")->getWidth(), IMAGEMANAGER->findImage("boss_dash")->getHeight()
 		, IMAGEMANAGER->findImage("boss_dash")->getFrameWidth(), IMAGEMANAGER->findImage("boss_dash")->getFrameHeight());
 	//_anim[BOSS_LEFT_DASH]->setPlayFrame(27, 14, false, false);
-	int leftDash[] = { 27,26,25,24,23,22,21,20,19,18,17,16,15,16,17,18,19,20,21,22,23,24,23,22,21,20,19,18,17,16,15,14 };
-	_anim[BOSS_LEFT_DASH]->setPlayFrame(leftDash, sizeof(leftDash)/sizeof(leftDash[0]));
+	int leftDash[] = { 27,26,25,24,23,22,21,20,19,18,17,16,15,23,22,21,20,19,18,17,16,15,14 };
+	_anim[BOSS_LEFT_DASH]->setPlayFrame(leftDash, sizeof(leftDash) / sizeof(leftDash[0]));
 	_anim[BOSS_LEFT_DASH]->setFPS(1);
 	// --------------- LEFT DASH --------------- //
 
@@ -228,8 +228,9 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_DASH] = new animation;
 	_anim[BOSS_RIGHT_DASH]->init(IMAGEMANAGER->findImage("boss_dash")->getWidth(), IMAGEMANAGER->findImage("boss_dash")->getHeight()
 		, IMAGEMANAGER->findImage("boss_dash")->getFrameWidth(), IMAGEMANAGER->findImage("boss_dash")->getFrameHeight());
-	_anim[BOSS_RIGHT_DASH]->setPlayFrame(0, 13, false, false);
-	_anim[BOSS_RIGHT_DASH]->setFPS(3);
+	int rightDash[] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,4,5,6,7,8,9,10,11,12,13 };
+	_anim[BOSS_RIGHT_DASH]->setPlayFrame(rightDash, sizeof(rightDash) / sizeof(rightDash[0]));
+	_anim[BOSS_RIGHT_DASH]->setFPS(1);
 	// --------------- RIGHT DASH --------------- //
 
 	// --------------- LEFT HIT --------------- //
@@ -408,10 +409,21 @@ void boss::stateUpdate()
 		_applySpeed = 2;
 		break;
 	case BOSS_LEFT_DASH:
-		_applySpeed = 5;
+		_applySpeed = 4;
+		if (_animPlayer->getNowIndex() < 24 && _animPlayer->isPlay())
+		{
+			_x += cosf(_angle) * _applySpeed;
+			_z -= sinf(_angle) * _applySpeed;
+		}
+		
 		break;
 	case BOSS_RIGHT_DASH:
-		_applySpeed = 5;
+		_applySpeed = 4;
+		if (_animPlayer->getNowIndex() > 4 && _animPlayer->isPlay())
+		{
+			_x += cosf(_angle) * _applySpeed;
+			_z -= sinf(_angle) * _applySpeed;
+		}
 		break;
 	case BOSS_LEFT_HIT:
 		_applySpeed = 0;
@@ -518,7 +530,7 @@ void boss::attack(float playerX, float playerZ)
 				_x += cosf(_angle) * 2;
 				_z -= sinf(_angle) * 2;
 			}
-			
+
 		}
 		else if (getDistance(_x, _z, playerX, tempZ) <= 150) // 사정거리에 들어왔을 경우
 		{
@@ -560,7 +572,7 @@ void boss::attack(float playerX, float playerZ)
 					_animPlayer = _anim[BOSS_RIGHT_IDLE];
 					_animPlayer->start();
 				}
-		
+
 			}
 		}
 
@@ -629,7 +641,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 				_x += cosf(_angle) * 2;
 				_z -= sinf(_angle) * 2;
 			}
-			
+
 		}
 		else if (getDistance(_x, _z, playerX, tempZ) <= 150) // 사정거리에 들어왔을 경우
 		{
@@ -734,7 +746,7 @@ void boss::dashAttack(float playerX, float playerZ)
 				}
 
 			}
-			
+
 		}
 		else if (getDistance(_x, _z, playerX, tempZ) <= 700) // 사정거리에 들어왔을 경우
 		{
@@ -746,6 +758,7 @@ void boss::dashAttack(float playerX, float playerZ)
 					_characterImg = IMAGEMANAGER->findImage("boss_dash");
 					_animPlayer = _anim[BOSS_LEFT_DASH];
 					_animPlayer->start();
+					_angle = getAngle(_x, _z, playerX, tempZ);
 				}
 			}
 			else               // 보스가 플레이어 왼쪽에 있는 경우
@@ -756,6 +769,7 @@ void boss::dashAttack(float playerX, float playerZ)
 					_characterImg = IMAGEMANAGER->findImage("boss_dash");
 					_animPlayer = _anim[BOSS_RIGHT_DASH];
 					_animPlayer->start();
+					_angle = getAngle(_x, _z, playerX, tempZ);
 				}
 			}
 
