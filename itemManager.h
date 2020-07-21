@@ -26,7 +26,6 @@ public:
 	void removeItem(int index);
 
 
-	vector<Item*> getVItem() { return _vItems; }
-	void setVItem(vector<Item*> item) { _vItems = item; }
+	vector<Item*> getVItem() { return _vItems; }		//아이템 벡터값
 };
 
