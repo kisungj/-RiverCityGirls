@@ -61,7 +61,7 @@ void Item::release()
 
 void Item::render()
 {
-	CAMERAMANAGER->render(getMemDC(), _itemImg, (_itemRc.left, +_itemRc.right) / 2, (_itemRc.bottom + _itemRc.top) / 2);
+	CAMERAMANAGER->render(getMemDC(), _itemImg, _x,_y);
 
 	if (KEYMANAGER->isToggleKey('V'))
 	{

@@ -18,9 +18,9 @@ HRESULT boss::init()
 	_characterImg = IMAGEMANAGER->findImage("boss_idle");
 	_shadowImg = IMAGEMANAGER->findImage("보스그림자");
 
-	_state = BOSS_LEFT_IDLE;
-	_characterImg = IMAGEMANAGER->findImage("boss_idle");
-	_animPlayer = _anim[BOSS_LEFT_IDLE];
+	_state = BOSS_LEFT_ANGRY;
+	_characterImg = IMAGEMANAGER->findImage("boss_angry");
+	_animPlayer = _anim[BOSS_LEFT_ANGRY];
 	_animPlayer->start();
 
 	_playerX = 100;
@@ -45,8 +45,9 @@ void boss::render()
 
 	CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
 	CAMERAMANAGER->aniRender(getMemDC(), _characterImg, _x, _y, _animPlayer);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
+
 	// ================================ 임시 ================================ //
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	// ================================ 임시 ================================ //
 }
