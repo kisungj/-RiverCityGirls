@@ -10,6 +10,7 @@ class runState;
 class jumpState;
 class attackState;
 class hitState;
+class invinState;
 
 
 class player : public gameNode
@@ -55,6 +56,7 @@ private:
 	playerState* _jump;
 	playerState* _attack;
 	playerState* _hit;
+	playerState* _invin;
 
 
 public:
@@ -105,6 +107,7 @@ public:
 	playerState* getJumpState() { return _jump; }
 	playerState* getAttackState() { return _attack; }
 	playerState* getHitState() { return _hit; }
+	playerState* getInvinState() { return _invin; }
 
 	//=====================SET================================
 	void setShadowX(float x) { _shadowX = x; }
@@ -145,6 +148,7 @@ public:
 	static jumpState* jump;
 	static attackState* attack;
 	static hitState* hit;
+	static invinState* invin;
 };
 
 class idleState : public playerState
@@ -178,6 +182,12 @@ public:
 };
 
 class hitState : public playerState
+{
+public:
+	virtual void update(player& player) override;
+};
+
+class invinState : public playerState
 {
 public:
 	virtual void update(player& player) override;
