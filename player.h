@@ -17,8 +17,9 @@ class player : public gameNode
 private:
 	playerState* _state;
 	image* _img;					//플레이어 이미지
-	RECT _rc;						//플레이어 그림자 이미지 
+	RECT _shadow;					//플레이어 그림자 이미지 
 	RECT _player;					//플레이어
+	RECT _attackRc;					//공격렉트
 
 	int _probeV;					//픽셀충돌 수직
 	int _probeH;					//픽셀충돌 수평
@@ -34,6 +35,8 @@ private:
 
 	float _shadowX, _shadowY;		//그림자 중점
 	float _playerX, _playerY;		//플레이어 중점
+	float _attackX, _attackY;		//어택의 중점
+	float _attackSizeX, _attackSizeY;//어택렉트의 사이즈
 
 	bool _directionX;				//left = 0, right = 1
 	bool _directionY;				//top = 0, bottom = 1
@@ -90,6 +93,7 @@ public:
 	bool getIsRun() { return _isRun; }
 	bool getAttacked() { return _attacked; }
 	bool getIsAttack() { return _isAttack; }
+	RECT getAttackRect() { return _attackRc; }
 	image* getImgge() { return _img; }
 	animation* getAni() { return _playerMotion; }
 
@@ -107,12 +111,15 @@ public:
 	void setShadowY(float y) { _shadowY = y; }
 	void setPlayerX(float playerX) { _playerX = playerX; }
 	void setPlayerY(float playerY) { _playerY = playerY; }
-	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
-	void setDirectionX(bool direction) { _directionX = direction; }
-	void setDirectionY(bool direction) { _directionY = direction; }
 	void setJumpPower(float jumpPower) { _jumpPower = jumpPower; }
 	void setGravity(float gravity) { _gravity = gravity; }
+	void setAttack(float attackX, float attackY, float attackSizeX, float attackSizeY)
+	{
+		_attackX = attackX; _attackY = attackY; _attackSizeX = attackSizeX; _attackSizeY = attackSizeY;
+	}
 	void setRunCount(int runCount) { _runCount = runCount; }
+	void setDirectionX(bool direction) { _directionX = direction; }
+	void setDirectionY(bool direction) { _directionY = direction; }
 	void setIsJumping(bool jumping) { _isJumping = jumping; }
 	void setIsBottom(bool isMove) { _isBottom = isMove; }
 	void setIsTop(bool isMove) { _isTop = isMove; }
@@ -121,6 +128,8 @@ public:
 	void setIsRun(bool isRun) { _isRun = isRun; }
 	void setIsAttack(bool isAttack) { _isAttack = isAttack; }
 	void setAttacked(bool attacked) { _attacked = attacked; }
+	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
+	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
 };
 
 

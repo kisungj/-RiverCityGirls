@@ -4,7 +4,7 @@
 void idleState::update(player & player)
 {
 	//run
-	if (player.getRunCount() < 20 && player.getRunCount() > 0)
+	if (player.getRunCount() < 25 && player.getRunCount() > 0)
 	{
 		if (!player.getDirectionX())
 		{
@@ -108,12 +108,13 @@ void idleState::update(player & player)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_ATTACK1"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
 			player.setState(player.getAttackState());
-
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
 		}
 		if (player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK1"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
 			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
 		}
 	}
 }
@@ -197,7 +198,7 @@ void walkState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
 			player.setDirectionX(false);
-			if (player.getRunCount() > 21)
+			if (player.getRunCount() > 5)
 			{
 				player.setRunCount(0);
 			}
@@ -219,7 +220,7 @@ void walkState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
 			player.setDirectionX(true);
-			if (player.getRunCount() > 21)
+			if (player.getRunCount() > 5)
 			{
 				player.setRunCount(0);
 			}
@@ -694,7 +695,7 @@ void jumpState::update(player & player)
 				player.setDirectionX(true);
 			}
 		}
-		if (player.getIsRun())
+		else if (player.getIsRun())
 		{
 			if (!player.getDirectionX())
 			{
@@ -722,6 +723,7 @@ void jumpState::update(player & player)
 			}
 			else if (player.getDirectionX())
 			{
+
 				player.setIsJumping(false);
 				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 				player.setState(player.getWalkState());
@@ -800,11 +802,12 @@ void attackState::update(player & player)
 					if (!player.getDirectionX())
 					{
 						player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_ATTACK2"), IMAGEMANAGER->findImage("PLAYER_ATTACK2"));
-
+						player.setAttack(player.getPlayerX() - 60, player.getPlayerY(), 120, 130);
 					}
 					if (player.getDirectionX())
 					{
 						player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK2"), IMAGEMANAGER->findImage("PLAYER_ATTACK2"));
+						player.setAttack(player.getPlayerX() + 60, player.getPlayerY(), 120, 130);
 					}
 					player.setAttacked(false);
 				}
@@ -836,11 +839,12 @@ void attackState::update(player & player)
 					if (!player.getDirectionX())
 					{
 						player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_ATTACK3"), IMAGEMANAGER->findImage("PLAYER_ATTACK3"));
-
+						player.setAttack(player.getPlayerX() - 60, player.getPlayerY(), 140, 130);
 					}
 					if (player.getDirectionX())
 					{
 						player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK3"), IMAGEMANAGER->findImage("PLAYER_ATTACK3"));
+						player.setAttack(player.getPlayerX() + 60, player.getPlayerY(), 140, 130);
 					}
 					player.setAttacked(false);
 				}
