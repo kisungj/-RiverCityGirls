@@ -1,7 +1,12 @@
 #pragma once
 #include "gameNode.h"
+#include "ui.h"
+
 class testUIScene : public gameNode
 {
+private:
+	ui* _ui;
+
 public:
 	testUIScene() {}
 	~testUIScene() {}
