@@ -10,7 +10,7 @@ class runState;
 class jumpState;
 class attackState;
 class hitState;
-class invinState;
+class invinState;		//무적 invincibility 줄인거ㅎ
 
 
 class player : public gameNode
@@ -75,6 +75,7 @@ public:
 	}
 
 	void keyAnimation();
+	void collision();
 
 public:
 	//=====================GET================================
@@ -172,8 +173,8 @@ public:
 class jumpState : public playerState
 {
 private:
-	int _jumpCount;
-	bool _isJump;
+	int _jumpCount;		//stay키 막아서 점프 그만 올라가게
+	bool _isJump;		//이거 또한,. 무스비..
 public:
 	HRESULT init();
 	virtual void update(player& player) override;
@@ -181,7 +182,10 @@ public:
 
 class attackState : public playerState
 {
+private:
+	int _diveCount;		//다이브 속도 주려구
 public:
+	HRESULT init();
 	virtual void update(player& player) override;
 };
 
