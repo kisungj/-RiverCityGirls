@@ -447,7 +447,7 @@ void boss::stateUpdate()
 
 void boss::attack(float playerX, float playerY)
 {
-	if()
+	//if()
 }
 
 void boss::heavyAttack(float playerX, float playerY)
