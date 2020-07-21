@@ -8,16 +8,14 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("PLAYER_WALK", "image/player/Kyoko_Walk.bmp", 1476, 402, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_RUN", "image/player/Kyoko_Run.bmp", 2736, 384, 16, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_JUMP", "image/player/Kyoko_Jump.bmp", 405, 414, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("PLAYER_RUN", "image/player/Kyoko_Run.bmp", 2736, 384, 16, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK1", "image/player/Kyoko_ComboAttack1.bmp", 1548, 390, 6, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK2", "image/player/Kyoko_ComboAttack2.bmp", 1869, 402, 7, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK3", "image/player/Kyoko_ComboAttack3.bmp", 2970, 462, 9, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_DIVE", "image/player/Kyoko_Dive.bmp", 5040, 360, 21, 2, true, RGB(255, 0, 255));
-
 	IMAGEMANAGER->addFrameImage("PLAYER_START", "image/player/Kyoko_BattleStart.bmp", 2964, 420, 26, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_DOWN", "image/player/Kyoko_Down.bmp", 4896, 366, 24, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_OVER", "image/player/Kyoko_GameOver.bmp", 6240, 282, 26, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("PLAYER_RUARD", "image/player/Kyoko_Guard.bmp", 351, 378, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_GUARD", "image/player/Kyoko_Guard.bmp", 351, 378, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_HIT", "image/player/Kyoko_Hit.bmp", 246, 348, 2, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_STAND_UP", "image/player/Kyoko_StandUp.bmp", 3315, 330, 17, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_STOMP", "image/player/Kyoko_Stomp.bmp", 1290, 420, 10, 2, true, RGB(255, 0, 255));
@@ -31,6 +29,7 @@ HRESULT player::init()
 	_jump = new jumpState();
 	_attack = new attackState();
 	_hit = new hitState();
+	_invin = new hitState();
 
 	_state = _idle;
 	_img = IMAGEMANAGER->findImage("PLAYER_IDLE");
@@ -51,7 +50,7 @@ HRESULT player::init()
 
 	_jumpPower = _gravity = 0;
 	_shadow = RectMakeCenter(_shadowX, _playerY, 80, 30);
-	_player = RectMakeCenter(_playerX, _playerY, _img->getFrameWidth(), _img->getFrameHeight());
+	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 	_playerMotion = KEYANIMANAGER->findAnimation("P_RIGHT_IDLE");
 	_playerMotion->start();
@@ -81,7 +80,7 @@ void player::update()
 
 	_state->update(*this);
 
-	//cout << _runCount << endl;
+	//cout << _jumpPower << endl;
 	//ÇÈ¼¿Ãæµ¹
 	for (int i = _probeV - 40; i < _probeV -35; ++i)
 	{
@@ -162,7 +161,7 @@ void player::update()
 
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
-	_player = RectMakeCenter(_playerX, _playerY, _img->getFrameWidth(), _img->getFrameHeight());
+	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 
 
@@ -176,7 +175,7 @@ void player::render()
 	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
-	CAMERAMANAGER->aniRender(getMemDC(), _img, _player.left, _player.top, _playerMotion);
+	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);
 	//Rectangle(getMemDC(), _player);
 	//Rectangle(getMemDC(), _rc);
 	//_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
@@ -196,9 +195,9 @@ void player::keyAnimation()
 	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_WALK", "PLAYER_WALK", leftWalk, 12, 10, true);
 
 	int rightRun[] = { 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_RUN", "PLAYER_RUN", rightRun, 16, 15, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_RUN", "PLAYER_RUN", rightRun, 16, 18, true);
 	int leftRun[] = { 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 15, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 18, true);
 
 	int rightAttack1[] = { 6,7,8,9,10,11 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK1", "PLAYER_ATTACK1", rightAttack1, 6, 10, false);
@@ -219,7 +218,51 @@ void player::keyAnimation()
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_DIVE", "PLAYER_DIVE", rightDive, 21, 10, false);
 	int leftDive[] = { 20, 19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_DIVE", "PLAYER_DIVE", leftDive, 21, 10, false);
-
+	
+	int rightStart[] = { 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46
+	, 47, 48, 49, 50, 51 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_START", "PLAYER_START", rightStart, 26, 10, false);
+	
+	int rightDown[] = { 24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_DOWN", "PLAYER_DOWN", rightDown, 24, 10, false);
+	int leftDown[] = { 23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_DOWN", "PLAYER_DOWN", leftDown, 24, 10, false);
+	
+	int rightOver[] = { 26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_OVER", "PLAYER_OVER", rightOver, 26, 10, false);
+	int leftOver[] = { 25, 24,23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_OVER", "PLAYER_OVER", leftOver, 26, 10, false);
+	
+	int rightGuard[] = { 3,4,5 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_GUARD", "PLAYER_GUARD", rightGuard, 3, 10, false);
+	int leftGuard[] = { 2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_GUARD", "PLAYER_GUARD", leftGuard, 3, 10, false);
+	
+	int rightHit[] = { 2,3 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_HIT", "PLAYER_HIT", rightHit, 2, 10, true);
+	int leftHit[]{ 1, 0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_HIT", "PLAYER_HIT", leftHit, 2, 10, true);
+	
+	int rightStandUp[] = { 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_STAND_UP", "PLAYER_STAND_UP", rightStandUp, 17, 10, false);
+	int leftStandUp[] = { 16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0};
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_STAND_UP", "PLAYER_STAND_UP", leftStandUp, 17, 10, false);
+	
+	int rightStomp[] = { 10,11,12,13,14,15,16,17,18,19 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_STOMP", "PLAYER_STOMP", rightStomp, 10, 10, false);
+	int leftStomp[] = { 9,8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_STOMP", "PLAYER_STOMP", leftStomp, 10, 10, false);
+	
+	int rightStunned[] = { 4,5,6,7 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_STUNNED", "PLAYER_STUNNED", rightStunned, 4, 10, true);
+	int leftStunned[] = { 3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_STUNNED", "PLAYER_STUNNED", leftStunned, 4, 10, true);
+	
+	int rightKick[] = { 24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_KICK", "PLAYER_KICK", rightKick, 24, 10, false);
+	int leftKick[] = { 23,22,21,20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_KICK", "PLAYER_KICK", leftKick, 24, 10, false);
+	
 	int rightJump[] = { 3, 4 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightJump, 2, 5, false);
 	int leftJump[] = { 2, 1 };
