@@ -53,13 +53,6 @@ void cameraManager::renderEllipse(HDC hdc, RECT rect)
 	Ellipse(hdc, rc);
 }
 
-void cameraManager::render(HDC hdc, image * img)
-{
-	float relativeLeft = calcRelativeLeft(static_cast<float>(0));
-	float relativeTop= calcRelativeTop(static_cast<float>(0));
-
-	if (img) img->render(hdc, relativeLeft, relativeTop);
-}
 
 void cameraManager::render(HDC hdc, image * img, float destX, float destY)
 {

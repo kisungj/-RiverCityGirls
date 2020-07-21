@@ -27,14 +27,14 @@ void boss::release()
 
 void boss::render()
 {
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("보스배경"));
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("보스배경"), IMAGEMANAGER->findImage("보스배경")->getWidth(), IMAGEMANAGER->findImage("보스배경")->getHeight());
 	for (int i = 0; i < BOSS_END; i++)
 	{
 		_anim[i]->frameUpdate(TIMEMANAGER->getElapsedTime() * 10);
 	}
 
 
-	CAMERAMANAGER->render(getMemDC(), _shadowImg, WINSIZEX / 2, WINSIZEY / 2+ 200);
+	CAMERAMANAGER->render(getMemDC(), _shadowImg, WINSIZEX / 2 + 10, WINSIZEY / 2+ 190);
 	CAMERAMANAGER->aniRender(getMemDC(), _characterImg, WINSIZEX / 2, WINSIZEY / 2, _animPlayer);
 
 }
@@ -92,7 +92,7 @@ void boss::update()
 void boss::loadImage()
 {
 	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 128, 38, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 200, 59, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 3792, 776, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 3096, 736, 9, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_jumpAttack", "image/boss/boss_jumpAttack.bmp", 7776, 824, 24, 2, true, RGB(255, 0, 255));
