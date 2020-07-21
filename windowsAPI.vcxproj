@@ -165,6 +165,7 @@
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="inGameScene.h" />
     <ClInclude Include="iniDataManager.h" />
+    <ClInclude Include="inventory.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="itemManager.h" />
     <ClInclude Include="keyAniManager.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="inGameScene.cpp" />
     <ClCompile Include="iniDataManager.cpp" />
+    <ClCompile Include="inventory.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="itemManager.cpp" />
     <ClCompile Include="keyAniManager.cpp" />
