@@ -213,14 +213,15 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 	{
 		_frameCount++; 
 
-		if (enemy.getHitCount() > 1)
+		if (enemy.getHitCount() > 0)
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("boy_groundhit"));
-		}
 
-		if (enemy.getHitCount() > 1)
-		{
+			if(enemy.getFrameX() <= 0)
 			enemy.setHitCount(-enemy.getHitCount());
+
+			if (enemy.getRight()) enemy.setFrameX(0);
+			else enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		}
 
 		if (enemy.getHitCount() <= 0)
@@ -236,7 +237,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			enemy.setImage(IMAGEMANAGER->findImage("boy_knockdown"));
 
 			if (enemy.getFrameY() == 0)
-			{	
+			{
 				if (enemy.getFrameX() >= enemy.getImage()->getMaxFrameX() - 1)
 				{
 					enemy.setOuch(false);
@@ -256,25 +257,22 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 					enemy.setLayCount(-enemy.getLayCount());
 				}
 			}*/
-		}
+		}		
 
-		if (enemy.getStop())
+		if (_frameCount % 7 == 0)
 		{
-			if (_frameCount % 7 == 0)
+			if (enemy.getFrameY() == 0)
 			{
-				if (enemy.getFrameY() == 0)
-				{					
-					if (enemy.getFrameX() <= enemy.getImage()->getMaxFrameX()) 
-						enemy.setFrameX(enemy.getFrameX() + 1);
-				}
-
-				if (enemy.getFrameY() == 1)
-				{					
-					if (enemy.getFrameX() > 0) 
-						enemy.setFrameX(enemy.getFrameX() - 1);
-				}
-				_frameCount = 0;
+				if (enemy.getFrameX() < enemy.getImage()->getMaxFrameX())
+					enemy.setFrameX(enemy.getFrameX() + 1);
 			}
+
+			if (enemy.getFrameY() == 1)
+			{
+				if (enemy.getFrameX() > 0)
+					enemy.setFrameX(enemy.getFrameX() - 1);
+			}
+			_frameCount = 0;
 		}
 	}
 
@@ -309,7 +307,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 		if (enemyType == ENEMYTYPE::BOY)
 		{
-			enemy.setImage(IMAGEMANAGER->findImage("boy_idle"));
+			enemy.setImage(IMAGEMANAGER->findImage("boy_walk"));
 		}
 		
 		if (_delayCount > 50)
@@ -324,7 +322,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 	//1단 맞기 프레임 0~2, 2단 맞기 3~5, 3단 맞기 6~8 (반대로 8~6, 5~3, 2~0)
 	cout << "hit class" << endl;
-	cout << enemy.getHitCount() << ", " << enemy.getFrameX() << endl;
+	cout << enemy.getHitCount() << ", " << enemy.getFrameX() << ", " << enemy.getLayCount() << endl;
 
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#define DELAYMAX 200	//다운됐을 때 딜레이시간
+#define DELAYMAX 300	//다운됐을 때 딜레이시간
 
 class enemy;
 
