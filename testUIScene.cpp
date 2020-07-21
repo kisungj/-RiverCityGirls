@@ -3,6 +3,9 @@
 
 HRESULT testUIScene::init()
 {
+
+
+
 	return S_OK;
 }
 
