@@ -11,7 +11,8 @@ HRESULT boss::init()
 	_rc = RectMakeCenter(_x, _y, 100, 100);
 	_playerX = WINSIZEX / 2;
 	_playerY = WINSIZEY / 2;
-	_img = IMAGEMANAGER->findImage("boss_idle");
+	_characterImg = IMAGEMANAGER->findImage("boss_idle");
+	_shadowImg = IMAGEMANAGER->findImage("보스그림자");
 	// ------------ 임시 변수 ------------ //
 
 	_animPlayer = _anim[BOSS_LEFT_IDLE];
@@ -33,7 +34,9 @@ void boss::render()
 	}
 
 
-	CAMERAMANAGER->aniRender(getMemDC(), _img, WINSIZEX / 2, WINSIZEY / 2, _animPlayer);
+	CAMERAMANAGER->render(getMemDC(), _shadowImg, WINSIZEX / 2, WINSIZEY / 2+ 200);
+	CAMERAMANAGER->aniRender(getMemDC(), _characterImg, WINSIZEX / 2, WINSIZEY / 2, _animPlayer);
+
 }
 
 void boss::update()
@@ -59,26 +62,26 @@ void boss::update()
 
 	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
-		_img = IMAGEMANAGER->findImage("boss_idle");
+		_characterImg = IMAGEMANAGER->findImage("boss_idle");
 		_animPlayer = _anim[BOSS_LEFT_IDLE];
 		_animPlayer->start();
 	}
 	if (KEYMANAGER->isOnceKeyDown('W'))
 	{
-		_img = IMAGEMANAGER->findImage("boss_jumpAttack");
+		_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
 		_animPlayer = _anim[BOSS_LEFT_JUMP_ATTACK];
 		_animPlayer->start();
 	}
 	if (KEYMANAGER->isOnceKeyDown('E'))
 	{
-		_img = IMAGEMANAGER->findImage("boss_death");
+		_characterImg = IMAGEMANAGER->findImage("boss_death");
 		_animPlayer = _anim[BOSS_LEFT_DEATH];
 		_animPlayer->start();
 	}
 	if (KEYMANAGER->isOnceKeyDown('R'))
 	{
-		_img = IMAGEMANAGER->findImage("boss_dash");
-		_animPlayer = _anim[BOSS_LEFT_DASH];
+		_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
+		_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
 		_animPlayer->start();
 	}
 
@@ -89,6 +92,7 @@ void boss::update()
 void boss::loadImage()
 {
 	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 128, 38, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 3792, 776, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 3096, 736, 9, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_jumpAttack", "image/boss/boss_jumpAttack.bmp", 7776, 824, 24, 2, true, RGB(255, 0, 255));
@@ -98,6 +102,7 @@ void boss::loadImage()
 	IMAGEMANAGER->addFrameImage("boss_angry", "image/boss/boss_angry.bmp", 5120, 712, 16, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_attack", "image/boss/boss_attack.bmp", 6384, 712, 14, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_dash", "image/boss/boss_dash.bmp", 4368, 704, 14, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_heavyAttack", "image/boss/boss_heavyAttack.bmp", 13936, 728, 26, 2, true, RGB(255, 0, 255));
 }
 
 void boss::loadAnimation()
@@ -247,5 +252,22 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_DEATH]->setPlayFrame(0, 12, false, true);
 	_anim[BOSS_RIGHT_DEATH]->setFPS(1);
 	// --------------- RIGHT HIT --------------- //
+
+
+	// --------------- LEFT HEAVY ATTACK --------------- //
+	_anim[BOSS_LEFT_HEAVY_ATTACK] = new animation;
+	_anim[BOSS_LEFT_HEAVY_ATTACK]->init(IMAGEMANAGER->findImage("boss_heavyAttack")->getWidth(), IMAGEMANAGER->findImage("boss_heavyAttack")->getHeight()
+		, IMAGEMANAGER->findImage("boss_heavyAttack")->getFrameWidth(), IMAGEMANAGER->findImage("boss_heavyAttack")->getFrameHeight());
+	_anim[BOSS_LEFT_HEAVY_ATTACK]->setPlayFrame(51, 26, false, true);
+	_anim[BOSS_LEFT_HEAVY_ATTACK]->setFPS(1);
+	// --------------- LEFT HEAVY ATTACK --------------- //
+
+	// --------------- RIGHT HEAVY ATTACK --------------- //
+	_anim[BOSS_RIGHT_HEAVY_ATTACK] = new animation;
+	_anim[BOSS_RIGHT_HEAVY_ATTACK]->init(IMAGEMANAGER->findImage("boss_heavyAttack")->getWidth(), IMAGEMANAGER->findImage("boss_heavyAttack")->getHeight()
+		, IMAGEMANAGER->findImage("boss_heavyAttack")->getFrameWidth(), IMAGEMANAGER->findImage("boss_heavyAttack")->getFrameHeight());
+	_anim[BOSS_RIGHT_HEAVY_ATTACK]->setPlayFrame(0, 25, false, true);
+	_anim[BOSS_RIGHT_HEAVY_ATTACK]->setFPS(1);
+	// --------------- RIGHT HEAVY ATTACK --------------- //
 
 }

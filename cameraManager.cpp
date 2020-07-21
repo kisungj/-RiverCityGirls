@@ -68,7 +68,7 @@ void cameraManager::render(HDC hdc, image * img, float destX, float destY)
 	relativeLeft = calcRelativeLeft(destX);
 	relativeTop = calcRelativeTop(destY);
 
-	if (img) img->render(hdc, relativeLeft, relativeTop);
+	if (img) img->render(hdc, relativeLeft - img->getWidth() /2 , relativeTop - img->getHeight() / 2);
 }
 
 void cameraManager::frameRender(HDC hdc, image * img, float destX, float destY)
@@ -110,7 +110,7 @@ void cameraManager::aniRender(HDC hdc, image * img, int destX, int destY, animat
 	relativeTop = calcRelativeTop(destY);
 
 
-	img->render(hdc, relativeLeft, relativeTop, ani->getFramePos().x, ani->getFramePos().y, ani->getFrameWidth(), ani->getFrameHeight());
+	img->render(hdc, relativeLeft - img->getFrameWidth() /2, relativeTop - img->getFrameHeight() / 2, ani->getFramePos().x, ani->getFramePos().y, ani->getFrameWidth(), ani->getFrameHeight());
 }
 
 void cameraManager::setLeft(float relativeLeft)
