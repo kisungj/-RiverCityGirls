@@ -267,19 +267,8 @@ void boss::loadAnimation()
 
 }
 
-void boss::think()
+void boss::changeState()
 {
-	int preState = (int)_state; // 이전 상태 받아오기
-	int rndState;
-	for (int i = 0; i < 50; i++)
-	{
-		rndState = RND->getInt(BOSS_END);
-		if (preState != rndState)
-			break;
-	}
-	_state = (STATEBOSS)rndState;
-
-
 	switch (_state)
 	{
 	case BOSS_LEFT_IDLE:
@@ -454,5 +443,25 @@ void boss::stateUpdate()
 	}
 
 	
+}
+
+void boss::attack(float playerX, float playerY)
+{
+	if()
+}
+
+void boss::heavyAttack(float playerX, float playerY)
+{
+
+}
+
+void boss::dashAttack(float playerX, float playerY)
+{
+
+}
+
+void boss::jumpAttack(float playerX, float playerY)
+{
+
 }
 

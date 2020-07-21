@@ -29,6 +29,7 @@ public:
 	void frameRender(HDC hdc, image* img, float destX, float destY, int frameX, int frameY);
 	void loopRender(HDC hdc, image* img, RECT lpRect, int offsetX, int offsetY);
 	void aniRender(HDC hdc, image* img, int destX, int destY, animation* ani);
+	void alphaRender(HDC hdc, image* img, int destX, int destY, BYTE alpha);
 public:
 	float getLeft() { return _left; }
 	float getTop()  { return _top; }
