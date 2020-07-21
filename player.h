@@ -86,6 +86,8 @@ public:
 
 	void playerDamage(float damage);
 
+	void mouseCol();
+
 public:
 	//=====================GET================================
 	float getShadowX() { return _shadowX; }
@@ -94,6 +96,8 @@ public:
 	float getPlayerY() { return _playerY; }
 	float getJumpPower() { return _jumpPower; }
 	float getGravity() { return _gravity; }
+	float getPlayerHp() { return _currentHP; }
+	float getPlayerMaxHP() { return _maxHP; }
 	int getRunCount() { return _runCount; }
 	bool getDirectionX() { return _directionX; }
 	bool getDirectionY() { return _directionY; }

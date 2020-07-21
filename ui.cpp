@@ -36,7 +36,6 @@ HRESULT ui::init()
 
 	_hpRC = RectMake(290, 55, _hpUI->getWidth(), _hpUI->getHeight());
 
-	_testHp = 100;
 	_arrowX = 150;
 
 	_itemSelectIndex = 0;
@@ -54,6 +53,7 @@ void ui::render()
 	//IMAGEMANAGER->findImage("title_background")->render(getMemDC());
 	//_selectArrow->render(getMemDC(),_arrowX, _arrowY);
 	//_loading->frameRender(getMemDC(), WINSIZEX / 2, WINSIZEY / 2,_loading->getFrameX(),0);
+	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("letter_box"), IMAGEMANAGER->findImage("letter_box")->getWidth() / 2, IMAGEMANAGER->findImage("letter_box")->getHeight() / 2);
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 0);
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 800);
 	IMAGEMANAGER->findImage("status_hud_back")->render(getMemDC(), 270, 50);
@@ -95,17 +95,6 @@ void ui::update()
 		_timer = 0;
 	}
 
-	// HP 테스트키
-	if (KEYMANAGER->isStayKeyDown('O'))
-	{
-		if(_testHp > 0)
-			_testHp--;
-	}
-	if (KEYMANAGER->isStayKeyDown('P'))
-	{
-		if(_testHp < 100)
-			_testHp++;
-	}
 
 	// 타이틀 화면 조종 키
 	if (KEYMANAGER->isOnceKeyDown(VK_UP))
@@ -157,8 +146,6 @@ void ui::update()
 	{
 		_phoneAlpha = 0;
 	}
-
-	setHpGauge(_testHp, 100);
 }
 
 void ui::release()

@@ -18,7 +18,6 @@ private:
 
 	float _phoneAlpha;
 	float _hpWidth;
-	float _testHp;
 	
 	bool _isStart;
 	bool _isPhone;
@@ -33,5 +32,6 @@ public:
 	virtual void release();
 
 	void setHpGauge(float curHp, float maxHp);
+	bool getIsPhone() { return _isPhone; }
 };
 

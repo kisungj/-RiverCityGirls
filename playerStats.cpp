@@ -157,24 +157,25 @@ void idleState::update(player & player)
 	}
 
 	//맞기
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
+	//if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	//{
 
-		if (PtInRect(&player.getPlayerRect(), _ptMouse))
-		{
-			if (!player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-			if (player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-		}
+	//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
+	//	{
+	//		if (!player.getDirectionX())
+	//		{
+	//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+	//			player.setState(player.getHitState());
+	//		}
+	//		if (player.getDirectionX())
+	//		{
+	//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+	//			player.setState(player.getHitState());
+	//		}
+	//	}
 
-	}
+	//}
+	player.mouseCol();
 }
 
 void walkState::update(player & player)
@@ -475,7 +476,7 @@ void walkState::update(player & player)
 	}
 
 	//맞기
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	/*if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 
 		if (PtInRect(&player.getPlayerRect(), _ptMouse))
@@ -492,7 +493,8 @@ void walkState::update(player & player)
 			}
 		}
 
-	}
+	}*/
+	player.mouseCol();
 }
 
 
@@ -793,7 +795,7 @@ void runState::update(player & player)
 	}
 
 	//맞기
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	/*if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 
 		if (PtInRect(&player.getPlayerRect(), _ptMouse))
@@ -810,7 +812,8 @@ void runState::update(player & player)
 			}
 		}
 
-	}
+	}*/
+	player.mouseCol();
 }
 
 
@@ -990,25 +993,26 @@ void jumpState::update(player & player)
 		}
 	}
 
-	//맞기
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
+	////맞기
+	//if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	//{
 
-		if (PtInRect(&player.getPlayerRect(), _ptMouse))
-		{
-			if (!player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-			if (player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-		}
+	//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
+	//	{
+	//		if (!player.getDirectionX())
+	//		{
+	//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+	//			player.setState(player.getHitState());
+	//		}
+	//		if (player.getDirectionX())
+	//		{
+	//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+	//			player.setState(player.getHitState());
+	//		}
+	//	}
 
-	}
+	//}
+	player.mouseCol();
 }
 
 HRESULT attackState::init()
@@ -1170,24 +1174,25 @@ void attackState::update(player & player)
 	}
 
 	//맞기
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
+	//if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	//{
 
-		if (PtInRect(&player.getPlayerRect(), _ptMouse))
-		{
-			if (!player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-			if (player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-		}
+	//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
+	//	{
+	//		if (!player.getDirectionX())
+	//		{
+	//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+	//			player.setState(player.getHitState());
+	//		}
+	//		if (player.getDirectionX())
+	//		{
+	//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+	//			player.setState(player.getHitState());
+	//		}
+	//	}
 
-	}
+	//}
+	player.mouseCol();
 } 
 
 HRESULT hitState::init()
@@ -1222,6 +1227,7 @@ void hitState::update(player & player)
 			}
 		}
 	}
+	//player.mouseCol();
 
 	if (_isHit)
 	{

@@ -287,3 +287,27 @@ void player::playerDamage(float damage)
 {
 	_currentHP -= damage;
 }
+
+void player::mouseCol()
+{
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+
+		if (PtInRect(&_player, _ptMouse))
+		{
+			if (!_directionX)
+			{
+				setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				setState(getHitState());
+				playerDamage(10);
+			}
+			if (_directionX)
+			{
+				setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				setState(getHitState());
+				playerDamage(10);
+			}
+		}
+
+	}
+}
