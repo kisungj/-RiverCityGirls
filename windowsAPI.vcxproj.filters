@@ -61,9 +61,6 @@
     <Filter Include="playGround\enemy">
       <UniqueIdentifier>{9e5dd67e-e543-42ac-9eda-bcd3e718705f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="playGround\object">
-      <UniqueIdentifier>{44163616-f295-41a2-a02e-daa996156f08}</UniqueIdentifier>
-    </Filter>
     <Filter Include="playGround\ui">
       <UniqueIdentifier>{a92ed7cd-9647-4292-885a-c95ac244c664}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,9 @@
     </Filter>
     <Filter Include="2DGameFramework\event">
       <UniqueIdentifier>{a1563921-0b19-4750-9b58-51928dac806f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="playGround\obstacle">
+      <UniqueIdentifier>{87e4ead7-d593-4b95-afb6-c76a2d7ef869}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +162,6 @@
     <ClInclude Include="player.h">
       <Filter>playGround\player</Filter>
     </ClInclude>
-    <ClInclude Include="object.h">
-      <Filter>playGround\object</Filter>
-    </ClInclude>
     <ClInclude Include="enemy.h">
       <Filter>playGround\enemy</Filter>
     </ClInclude>
@@ -195,9 +192,6 @@
     <ClInclude Include="enemyManager.h">
       <Filter>playGround\enemy</Filter>
     </ClInclude>
-    <ClInclude Include="objectManager.h">
-      <Filter>playGround\object</Filter>
-    </ClInclude>
     <ClInclude Include="stageManager.h">
       <Filter>playGround\stage</Filter>
     </ClInclude>
@@ -220,6 +214,15 @@
       <Filter>playGround\stage</Filter>
     </ClInclude>
     <ClInclude Include="testUIScene.h">
+      <Filter>playGround\stage</Filter>
+    </ClInclude>
+    <ClInclude Include="obstacle.h">
+      <Filter>playGround\obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="obstacleManager.h">
+      <Filter>playGround\obstacle</Filter>
+    </ClInclude>
+    <ClInclude Include="testObstcle.h">
       <Filter>playGround\stage</Filter>
     </ClInclude>
   </ItemGroup>
@@ -296,9 +299,6 @@
     <ClCompile Include="player.cpp">
       <Filter>playGround\player</Filter>
     </ClCompile>
-    <ClCompile Include="object.cpp">
-      <Filter>playGround\object</Filter>
-    </ClCompile>
     <ClCompile Include="enemy.cpp">
       <Filter>playGround\enemy</Filter>
     </ClCompile>
@@ -329,9 +329,6 @@
     <ClCompile Include="enemyManager.cpp">
       <Filter>playGround\enemy</Filter>
     </ClCompile>
-    <ClCompile Include="objectManager.cpp">
-      <Filter>playGround\object</Filter>
-    </ClCompile>
     <ClCompile Include="stageManager.cpp">
       <Filter>playGround\stage</Filter>
     </ClCompile>
@@ -357,6 +354,15 @@
       <Filter>playGround\stage</Filter>
     </ClCompile>
     <ClCompile Include="testUIScene.cpp">
+      <Filter>playGround\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="obstacle.cpp">
+      <Filter>playGround\obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="obstacleManager.cpp">
+      <Filter>playGround\obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="testObstcle.cpp">
       <Filter>playGround\stage</Filter>
     </ClCompile>
   </ItemGroup>

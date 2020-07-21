@@ -54,7 +54,6 @@ void boss::update()
 	stateUpdate();
 	_y = _z - 180;
 
-	followPlayer(_playerX, _playerY);
 
 	// ================================ 임시 ================================ //
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
@@ -268,19 +267,8 @@ void boss::loadAnimation()
 
 }
 
-void boss::think()
+void boss::changeState()
 {
-	int preState = (int)_state; // 이전 상태 받아오기
-	int rndState;
-	for (int i = 0; i < 50; i++)
-	{
-		rndState = RND->getInt(BOSS_END);
-		if (preState != rndState)
-			break;
-	}
-	_state = (STATEBOSS)rndState;
-
-
 	switch (_state)
 	{
 	case BOSS_LEFT_IDLE:
@@ -457,63 +445,23 @@ void boss::stateUpdate()
 	
 }
 
-void boss::followPlayer(float x, float z)
+void boss::attack(float playerX, float playerY)
 {
-	// ==== 임시 ==== //
-	float tempZ = z + 100;
-	// ==== 임시 ==== //
+	//if()
+}
 
-	if ((getDistance(x, tempZ, _x, _z) < 1000) && (getDistance(x, tempZ, _x, _z) > 200)) // 플레이어 따라다니는 경우
-	{
-		if (_x <= x) // 왼쪽에 있을 경우
-		{
-			if (_state != BOSS_RIGHT_WALK)
-			{
-				_characterImg = IMAGEMANAGER->findImage("boss_walk");
-				_animPlayer = _anim[BOSS_RIGHT_WALK];
-				_animPlayer->start();
-			}
-			_state = BOSS_RIGHT_WALK;
-		}
-		else
-		{
-			if (_state != BOSS_LEFT_WALK)
-			{
-				_characterImg = IMAGEMANAGER->findImage("boss_walk");
-				_animPlayer = _anim[BOSS_LEFT_WALK];
-				_animPlayer->start();
-			}
-			_state = BOSS_LEFT_WALK;
-		}
-		_angle = getAngle(_x, _z, x, tempZ);
-		_x += cosf(_angle) * 2;
-		_z -= sinf(_angle) * 2;
+void boss::heavyAttack(float playerX, float playerY)
+{
 
-		cout << "bossY : " << _y << endl;
-		cout << "playerY : " << tempZ << endl;
-	}
-	else if (getDistance(x, tempZ, _x, _z) < 200)
-	{
-		if (_x <= x) // 왼쪽에 있을 경우
-		{
-			if (_state != BOSS_RIGHT_HEAVY_ATTACK)
-			{
-				_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
-				_animPlayer = _anim[BOSS_RIGHT_HEAVY_ATTACK];
-				_animPlayer->start();
-			}
-			_state = BOSS_RIGHT_HEAVY_ATTACK;
-		}
-		else
-		{
-			if (_state != BOSS_LEFT_HEAVY_ATTACK)
-			{
-				_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
-				_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
-				_animPlayer->start();
-			}
-			_state = BOSS_LEFT_HEAVY_ATTACK;
-		}
-	}
+}
+
+void boss::dashAttack(float playerX, float playerY)
+{
+
+}
+
+void boss::jumpAttack(float playerX, float playerY)
+{
+
 }
 
