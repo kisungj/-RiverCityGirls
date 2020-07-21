@@ -51,7 +51,6 @@ public:
 	void    loadImage();                // 보스 이미지 리소스 로드
 	void    loadAnimation();            // 보스 애니메이션 로드
 	void    think();                    // 보스 AI 함수
-	void    stateUpdate();          
-	void    followPlayer(float x, float y);             
+	void    stateUpdate();             
 };
 

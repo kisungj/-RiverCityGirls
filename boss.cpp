@@ -54,7 +54,6 @@ void boss::update()
 	stateUpdate();
 	_y = _z - 180;
 
-	followPlayer(_playerX, _playerY);
 
 	// ================================ 임시 ================================ //
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
@@ -455,65 +454,5 @@ void boss::stateUpdate()
 	}
 
 	
-}
-
-void boss::followPlayer(float x, float z)
-{
-	// ==== 임시 ==== //
-	float tempZ = z + 100;
-	// ==== 임시 ==== //
-
-	if ((getDistance(x, tempZ, _x, _z) < 1000) && (getDistance(x, tempZ, _x, _z) > 200)) // 플레이어 따라다니는 경우
-	{
-		if (_x <= x) // 왼쪽에 있을 경우
-		{
-			if (_state != BOSS_RIGHT_WALK)
-			{
-				_characterImg = IMAGEMANAGER->findImage("boss_walk");
-				_animPlayer = _anim[BOSS_RIGHT_WALK];
-				_animPlayer->start();
-			}
-			_state = BOSS_RIGHT_WALK;
-		}
-		else
-		{
-			if (_state != BOSS_LEFT_WALK)
-			{
-				_characterImg = IMAGEMANAGER->findImage("boss_walk");
-				_animPlayer = _anim[BOSS_LEFT_WALK];
-				_animPlayer->start();
-			}
-			_state = BOSS_LEFT_WALK;
-		}
-		_angle = getAngle(_x, _z, x, tempZ);
-		_x += cosf(_angle) * 2;
-		_z -= sinf(_angle) * 2;
-
-		cout << "bossY : " << _y << endl;
-		cout << "playerY : " << tempZ << endl;
-	}
-	else if (getDistance(x, tempZ, _x, _z) < 200)
-	{
-		if (_x <= x) // 왼쪽에 있을 경우
-		{
-			if (_state != BOSS_RIGHT_HEAVY_ATTACK)
-			{
-				_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
-				_animPlayer = _anim[BOSS_RIGHT_HEAVY_ATTACK];
-				_animPlayer->start();
-			}
-			_state = BOSS_RIGHT_HEAVY_ATTACK;
-		}
-		else
-		{
-			if (_state != BOSS_LEFT_HEAVY_ATTACK)
-			{
-				_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
-				_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
-				_animPlayer->start();
-			}
-			_state = BOSS_LEFT_HEAVY_ATTACK;
-		}
-	}
 }
 
