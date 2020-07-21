@@ -34,6 +34,7 @@ private:
 	animation* _animPlayer;                         // 애니메이션 플레이용
 	int        _delayTime;                          // 공격 후 딜레이시간
 	bool       _isDelayTime;                        // 딜레이 시간인지?      
+	int        _patternNumber;                      // 지금 패턴 번호
 
 	// ----------------- 스텟 관련 변수 -----------------//
 	int        _hp, maxHp;
@@ -63,6 +64,6 @@ public:
 	void    heavyAttack(float playerX, float playerZ);              // 플레이어를 찾아서 약 공격
 	void    dashAttack(float playerX, float playerZ);               // 대쉬 공격
 	void    jumpAttack(float playerX, float playerZ);               // 점프 공격
-
+	void    changePattern();
 };
 
