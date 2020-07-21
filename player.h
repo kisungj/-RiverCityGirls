@@ -171,7 +171,11 @@ public:
 
 class jumpState : public playerState
 {
+private:
+	int _jumpCount;
+	bool _isJump;
 public:
+	HRESULT init();
 	virtual void update(player& player) override;
 };
 

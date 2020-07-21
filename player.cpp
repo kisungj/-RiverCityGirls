@@ -50,7 +50,7 @@ HRESULT player::init()
 
 	_jumpPower = _gravity = 0;
 	_shadow = RectMakeCenter(_shadowX, _playerY, 80, 30);
-	_player = RectMakeCenter(_playerX, _playerY, _img->getFrameWidth(), _img->getFrameHeight());
+	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 	_playerMotion = KEYANIMANAGER->findAnimation("P_RIGHT_IDLE");
 	_playerMotion->start();
@@ -161,7 +161,7 @@ void player::update()
 
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
-	_player = RectMakeCenter(_playerX, _playerY, _img->getFrameWidth(), _img->getFrameHeight());
+	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 
 
@@ -175,7 +175,7 @@ void player::render()
 	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
-	CAMERAMANAGER->aniRender(getMemDC(), _img, _player.left, _player.top, _playerMotion);
+	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);
 	//Rectangle(getMemDC(), _player);
 	//Rectangle(getMemDC(), _rc);
 	//_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);

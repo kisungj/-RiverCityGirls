@@ -373,7 +373,7 @@ void walkState::update(player & player)
 			}
 		}
 	}
-
+	//공격
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
 		player.setIsAttack(true);
@@ -646,21 +646,63 @@ void runState::update(player & player)
 		}
 	}
 
+	//기본공격
+	if (KEYMANAGER->isOnceKeyDown('A'))
+	{
+		player.setIsAttack(true);
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_ATTACK1"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
+			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK1"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
+			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
+		}
+	}
+
+	//슬라이딩
+	if (KEYMANAGER->isOnceKeyDown('S'))
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DIVE"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
+			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DIVE"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
+			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
+		}
+	}
 }
 
 
 
+HRESULT jumpState::init()
+{
+	_jumpCount = 0;
+	_isJump = false;
+	return S_OK;
+}
+
 void jumpState::update(player & player)
 {
+	_jumpCount++;
 	//점프 올리기
-	if (KEYMANAGER->isStayKeyDown('Z'))
+	if (_jumpCount < 25)
 	{
-		if (player.getJumpPower() < 15)
-		{
-			player.setJumpPower(player.getJumpPower() + 0.5f);
-			//cout << player.getJumpPower() << endl;
-		}
+		_isJump = true;
 	}
+	else _isJump = false;
+	
+	cout << _isJump << endl;
+
 	if (player.getIsJumping())
 	{
 		player.setPlayerY(player.getPlayerY() - player.getJumpPower());
@@ -680,7 +722,7 @@ void jumpState::update(player & player)
 	}
 
 	//제일 높게 있는 상태면 떨어지는 자세로 바뀌기
-	if (player.getJumpPower() < 0)
+	if (player.getJumpPower() < 0 && !_isJump)
 	{
 		if (player.getDirectionX())
 		{
@@ -689,7 +731,6 @@ void jumpState::update(player & player)
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_FALL"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
 			}
-			
 		}
 		if (!player.getDirectionX())
 		{
@@ -701,10 +742,18 @@ void jumpState::update(player & player)
 		}
 		
 	}
+	if (_isJump)
+	{
+		if (KEYMANAGER->isStayKeyDown('Z'))
+		{
+			player.setJumpPower(player.getJumpPower() + 0.5f);
+		}
+	}
 	
 
 	if (player.getPlayerY() >= player.getShadowY() - 110)
 	{
+		_jumpCount = 0;
 		//아무것도 안누르면 아이들로
 		if (KEYMANAGER->getKeyUp() == NULL)
 		{
