@@ -7,8 +7,9 @@ HRESULT player::init()
 	//방향키로 움직
 	//Z키로 점프
 	//A키로 기본공격 3단
-	//S키로 밟기
+	//S키로 아이들,워크-> 밟기 // 런->슬라이딩
 	//D키로 회오리킥
+	//X키로 방어
 
 	IMAGEMANAGER->addFrameImage("PLAYER_IDLE", "image/player/Kyoko_Idle.bmp", 1440, 450, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_WALK", "image/player/Kyoko_Walk.bmp", 1476, 402, 12, 2, true, RGB(255, 0, 255));
@@ -36,8 +37,10 @@ HRESULT player::init()
 	_attack = new attackState();
 	_hit = new hitState();
 	_invin = new invinState();
+	_start = new startState();
+	_guard = new guardState();
 
-	_state = _invin;
+	_state = _start;
 	_img = IMAGEMANAGER->findImage("PLAYER_START");
 
 	_shadowX = WINSIZEX / 2;
@@ -63,6 +66,7 @@ HRESULT player::init()
 
 	_isJumping = false;
 
+	_currentHP = _maxHP = 100;
 
 	_probeV = _shadow.bottom;
 	_probeH = _shadowX;
@@ -78,7 +82,6 @@ void player::release()
 
 void player::update()
 {
-	collision();
 	KEYANIMANAGER->update();
 	_probeV = _shadow.bottom;
 	_probeH = (_shadow.left+ _shadow.right)/2;
@@ -179,7 +182,7 @@ void player::update()
 
 void player::render()
 {
-	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
 	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);
@@ -202,9 +205,9 @@ void player::keyAnimation()
 	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_WALK", "PLAYER_WALK", leftWalk, 12, 13, true);
 
 	int rightRun[] = { 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_RUN", "PLAYER_RUN", rightRun, 16, 18, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_RUN", "PLAYER_RUN", rightRun, 16, 20, true);
 	int leftRun[] = { 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 18, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 20, true);
 
 	int rightAttack1[] = { 6,7,8,9,10,11 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK1", "PLAYER_ATTACK1", rightAttack1, 6, 13, false);
@@ -246,9 +249,9 @@ void player::keyAnimation()
 	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_GUARD", "PLAYER_GUARD", leftGuard, 3, 13, false);
 	
 	int rightHit[] = { 2,3 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_HIT", "PLAYER_HIT", rightHit, 2, 13, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_HIT", "PLAYER_HIT", rightHit, 2, 8, true);
 	int leftHit[]{ 1, 0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_HIT", "PLAYER_HIT", leftHit, 2, 13, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_HIT", "PLAYER_HIT", leftHit, 2, 8, true);
 	
 	int rightStandUp[] = { 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_STAND_UP", "PLAYER_STAND_UP", rightStandUp, 17, 13, false);
@@ -280,16 +283,7 @@ void player::keyAnimation()
 
 }
 
-void player::collision()
+void player::playerDamage(float damage)
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
-		if (PtInRect(&_player, _ptMouse))
-		{
-			//cout << "맞았다" << endl;
-			_state = _hit;
-			_img = IMAGEMANAGER->findImage("PLAYER_HIT");
-		}
-	}
+	_currentHP -= damage;
 }
-
