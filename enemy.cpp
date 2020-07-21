@@ -13,6 +13,7 @@ HRESULT enemy::init()
 {
 	{
 		_move	 = new enemyMoveState();
+		_run	 = new enemyRunState();
 		_attack	 = new enemyAttackState();
 		_guard	 = new enemyGuardState();
 		_hit	 = new enemyHitState();
@@ -55,13 +56,10 @@ void enemy::update()
 
 	_state->update(*this, _playerRC, _playerX, _playerY, ENEMYTYPE::BOY);
 
+	//type();
 	//if (_hitCount == 1) _hitState = HITSTATE::HIT1;
 	//if (_hitCount == 2) _hitState = HITSTATE::HIT2;
 	//if (_hitCount == 3) _hitState = HITSTATE::HIT3;
-
-	//cout << _hitCount << ", " << _isHit << endl;
-	//cout << _jumpPower << ", " << _gravity << endl;
-	//cout << _downCount << ", " <<_isDown << endl;
 
 	//CAMERAMANAGER->setX(_x);
 	//CAMERAMANAGER->setY(_y);
@@ -137,6 +135,7 @@ void enemy::addImage()
 	IMAGEMANAGER->addFrameImage("boy_attack1", "image/enemy/boy_attack1.bmp", 1764, 426, 7, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_attack2", "image/enemy/boy_attack2.bmp", 1386, 510, 7, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_attack3", "image/enemy/boy_attack3.bmp", 1863, 558, 9, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_sidekick", "image/enemy/boy_sidekick.bmp", 1764, 444, 7, 2, true, RGB(255, 0, 255));
 	//1단 맞기 프레임 0~2, 2단 맞기 3~5, 3단 맞기 6~8 (반대로 8~6, 5~3, 2~0)
 	//IMAGEMANAGER->addFrameImage("boy_hit", "image/enemy/boy_gethit.bmp", 1728, 450, 9, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit1", "image/enemy/boy_hit1.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));

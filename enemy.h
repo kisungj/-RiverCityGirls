@@ -8,17 +8,11 @@ enum class CONDITION
 	CLOSE
 };
 
-enum class HITSTATE
-{
-	HIT1, HIT2, HIT3
-};
-
 class enemy : public gameNode
 {
 private:
 	enemyState* _state;				//현재 클래스 상태
 	CONDITION _condition;			//상태
-	//HITSTATE _hitState;			//맞은 상태
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
@@ -44,6 +38,7 @@ private:
 	RECT _playerAttack;				//플레이어 공격렉트
 
 	enemyState*	_move;
+	enemyState* _run;
 	enemyState*	_attack;
 	enemyState* _guard;
 	enemyState* _hit;
@@ -61,8 +56,8 @@ public:
 	virtual void render();
 
 	virtual void directionCheck(RECT rc, float x, float y);
+	//virtual void type() = 0;									//에너미 타입 지정 용도(이미지 때문에)
 	void draw();												//프레임 돌리는 용도
-
 	void addImage();											//이미지매니저 한곳에 모아두기
 
 
@@ -111,7 +106,9 @@ public:
 	void setGravity(float g) { _gravity = g; }					//그래비티 정해주기
 
 
+public:
 	enemyState* getMove() { return _move; }						//상태 클래스 변경할 때 필요
+	enemyState* getRun() { return _run; }
 	enemyState* getAttack() { return _attack; }
 	enemyState* getGuard() { return _guard; }
 	enemyState* getHit() { return _hit; }
