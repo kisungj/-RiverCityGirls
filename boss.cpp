@@ -34,7 +34,7 @@ void boss::render()
 	}
 
 
-	CAMERAMANAGER->render(getMemDC(), _shadowImg, WINSIZEX / 2 + 100, WINSIZEY / 2 + 360);
+	CAMERAMANAGER->render(getMemDC(), _shadowImg, WINSIZEX / 2, WINSIZEY / 2+ 200);
 	CAMERAMANAGER->aniRender(getMemDC(), _characterImg, WINSIZEX / 2, WINSIZEY / 2, _animPlayer);
 
 }
