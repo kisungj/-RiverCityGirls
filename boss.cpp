@@ -6,18 +6,24 @@ HRESULT boss::init()
 	// ------------ 임시 변수 ------------ //
 	loadImage();
 	loadAnimation();
-	_x = _y = _jumpPower = _gravity = 0;
-	_state = BOSS_LEFT_IDLE;
+	_x = WINSIZEX / 2 +800;
+	_z = WINSIZEY / 2 + 180;
+	_y = _z - 180;
+	_jumpPower = _gravity = 0;
 	_rc = RectMakeCenter(_x, _y, 100, 100);
-	_playerX = WINSIZEX / 2;
-	_playerY = WINSIZEY / 2;
 	_characterImg = IMAGEMANAGER->findImage("boss_idle");
 	_shadowImg = IMAGEMANAGER->findImage("보스그림자");
-	// ------------ 임시 변수 ------------ //
 
+	_state = BOSS_LEFT_IDLE;
+	_characterImg = IMAGEMANAGER->findImage("boss_idle");
 	_animPlayer = _anim[BOSS_LEFT_IDLE];
 	_animPlayer->start();
 
+
+	_playerX = 100;
+	_playerY = WINSIZEY / 2;
+	_player = RectMakeCenter(_playerX, _playerY, 100, 150);
+	// ------------ 임시 변수 ------------ //
 	return S_OK;
 }
 
@@ -27,66 +33,55 @@ void boss::release()
 
 void boss::render()
 {
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("보스배경"), IMAGEMANAGER->findImage("보스배경")->getWidth(), IMAGEMANAGER->findImage("보스배경")->getHeight());
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("보스배경"), IMAGEMANAGER->findImage("보스배경")->getWidth() / 2, IMAGEMANAGER->findImage("보스배경")->getHeight() / 2);
+
 	for (int i = 0; i < BOSS_END; i++)
 	{
 		_anim[i]->frameUpdate(TIMEMANAGER->getElapsedTime() * 10);
 	}
 
+	CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
+	CAMERAMANAGER->aniRender(getMemDC(), _characterImg, _x, _y, _animPlayer);
 
-	CAMERAMANAGER->render(getMemDC(), _shadowImg, WINSIZEX / 2 + 10, WINSIZEY / 2+ 190);
-	CAMERAMANAGER->aniRender(getMemDC(), _characterImg, WINSIZEX / 2, WINSIZEY / 2, _animPlayer);
-
+	// ================================ 임시 ================================ //
+	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
+	// ================================ 임시 ================================ //
 }
 
 void boss::update()
 {
 	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2538 - WINSIZEX, 1000 - WINSIZEY);
+	stateUpdate();
+	_y = _z - 180;
 
+
+	// ================================ 임시 ================================ //
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
-		_playerX += 3;
+		_playerX += 5;
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		_playerX -= 3;
+		_playerX -= 5;
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
-		_playerY -= 3;
+		_playerY -= 5;
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
-		_playerY += 3;
+		_playerY += 5;
 	}
 
-	if (KEYMANAGER->isOnceKeyDown('Q'))
-	{
-		_characterImg = IMAGEMANAGER->findImage("boss_idle");
-		_animPlayer = _anim[BOSS_LEFT_IDLE];
-		_animPlayer->start();
-	}
-	if (KEYMANAGER->isOnceKeyDown('W'))
-	{
-		_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
-		_animPlayer = _anim[BOSS_LEFT_JUMP_ATTACK];
-		_animPlayer->start();
-	}
-	if (KEYMANAGER->isOnceKeyDown('E'))
-	{
-		_characterImg = IMAGEMANAGER->findImage("boss_death");
-		_animPlayer = _anim[BOSS_LEFT_DEATH];
-		_animPlayer->start();
-	}
-	if (KEYMANAGER->isOnceKeyDown('R'))
-	{
-		_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
-		_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
-		_animPlayer->start();
-	}
 
-	CAMERAMANAGER->setX(_playerX + 200);
-	CAMERAMANAGER->setY(_playerY + 200);
+	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
+	CAMERAMANAGER->setX(_playerX);
+	CAMERAMANAGER->setY(_playerY);
+	// ================================ 임시 ================================ //
+
+
+	_rc = RectMakeCenter(_x, _y, 100, 100);
+
 }
 
 void boss::loadImage()
@@ -110,7 +105,7 @@ void boss::loadAnimation()
 	// --------------- LEFT IDLE --------------- //
 	_anim[BOSS_LEFT_IDLE] = new animation;
 	_anim[BOSS_LEFT_IDLE]->init(IMAGEMANAGER->findImage("boss_idle")->getWidth(), IMAGEMANAGER->findImage("boss_idle")->getHeight()
-		,IMAGEMANAGER->findImage("boss_idle")->getFrameWidth(), IMAGEMANAGER->findImage("boss_idle")->getFrameHeight());
+		, IMAGEMANAGER->findImage("boss_idle")->getFrameWidth(), IMAGEMANAGER->findImage("boss_idle")->getFrameHeight());
 	_anim[BOSS_LEFT_IDLE]->setPlayFrame(23, 12, false, true);
 	_anim[BOSS_LEFT_IDLE]->setFPS(1);
 	// --------------- LEFT IDLE --------------- //
@@ -129,6 +124,7 @@ void boss::loadAnimation()
 		, IMAGEMANAGER->findImage("boss_walk")->getFrameWidth(), IMAGEMANAGER->findImage("boss_walk")->getFrameHeight());
 	_anim[BOSS_LEFT_WALK]->setPlayFrame(19, 10, false, true);
 	_anim[BOSS_LEFT_WALK]->setFPS(1);
+
 	// --------------- LEFT WALK --------------- //
 
 	// --------------- RIGHT WALK --------------- //
@@ -143,7 +139,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_ATTACK_ELBOW] = new animation;
 	_anim[BOSS_LEFT_ATTACK_ELBOW]->init(IMAGEMANAGER->findImage("boss_attack_elbow")->getWidth(), IMAGEMANAGER->findImage("boss_attack_elbow")->getHeight()
 		, IMAGEMANAGER->findImage("boss_attack_elbow")->getFrameWidth(), IMAGEMANAGER->findImage("boss_attack_elbow")->getFrameHeight());
-	_anim[BOSS_LEFT_ATTACK_ELBOW]->setPlayFrame(21, 11, false, true);
+	_anim[BOSS_LEFT_ATTACK_ELBOW]->setPlayFrame(21, 11, false, false);
 	_anim[BOSS_LEFT_ATTACK_ELBOW]->setFPS(1);
 	// --------------- LEFT ATTACK ELBOW --------------- //
 
@@ -151,7 +147,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_ATTACK_ELBOW] = new animation;
 	_anim[BOSS_RIGHT_ATTACK_ELBOW]->init(IMAGEMANAGER->findImage("boss_attack_elbow")->getWidth(), IMAGEMANAGER->findImage("boss_attack_elbow")->getHeight()
 		, IMAGEMANAGER->findImage("boss_attack_elbow")->getFrameWidth(), IMAGEMANAGER->findImage("boss_attack_elbow")->getFrameHeight());
-	_anim[BOSS_RIGHT_ATTACK_ELBOW]->setPlayFrame(0, 10, false, true);
+	_anim[BOSS_RIGHT_ATTACK_ELBOW]->setPlayFrame(0, 10, false, false);
 	_anim[BOSS_RIGHT_ATTACK_ELBOW]->setFPS(1);
 	// --------------- RIGHT ATTACK ELBOW --------------- //
 
@@ -159,7 +155,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_JUMP_ATTACK] = new animation;
 	_anim[BOSS_LEFT_JUMP_ATTACK]->init(IMAGEMANAGER->findImage("boss_jumpAttack")->getWidth(), IMAGEMANAGER->findImage("boss_jumpAttack")->getHeight()
 		, IMAGEMANAGER->findImage("boss_jumpAttack")->getFrameWidth(), IMAGEMANAGER->findImage("boss_jumpAttack")->getFrameHeight());
-	_anim[BOSS_LEFT_JUMP_ATTACK]->setPlayFrame(47, 24, false, true);
+	_anim[BOSS_LEFT_JUMP_ATTACK]->setPlayFrame(47, 24, false, false);
 	_anim[BOSS_LEFT_JUMP_ATTACK]->setFPS(1);
 	// --------------- LEFT ATTACK JUMP --------------- //
 
@@ -167,7 +163,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_JUMP_ATTACK] = new animation;
 	_anim[BOSS_RIGHT_JUMP_ATTACK]->init(IMAGEMANAGER->findImage("boss_jumpAttack")->getWidth(), IMAGEMANAGER->findImage("boss_jumpAttack")->getHeight()
 		, IMAGEMANAGER->findImage("boss_jumpAttack")->getFrameWidth(), IMAGEMANAGER->findImage("boss_jumpAttack")->getFrameHeight());
-	_anim[BOSS_RIGHT_JUMP_ATTACK]->setPlayFrame(0, 23, false, true);
+	_anim[BOSS_RIGHT_JUMP_ATTACK]->setPlayFrame(0, 23, false, false);
 	_anim[BOSS_RIGHT_JUMP_ATTACK]->setFPS(1);
 	// --------------- RIGHT ATTACK JUMP --------------- //
 
@@ -176,7 +172,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_ANGRY] = new animation;
 	_anim[BOSS_LEFT_ANGRY]->init(IMAGEMANAGER->findImage("boss_angry")->getWidth(), IMAGEMANAGER->findImage("boss_angry")->getHeight()
 		, IMAGEMANAGER->findImage("boss_angry")->getFrameWidth(), IMAGEMANAGER->findImage("boss_angry")->getFrameHeight());
-	_anim[BOSS_LEFT_ANGRY]->setPlayFrame(31, 16, false, true);
+	_anim[BOSS_LEFT_ANGRY]->setPlayFrame(31, 16, false, false);
 	_anim[BOSS_LEFT_ANGRY]->setFPS(1);
 	// --------------- LEFT ANGRY --------------- //
 
@@ -184,7 +180,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_ANGRY] = new animation;
 	_anim[BOSS_RIGHT_ANGRY]->init(IMAGEMANAGER->findImage("boss_angry")->getWidth(), IMAGEMANAGER->findImage("boss_angry")->getHeight()
 		, IMAGEMANAGER->findImage("boss_angry")->getFrameWidth(), IMAGEMANAGER->findImage("boss_angry")->getFrameHeight());
-	_anim[BOSS_RIGHT_ANGRY]->setPlayFrame(0, 15, false, true);
+	_anim[BOSS_RIGHT_ANGRY]->setPlayFrame(0, 15, false, false);
 	_anim[BOSS_RIGHT_ANGRY]->setFPS(1);
 	// --------------- RIGHT ANGRY --------------- //
 
@@ -209,7 +205,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_DASH] = new animation;
 	_anim[BOSS_LEFT_DASH]->init(IMAGEMANAGER->findImage("boss_dash")->getWidth(), IMAGEMANAGER->findImage("boss_dash")->getHeight()
 		, IMAGEMANAGER->findImage("boss_dash")->getFrameWidth(), IMAGEMANAGER->findImage("boss_dash")->getFrameHeight());
-	_anim[BOSS_LEFT_DASH]->setPlayFrame(27, 14, false, true);
+	_anim[BOSS_LEFT_DASH]->setPlayFrame(27, 14, false, false);
 	_anim[BOSS_LEFT_DASH]->setFPS(1);
 	// --------------- LEFT DASH --------------- //
 
@@ -217,7 +213,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_DASH] = new animation;
 	_anim[BOSS_RIGHT_DASH]->init(IMAGEMANAGER->findImage("boss_dash")->getWidth(), IMAGEMANAGER->findImage("boss_dash")->getHeight()
 		, IMAGEMANAGER->findImage("boss_dash")->getFrameWidth(), IMAGEMANAGER->findImage("boss_dash")->getFrameHeight());
-	_anim[BOSS_RIGHT_DASH]->setPlayFrame(0, 13, false, true);
+	_anim[BOSS_RIGHT_DASH]->setPlayFrame(0, 13, false, false);
 	_anim[BOSS_RIGHT_DASH]->setFPS(1);
 	// --------------- RIGHT DASH --------------- //
 
@@ -225,7 +221,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_HIT] = new animation;
 	_anim[BOSS_LEFT_HIT]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_LEFT_HIT]->setPlayFrame(17, 9, false, true);
+	_anim[BOSS_LEFT_HIT]->setPlayFrame(17, 9, false, false);
 	_anim[BOSS_LEFT_HIT]->setFPS(1);
 	// --------------- LEFT HIT --------------- //
 
@@ -233,7 +229,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_HIT] = new animation;
 	_anim[BOSS_RIGHT_HIT]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_RIGHT_HIT]->setPlayFrame(0, 8, false, true);
+	_anim[BOSS_RIGHT_HIT]->setPlayFrame(0, 8, false, false);
 	_anim[BOSS_RIGHT_HIT]->setFPS(1);
 	// --------------- RIGHT HIT --------------- //
 
@@ -241,7 +237,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_DEATH] = new animation;
 	_anim[BOSS_LEFT_DEATH]->init(IMAGEMANAGER->findImage("boss_death")->getWidth(), IMAGEMANAGER->findImage("boss_death")->getHeight()
 		, IMAGEMANAGER->findImage("boss_death")->getFrameWidth(), IMAGEMANAGER->findImage("boss_death")->getFrameHeight());
-	_anim[BOSS_LEFT_DEATH]->setPlayFrame(25, 13, false, true);
+	_anim[BOSS_LEFT_DEATH]->setPlayFrame(25, 13, false, false);
 	_anim[BOSS_LEFT_DEATH]->setFPS(1);
 	// --------------- LEFT HIT --------------- //
 
@@ -249,10 +245,9 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_DEATH] = new animation;
 	_anim[BOSS_RIGHT_DEATH]->init(IMAGEMANAGER->findImage("boss_death")->getWidth(), IMAGEMANAGER->findImage("boss_death")->getHeight()
 		, IMAGEMANAGER->findImage("boss_death")->getFrameWidth(), IMAGEMANAGER->findImage("boss_death")->getFrameHeight());
-	_anim[BOSS_RIGHT_DEATH]->setPlayFrame(0, 12, false, true);
+	_anim[BOSS_RIGHT_DEATH]->setPlayFrame(0, 12, false, false);
 	_anim[BOSS_RIGHT_DEATH]->setFPS(1);
 	// --------------- RIGHT HIT --------------- //
-
 
 	// --------------- LEFT HEAVY ATTACK --------------- //
 	_anim[BOSS_LEFT_HEAVY_ATTACK] = new animation;
@@ -271,3 +266,202 @@ void boss::loadAnimation()
 	// --------------- RIGHT HEAVY ATTACK --------------- //
 
 }
+
+void boss::changeState()
+{
+	switch (_state)
+	{
+	case BOSS_LEFT_IDLE:
+		_characterImg = IMAGEMANAGER->findImage("boss_idle");
+		_animPlayer = _anim[BOSS_LEFT_IDLE];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_IDLE:
+		_characterImg = IMAGEMANAGER->findImage("boss_idle");
+		_animPlayer = _anim[BOSS_RIGHT_IDLE];
+		_animPlayer->start();
+		break;
+	case BOSS_LEFT_WALK:
+		_characterImg = IMAGEMANAGER->findImage("boss_walk");
+		_animPlayer = _anim[BOSS_LEFT_WALK];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_WALK:
+		_characterImg = IMAGEMANAGER->findImage("boss_walk");
+		_animPlayer = _anim[BOSS_RIGHT_WALK];
+		_animPlayer->start();
+		break;
+	case BOSS_LEFT_DASH:
+		_characterImg = IMAGEMANAGER->findImage("boss_dash");
+		_animPlayer = _anim[BOSS_LEFT_DASH];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_DASH:
+		_characterImg = IMAGEMANAGER->findImage("boss_dash");
+		_animPlayer = _anim[BOSS_RIGHT_DASH];
+		_animPlayer->start();
+
+		break;
+	case BOSS_LEFT_HIT:
+		_characterImg = IMAGEMANAGER->findImage("boss_hit");
+		_animPlayer = _anim[BOSS_LEFT_HIT];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_HIT:
+		_characterImg = IMAGEMANAGER->findImage("boss_hit");
+		_animPlayer = _anim[BOSS_RIGHT_HIT];
+		_animPlayer->start();
+		break;
+	case BOSS_LEFT_ATTACK:
+		_characterImg = IMAGEMANAGER->findImage("boss_attack");
+		_animPlayer = _anim[BOSS_LEFT_ATTACK];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_ATTACK:
+		_characterImg = IMAGEMANAGER->findImage("boss_attack");
+		_animPlayer = _anim[BOSS_RIGHT_ATTACK];
+		_animPlayer->start();
+		break;
+	case BOSS_LEFT_ATTACK_ELBOW:
+		_characterImg = IMAGEMANAGER->findImage("boss_attack_elbow");
+		_animPlayer = _anim[BOSS_LEFT_ATTACK_ELBOW];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_ATTACK_ELBOW:
+		_characterImg = IMAGEMANAGER->findImage("boss_attack_elbow");
+		_animPlayer = _anim[BOSS_RIGHT_ATTACK_ELBOW];
+		_animPlayer->start();
+		break;
+	case BOSS_LEFT_JUMP_ATTACK:
+		_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
+		_animPlayer = _anim[BOSS_LEFT_JUMP_ATTACK];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_JUMP_ATTACK:
+		_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
+		_animPlayer = _anim[BOSS_RIGHT_JUMP_ATTACK];
+		_animPlayer->start();
+		break;
+	case BOSS_LEFT_HEAVY_ATTACK:
+		_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
+		_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_HEAVY_ATTACK:
+		_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
+		_animPlayer = _anim[BOSS_RIGHT_HEAVY_ATTACK];
+		_animPlayer->start();
+		break;
+	case BOSS_LEFT_DEATH:
+		_characterImg = IMAGEMANAGER->findImage("boss_death");
+		_animPlayer = _anim[BOSS_LEFT_DEATH];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_DEATH:
+		_characterImg = IMAGEMANAGER->findImage("boss_death");
+		_animPlayer = _anim[BOSS_RIGHT_DEATH];
+		_animPlayer->start();
+		break;
+	case BOSS_LEFT_ANGRY:
+		_characterImg = IMAGEMANAGER->findImage("boss_angry");
+		_animPlayer = _anim[BOSS_LEFT_ANGRY];
+		_animPlayer->start();
+		break;
+	case BOSS_RIGHT_ANGRY:
+		_characterImg = IMAGEMANAGER->findImage("boss_angry");
+		_animPlayer = _anim[BOSS_RIGHT_ANGRY];
+		_animPlayer->start();
+		break;
+	}
+
+}
+
+void boss::stateUpdate()
+{
+	switch (_state)
+	{
+	case BOSS_LEFT_IDLE:
+		_applySpeed = 0;
+		break;
+	case BOSS_RIGHT_IDLE:
+		_applySpeed = 0;
+		break;
+	case BOSS_LEFT_WALK:
+		_applySpeed = 2;
+		break;
+	case BOSS_RIGHT_WALK:
+		_applySpeed = 2;
+		break;
+	case BOSS_LEFT_DASH:
+		_applySpeed = 5;
+		break;
+	case BOSS_RIGHT_DASH:
+		_applySpeed = 5;
+		break;
+	case BOSS_LEFT_HIT:
+		_applySpeed = 0;
+		break;
+	case BOSS_RIGHT_HIT:
+		_applySpeed = 0;
+		break;
+	case BOSS_LEFT_ATTACK:
+		_applySpeed = 0;
+		break;
+	case BOSS_RIGHT_ATTACK:
+		_applySpeed = 0;
+		break;
+	case BOSS_LEFT_ATTACK_ELBOW:
+		_applySpeed = 0;
+		break;
+	case BOSS_RIGHT_ATTACK_ELBOW:
+		_applySpeed = 0;
+		break;
+	case BOSS_LEFT_JUMP_ATTACK:
+		_applySpeed = 0;
+		break;
+	case BOSS_RIGHT_JUMP_ATTACK:
+		_applySpeed = 0;
+		break;
+	case BOSS_LEFT_HEAVY_ATTACK:
+		_applySpeed = 0;
+		break;
+	case BOSS_RIGHT_HEAVY_ATTACK:
+		_applySpeed = 0;
+		break;
+	case BOSS_LEFT_DEATH:
+		_applySpeed = 0;
+		break;
+	case BOSS_RIGHT_DEATH:
+		_applySpeed = 0;
+		break;
+	case BOSS_LEFT_ANGRY:
+		_applySpeed = 0;
+		break;
+	case BOSS_RIGHT_ANGRY:
+		_applySpeed = 0;
+		break;
+	}
+
+	
+}
+
+void boss::attack(float playerX, float playerY)
+{
+	//if()
+}
+
+void boss::heavyAttack(float playerX, float playerY)
+{
+
+}
+
+void boss::dashAttack(float playerX, float playerY)
+{
+
+}
+
+void boss::jumpAttack(float playerX, float playerY)
+{
+
+}
+

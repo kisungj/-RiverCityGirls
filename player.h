@@ -10,7 +10,10 @@ class runState;
 class jumpState;
 class attackState;
 class hitState;
-class invinState;
+class invinState;		//무적 invincibility 줄인거ㅎ
+class startState;
+class guardState;
+class overState;
 
 
 class player : public gameNode
@@ -39,6 +42,8 @@ private:
 	float _attackX, _attackY;		//어택의 중점
 	float _attackSizeX, _attackSizeY;//어택렉트의 사이즈
 
+	float _currentHP, _maxHP;		//체력
+
 	bool _directionX;				//left = 0, right = 1
 	bool _directionY;				//top = 0, bottom = 1
 
@@ -57,6 +62,9 @@ private:
 	playerState* _attack;
 	playerState* _hit;
 	playerState* _invin;
+	playerState* _start;
+	playerState* _guard;
+	playerState* _over;
 
 
 public:
@@ -75,6 +83,8 @@ public:
 	}
 
 	void keyAnimation();
+
+	void playerDamage(float damage);
 
 public:
 	//=====================GET================================
@@ -96,6 +106,7 @@ public:
 	bool getAttacked() { return _attacked; }
 	bool getIsAttack() { return _isAttack; }
 	RECT getAttackRect() { return _attackRc; }
+	RECT getPlayerRect() { return _player; }
 	image* getImgge() { return _img; }
 	animation* getAni() { return _playerMotion; }
 
@@ -108,6 +119,9 @@ public:
 	playerState* getAttackState() { return _attack; }
 	playerState* getHitState() { return _hit; }
 	playerState* getInvinState() { return _invin; }
+	playerState* getStartState() { return _start; }
+	playerState* getGuardState() { return _guard; }
+	playerState* getOverState() { return _over; }
 
 	//=====================SET================================
 	void setShadowX(float x) { _shadowX = x; }
@@ -149,6 +163,9 @@ public:
 	static attackState* attack;
 	static hitState* hit;
 	static invinState* invin;
+	static startState* gameStart;
+	static guardState* guard;
+	static overState* over;
 };
 
 class idleState : public playerState
@@ -172,8 +189,8 @@ public:
 class jumpState : public playerState
 {
 private:
-	int _jumpCount;
-	bool _isJump;
+	int _jumpCount;		//stay키 막아서 점프 그만 올라가게
+	bool _isJump;		//이거 또한,. 무스비..
 public:
 	HRESULT init();
 	virtual void update(player& player) override;
@@ -181,18 +198,48 @@ public:
 
 class attackState : public playerState
 {
+private:
+	int _diveCount;		//다이브 속도 주려구
 public:
+	HRESULT init();
 	virtual void update(player& player) override;
 };
 
 class hitState : public playerState
 {
+private:
+	int _hitCount;
+	int _stunCount;
+	int _hitNum;
+	bool _isHit;
 public:
+	HRESULT init();
 	virtual void update(player& player) override;
 };
 
 class invinState : public playerState
 {
+private:
+	int _downCount;
 public:
+	HRESULT init();
+	virtual void update(player& player) override;
+};
+
+class startState : public playerState
+{
+public:
+	virtual void update(player& player) override;
+};
+
+class guardState : public playerState
+{
+public:
+	virtual void update(player& player) override;
+};
+
+class overState : public playerState
+{
+public: 
 	virtual void update(player& player) override;
 };

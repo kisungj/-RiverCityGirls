@@ -83,8 +83,8 @@ void idleState::update(player & player)
 		player.setIsRun(false);
 		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
-			player.setJumpPower(7);
-			player.setGravity(0.5f);
+			player.setJumpPower(10);
+			player.setGravity(0.8f);
 			player.setIsJumping(true);
 			if (!player.getDirectionX())
 			{
@@ -100,7 +100,7 @@ void idleState::update(player & player)
 		}
 	}
 
-	//공격
+	//기본공격
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
 		player.setIsAttack(true);
@@ -116,6 +116,64 @@ void idleState::update(player & player)
 			player.setState(player.getAttackState());
 			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
 		}
+	}
+	//밟기
+	if (KEYMANAGER->isOnceKeyDown('S'))
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STOMP"), IMAGEMANAGER->findImage("PLAYER_STOMP"));
+			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX() , player.getPlayerY() + 100, 120, 20);
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STOMP"), IMAGEMANAGER->findImage("PLAYER_STOMP"));
+			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+		}
+	}
+	//회오리킥
+	if (KEYMANAGER->isOnceKeyDown('D'))
+	{
+		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
+		player.setState(player.getAttackState());
+		player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+	}
+
+	//가드
+	if (KEYMANAGER->isOnceKeyDown('X'))
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_GUARD"), IMAGEMANAGER->findImage("PLAYER_GUARD"));
+			player.setState(player.getGuardState());
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"), IMAGEMANAGER->findImage("PLAYER_GUARD"));
+			player.setState(player.getGuardState());
+		}
+	}
+
+	//맞기
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+
+		if (PtInRect(&player.getPlayerRect(), _ptMouse))
+		{
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+		}
+
 	}
 }
 
@@ -357,8 +415,8 @@ void walkState::update(player & player)
 		player.setIsRun(false);
 		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
-			player.setJumpPower(7);
-			player.setGravity(0.5f);
+			player.setJumpPower(10);
+			player.setGravity(0.8f);
 			player.setIsJumping(true);
 			if (!player.getDirectionX())
 			{
@@ -373,7 +431,7 @@ void walkState::update(player & player)
 			}
 		}
 	}
-	//공격
+	//기본 공격
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
 		player.setIsAttack(true);
@@ -389,6 +447,51 @@ void walkState::update(player & player)
 			player.setState(player.getAttackState());
 			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
 		}
+	}
+
+	//밟기
+	if (KEYMANAGER->isOnceKeyDown('S'))
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STOMP"), IMAGEMANAGER->findImage("PLAYER_STOMP"));
+			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STOMP"), IMAGEMANAGER->findImage("PLAYER_STOMP"));
+			player.setState(player.getAttackState());
+			player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+		}
+	}
+
+	//회오리킥
+	if (KEYMANAGER->isOnceKeyDown('D'))
+	{
+		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
+		player.setState(player.getAttackState());
+		player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+	}
+
+	//맞기
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+
+		if (PtInRect(&player.getPlayerRect(), _ptMouse))
+		{
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+		}
+
 	}
 }
 
@@ -629,8 +732,8 @@ void runState::update(player & player)
 		{
 			//player.setJumpPower(player.getJumpPower() + 1);
 			player.setIsRun(true);
-			player.setJumpPower(7);
-			player.setGravity(0.5f);
+			player.setJumpPower(10);
+			player.setGravity(0.8f);
 			player.setIsJumping(true);
 			if (!player.getDirectionX())
 			{
@@ -669,16 +772,44 @@ void runState::update(player & player)
 	{
 		if (!player.getDirectionX())
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DIVE"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DIVE"), IMAGEMANAGER->findImage("PLAYER_DIVE"));
 			player.setState(player.getAttackState());
 			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
 		}
 		if (player.getDirectionX())
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DIVE"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DIVE"), IMAGEMANAGER->findImage("PLAYER_DIVE"));
 			player.setState(player.getAttackState());
 			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
 		}
+	}
+
+	//회오리킥
+	if (KEYMANAGER->isOnceKeyDown('D'))
+	{
+		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
+		player.setState(player.getAttackState());
+		player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+	}
+
+	//맞기
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+
+		if (PtInRect(&player.getPlayerRect(), _ptMouse))
+		{
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+		}
+
 	}
 }
 
@@ -746,7 +877,7 @@ void jumpState::update(player & player)
 	{
 		if (KEYMANAGER->isStayKeyDown('Z'))
 		{
-			player.setJumpPower(player.getJumpPower() + 0.5f);
+			player.setJumpPower(player.getJumpPower() + 0.8f);
 		}
 	}
 	
@@ -859,10 +990,37 @@ void jumpState::update(player & player)
 		}
 	}
 
+	//맞기
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+
+		if (PtInRect(&player.getPlayerRect(), _ptMouse))
+		{
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+		}
+
+	}
+}
+
+HRESULT attackState::init()
+{
+	_diveCount = 0;
+	return S_OK;
 }
 
 void attackState::update(player & player)
 {
+	_diveCount++;
+	//기본공격
 	if (!player.getAttacked())
 	{
 		if (KEYMANAGER->isOnceKeyDown('A'))
@@ -924,14 +1082,291 @@ void attackState::update(player & player)
 			
 		}
 	}
+
+	//슬라이딩
+	if (player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_DIVE"))
+	{
+		if (_diveCount < 30)
+		{
+			player.setShadowX(player.getShadowX() + 9);
+		}
+		if (_diveCount >= 30 && _diveCount < 35)
+		{
+			player.setShadowX(player.getShadowX() + 4);
+		}
+		player.setAttack(player.getPlayerX() + 60, player.getPlayerY() + 50, 120, 80);
+	}
+	if (player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_DIVE"))
+	{
+		if (_diveCount < 30)
+		{
+			player.setShadowX(player.getShadowX() - 9);
+		}
+		if (_diveCount >= 30 && _diveCount < 35)
+		{
+			player.setShadowX(player.getShadowX() - 4);
+		}
+		player.setAttack(player.getPlayerX() - 60, player.getPlayerY() + 50, 120, 80);
+	}
+	//회오리할떄 움직일 수 있게 하려면 이거 주석 풀면 돼
+	/*if (player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_KICK"))
+	{
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			player.setShadowX(player.getShadowX() - 2);
+		}
+		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			player.setShadowX(player.getShadowX() + 2);
+		}
+	}*/
+
 	//애니메이션 재생 안하면
 	if (!KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK1")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_ATTACK1")->isPlay() &&
 		!KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK2")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_ATTACK2")->isPlay() && 
-		!KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK3")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_ATTACK3")->isPlay() )
+		!KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK3")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_ATTACK3")->isPlay() &&
+		!KEYANIMANAGER->findAnimation("P_RIGHT_DIVE")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_DIVE")->isPlay() &&
+		!KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay() && 
+		!KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
 	{
 		player.setAttacked(false);
-		//아무키도 안누르면 아이들로
-		if (KEYMANAGER->getKeyUp() == NULL)
+		//키 누르면 앞으로 걸어가게
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			_diveCount = 0;
+			player.setIsJumping(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setState(player.getWalkState());
+			player.setDirectionX(false);
+		}
+		else if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			_diveCount = 0;
+			player.setIsJumping(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setState(player.getWalkState());
+			player.setDirectionX(true);
+		}
+		
+		//키 암것도 안누르면 아이들로
+		else
+		{
+			_diveCount = 0;
+			if (!player.getDirectionX())
+			{
+				player.setIsJumping(false);
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setState(player.getIdleState());
+				player.setDirectionX(false);
+			}
+			if (player.getDirectionX())
+			{
+				player.setIsJumping(false);
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setState(player.getIdleState());
+				player.setDirectionX(true);
+			}
+		}
+	}
+
+	//맞기
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+
+		if (PtInRect(&player.getPlayerRect(), _ptMouse))
+		{
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setState(player.getHitState());
+			}
+		}
+
+	}
+} 
+
+HRESULT hitState::init()
+{
+	_stunCount = 0;
+	_hitCount = 0;
+	_hitNum = 0;
+	_isHit = false;
+	return S_OK;
+}
+
+void hitState::update(player & player)
+{
+	_hitCount++;
+
+	//맞기
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+
+		if (PtInRect(&player.getPlayerRect(), _ptMouse))
+		{
+			_isHit = true;
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				_hitCount = 0;
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				_hitCount = 0;
+			}
+		}
+	}
+
+	if (_isHit)
+	{
+		_hitNum++;
+		_isHit = false;
+	}
+
+	if (_hitNum > 4)
+	{
+		//cout << "d" << endl;
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+			player.setState(player.getInvinState());
+			player.setDirectionX(false);
+			_hitCount = 0;
+			_hitNum = 0;
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+			player.setState(player.getInvinState());
+			player.setDirectionX(true);
+			_hitCount = 0;
+			_hitNum = 0;
+		}
+	}
+	cout << _hitNum << endl;
+	if (_hitCount > 40)
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			player.setState(player.getIdleState());
+			player.setDirectionX(false);
+			_hitCount = 0;
+			_hitNum = 0;
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			player.setState(player.getIdleState());
+			player.setDirectionX(true);
+			_hitCount = 0;
+			_hitNum = 0;
+		}
+	}
+}
+
+HRESULT invinState::init()
+{
+	_downCount = 0;
+	return S_OK;
+}
+
+void invinState::update(player & player)
+{
+	_downCount++;
+	//cout << _downCount << endl;
+	if (player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_DOWN") || player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"))
+	{
+		if (!KEYANIMANAGER->findAnimation("P_RIGHT_DOWN")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_DOWN")->isPlay())
+		{
+			if (_downCount > 180)
+			{
+				if (!player.getDirectionX())
+				{
+					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP"), IMAGEMANAGER->findImage("PLAYER_STAND_UP"));
+					player.setDirectionX(false);
+				}
+				if (player.getDirectionX())
+				{
+					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP"), IMAGEMANAGER->findImage("PLAYER_STAND_UP"));
+					player.setDirectionX(true);
+				}
+			}
+		}
+	}
+	if (player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") || player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP"))
+	{
+		if (!KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP")->isPlay())
+		{
+			//키 누르면 앞으로 걸어가게
+			if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+			{
+				_downCount = 0;
+				player.setIsJumping(false);
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+				player.setState(player.getWalkState());
+				player.setDirectionX(false);
+			}
+			else if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+			{
+				_downCount = 0;
+				player.setIsJumping(false);
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+				player.setState(player.getWalkState());
+				player.setDirectionX(true);
+			}
+
+			//키 암것도 안누르면 아이들로
+			else
+			{
+				_downCount = 0;
+				if (!player.getDirectionX())
+				{
+					player.setIsJumping(false);
+					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+					player.setState(player.getIdleState());
+					player.setDirectionX(false);
+				}
+				if (player.getDirectionX())
+				{
+					player.setIsJumping(false);
+					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+					player.setState(player.getIdleState());
+					player.setDirectionX(true);
+				}
+			}
+		}
+	}
+}
+
+void startState::update(player & player)
+{
+	if (!KEYANIMANAGER->findAnimation("P_RIGHT_START")->isPlay())
+	{
+		//키 누르면 앞으로 걸어가게
+		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+		{
+			player.setIsJumping(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setState(player.getWalkState());
+			player.setDirectionX(false);
+		}
+		else if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		{
+			player.setIsJumping(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setState(player.getWalkState());
+			player.setDirectionX(true);
+		}
+
+		//키 암것도 안누르면 아이들로
+		else
 		{
 			if (!player.getDirectionX())
 			{
@@ -948,6 +1383,26 @@ void attackState::update(player & player)
 				player.setDirectionX(true);
 			}
 		}
+	}
+}
+
+void guardState::update(player & player)
+{
+
+	if (KEYMANAGER->isStayKeyDown('X'))
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_GUARD"), IMAGEMANAGER->findImage("PLAYER_GUARD"));
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"), IMAGEMANAGER->findImage("PLAYER_GUARD"));
+		}
+	}
+
+	if (!KEYANIMANAGER->findAnimation("P_LEFT_GUARD")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_GUARD")->isPlay())
+	{
 		//키 누르면 앞으로 걸어가게
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
@@ -956,18 +1411,36 @@ void attackState::update(player & player)
 			player.setState(player.getWalkState());
 			player.setDirectionX(false);
 		}
-		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+		else if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
 			player.setIsJumping(false);
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
 			player.setDirectionX(true);
 		}
+
+		//키 암것도 안누르면 아이들로
+		else
+		{
+			if (!player.getDirectionX())
+			{
+				player.setIsJumping(false);
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setState(player.getIdleState());
+				player.setDirectionX(false);
+			}
+			if (player.getDirectionX())
+			{
+				player.setIsJumping(false);
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setState(player.getIdleState());
+				player.setDirectionX(true);
+			}
+		}
 	}
-
-} 
-
-void hitState::update(player & player)
-{
-
 }
+
+void overState::update(player & player)
+{
+}
+
