@@ -32,6 +32,8 @@ private:
 	image*     _shadowImg;			                // 보스 그림자 이미지
 	animation* _anim[BOSS_END];                     // 애니메이션 저장용
 	animation* _animPlayer;                         // 애니메이션 플레이용
+	int        _delayTime;                          // 공격 후 딜레이시간
+	bool       _isDelayTime;                        // 딜레이 시간인지?      
 
 	// ----------------- 스텟 관련 변수 -----------------//
 	int        _hp, maxHp;
@@ -57,10 +59,10 @@ public:
 	void    changeState();              // 보스 상태 변경, 한번만 들어감
 	void    stateUpdate();              // 보스 스테이트 업데이트.
 public:
-	void    attack(float playerX, float playerY);                   // 플레이어를 찾아서 약 공격
-	void    heavyAttack(float playerX, float playerY);              // 플레이어를 찾아서 약 공격
-	void    dashAttack(float playerX, float playerY);               // 대쉬 공격
-	void    jumpAttack(float playerX, float playerY);               // 점프 공격
+	void    attack(float playerX, float playerZ);                   // 플레이어를 찾아서 약 공격
+	void    heavyAttack(float playerX, float playerZ);              // 플레이어를 찾아서 약 공격
+	void    dashAttack(float playerX, float playerZ);               // 대쉬 공격
+	void    jumpAttack(float playerX, float playerZ);               // 점프 공격
 
 };
 
