@@ -7,8 +7,9 @@ HRESULT player::init()
 	//방향키로 움직
 	//Z키로 점프
 	//A키로 기본공격 3단
-	//S키로 밟기
+	//S키로 아이들,워크-> 밟기 // 런->슬라이딩
 	//D키로 회오리킥
+	//X키로 방어
 
 	IMAGEMANAGER->addFrameImage("PLAYER_IDLE", "image/player/Kyoko_Idle.bmp", 1440, 450, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_WALK", "image/player/Kyoko_Walk.bmp", 1476, 402, 12, 2, true, RGB(255, 0, 255));
@@ -36,12 +37,14 @@ HRESULT player::init()
 	_attack = new attackState();
 	_hit = new hitState();
 	_invin = new invinState();
+	_start = new startState();
+	_guard = new guardState();
 
-	_state = _invin;
+	_state = _start;
 	_img = IMAGEMANAGER->findImage("PLAYER_START");
 
-	_shadowX = WINSIZEX / 2;
-	_shadowY = WINSIZEY / 2 + 100;
+	_shadowX = WINSIZEX / 2 - 120;
+	_shadowY = WINSIZEY / 2 + 350;
 	_playerX = _shadowX;
 	_playerY = _shadowY - 110;
 	_runCount = 0;
@@ -63,9 +66,13 @@ HRESULT player::init()
 
 	_isJumping = false;
 
+	_currentHP = _maxHP = 100;
 
 	_probeV = _shadow.bottom;
 	_probeH = _shadowX;
+	_playerProbe = _player.bottom;
+
+	_mapStr = "pixel2";
 
 	return S_OK;
 }
@@ -78,26 +85,25 @@ void player::release()
 
 void player::update()
 {
-	collision();
 	KEYANIMANAGER->update();
 	_probeV = _shadow.bottom;
 	_probeH = (_shadow.left+ _shadow.right)/2;
 	_playerX = _shadowX;
-	//_playerY = _y - 110;
+	_playerProbe = _player.bottom;
 
 	_state->update(*this);
 
-	//cout << _jumpPower << endl;
 	//픽셀충돌
 	for (int i = _probeV - 40; i < _probeV -35; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+
+		if ((r == 255 && g == 0 && b == 255)|| (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 		{
 			_isTop = true;
 		}
@@ -109,13 +115,13 @@ void player::update()
 
 	for (int i = _probeV + 5; i < _probeV +10; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 		{
 			_isBottom = true;
 		}
@@ -127,13 +133,13 @@ void player::update()
 	}
 	for (int i = _probeH - 40; i < _probeH - 35; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(),i, (_shadow.top + _shadow.bottom) / 2);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(),i, (_shadow.top + _shadow.bottom) / 2);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 		{
 			_isLeft = true;
 		}
@@ -142,18 +148,19 @@ void player::update()
 			_isLeft = false;
 		}
 	}
-	for (int i = _probeH + 55; i < _probeH + 60; ++i)
+	for (int i = _probeH + 45; i < _probeH + 50; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 		{
 			_isRight = true;
 		}
+		
 		else
 		{
 			_isRight = false;
@@ -164,27 +171,44 @@ void player::update()
 	{
 		_playerY = _shadowY - 110;
 	}
+	cout << _isJumping << endl;
 
+	if (_isJumping)
+	{
+		for (int i = _playerProbe -10; i < _playerProbe + 10; ++i)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+			if (r == 255 && g == 255 && b == 0)
+			{
+				_isDesk = true;
+			}
+
+			else
+			{
+				_isDesk = false;
+			}
+		}
+	}
 
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
-
-
-	CAMERAMANAGER->setX(_shadowX);
-	CAMERAMANAGER->setY(_shadowY);
-	
 }
 
 void player::render()
 {
-	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
 	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);
 	//Rectangle(getMemDC(), _player);
-	//Rectangle(getMemDC(), _rc);
+	//Rectangle(getMemDC(), _probeV - 5, 100, _probeV + 5, 110);
 	//_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
 
 }
@@ -202,9 +226,9 @@ void player::keyAnimation()
 	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_WALK", "PLAYER_WALK", leftWalk, 12, 13, true);
 
 	int rightRun[] = { 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_RUN", "PLAYER_RUN", rightRun, 16, 18, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_RUN", "PLAYER_RUN", rightRun, 16, 20, true);
 	int leftRun[] = { 15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 18, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_RUN", "PLAYER_RUN", leftRun, 16, 20, true);
 
 	int rightAttack1[] = { 6,7,8,9,10,11 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_ATTACK1", "PLAYER_ATTACK1", rightAttack1, 6, 13, false);
@@ -246,9 +270,9 @@ void player::keyAnimation()
 	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_GUARD", "PLAYER_GUARD", leftGuard, 3, 13, false);
 	
 	int rightHit[] = { 2,3 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_HIT", "PLAYER_HIT", rightHit, 2, 13, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_HIT", "PLAYER_HIT", rightHit, 2, 8, true);
 	int leftHit[]{ 1, 0 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_HIT", "PLAYER_HIT", leftHit, 2, 13, true);
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_HIT", "PLAYER_HIT", leftHit, 2, 8, true);
 	
 	int rightStandUp[] = { 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_STAND_UP", "PLAYER_STAND_UP", rightStandUp, 17, 13, false);
@@ -280,16 +304,31 @@ void player::keyAnimation()
 
 }
 
-void player::collision()
+void player::playerDamage(float damage)
+{
+	_currentHP -= damage;
+}
+
+void player::mouseCol()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
+
 		if (PtInRect(&_player, _ptMouse))
 		{
-			//cout << "맞았다" << endl;
-			_state = _hit;
-			_img = IMAGEMANAGER->findImage("PLAYER_HIT");
+			if (!_directionX)
+			{
+				setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				setState(getHitState());
+				playerDamage(10);
+			}
+			if (_directionX)
+			{
+				setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				setState(getHitState());
+				playerDamage(10);
+			}
 		}
+
 	}
 }
-

@@ -9,14 +9,18 @@ private:
 	image* _selectArrow;
 	image* _loading;
 	RECT _hpRC;
+	RECT _inventory[10];
+
+	int _itemSelectIndex;
 
 	float _timer;
 	float _arrowX, _arrowY;
-	bool _isStart;
 
+	float _phoneAlpha;
 	float _hpWidth;
-	float _testHp;
 	
+	bool _isStart;
+	bool _isPhone;
 
 public:
 	ui() {}
@@ -28,5 +32,6 @@ public:
 	virtual void release();
 
 	void setHpGauge(float curHp, float maxHp);
+	bool getIsPhone() { return _isPhone; }
 };
 
