@@ -24,7 +24,6 @@ public:
 public:
 	void renderRectangle(HDC hdc, RECT rect);
 	void renderEllipse(HDC hdc, RECT rect);
-	void render(HDC hdc, image* img);
 	void render(HDC hdc, image* img, float destX, float destY);
 	void frameRender(HDC hdc, image* img, float destX, float destY);
 	void frameRender(HDC hdc, image* img, float destX, float destY, int frameX, int frameY);
