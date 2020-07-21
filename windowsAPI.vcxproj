@@ -189,6 +189,7 @@
     <ClInclude Include="testBossScene.h" />
     <ClInclude Include="testEnemyScene.h" />
     <ClInclude Include="testPlayerScene.h" />
+    <ClInclude Include="testUIScene.h" />
     <ClInclude Include="timeManager.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="txtData.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="testBossScene.cpp" />
     <ClCompile Include="testEnemyScene.cpp" />
     <ClCompile Include="testPlayerScene.cpp" />
+    <ClCompile Include="testUIScene.cpp" />
     <ClCompile Include="timeManager.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="txtData.cpp" />
