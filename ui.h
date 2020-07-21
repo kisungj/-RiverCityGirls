@@ -1,9 +1,26 @@
 #pragma once
 #include "gameNode.h"
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+
 class ui : public gameNode
 {
 private:
+	image* _hpUI;
+	image* _selectArrow;
+	image* _loading;
+	RECT _hpRC;
+	RECT _inventory[10];
 
+	int _itemSelectIndex;
+
+	float _timer;
+	float _arrowX, _arrowY;
+
+	float _phoneAlpha;
+	float _hpWidth;
+	
+	bool _isStart;
+	bool _isPhone;
 
 public:
 	ui() {}
@@ -13,6 +30,8 @@ public:
 	virtual void render();
 	virtual void update();
 	virtual void release();
-public:
+
+	void setHpGauge(float curHp, float maxHp);
+	bool getIsPhone() { return _isPhone; }
 };
 

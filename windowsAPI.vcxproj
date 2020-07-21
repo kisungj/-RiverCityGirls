@@ -165,13 +165,14 @@
     <ClInclude Include="imageManager.h" />
     <ClInclude Include="inGameScene.h" />
     <ClInclude Include="iniDataManager.h" />
+    <ClInclude Include="inventory.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="itemManager.h" />
     <ClInclude Include="keyAniManager.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="loadingScene.h" />
-    <ClInclude Include="object.h" />
-    <ClInclude Include="objectManager.h" />
+    <ClInclude Include="obstacle.h" />
+    <ClInclude Include="obstacleManager.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playGround.h" />
     <ClInclude Include="progressBar.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="testBossScene.h" />
     <ClInclude Include="testEnemyScene.h" />
+    <ClInclude Include="testObstcle.h" />
     <ClInclude Include="testPlayerScene.h" />
     <ClInclude Include="testUIScene.h" />
     <ClInclude Include="timeManager.h" />
@@ -215,13 +217,14 @@
     <ClCompile Include="imageManager.cpp" />
     <ClCompile Include="inGameScene.cpp" />
     <ClCompile Include="iniDataManager.cpp" />
+    <ClCompile Include="inventory.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="itemManager.cpp" />
     <ClCompile Include="keyAniManager.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="loadingScene.cpp" />
-    <ClCompile Include="object.cpp" />
-    <ClCompile Include="objectManager.cpp" />
+    <ClCompile Include="obstacle.cpp" />
+    <ClCompile Include="obstacleManager.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerStats.cpp" />
     <ClCompile Include="playGround.cpp" />
@@ -240,6 +243,7 @@
     </ClCompile>
     <ClCompile Include="testBossScene.cpp" />
     <ClCompile Include="testEnemyScene.cpp" />
+    <ClCompile Include="testObstcle.cpp" />
     <ClCompile Include="testPlayerScene.cpp" />
     <ClCompile Include="testUIScene.cpp" />
     <ClCompile Include="timeManager.cpp" />

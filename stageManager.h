@@ -4,6 +4,7 @@
 #include "testEnemyScene.h"
 #include "testBossScene.h"
 #include "testUIScene.h"
+#include "testObstcle.h"
 
 class stageManager : public gameNode
 {
@@ -12,6 +13,7 @@ private:
 	testEnemyScene*  _enemyScene;
 	testBossScene*   _bossScene;
 	testUIScene*	 _uiScene;
+	testObstcle*     _obstacleScene;
 public:
 	stageManager() {}
 	~stageManager() {}
