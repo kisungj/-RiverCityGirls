@@ -475,25 +475,22 @@ void walkState::update(player & player)
 		player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
 	}
 
-	//맞기
-	/*if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+
+	//가드
+	if (KEYMANAGER->isOnceKeyDown('X'))
 	{
-
-		if (PtInRect(&player.getPlayerRect(), _ptMouse))
+		if (!player.getDirectionX())
 		{
-			if (!player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-			if (player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_GUARD"), IMAGEMANAGER->findImage("PLAYER_GUARD"));
+			player.setState(player.getGuardState());
 		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"), IMAGEMANAGER->findImage("PLAYER_GUARD"));
+			player.setState(player.getGuardState());
+		}
+	}
 
-	}*/
 	player.mouseCol();
 }
 
@@ -730,7 +727,7 @@ void runState::update(player & player)
 	//점프
 	if (!player.getIsJumping())
 	{
-		if (KEYMANAGER->isStayKeyDown('Z'))
+		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
 			//player.setJumpPower(player.getJumpPower() + 1);
 			player.setIsRun(true);
@@ -835,7 +832,7 @@ void jumpState::update(player & player)
 	}
 	else _isJump = false;
 	
-	cout << _isJump << endl;
+	//cout << _isJump << endl;
 
 	if (player.getIsJumping())
 	{
@@ -915,6 +912,8 @@ void jumpState::update(player & player)
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_RUN"), IMAGEMANAGER->findImage("PLAYER_RUN"));
 				player.setState(player.getRunState());
 				player.setDirectionX(false);
+				player.setIsRun(false);
+				cout << "d" << endl;
 			}
 			else if (player.getDirectionX())
 			{
@@ -922,6 +921,8 @@ void jumpState::update(player & player)
 				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_RUN"), IMAGEMANAGER->findImage("PLAYER_RUN"));
 				player.setState(player.getRunState());
 				player.setDirectionX(true);
+				player.setIsRun(false);
+				cout << "d" << endl;
 			}
 		}
 		//아님 걷기
@@ -1172,26 +1173,6 @@ void attackState::update(player & player)
 			}
 		}
 	}
-
-	//맞기
-	//if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	//{
-
-	//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
-	//	{
-	//		if (!player.getDirectionX())
-	//		{
-	//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-	//			player.setState(player.getHitState());
-	//		}
-	//		if (player.getDirectionX())
-	//		{
-	//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-	//			player.setState(player.getHitState());
-	//		}
-	//	}
-
-	//}
 	player.mouseCol();
 } 
 

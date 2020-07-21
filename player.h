@@ -25,31 +25,32 @@ private:
 	RECT _player;					//플레이어
 	RECT _attackRc;					//공격렉트
 
+	string _mapStr;					//픽셀충돌 맵 바꾸는용
+
 	int _probeV;					//픽셀충돌 수직
 	int _probeH;					//픽셀충돌 수평
-	bool _isBottom;					//아래
-	bool _isTop;					//위
-	bool _isLeft;					//왼쪽
-	bool _isRight;					//오른쪽
-	bool _isJumping;				//점프하는지
-	bool _isRun;					//뛰는지
-	bool _isAttack;					//공격할거?
-	bool _attacked;					//공격 3번 이어주기
-
+	int _playerProbe;				//책상 올라가는용
+	int _runCount;					//빠르게 달리기
 
 	float _shadowX, _shadowY;		//그림자 중점
 	float _playerX, _playerY;		//플레이어 중점
 	float _attackX, _attackY;		//어택의 중점
 	float _attackSizeX, _attackSizeY;//어택렉트의 사이즈
-
 	float _currentHP, _maxHP;		//체력
+	float _jumpPower, _gravity;		//플레이어 점프파워, 중력
 
+	bool _isBottom;					//아래
+	bool _isTop;					//위
+	bool _isLeft;					//왼쪽
+	bool _isRight;					//오른쪽
+	bool _isDesk;					//책상위에 올라갔는지
+	bool _isJumping;				//점프하는지
+	bool _isRun;					//뛰는지
+	bool _isAttack;					//공격할거?
+	bool _attacked;					//공격 3번 이어주기
 	bool _directionX;				//left = 0, right = 1
 	bool _directionY;				//top = 0, bottom = 1
 
-	float _jumpPower, _gravity;		//플레이어 점프파워, 중력
-
-	int _runCount;					//빠르게 달리기
 
 
 	animation* _playerMotion;

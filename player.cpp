@@ -43,8 +43,8 @@ HRESULT player::init()
 	_state = _start;
 	_img = IMAGEMANAGER->findImage("PLAYER_START");
 
-	_shadowX = WINSIZEX / 2;
-	_shadowY = WINSIZEY / 2 + 100;
+	_shadowX = WINSIZEX / 2 - 120;
+	_shadowY = WINSIZEY / 2 + 350;
 	_playerX = _shadowX;
 	_playerY = _shadowY - 110;
 	_runCount = 0;
@@ -70,6 +70,9 @@ HRESULT player::init()
 
 	_probeV = _shadow.bottom;
 	_probeH = _shadowX;
+	_playerProbe = _player.bottom;
+
+	_mapStr = "pixel2";
 
 	return S_OK;
 }
@@ -86,21 +89,21 @@ void player::update()
 	_probeV = _shadow.bottom;
 	_probeH = (_shadow.left+ _shadow.right)/2;
 	_playerX = _shadowX;
-	//_playerY = _y - 110;
+	_playerProbe = _player.bottom;
 
 	_state->update(*this);
 
-	//cout << _jumpPower << endl;
 	//ÇÈ¼¿Ãæµ¹
 	for (int i = _probeV - 40; i < _probeV -35; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+
+		if ((r == 255 && g == 0 && b == 255)|| (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 		{
 			_isTop = true;
 		}
@@ -112,13 +115,13 @@ void player::update()
 
 	for (int i = _probeV + 5; i < _probeV +10; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 		{
 			_isBottom = true;
 		}
@@ -130,13 +133,13 @@ void player::update()
 	}
 	for (int i = _probeH - 40; i < _probeH - 35; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(),i, (_shadow.top + _shadow.bottom) / 2);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(),i, (_shadow.top + _shadow.bottom) / 2);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 		{
 			_isLeft = true;
 		}
@@ -145,18 +148,19 @@ void player::update()
 			_isLeft = false;
 		}
 	}
-	for (int i = _probeH + 55; i < _probeH + 60; ++i)
+	for (int i = _probeH + 45; i < _probeH + 50; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("pixel1")->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 		{
 			_isRight = true;
 		}
+		
 		else
 		{
 			_isRight = false;
@@ -167,17 +171,34 @@ void player::update()
 	{
 		_playerY = _shadowY - 110;
 	}
+	cout << _isJumping << endl;
 
+	if (_isJumping)
+	{
+		for (int i = _playerProbe -10; i < _playerProbe + 10; ++i)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+			if (r == 255 && g == 255 && b == 0)
+			{
+				_isDesk = true;
+			}
+
+			else
+			{
+				_isDesk = false;
+			}
+		}
+	}
 
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
-
-
-	CAMERAMANAGER->setX(_shadowX);
-	CAMERAMANAGER->setY(_shadowY);
-	
 }
 
 void player::render()
@@ -187,7 +208,7 @@ void player::render()
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
 	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);
 	//Rectangle(getMemDC(), _player);
-	//Rectangle(getMemDC(), _rc);
+	//Rectangle(getMemDC(), _probeV - 5, 100, _probeV + 5, 110);
 	//_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
 
 }
