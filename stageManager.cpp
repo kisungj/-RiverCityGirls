@@ -3,15 +3,16 @@
 
 HRESULT stageManager::init()
 {
-	_playerScene = new testPlayerScene;
-	_enemyScene  = new testEnemyScene;
-	_bossScene   = new testBossScene;
-	_uiScene     = new testUIScene;
-
+	_playerScene   = new testPlayerScene;
+	_enemyScene    = new testEnemyScene;
+	_bossScene     = new testBossScene;
+	_uiScene       = new testUIScene;
+	_obstacleScene = new testObstcle;
 	SCENEMANAGER->addScene("PLAYER_SCENE", _playerScene);
 	SCENEMANAGER->addScene("ENEMY_SCENE", _enemyScene);
 	SCENEMANAGER->addScene("BOSS_SCENE", _bossScene);
 	SCENEMANAGER->addScene("UI_SCENE", _uiScene);
+	SCENEMANAGER->addScene("OBSTACLE_SCENE", _obstacleScene);
 
 	SCENEMANAGER->changeScene("PLAYER_SCENE");
 
@@ -34,6 +35,8 @@ void stageManager::update()
 	if (KEYMANAGER->isOnceKeyDown(VK_F3)) SCENEMANAGER->changeScene("BOSS_SCENE");
 
 	if (KEYMANAGER->isOnceKeyDown(VK_F4)) SCENEMANAGER->changeScene("UI_SCENE");
+
+	if (KEYMANAGER->isOnceKeyDown(VK_F5)) SCENEMANAGER->changeScene("OBSTACLE_SCENE");
 }
 
 void stageManager::release()

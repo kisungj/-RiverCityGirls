@@ -222,6 +222,9 @@
     <ClInclude Include="obstacleManager.h">
       <Filter>playGround\obstacle</Filter>
     </ClInclude>
+    <ClInclude Include="testObstcle.h">
+      <Filter>playGround\stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -358,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="obstacleManager.cpp">
       <Filter>playGround\obstacle</Filter>
+    </ClCompile>
+    <ClCompile Include="testObstcle.cpp">
+      <Filter>playGround\stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
