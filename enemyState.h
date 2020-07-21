@@ -1,10 +1,11 @@
 #pragma once
 
-#define DELAYMAX 300	//´Ù¿îµÆÀ» ¶§ µô·¹ÀÌ½Ã°£
+#define DELAYMAX 200	//´Ù¿îµÆÀ» ¶§ µô·¹ÀÌ½Ã°£
 
 class enemy;
 
 class enemyMoveState;
+class enemyRunState;
 class enemyAttackState;
 class enemyGuardState;
 class enemyHitState;
@@ -34,6 +35,7 @@ public:
 
 public:
 	static enemyMoveState* enemyMove;
+	static enemyRunState* enemyRun;
 	static enemyAttackState* enemyAttack;
 	static enemyGuardState* enemyGuard;
 	static enemyHitState* enemyHit;
@@ -45,10 +47,22 @@ public:
 class enemyMoveState : public enemyState
 {
 private:
+	int _waitCount;
 	int _delayCount;
 public:
-	enemyMoveState() { _delayCount = 0; }
+	enemyMoveState() { _waitCount = 0; _delayCount = 0; }
 	~enemyMoveState() {}
+
+	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
+};
+
+class enemyRunState : public enemyState
+{
+private:
+	RECT _attack;
+	int _kickCount;
+public:
+	enemyRunState() { _kickCount = 0; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
@@ -75,10 +89,12 @@ class enemyHitState : public enemyState
 {
 private:
 	int _delayCount;
-	int _damageCount;
+	int _oneCount;
+	int _twoCount;
+	int _downCount;
 	int _frameCount;
 public:
-	enemyHitState() { _delayCount = 0; _damageCount = 0; _frameCount = 0; }
+	enemyHitState() { _delayCount = 0; _oneCount = 0; _twoCount = 0; _downCount = 0; _frameCount = 0; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
@@ -86,7 +102,7 @@ public:
 class enemyDownState : public enemyState
 {
 public:
-	enemyDownState() { }
+	enemyDownState() {}
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
