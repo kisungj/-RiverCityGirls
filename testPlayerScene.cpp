@@ -18,8 +18,8 @@ void testPlayerScene::render()
 	TextOut(getMemDC(), 10, 100, "Player Scene", strlen("Player Scene"));
 
 	//CAMERAMANAGER->render(getMemDC(), )
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel1"));
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("backGround"));
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel1"), IMAGEMANAGER->findImage("pixel1")->getWidth() / 2, IMAGEMANAGER->findImage("pixel1")->getHeight() / 2);
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("backGround"), IMAGEMANAGER->findImage("backGround")->getWidth()/2, IMAGEMANAGER->findImage("backGround")->getHeight() / 2);
 	//CAMERAMANAGER->render(getMemDC(), _player->getImgge());
 	_player->render();
 }
