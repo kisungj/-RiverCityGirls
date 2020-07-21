@@ -10,10 +10,11 @@ class runState;
 class jumpState;
 class attackState;
 class hitState;
-class invinState;		//무적 invincibility 줄인거ㅎ
+class downState;		//힝
 class startState;
 class guardState;
 class overState;
+class stunState;
 
 
 class player : public gameNode
@@ -62,10 +63,11 @@ private:
 	playerState* _jump;
 	playerState* _attack;
 	playerState* _hit;
-	playerState* _invin;
+	playerState* _down;
 	playerState* _start;
 	playerState* _guard;
 	playerState* _over;
+	playerState* _stun;
 
 
 public:
@@ -123,10 +125,11 @@ public:
 	playerState* getJumpState() { return _jump; }
 	playerState* getAttackState() { return _attack; }
 	playerState* getHitState() { return _hit; }
-	playerState* getInvinState() { return _invin; }
+	playerState* getDownState() { return _down; }
 	playerState* getStartState() { return _start; }
 	playerState* getGuardState() { return _guard; }
 	playerState* getOverState() { return _over; }
+	playerState* getStunState() { return _stun; }
 
 	//=====================SET================================
 	void setShadowX(float x) { _shadowX = x; }
@@ -167,10 +170,11 @@ public:
 	static jumpState* jump;
 	static attackState* attack;
 	static hitState* hit;
-	static invinState* invin;
+	static downState* down;
 	static startState* gameStart;
 	static guardState* guard;
 	static overState* over;
+	static stunState* stun;
 };
 
 class idleState : public playerState
@@ -222,7 +226,7 @@ public:
 	virtual void update(player& player) override;
 };
 
-class invinState : public playerState
+class downState : public playerState
 {
 private:
 	int _downCount;
@@ -246,5 +250,11 @@ public:
 class overState : public playerState
 {
 public: 
+	virtual void update(player& player) override;
+};
+
+class stunState : public playerState
+{
+public:
 	virtual void update(player& player) override;
 };

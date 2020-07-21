@@ -36,9 +36,10 @@ HRESULT player::init()
 	_jump = new jumpState();
 	_attack = new attackState();
 	_hit = new hitState();
-	_invin = new invinState();
+	_down = new downState();
 	_start = new startState();
 	_guard = new guardState();
+	_stun = new stunState();
 
 	_state = _start;
 	_img = IMAGEMANAGER->findImage("PLAYER_START");
@@ -171,13 +172,13 @@ void player::update()
 	{
 		_playerY = _shadowY - 110;
 	}
-	cout << _isJumping << endl;
+	//cout << _isJumping << endl;
 
 	if (_isJumping)
 	{
 		for (int i = _playerProbe -10; i < _playerProbe + 10; ++i)
 		{
-			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX,i);
 
 			int r = GetRValue(color);
 			int g = GetGValue(color);
@@ -187,23 +188,24 @@ void player::update()
 			{
 				_isDesk = true;
 			}
-
 			else
 			{
 				_isDesk = false;
 			}
 		}
 	}
-
+	//cout << _isDesk << endl;
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
+
+	mouseCol();
 }
 
 void player::render()
 {
-	//CAMERAMANAGER->renderRectangle(getMemDC(), _player);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
 	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);
@@ -316,6 +318,8 @@ void player::mouseCol()
 
 		if (PtInRect(&_player, _ptMouse))
 		{
+			cout << "dd" << endl;
+
 			if (!_directionX)
 			{
 				setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
@@ -332,3 +336,4 @@ void player::mouseCol()
 
 	}
 }
+
