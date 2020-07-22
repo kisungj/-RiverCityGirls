@@ -271,6 +271,11 @@ void player::pixelCol()
 					_isTop = true;
 					break;
 				}
+				else
+				{
+					_isTop = false;
+					break;
+				}
 			}
 			else
 			{
@@ -295,6 +300,11 @@ void player::pixelCol()
 				if (r == 160 && g == 255 && b == 0)
 				{
 					_isBottom = true;
+					break;
+				}
+				else
+				{
+					_isBottom = false;
 					break;
 				}
 			}
@@ -323,6 +333,11 @@ void player::pixelCol()
 					_isLeft = true;
 					break;
 				}
+				else
+				{
+					_isLeft = false;
+					break;
+				}
 			}
 			else
 			{
@@ -346,6 +361,11 @@ void player::pixelCol()
 				if (r == 160 && g == 255 && b == 0)
 				{
 					_isRight = true;
+					break;
+				}
+				else
+				{
+					_isRight = false;
 					break;
 				}
 			}
