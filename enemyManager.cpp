@@ -18,6 +18,11 @@ void enemyManager::update()
 
 void enemyManager::release()
 {
+	for (int i = 0; i < _vBoy.size(); i++)
+	{
+		SAFE_DELETE(_vBoy[i]);
+	}
+	_vBoy.clear();
 }
 
 void enemyManager::setBoy()

@@ -20,16 +20,10 @@ HRESULT stageManager::init()
 	_player->init();
 
 	_itemManager = new itemManager;
-	_itemManager->init();
-
 	_obstacleManager = new obstacleManager;
-	_obstacleManager->init();
-
 	_enemyManager = new enemyManager;
-	_enemyManager->init();
-	//---- 임시
-	_enemyManager->setBoy();
-	//---- 임시
+
+
 	_stage1 = new stage1;
 	_stage1->init(_obstacleManager,_itemManager, _enemyManager, _player);
 
