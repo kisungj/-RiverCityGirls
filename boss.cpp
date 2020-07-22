@@ -9,6 +9,8 @@ HRESULT boss::init()
 	_jumpAlphaMax = _jumpAlpha = 200;
 	_jumpAlphaMin = 70;
 
+	_blockDistance = 5;
+	_blockFriction = 0.01f;
 	_x = WINSIZEX / 2 + 800;
 	_z = WINSIZEY / 2 + 180;
 	_y = _z - 180;
@@ -18,9 +20,9 @@ HRESULT boss::init()
 	_characterImg = IMAGEMANAGER->findImage("boss_idle");
 	_shadowImg = IMAGEMANAGER->findImage("보스그림자");
 
-	_state = BOSS_LEFT_IDLE;
-	_characterImg = IMAGEMANAGER->findImage("boss_idle");
-	_animPlayer = _anim[BOSS_LEFT_IDLE];
+	_state = BOSS_LEFT_TAUNT;
+	_characterImg = IMAGEMANAGER->findImage("boss_taunt");
+	_animPlayer = _anim[BOSS_LEFT_TAUNT];
 	_animPlayer->start();
 
 
@@ -47,74 +49,20 @@ void boss::render()
 
 void boss::update(float playerX, float playerZ)
 {
-	stateUpdate();
+	stateUpdate(playerX, playerZ);
 
-	if (_state != BOSS_LEFT_JUMP && _state != BOSS_RIGHT_JUMP && _state != BOSS_LEFT_JUMP_ATTACK && _state != BOSS_RIGHT_JUMP_ATTACK) // 점프 관련 상태일 때는 꺼주기
+	if (_state != BOSS_LEFT_JUMP && _state != BOSS_RIGHT_JUMP && _state != BOSS_LEFT_JUMP_ATTACK && _state != BOSS_RIGHT_JUMP_ATTACK && _state != BOSS_LEFT_HIT3 && _state != BOSS_RIGHT_HIT3) // 점프 관련 상태일 때는 꺼주기
 	{
 		_y = _z - 137;
 	}
 	death(playerX, playerZ);
-	
-	if (KEYMANAGER->isOnceKeyDown('T'))   
-	{
-		if (_state == BOSS_LEFT_HIT3 || _state == BOSS_RIGHT_HIT3 || _state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP) return; // 3타중이면 못들어오게
 
-		_characterImg = IMAGEMANAGER->findImage("boss_hit");
-		if (playerX <= _x) //플레이어가 왼쪽에 있는경우 --> 왼쪽을 봐야함 보스가
-		{
-			if (_hitCount == 0)
-			{
-				_state = BOSS_LEFT_HIT1;
-				_animPlayer = _anim[BOSS_LEFT_HIT1];
-				_animPlayer->start();
-				_hitCount++;
-			}
-			else if (_hitCount == 1)
-			{
-				_state = BOSS_LEFT_HIT1;
-				_animPlayer = _anim[BOSS_LEFT_HIT1];
-				_hitCount++;
-			}
-			else if (_hitCount == 2)
-			{
-				_state = BOSS_LEFT_HIT2;
-				_animPlayer = _anim[BOSS_LEFT_HIT2];
-				_hitCount++;
-			}
-
-		}
-		else
-		{
-			if (_hitCount == 0)
-			{
-				_state = BOSS_RIGHT_HIT1;
-				_animPlayer = _anim[BOSS_RIGHT_HIT1];
-				_animPlayer->start();
-				_hitCount++;
-			}
-			else if (_hitCount == 1)
-			{
-				_state = BOSS_RIGHT_HIT1;
-				_animPlayer = _anim[BOSS_RIGHT_HIT1];
-				_hitCount++;
-			}
-			else if (_hitCount == 2)
-			{
-				_state = BOSS_RIGHT_HIT2;
-				_animPlayer = _anim[BOSS_RIGHT_HIT2];
-				_hitCount++;
-			}
-		}
-	
-	}
-
+	hit(playerX, playerZ, 100);// 데미지 임시값
 
 	changePattern(playerX, playerZ);
 
 	_rc = RectMakeCenter(_x, _y, 100, 250);
-
 }
-
 
 void boss::loadAnimation()
 {
@@ -258,7 +206,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_HIT1] = new animation;
 	_anim[BOSS_LEFT_HIT1]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_LEFT_HIT1]->setPlayFrame(59, 57, false, false);
+	_anim[BOSS_LEFT_HIT1]->setPlayFrame(61, 59, false, false);
 	_anim[BOSS_LEFT_HIT1]->setFPS(1);
 	// --------------- LEFT HIT1 --------------- //
 
@@ -266,7 +214,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_HIT1] = new animation;
 	_anim[BOSS_RIGHT_HIT1]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_RIGHT_HIT1]->setPlayFrame(0, 2, false, false);
+	_anim[BOSS_RIGHT_HIT1]->setPlayFrame(0, 3, false, false);
 	_anim[BOSS_RIGHT_HIT1]->setFPS(1);
 	// --------------- RIGHT HIT1 --------------- //
 
@@ -274,7 +222,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_HIT2] = new animation;
 	_anim[BOSS_LEFT_HIT2]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_LEFT_HIT2]->setPlayFrame(57, 54, false, false);
+	_anim[BOSS_LEFT_HIT2]->setPlayFrame(58, 56, false, false);
 	_anim[BOSS_LEFT_HIT2]->setFPS(1);
 	// --------------- LEFT HIT2 --------------- //
 
@@ -282,7 +230,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_HIT2] = new animation;
 	_anim[BOSS_RIGHT_HIT2]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_RIGHT_HIT2]->setPlayFrame(3, 5, false, false);
+	_anim[BOSS_RIGHT_HIT2]->setPlayFrame(4, 6, false, false);
 	_anim[BOSS_RIGHT_HIT2]->setFPS(1);
 	// --------------- RIGHT HIT2 --------------- //
 
@@ -290,7 +238,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_HIT3] = new animation;
 	_anim[BOSS_LEFT_HIT3]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_LEFT_HIT3]->setPlayFrame(53, 31, false, false);
+	_anim[BOSS_LEFT_HIT3]->setPlayFrame(56, 31, false, false);
 	_anim[BOSS_LEFT_HIT3]->setFPS(1);
 	// --------------- LEFT HIT3 --------------- //
 
@@ -298,7 +246,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_HIT3] = new animation;
 	_anim[BOSS_RIGHT_HIT3]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_RIGHT_HIT3]->setPlayFrame(6, 30, false, false);
+	_anim[BOSS_RIGHT_HIT3]->setPlayFrame(7, 30, false, false);
 	_anim[BOSS_RIGHT_HIT3]->setFPS(1);
 	// --------------- RIGHT HIT3 --------------- //
 
@@ -388,7 +336,8 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_BLOCK] = new animation;
 	_anim[BOSS_LEFT_BLOCK]->init(IMAGEMANAGER->findImage("boss_block")->getWidth(), IMAGEMANAGER->findImage("boss_block")->getHeight()
 		, IMAGEMANAGER->findImage("boss_block")->getFrameWidth(), IMAGEMANAGER->findImage("boss_block")->getFrameHeight());
-	_anim[BOSS_LEFT_BLOCK]->setPlayFrame(7, 4, false, false);
+	int leftBlock[] = { 7,6,6,6,6,5,4 };
+	_anim[BOSS_LEFT_BLOCK]->setPlayFrame(leftBlock, sizeof(leftBlock) / sizeof(int));
 	_anim[BOSS_LEFT_BLOCK]->setFPS(1);
 	// --------------- LEFT BLOCK --------------- //
 
@@ -396,7 +345,8 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_BLOCK] = new animation;
 	_anim[BOSS_RIGHT_BLOCK]->init(IMAGEMANAGER->findImage("boss_block")->getWidth(), IMAGEMANAGER->findImage("boss_block")->getHeight()
 		, IMAGEMANAGER->findImage("boss_block")->getFrameWidth(), IMAGEMANAGER->findImage("boss_block")->getFrameHeight());
-	_anim[BOSS_RIGHT_BLOCK]->setPlayFrame(0, 3, false, false);
+	int rightBlock[] = { 0,1,1,1,1,2,3 };
+	_anim[BOSS_RIGHT_BLOCK]->setPlayFrame(rightBlock, sizeof(rightBlock) / sizeof(int));
 	_anim[BOSS_RIGHT_BLOCK]->setFPS(1);
 	// --------------- RIGHT BLOCK --------------- //
 
@@ -419,7 +369,7 @@ void boss::loadAnimation()
 
 }
 
-void boss::stateUpdate()
+void boss::stateUpdate(float playerX, float playerZ)
 {
 	for (int i = 0; i < BOSS_END; i++)
 	{
@@ -428,22 +378,126 @@ void boss::stateUpdate()
 
 	switch (_state)
 	{
+	//case BOSS_LEFT_IDLE:
+	//case BOSS_RIGHT_IDLE:
+	//	_isDelayTime = true;
+
+		break;
+	case BOSS_LEFT_BLOCK:
+		if (_animPlayer->getNowIndex() > 0 && _animPlayer->getNowIndex() < 5)
+		{
+			_blockDistance -= _blockFriction;
+			_blockFriction += 0.01f;
+			_x += cosf(_angle) * _blockDistance;
+			_z -= sinf(_angle) * _blockDistance;
+		}
+		if (!_animPlayer->isPlay())
+		{
+			int rnd = RND->getInt(10);
+			if (rnd < 5) // 막고 바로 대쉬 들어오는 경우
+			{
+				_state = BOSS_LEFT_DASH;
+				_animPlayer = _anim[BOSS_LEFT_DASH];
+				_characterImg = IMAGEMANAGER->findImage("boss_dash");
+				_angle = getAngle(_x, _z, playerX, playerZ);
+				_patternNumber = 99;
+			}
+			else
+			{
+				_characterImg = IMAGEMANAGER->findImage("boss_idle");
+				_state = BOSS_LEFT_IDLE;
+				_animPlayer = _anim[BOSS_LEFT_IDLE];
+
+			}
+			_animPlayer->start();
+		}
+		break;
+	case BOSS_RIGHT_BLOCK:
+		if (_animPlayer->getNowIndex() > 0 && _animPlayer->getNowIndex() < 5)
+		{
+			_blockDistance -= _blockFriction;
+
+			_x += cosf(_angle) * _blockDistance;
+			_z -= sinf(_angle) * _blockDistance;
+		}
+		if (!_animPlayer->isPlay())
+		{
+			int rnd = RND->getInt(10);
+			if (rnd < 5) // 막고 바로 대쉬 들어오는 경우
+			{
+				_characterImg = IMAGEMANAGER->findImage("boss_dash");
+				_state = BOSS_RIGHT_DASH;
+				_animPlayer = _anim[BOSS_RIGHT_DASH];
+				_angle = getAngle(_x, _z, playerX, playerZ);
+				_patternNumber = 99;
+			}
+			else
+			{
+				_characterImg = IMAGEMANAGER->findImage("boss_idle");
+				_state = BOSS_RIGHT_IDLE;
+				_animPlayer = _anim[BOSS_RIGHT_IDLE];
+			}
+			_animPlayer->start();
+		}
+		break;
+
+	case BOSS_LEFT_ROAR:
+	case BOSS_LEFT_TAUNT:
+		if (!_animPlayer->isPlay())
+		{
+			_characterImg = IMAGEMANAGER->findImage("boss_idle");
+			_state = BOSS_LEFT_IDLE;
+			_animPlayer = _anim[BOSS_LEFT_IDLE];
+			_animPlayer->start();
+		}
+		break;
+	case BOSS_RIGHT_ROAR:
+	case BOSS_RIGHT_TAUNT:
+		if (!_animPlayer->isPlay())
+		{
+			_characterImg = IMAGEMANAGER->findImage("boss_idle");
+			_state = BOSS_RIGHT_IDLE;
+			_animPlayer = _anim[BOSS_RIGHT_IDLE];
+			_animPlayer->start();
+		}
+		break;
+
 	case BOSS_LEFT_DASH: // 대쉬는 같은값들어감
 	case BOSS_RIGHT_DASH:
-		_applySpeed = 4;
+		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 3 && _animPlayer->isPlay())
 		{
 			_x += cosf(_angle) * _applySpeed;
 			_z -= sinf(_angle) * _applySpeed;
 		}
+		if (!_animPlayer->isPlay())
+		{
+			_characterImg = IMAGEMANAGER->findImage("boss_idle");
+			if (_state == BOSS_LEFT_DASH)
+			{
+				_state = BOSS_LEFT_IDLE;
+				_animPlayer = _anim[BOSS_LEFT_IDLE];
+			}
+			else
+			{
+				_state = BOSS_RIGHT_IDLE;
+				_animPlayer = _anim[BOSS_RIGHT_IDLE];
+			}
+			_animPlayer->start();
+			_isDelayTime = true;
+		}
 		break;
 
 	case BOSS_LEFT_HIT1:
 		_hitDelay++;
-		if (_hitDelay > 80)
+		if (_hitDelay > 100)
 		{
 			_hitDelay = 0;
 			_hitCount = 0;
+			_characterImg = IMAGEMANAGER->findImage("boss_roar");
+			_state = BOSS_LEFT_ROAR;
+			_animPlayer = _anim[BOSS_LEFT_ROAR];
+			_animPlayer->start();
 		}
 		if (_hitCount > 1) // 두방 째 일 때 
 		{
@@ -452,14 +506,22 @@ void boss::stateUpdate()
 			_animPlayer = _anim[BOSS_LEFT_HIT2];
 			_animPlayer->start();
 		}
-
+		if (_animPlayer->getNowIndex() < 2)
+		{
+			_x += cosf(_angle) * 0.4f;
+			_z -= sinf(_angle) * 0.4f;
+		}
 		break;
 	case BOSS_RIGHT_HIT1:
 		_hitDelay++;
-		if (_hitDelay > 80)
+		if (_hitDelay > 100)
 		{
 			_hitDelay = 0;
 			_hitCount = 0;
+			_characterImg = IMAGEMANAGER->findImage("boss_roar");
+			_state = BOSS_RIGHT_ROAR;
+			_animPlayer = _anim[BOSS_RIGHT_ROAR];
+			_animPlayer->start();
 		}
 		if (_hitCount > 1) // 두방 째 일 때 
 		{
@@ -468,15 +530,23 @@ void boss::stateUpdate()
 			_animPlayer = _anim[BOSS_RIGHT_HIT2];
 			_animPlayer->start();
 		}
-
+		if (_animPlayer->getNowIndex() < 2)
+		{
+			_x += cosf(_angle) * 0.4f;
+			_z -= sinf(_angle) * 0.4f;
+		}
 
 		break;
 	case BOSS_LEFT_HIT2:
 		_hitDelay++;
-		if (_hitDelay > 80)
+		if (_hitDelay > 100)
 		{
 			_hitDelay = 0;
 			_hitCount = 0;
+			_characterImg = IMAGEMANAGER->findImage("boss_roar");
+			_state = BOSS_LEFT_ROAR;
+			_animPlayer = _anim[BOSS_LEFT_ROAR];
+			_animPlayer->start();
 		}
 		if (_hitCount > 2) // 3방째 일 때 
 		{
@@ -486,14 +556,22 @@ void boss::stateUpdate()
 			_animPlayer = _anim[BOSS_LEFT_HIT3];
 			_animPlayer->start();
 		}
-
+		if (_animPlayer->getNowIndex() < 2)
+		{
+			_x += cosf(_angle) * 0.4f;
+			_z -= sinf(_angle) * 0.4f;
+		}
 		break;
 	case BOSS_RIGHT_HIT2:
 		_hitDelay++;
-		if (_hitDelay > 80)
+		if (_hitDelay > 100)
 		{
 			_hitDelay = 0;
 			_hitCount = 0;
+			_characterImg = IMAGEMANAGER->findImage("boss_roar");
+			_state = BOSS_RIGHT_ROAR;
+			_animPlayer = _anim[BOSS_RIGHT_ROAR];
+			_animPlayer->start();
 		}
 		if (_hitCount > 2) // 3방째 일 때 
 		{
@@ -503,20 +581,41 @@ void boss::stateUpdate()
 			_animPlayer = _anim[BOSS_RIGHT_HIT3];
 			_animPlayer->start();
 		}
-
+		if (_animPlayer->getNowIndex() < 2) // 맞았을때 살짝 밀려남
+		{
+			_x += cosf(_angle) * 0.4f;
+			_z -= sinf(_angle) * 0.4f;
+		}
 		break;
 	case BOSS_LEFT_HIT3:
-		if (!_animPlayer->isPlay()) 
+		if (!_animPlayer->isPlay())
 		{
 			_hitAndWaitCount++;
 			if (_hitAndWaitCount % 100 == 0)
 			{
+				_gravity = 0.1f;
 				_hitAndWaitCount = 0;
 				_characterImg = IMAGEMANAGER->findImage("boss_hit_getup");
 				_state = BOSS_LEFT_HIT_GETUP;
 				_animPlayer = _anim[BOSS_LEFT_HIT_GETUP];
 				_animPlayer->start();
 			}
+		}
+		else
+		{
+			// 날아가는 동안 
+			if (_y >= _z - 137)
+			{
+				_x += cosf(_angle) * 0.6f;
+				_y -= 1 - _gravity;
+				_gravity = 1;
+			}
+			else
+			{
+				_x += cosf(_angle) * 2;
+				_y -= 5 - _gravity;
+			}
+			_gravity += 0.1f;
 		}
 		break;
 	case BOSS_RIGHT_HIT3:
@@ -525,12 +624,30 @@ void boss::stateUpdate()
 			_hitAndWaitCount++;
 			if (_hitAndWaitCount % 100 == 0)
 			{
+				_gravity = 0.1f;
 				_hitAndWaitCount = 0;
 				_characterImg = IMAGEMANAGER->findImage("boss_hit_getup");
 				_state = BOSS_RIGHT_HIT_GETUP;
 				_animPlayer = _anim[BOSS_RIGHT_HIT_GETUP];
 				_animPlayer->start();
 			}
+		}
+		else
+		{
+			// 날아가는 동안 
+
+			if (_y >= _z - 137)
+			{
+				_x += cosf(_angle) * 0.6f;
+				_y -= 1 - _gravity;
+				_gravity = 1;
+			}
+			else
+			{
+				_x += cosf(_angle) * 2;
+				_y -= 5 - _gravity;
+			}
+			_gravity += 0.1f;
 		}
 		break;
 	case BOSS_LEFT_HIT_GETUP:
@@ -579,7 +696,7 @@ void boss::stateUpdate()
 	case BOSS_LEFT_JUMP_ATTACK:
 	case BOSS_RIGHT_JUMP_ATTACK:
 		_y += _jumpPower + _gravity;
-		_gravity += 0.5f;
+		_gravity += 0.8f;
 
 		_jumpAlpha += 2;
 
@@ -595,7 +712,7 @@ void boss::stateUpdate()
 		break;
 	case BOSS_LEFT_HEAVY_ATTACK:
 	case BOSS_RIGHT_HEAVY_ATTACK:
-		_applySpeed = 3;
+		_applySpeed = 10;
 		if (_animPlayer->getNowIndex() > 11 && _animPlayer->getNowIndex() < 17 && _animPlayer->isPlay())
 		{
 			_x += cosf(_angle) * _applySpeed;
@@ -629,84 +746,10 @@ void boss::attack(float playerX, float playerZ)
 	// ------ 임시 --------
 	float tempZ = playerZ + 100;
 
-	if (!_isDelayTime)
+	if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
 	{
-		if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
+		if ((_state == BOSS_LEFT_ATTACK || _state == BOSS_RIGHT_ATTACK))
 		{
-			if ((_state == BOSS_LEFT_ATTACK || _state == BOSS_RIGHT_ATTACK))
-			{
-				if (!_animPlayer->isPlay())
-				{
-					_isDelayTime = true;
-					if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-					{
-						_state = BOSS_LEFT_IDLE;
-						_characterImg = IMAGEMANAGER->findImage("boss_idle");
-						_animPlayer = _anim[BOSS_LEFT_IDLE];
-						_animPlayer->start();
-					}
-					else
-					{
-						_state = BOSS_RIGHT_IDLE;
-						_characterImg = IMAGEMANAGER->findImage("boss_idle");
-						_animPlayer = _anim[BOSS_RIGHT_IDLE];
-						_animPlayer->start();
-					}
-
-				}
-			}
-			else
-			{
-				_angle = getAngle(_x, _z, playerX, tempZ);
-				if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-				{
-					if (_state != BOSS_LEFT_WALK)
-					{
-						_state = BOSS_LEFT_WALK;
-						_characterImg = IMAGEMANAGER->findImage("boss_walk");
-						_animPlayer = _anim[BOSS_LEFT_WALK];
-						_animPlayer->start();
-					}
-				}
-				else               // 보스가 플레이어 왼쪽에 있는 경우
-				{
-					if (_state != BOSS_RIGHT_WALK)
-					{
-						_state = BOSS_RIGHT_WALK;
-						_characterImg = IMAGEMANAGER->findImage("boss_walk");
-						_animPlayer = _anim[BOSS_RIGHT_WALK];
-						_animPlayer->start();
-					}
-				}
-
-				_x += cosf(_angle) * 2;
-				_z -= sinf(_angle) * 2;
-			}
-
-		}
-		else if (getDistance(_x, _z, playerX, tempZ) <= 150) // 사정거리에 들어왔을 경우
-		{
-			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-			{
-				if (_state != BOSS_LEFT_ATTACK && _state != BOSS_RIGHT_ATTACK)
-				{
-					_state = BOSS_LEFT_ATTACK;
-					_characterImg = IMAGEMANAGER->findImage("boss_attack");
-					_animPlayer = _anim[BOSS_LEFT_ATTACK];
-					_animPlayer->start();
-				}
-			}
-			else               // 보스가 플레이어 왼쪽에 있는 경우
-			{
-				if (_state != BOSS_RIGHT_ATTACK && _state != BOSS_LEFT_ATTACK)
-				{
-					_state = BOSS_RIGHT_ATTACK;
-					_characterImg = IMAGEMANAGER->findImage("boss_attack");
-					_animPlayer = _anim[BOSS_RIGHT_ATTACK];
-					_animPlayer->start();
-				}
-			}
-
 			if (!_animPlayer->isPlay())
 			{
 				_isDelayTime = true;
@@ -727,11 +770,78 @@ void boss::attack(float playerX, float playerZ)
 
 			}
 		}
+		else
+		{
+			_angle = getAngle(_x, _z, playerX, tempZ);
+			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
+			{
+				if (_state != BOSS_LEFT_WALK)
+				{
+					_state = BOSS_LEFT_WALK;
+					_characterImg = IMAGEMANAGER->findImage("boss_walk");
+					_animPlayer = _anim[BOSS_LEFT_WALK];
+					_animPlayer->start();
+				}
+			}
+			else               // 보스가 플레이어 왼쪽에 있는 경우
+			{
+				if (_state != BOSS_RIGHT_WALK)
+				{
+					_state = BOSS_RIGHT_WALK;
+					_characterImg = IMAGEMANAGER->findImage("boss_walk");
+					_animPlayer = _anim[BOSS_RIGHT_WALK];
+					_animPlayer->start();
+				}
+			}
+
+			_x += cosf(_angle) * 2;
+			_z -= sinf(_angle) * 2;
+		}
 
 	}
+	else if (getDistance(_x, _z, playerX, tempZ) <= 150) // 사정거리에 들어왔을 경우
+	{
+		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
+		{
+			if (_state != BOSS_LEFT_ATTACK && _state != BOSS_RIGHT_ATTACK)
+			{
+				_state = BOSS_LEFT_ATTACK;
+				_characterImg = IMAGEMANAGER->findImage("boss_attack");
+				_animPlayer = _anim[BOSS_LEFT_ATTACK];
+				_animPlayer->start();
+			}
+		}
+		else               // 보스가 플레이어 왼쪽에 있는 경우
+		{
+			if (_state != BOSS_RIGHT_ATTACK && _state != BOSS_LEFT_ATTACK)
+			{
+				_state = BOSS_RIGHT_ATTACK;
+				_characterImg = IMAGEMANAGER->findImage("boss_attack");
+				_animPlayer = _anim[BOSS_RIGHT_ATTACK];
+				_animPlayer->start();
+			}
+		}
 
+		if (!_animPlayer->isPlay())
+		{
+			_isDelayTime = true;
+			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
+			{
+				_state = BOSS_LEFT_IDLE;
+				_characterImg = IMAGEMANAGER->findImage("boss_idle");
+				_animPlayer = _anim[BOSS_LEFT_IDLE];
+				_animPlayer->start();
+			}
+			else
+			{
+				_state = BOSS_RIGHT_IDLE;
+				_characterImg = IMAGEMANAGER->findImage("boss_idle");
+				_animPlayer = _anim[BOSS_RIGHT_IDLE];
+				_animPlayer->start();
+			}
 
-
+		}
+	}
 }
 
 void boss::heavyAttack(float playerX, float playerZ)
@@ -739,87 +849,11 @@ void boss::heavyAttack(float playerX, float playerZ)
 	// ------ 임시 --------
 	float tempZ = playerZ + 100;
 
-
-	if (!_isDelayTime)
+	if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 500) // 플레이어를 찾아다님
 	{
-		if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 200) // 플레이어를 찾아다님
+		if ((_state == BOSS_LEFT_HEAVY_ATTACK || _state == BOSS_RIGHT_HEAVY_ATTACK))
 		{
-			if ((_state == BOSS_LEFT_HEAVY_ATTACK || _state == BOSS_RIGHT_HEAVY_ATTACK))
-			{
-				if (!_animPlayer->isPlay())  // 어택 애니메이션이 
-				{
-					_isDelayTime = true;
-					if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-					{
-						_state = BOSS_LEFT_IDLE;
-						_characterImg = IMAGEMANAGER->findImage("boss_idle");
-						_animPlayer = _anim[BOSS_LEFT_IDLE];
-						_animPlayer->start();
-					}
-					else
-					{
-						_state = BOSS_RIGHT_IDLE;
-						_characterImg = IMAGEMANAGER->findImage("boss_idle");
-						_animPlayer = _anim[BOSS_RIGHT_IDLE];
-						_animPlayer->start();
-					}
-
-				}
-			}
-			else
-			{
-				_angle = getAngle(_x, _z, playerX, tempZ);
-				if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-				{
-					if (_state != BOSS_LEFT_WALK)
-					{
-						_state = BOSS_LEFT_WALK;
-						_characterImg = IMAGEMANAGER->findImage("boss_walk");
-						_animPlayer = _anim[BOSS_LEFT_WALK];
-						_animPlayer->start();
-					}
-				}
-				else               // 보스가 플레이어 왼쪽에 있는 경우
-				{
-					if (_state != BOSS_RIGHT_WALK)
-					{
-						_state = BOSS_RIGHT_WALK;
-						_characterImg = IMAGEMANAGER->findImage("boss_walk");
-						_animPlayer = _anim[BOSS_RIGHT_WALK];
-						_animPlayer->start();
-					}
-				}
-
-				_x += cosf(_angle) * 2;	// 따로 빼도 되는건가 
-				_z -= sinf(_angle) * 2; // 따로 빼도 되는건가 
-			}
-
-		}
-		else if (getDistance(_x, _z, playerX, tempZ) <= 200) // 사정거리에 들어왔을 경우
-		{
-			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-			{
-				if (_state != BOSS_LEFT_HEAVY_ATTACK && _state != BOSS_RIGHT_HEAVY_ATTACK)
-				{
-					_state = BOSS_LEFT_HEAVY_ATTACK;
-					_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
-					_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
-					_animPlayer->start();
-				}
-
-			}
-			else               // 보스가 플레이어 왼쪽에 있는 경우
-			{
-				if (_state != BOSS_RIGHT_HEAVY_ATTACK && _state != BOSS_LEFT_HEAVY_ATTACK)
-				{
-					_state = BOSS_RIGHT_HEAVY_ATTACK;
-					_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
-					_animPlayer = _anim[BOSS_RIGHT_HEAVY_ATTACK];
-					_animPlayer->start();
-				}
-			}
-
-			if (!_animPlayer->isPlay()) // 애니메이션이 끝난 경우
+			if (!_animPlayer->isPlay())  // 어택 애니메이션이 
 			{
 				_isDelayTime = true;
 				if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
@@ -839,170 +873,60 @@ void boss::heavyAttack(float playerX, float playerZ)
 
 			}
 		}
-	}
-
-} // 강 공격시에는 좋아하는것도 넣기
-
-void boss::dashAttack(float playerX, float playerZ)
-{
-	// ------ 임시 --------
-	float tempZ = playerZ + 100;
-
-	if (!_isDelayTime)
-	{
-		if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 700) // 플레이어를 찾아다님
-		{
-			if ((_state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK))
-			{
-				_angle = getAngle(_x, _z, playerX, tempZ);
-				if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-				{
-					if (_state != BOSS_LEFT_WALK)
-					{
-						_state = BOSS_LEFT_WALK;
-						_characterImg = IMAGEMANAGER->findImage("boss_walk");
-						_animPlayer = _anim[BOSS_LEFT_WALK];
-						_animPlayer->start();
-					}
-				}
-				else               // 보스가 플레이어 왼쪽에 있는 경우
-				{
-					if (_state != BOSS_RIGHT_WALK)
-					{
-						_state = BOSS_RIGHT_WALK;
-						_characterImg = IMAGEMANAGER->findImage("boss_walk");
-						_animPlayer = _anim[BOSS_RIGHT_WALK];
-						_animPlayer->start();
-					}
-				}
-
-				_x += cosf(_angle) * 2;
-				_z -= sinf(_angle) * 2;
-			}
-			else
-			{
-				_isDelayTime = true;
-				if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-				{
-					_state = BOSS_LEFT_IDLE;
-					_characterImg = IMAGEMANAGER->findImage("boss_idle");
-					_animPlayer = _anim[BOSS_LEFT_IDLE];
-					_animPlayer->start();
-				}
-				else
-				{
-					_state = BOSS_RIGHT_IDLE;
-					_characterImg = IMAGEMANAGER->findImage("boss_idle");
-					_animPlayer = _anim[BOSS_RIGHT_IDLE];
-					_animPlayer->start();
-				}
-
-			}
-
-		}
-		else if (getDistance(_x, _z, playerX, tempZ) <= 700) // 사정거리에 들어왔을 경우
-		{
-			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-			{
-				if (_state != BOSS_LEFT_DASH && _state != BOSS_RIGHT_DASH)
-				{
-					_state = BOSS_LEFT_DASH;
-					_characterImg = IMAGEMANAGER->findImage("boss_dash");
-					_animPlayer = _anim[BOSS_LEFT_DASH];
-					_animPlayer->start();
-					_angle = getAngle(_x, _z, playerX, tempZ);
-				}
-			}
-			else               // 보스가 플레이어 왼쪽에 있는 경우
-			{
-				if (_state != BOSS_RIGHT_DASH && _state != BOSS_LEFT_DASH)
-				{
-					_state = BOSS_RIGHT_DASH;
-					_characterImg = IMAGEMANAGER->findImage("boss_dash");
-					_animPlayer = _anim[BOSS_RIGHT_DASH];
-					_animPlayer->start();
-					_angle = getAngle(_x, _z, playerX, tempZ);
-				}
-			}
-
-
-			if (!_animPlayer->isPlay())
-			{
-				_isDelayTime = true;
-				if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
-				{
-					_state = BOSS_LEFT_IDLE;
-					_characterImg = IMAGEMANAGER->findImage("boss_idle");
-					_animPlayer = _anim[BOSS_LEFT_IDLE];
-					_animPlayer->start();
-				}
-				else
-				{
-					_state = BOSS_RIGHT_IDLE;
-					_characterImg = IMAGEMANAGER->findImage("boss_idle");
-					_animPlayer = _anim[BOSS_RIGHT_IDLE];
-					_animPlayer->start();
-				}
-
-			}
-		}
-	}
-
-
-}
-
-void boss::jumpAttack(float playerX, float playerZ)
-{
-	// ------ 임시 --------
-	float tempZ = playerZ + 100;
-
-	if (!_isDelayTime)
-	{
-		if (_state != BOSS_LEFT_JUMP && _state != BOSS_RIGHT_JUMP && _state != BOSS_LEFT_JUMP_ATTACK && _state != BOSS_RIGHT_JUMP_ATTACK)
-		{
-			if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
-			{
-				_state = BOSS_LEFT_JUMP;
-				_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
-				_animPlayer = _anim[BOSS_LEFT_JUMP];
-				_animPlayer->start();
-			}
-			else
-			{
-				_state = BOSS_RIGHT_JUMP;
-				_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
-				_animPlayer = _anim[BOSS_RIGHT_JUMP];
-				_animPlayer->start();
-			}
-
-		}
-		if (_state == BOSS_LEFT_JUMP || _state == BOSS_RIGHT_JUMP) //점프 상태일 때 각도 구해오기 3초간 유지후 떨어짐
+		else
 		{
 			_angle = getAngle(_x, _z, playerX, tempZ);
+			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
+			{
+				if (_state != BOSS_LEFT_WALK)
+				{
+					_state = BOSS_LEFT_WALK;
+					_characterImg = IMAGEMANAGER->findImage("boss_walk");
+					_animPlayer = _anim[BOSS_LEFT_WALK];
+					_animPlayer->start();
+				}
+			}
+			else               // 보스가 플레이어 왼쪽에 있는 경우
+			{
+				if (_state != BOSS_RIGHT_WALK)
+				{
+					_state = BOSS_RIGHT_WALK;
+					_characterImg = IMAGEMANAGER->findImage("boss_walk");
+					_animPlayer = _anim[BOSS_RIGHT_WALK];
+					_animPlayer->start();
+				}
+			}
+
+			_x += cosf(_angle) * 2;	// 따로 빼도 되는건가 
+			_z -= sinf(_angle) * 2; // 따로 빼도 되는건가 
 		}
 
-
-
-		if (_jumpAndDownAttackCount > 300) // changePattern쪽에서 받아옴 
+	}
+	else if (getDistance(_x, _z, playerX, tempZ) <= 500) // 사정거리에 들어왔을 경우
+	{
+		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 		{
-			_jumpAndDownAttackCount = 0;
-			if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
+			if (_state != BOSS_LEFT_HEAVY_ATTACK && _state != BOSS_RIGHT_HEAVY_ATTACK)
 			{
-				_state = BOSS_LEFT_JUMP_ATTACK;
-				_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
-				_animPlayer = _anim[BOSS_LEFT_JUMP_ATTACK];
+				_state = BOSS_LEFT_HEAVY_ATTACK;
+				_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
+				_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
 				_animPlayer->start();
 			}
-			else
+
+		}
+		else               // 보스가 플레이어 왼쪽에 있는 경우
+		{
+			if (_state != BOSS_RIGHT_HEAVY_ATTACK && _state != BOSS_LEFT_HEAVY_ATTACK)
 			{
-				_state = BOSS_RIGHT_JUMP_ATTACK;
-				_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
-				_animPlayer = _anim[BOSS_RIGHT_JUMP_ATTACK];
+				_state = BOSS_RIGHT_HEAVY_ATTACK;
+				_characterImg = IMAGEMANAGER->findImage("boss_heavyAttack");
+				_animPlayer = _anim[BOSS_RIGHT_HEAVY_ATTACK];
 				_animPlayer->start();
 			}
 		}
 
-		if ((_state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK) && !_animPlayer->isPlay()) // 다 내려온후
+		if (!_animPlayer->isPlay()) // 애니메이션이 끝난 경우
 		{
 			_isDelayTime = true;
 			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
@@ -1023,6 +947,109 @@ void boss::jumpAttack(float playerX, float playerZ)
 		}
 	}
 
+} // 강 공격시에는 좋아하는것도 넣기
+
+void boss::dashAttack(float playerX, float playerZ)
+{
+	// ------ 임시 --------
+	float tempZ = playerZ + 100;
+
+	if (getDistance(_x, _z, playerX, tempZ) <= 3000) // 사정거리에 들어왔을 경우
+	{
+		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
+		{
+			if (_state != BOSS_LEFT_DASH && _state != BOSS_RIGHT_DASH)
+			{
+				_state = BOSS_LEFT_DASH;
+				_characterImg = IMAGEMANAGER->findImage("boss_dash");
+				_animPlayer = _anim[BOSS_LEFT_DASH];
+				_animPlayer->start();
+				_angle = getAngle(_x, _z, playerX, tempZ);
+			}
+		}
+		else               // 보스가 플레이어 왼쪽에 있는 경우
+		{
+			if (_state != BOSS_RIGHT_DASH && _state != BOSS_LEFT_DASH)
+			{
+				_state = BOSS_RIGHT_DASH;
+				_characterImg = IMAGEMANAGER->findImage("boss_dash");
+				_animPlayer = _anim[BOSS_RIGHT_DASH];
+				_animPlayer->start();
+				_angle = getAngle(_x, _z, playerX, tempZ);
+			}
+		}
+	}
+
+}
+
+void boss::jumpAttack(float playerX, float playerZ)
+{
+	// ------ 임시 --------
+	float tempZ = playerZ + 100;
+
+	if (_state != BOSS_LEFT_JUMP && _state != BOSS_RIGHT_JUMP && _state != BOSS_LEFT_JUMP_ATTACK && _state != BOSS_RIGHT_JUMP_ATTACK)
+	{
+		if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
+		{
+			_state = BOSS_LEFT_JUMP;
+			_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
+			_animPlayer = _anim[BOSS_LEFT_JUMP];
+			_animPlayer->start();
+		}
+		else
+		{
+			_state = BOSS_RIGHT_JUMP;
+			_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
+			_animPlayer = _anim[BOSS_RIGHT_JUMP];
+			_animPlayer->start();
+		}
+
+	}
+	if (_state == BOSS_LEFT_JUMP || _state == BOSS_RIGHT_JUMP) //점프 상태일 때 각도 구해오기 3초간 유지후 떨어짐
+	{
+		_angle = getAngle(_x, _z, playerX, tempZ);
+	}
+
+
+
+	if (_jumpAndDownAttackCount > 300) // changePattern쪽에서 받아옴 
+	{
+		_jumpAndDownAttackCount = 0;
+		if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
+		{
+			_state = BOSS_LEFT_JUMP_ATTACK;
+			_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
+			_animPlayer = _anim[BOSS_LEFT_JUMP_ATTACK];
+			_animPlayer->start();
+		}
+		else
+		{
+			_state = BOSS_RIGHT_JUMP_ATTACK;
+			_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
+			_animPlayer = _anim[BOSS_RIGHT_JUMP_ATTACK];
+			_animPlayer->start();
+		}
+	}
+
+	if ((_state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK) && !_animPlayer->isPlay()) // 다 내려온후
+	{
+		_isDelayTime = true;
+		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
+		{
+			_state = BOSS_LEFT_IDLE;
+			_characterImg = IMAGEMANAGER->findImage("boss_idle");
+			_animPlayer = _anim[BOSS_LEFT_IDLE];
+			_animPlayer->start();
+		}
+		else
+		{
+			_state = BOSS_RIGHT_IDLE;
+			_characterImg = IMAGEMANAGER->findImage("boss_idle");
+			_animPlayer = _anim[BOSS_RIGHT_IDLE];
+			_animPlayer->start();
+		}
+
+	}
 
 }
 
@@ -1030,8 +1057,6 @@ void boss::elbowAttack(float playerX, float playerZ)
 {// ------ 임시 --------
 	float tempZ = playerZ + 100;
 
-	if (!_isDelayTime)
-	{
 		if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
 		{
 			if ((_state == BOSS_LEFT_ATTACK_ELBOW || _state == BOSS_RIGHT_ATTACK_ELBOW)) // 적한테 가까이갔다가 멀리 도망친 경우
@@ -1125,17 +1150,17 @@ void boss::elbowAttack(float playerX, float playerZ)
 
 			}
 		}
-
-	}
-
 }
 
 void boss::changePattern(float playerX, float playerZ)
 {
+	
+	// 자동으로 다른 스테이트로 실행되는것들 리턴 시키기
+	if (_state == BOSS_LEFT_BLOCK || _state == BOSS_RIGHT_BLOCK) return;
+	if (_state == BOSS_LEFT_TAUNT || _state == BOSS_RIGHT_TAUNT || _state == BOSS_LEFT_ROAR  || _state == BOSS_RIGHT_ROAR) return;
 	if (_state == BOSS_LEFT_DEATH || _state == BOSS_RIGHT_DEATH || _state == BOSS_LEFT_DEATH_LOOP || _state == BOSS_RIGHT_DEATH_LOOP) return;
-	if (_state == BOSS_LEFT_HIT1 || _state == BOSS_LEFT_HIT2 || _state == BOSS_LEFT_HIT3 || _state == BOSS_LEFT_HIT_GETUP ||
-		_state == BOSS_RIGHT_HIT1 || _state == BOSS_RIGHT_HIT2 || _state == BOSS_RIGHT_HIT3 || _state == BOSS_RIGHT_HIT_GETUP) return;
-
+	if (_state == BOSS_LEFT_HIT1  || _state == BOSS_LEFT_HIT2   || _state == BOSS_LEFT_HIT3  || _state == BOSS_LEFT_HIT_GETUP ||
+		_state == BOSS_RIGHT_HIT1 || _state == BOSS_RIGHT_HIT2  || _state == BOSS_RIGHT_HIT3 || _state == BOSS_RIGHT_HIT_GETUP) return;
 
 	if (_isDelayTime) // 딜레이 타임 인 경우.
 	{
@@ -1146,30 +1171,30 @@ void boss::changePattern(float playerX, float playerZ)
 			_patternNumber = RND->getInt(5);
 			_isDelayTime = false;
 		}
-
 	}
-
-	if (_patternNumber == 0)
+	else
 	{
-		attack(playerX, playerZ);
+		if (_patternNumber == 0)
+		{
+			attack(playerX, playerZ);
+		}
+		else if (_patternNumber == 1)
+		{
+			heavyAttack(playerX, playerZ);
+		}
+		else if (_patternNumber == 2)
+		{
+			dashAttack(playerX, playerZ);
+		}
+		else if (_patternNumber == 3)
+		{
+			elbowAttack(playerX, playerZ);
+		}
+		else if (_patternNumber == 4)
+		{
+			jumpAttack(playerX, playerZ);
+		}
 	}
-	else if (_patternNumber == 1)
-	{
-		heavyAttack(playerX, playerZ);
-	}
-	else if (_patternNumber == 2)
-	{
-		dashAttack(playerX, playerZ);
-	}
-	else if (_patternNumber == 3)
-	{
-		elbowAttack(playerX, playerZ);
-	}
-	else if (_patternNumber == 4)
-	{
-		jumpAttack(playerX, playerZ);
-	}
-
 }
 
 void boss::death(float playerX, float playerZ)
@@ -1192,6 +1217,97 @@ void boss::death(float playerX, float playerZ)
 		}
 
 	}
+}
+
+void boss::hit(float playerX, float playerZ, int damege)
+{
+	if (KEYMANAGER->isOnceKeyDown('T'))
+	{
+		if (_state == BOSS_LEFT_HIT3 || _state == BOSS_RIGHT_HIT3 || _state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP ||
+			_state == BOSS_LEFT_BLOCK || _state == BOSS_RIGHT_BLOCK || _state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR || _state == BOSS_LEFT_JUMP ||
+			_state == BOSS_RIGHT_JUMP || _state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK) return; // 3타중이면 못들어오게 // 공격 안받는 상황
+
+		_characterImg = IMAGEMANAGER->findImage("boss_hit");
+		if (playerX <= _x) //플레이어가 왼쪽에 있는경우 --> 왼쪽을 봐야함 보스가
+		{
+			// 30퍼 확률로 막기
+			if (_hitCount == 0)
+			{
+				int rndBlock = RND->getInt(10);
+				if (rndBlock < 5)
+				{
+					_characterImg = IMAGEMANAGER->findImage("boss_block");
+					_state = BOSS_LEFT_BLOCK;
+					_animPlayer = _anim[BOSS_LEFT_BLOCK];
+					_animPlayer->start();
+					_hitCount = 0;
+					_blockDistance = 5;
+					_blockFriction = 0.01f;
+				}
+				else
+				{
+					_state = BOSS_LEFT_HIT1;
+					_animPlayer = _anim[BOSS_LEFT_HIT1];
+					_animPlayer->start();
+					_hitCount++;
+				}
+
+			}
+			else if (_hitCount == 1)
+			{
+				_state = BOSS_LEFT_HIT1;
+				_animPlayer = _anim[BOSS_LEFT_HIT1];
+				_hitCount++;
+			}
+			else if (_hitCount == 2)
+			{
+				_state = BOSS_LEFT_HIT2;
+				_animPlayer = _anim[BOSS_LEFT_HIT2];
+				_hitCount++;
+			}
+
+		}
+		else
+		{
+			if (_hitCount == 0)
+			{
+				int rndBlock = RND->getInt(10);
+				if (rndBlock < 5)
+				{
+					_characterImg = IMAGEMANAGER->findImage("boss_block");
+					_blockDistance = 5;
+					_blockFriction = 0.01f;
+					_state = BOSS_RIGHT_BLOCK;
+					_animPlayer = _anim[BOSS_RIGHT_BLOCK];
+					_animPlayer->start();
+					_hitCount = 0;
+				}
+				else
+				{
+					_state = BOSS_RIGHT_HIT1;
+					_animPlayer = _anim[BOSS_RIGHT_HIT1];
+					_animPlayer->start();
+					_hitCount++;
+				}
+			}
+			else if (_hitCount == 1)
+			{
+				_state = BOSS_RIGHT_HIT1;
+				_animPlayer = _anim[BOSS_RIGHT_HIT1];
+				_hitCount++;
+			}
+			else if (_hitCount == 2)
+			{
+				_state = BOSS_RIGHT_HIT2;
+				_animPlayer = _anim[BOSS_RIGHT_HIT2];
+				_hitCount++;
+
+			}
+		}
+		_angle = getAngle(playerX, playerZ, _x, _z);
+	}
+
+
 }
 
 
