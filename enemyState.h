@@ -64,8 +64,9 @@ private:
 	RECT _attack;
 	int _comboCount;
 	bool _isAttack;
+	bool _isStrike;
 public:
-	enemyAttackState() { _comboCount = 0; _isAttack = 0; }
+	enemyAttackState() { _comboCount = 0; _isAttack = false; _isStrike = false; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

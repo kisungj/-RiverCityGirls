@@ -9,6 +9,8 @@ HRESULT titleStage::init()
 	_arrowX = 150;
 	_arrowY = 530;
 
+	_nextScene = false;
+
 	return S_OK;
 }
 
@@ -40,7 +42,7 @@ void titleStage::update()
 		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 		{
 			// 다음 씬으로 넘기기
-			SCENEMANAGER->changeScene("STAGE1_SCENE");
+			_nextScene = true;
 		}
 	}
 	else

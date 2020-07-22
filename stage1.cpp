@@ -11,6 +11,14 @@ HRESULT stage1::init(obstacleManager * obstacleManager, itemManager* itemManager
 	_enemyManager = enemyManager;
 	_player = player;
 
+	_obstacleManager->init();
+	_enemyManager->init();
+	_itemManager->init();
+	//---- 임시
+	_obstacleManager->setObstacle(DESK);
+	_enemyManager->setBoy();
+	//---- 임시
+
 
 	return S_OK;
 }

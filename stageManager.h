@@ -1,5 +1,6 @@
 #pragma once
 #include "gameNode.h"
+#include "titleStage.h"
 #include "stage1.h"
 #include "stage2.h"
 #include "stageBoss.h"
@@ -39,10 +40,14 @@ private:
 	enemyManager*    _enemyManager;
 	boss*            _boss;
 	ui*              _ui;
+	
+	titleStage*		 _title;
 	stage1*          _stage1;
 	stage2*          _stage2;
 	stageBoss*       _stageBoss;
 	player*          _player;
+
+	string			 _curStageName;
 public:
 	stageManager() {}
 	~stageManager() {}

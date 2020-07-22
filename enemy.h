@@ -20,6 +20,7 @@ protected:
 	RECT _attackRC;					//에너미 공격 렉트
 
 	image* _image;					//에너미 이미지
+	image* _shadowImg;				//쉐도우 이미지
 	int _currentX, _currentY;		//프레임 x축 , y축
 	int _frameCount;				//프레임 돌리는 용도
 
@@ -31,7 +32,6 @@ protected:
 	bool _isHit;					//맞고 있는지
 	bool _isStop;					//프레임 조절용
 	bool _isLay;					//누웠는지
-	bool _isDead;					//죽었는지
 
 	int _hitCount;					//맞은 횟수
 	int _layCount;					//누운 시간

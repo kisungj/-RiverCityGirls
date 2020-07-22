@@ -8,6 +8,8 @@ private:
 
 	float _arrowX, _arrowY;
 
+	bool _nextScene;
+
 public:
 	titleStage() {}
 	~titleStage() {}
@@ -18,5 +20,7 @@ public:
 	virtual void update();
 	virtual void release();
 public:
+	bool getNextScene() { return _nextScene; }
+	void setNextScene(bool arg) { _nextScene = arg; }
 };
 
