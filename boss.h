@@ -11,6 +11,7 @@ enum STATEBOSS
 	BOSS_LEFT_HIT,          BOSS_RIGHT_HIT,			 // 맞았을 때
 	BOSS_LEFT_ATTACK,       BOSS_RIGHT_ATTACK,		 // 약 공격
 	BOSS_LEFT_ATTACK_ELBOW, BOSS_RIGHT_ATTACK_ELBOW, // 엘보우 공격
+	BOSS_LEFT_JUMP,         BOSS_RIGHT_JUMP,         // 점프
 	BOSS_LEFT_JUMP_ATTACK,  BOSS_RIGHT_JUMP_ATTACK,  // 점프 공격
 	BOSS_LEFT_HEAVY_ATTACK, BOSS_RIGHT_HEAVY_ATTACK, // 강 공격
 	BOSS_LEFT_DEATH,        BOSS_RIGHT_DEATH,		 // 죽었을 때
@@ -35,7 +36,7 @@ private:
 	int        _delayTime;                          // 공격 후 딜레이시간
 	bool       _isDelayTime;                        // 딜레이 시간인지?      
 	int        _patternNumber;                      // 지금 패턴 번호
-
+	int        _jumpAndDownAttackCount;             // 밑으로 내려올 카운트
 	// ----------------- 스텟 관련 변수 -----------------//
 	int        _hp, maxHp;
 	int        _damage;
@@ -57,13 +58,13 @@ public:
 public:
 	void    loadImage();                // 보스 이미지 리소스 로드
 	void    loadAnimation();            // 보스 애니메이션 로드
-	void    changeState();              // 보스 상태 변경, 한번만 들어감
 	void    stateUpdate();              // 보스 스테이트 업데이트.
 public:
 	void    attack(float playerX, float playerZ);                   // 플레이어를 찾아서 약 공격
 	void    heavyAttack(float playerX, float playerZ);              // 플레이어를 찾아서 약 공격
 	void    dashAttack(float playerX, float playerZ);               // 대쉬 공격
 	void    jumpAttack(float playerX, float playerZ);               // 점프 공격
+	void    elbowAttack(float playerX, float playerZ);              // 엘보우공격
 	void    changePattern();
 };
 

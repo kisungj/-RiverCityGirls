@@ -65,11 +65,10 @@ public:
 	void pause();
 	void resume();
 
-	inline BOOL isPlay() { return _play; }
-	inline POINT getFramePos() { return _frameList[_playList[_nowPlayIndex]]; }
-	inline int getFrameWidth() { return _frameWidth; }
-	inline int getFrameHeight() { return _frameHeight; }
-
-
+	inline BOOL   isPlay() { return _play; }
+	inline POINT  getFramePos() { return _frameList[_playList[_nowPlayIndex]]; }
+	inline int    getFrameWidth() { return _frameWidth; }
+	inline int    getFrameHeight() { return _frameHeight; }
+	inline DWORD  getNowIndex() { return _nowPlayIndex; }
 };
 
