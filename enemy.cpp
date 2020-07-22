@@ -9,7 +9,7 @@ enemy::~enemy()
 {
 }
 
-HRESULT enemy::init()
+HRESULT enemy::init(float x, float y)
 {
 	{
 		_move	 = new enemyMoveState();
@@ -18,12 +18,13 @@ HRESULT enemy::init()
 		_hit	 = new enemyHitState();
 		_down	 = new enemyDownState();
 		_dizzy	 = new enemyDizzyState();
+		_dead	 = new enemyDeadState();
 	}
 
 	addImage();
 
-	_x = 1000;
-	_y = WINSIZEY / 2 + 300;
+	_x = x;
+	_y = y;
 	_width = 130;
 	_height = 200;
 
@@ -31,7 +32,6 @@ HRESULT enemy::init()
 	_shadow = RectMakeCenter(_x, _y + 100, 50, 30);
 
 	_image = IMAGEMANAGER->findImage("boy_walk");
-	//_motion = KEYANIMANAGER->findAnimation("boy_rightIdle");
 
 	_right = _isHit = false;
 	_jumpPower = _gravity = 0;
@@ -54,15 +54,16 @@ void enemy::update()
 
 	_state->update(*this, _playerRC, _playerX, _playerY, ENEMYTYPE::BOY);
 
-	//type();
+	if (_isLay) _layCount++;
+
+	pixelCollision();
+
 	//if (_hitCount == 1) _hitState = HITSTATE::HIT1;
 	//if (_hitCount == 2) _hitState = HITSTATE::HIT2;
 	//if (_hitCount == 3) _hitState = HITSTATE::HIT3;
 
 	//CAMERAMANAGER->setX(_x);
 	//CAMERAMANAGER->setY(_y);
-
-	if (_isLay) _layCount++;
 }
 
 void enemy::render()
@@ -128,7 +129,124 @@ void enemy::draw()
 
 void enemy::pixelCollision()
 {
+	
+	int _probeU = _shadow.top;
+	int _probeB = _shadow.bottom;
+	int _probeL = _shadow.left;
+	int _probeR = _shadow.right;
 
+	//int _probeV = _shadow.bottom;
+	//int _probeH = (_shadow.left + _shadow.right) / 2;
+	//_playerX = _shadowX;
+	//_playerProbe = _player.bottom;
+
+	//위
+	for (int i = _probeU - 10; i < _probeU + 5; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+
+		if (r == 255 && g == 0 && b == 0) 
+		{
+			_probeU -= i;
+		}
+
+		if (r == 255 && g == 255 && b == 0)
+		{
+
+		}
+	}
+
+	//아래
+	for (int i = _probeB - 5; i < _probeB + 10; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 255 && g == 0 && b == 255)
+		{
+			
+		}
+
+		if (r == 255 && g == 255 && b == 0)
+		{
+
+		}
+	}
+
+	//왼쪽
+	for (int i = _probeL - 5; i < _probeL + 5; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 255 && g == 0 && b == 255)
+		{
+
+		}
+
+		if (r == 255 && g == 255 && b == 0)
+		{
+
+		}
+	}
+
+	//오른쪽
+	for (int i = _probeR - 5; i < _probeR + 5; ++i)
+	{
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+
+		int r = GetRValue(color);
+		int g = GetGValue(color);
+		int b = GetBValue(color);
+
+		if (r == 255 && g == 0 && b == 255)
+		{
+			
+		}
+
+		if (r == 255 && g == 255 && b == 0)
+		{
+
+		}
+	}
+
+	//if (!_isJumping)
+	//{
+	//	_playerY = _shadowY - 110;
+	//}
+	////cout << _isJumping << endl;
+
+	//if (_isJumping)
+	//{
+	//	for (int i = _playerProbe - 10; i < _playerProbe + 10; ++i)
+	//	{
+	//		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
+
+	//		int r = GetRValue(color);
+	//		int g = GetGValue(color);
+	//		int b = GetBValue(color);
+
+	//		if (r == 255 && g == 255 && b == 0)
+	//		{
+	//			_isDesk = true;
+	//		}
+	//		else
+	//		{
+	//			_isDesk = false;
+	//		}
+	//	}
+	//}
 }
 
 void enemy::addImage()

@@ -7,17 +7,27 @@ class enemyManager : public gameNode
 	typedef vector<enemy*> getVEnemy;
 	typedef vector<enemy*>::iterator getVIEnemy;
 private:
-	enemyBoy* _boy;
+	getVEnemy _vBoy;
+	getVIEnemy _viBoy;
 
 public:
 	enemyManager() {}
 	~enemyManager() {}
-public:
+
 	virtual HRESULT init();
 	virtual void render();
 	virtual void update();
 	virtual void release();
+
+	void setBoy();	
+	void setGirl();	
+	void setCheer();
+	void eraseBoy(int arrNum);
+	void eraseGirl(int arrNum);
+	void eraseCheer(int arrNum);
+
 public:
-	vector<enemyBoy*> getVBoy() { return _boy; }
+	vector<enemy*> getVBoy() { return _vBoy; }
+	vector<enemy*>::iterator getVIBoy() { return _viBoy; }
 };
 

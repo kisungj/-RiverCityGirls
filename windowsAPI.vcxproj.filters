@@ -231,6 +231,9 @@
     <ClInclude Include="inventory.h">
       <Filter>playGround\inventory</Filter>
     </ClInclude>
+    <ClInclude Include="enemyBoy.h">
+      <Filter>playGround\enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -373,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="inventory.cpp">
       <Filter>playGround\inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyBoy.cpp">
+      <Filter>playGround\enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
