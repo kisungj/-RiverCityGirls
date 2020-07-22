@@ -270,6 +270,14 @@ void player::pixelCol()
 
 				_isTop = true;
 			}
+			else if (_isJumping)
+			{
+				if (r == 160 && g == 255 && b == 0)
+				{
+					_isTop = true;
+					break;
+				}
+			}
 			else
 			{
 				_isTop = false;
@@ -288,11 +296,19 @@ void player::pixelCol()
 			{
 				_isBottom = true;
 			}
+			else if (_isJumping)
+			{
+				if (r == 160 && g == 255 && b == 0)
+				{
+					_isBottom = true;
+					break;
+				}
+			}
+
 			else
 			{
 				_isBottom = false;
 			}
-
 		}
 		for (int i = _probeH - 40; i < _probeH - 35; ++i)
 		{
@@ -305,6 +321,14 @@ void player::pixelCol()
 			if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 			{
 				_isLeft = true;
+			}
+			else if (_isJumping)
+			{
+				if (r == 160 && g == 255 && b == 0)
+				{
+					_isLeft = true;
+					break;
+				}
 			}
 			else
 			{
@@ -323,16 +347,25 @@ void player::pixelCol()
 			{
 				_isRight = true;
 			}
-
+			else if (_isJumping)
+			{
+				if (r == 160 && g == 255 && b == 0)
+				{
+					_isRight = true;
+					break;
+				}
+			}
 			else
 			{
 				_isRight = false;
 			}
+
 		}
 
 	
+	
 		//점프중에
-		if ((_isJumping && _shadowY < 850 && _shadowY > 700))
+		if (_isJumping)
 		{
 			//노란색 닿으면
 			for (int i = _playerProbe - 3; i < _playerProbe + 3; ++i)
@@ -353,6 +386,13 @@ void player::pixelCol()
 					_isBottom = true;
 					break;
 				}
+				/*if (_isDeskFall)
+				{
+					if (r == 255 && g == 0 && b == 0)
+					{
+
+					}
+				}*/
 			}
 		}
 	}
