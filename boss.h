@@ -8,9 +8,7 @@ enum STATEBOSS
 	BOSS_LEFT_IDLE,         BOSS_RIGHT_IDLE,          // 기본 상태
 	BOSS_LEFT_WALK,         BOSS_RIGHT_WALK,          // 걷는 상태
 	BOSS_LEFT_DASH,		    BOSS_RIGHT_DASH,          // 대쉬 공격
-	BOSS_LEFT_HIT1,         BOSS_RIGHT_HIT1,		  // 맞았을 때 1타
-	BOSS_LEFT_HIT2,         BOSS_RIGHT_HIT2,		  // 맞았을 때 2타
-	BOSS_LEFT_HIT3,         BOSS_RIGHT_HIT3,		  // 맞았을 때 3타
+	BOSS_LEFT_HIT,          BOSS_RIGHT_HIT,		      // 맞았을 때 1타
 	BOSS_LEFT_HIT_GETUP,    BOSS_RIGHT_HIT_GETUP,	  // 맞았을 때 일어나서 공격
 	BOSS_LEFT_ATTACK,       BOSS_RIGHT_ATTACK,		  // 약 공격
 	BOSS_LEFT_ATTACK_ELBOW, BOSS_RIGHT_ATTACK_ELBOW,  // 엘보우 공격
