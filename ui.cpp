@@ -4,7 +4,6 @@
 HRESULT ui::init()
 {
 	_loading = IMAGEMANAGER->findImage("loading_sprite");
-	_selectArrow = IMAGEMANAGER->findImage("select_arrow");
 	_hpUI = IMAGEMANAGER->findImage("full_hd");
 
 	// 장비창
@@ -26,24 +25,18 @@ HRESULT ui::init()
 
 	_hpRC = RectMake(290, 55, _hpUI->getWidth(), _hpUI->getHeight());
 
-	_arrowX = 150;
-
 	_itemSelectIndex = 0;
 	_phoneAlpha = 0;
 
 	_hpWidth = _hpUI->getWidth();
 
-	_isStart = false;
 	_isPhone = false;
 	return S_OK;
 }
 
 void ui::render()
 {
-	//IMAGEMANAGER->findImage("title_background")->render(getMemDC());
-	//_selectArrow->render(getMemDC(),_arrowX, _arrowY);
 	//_loading->frameRender(getMemDC(), WINSIZEX / 2, WINSIZEY / 2,_loading->getFrameX(),0);
-	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("letter_box"), IMAGEMANAGER->findImage("letter_box")->getWidth() / 2, IMAGEMANAGER->findImage("letter_box")->getHeight() / 2);
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 0);
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 800);
 	IMAGEMANAGER->findImage("status_hud_back")->render(getMemDC(), 270, 50);
@@ -84,28 +77,6 @@ void ui::update()
 		_loading->setFrameX(_loading->getFrameX() + 1);
 		_timer = 0;
 	}
-
-
-	//// 타이틀 화면 조종 키
-	//if (KEYMANAGER->isOnceKeyDown(VK_UP))
-	//{
-	//	if (!_isStart)
-	//		_isStart = true;
-	//}
-	//if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
-	//{
-	//	if (_isStart)
-	//		_isStart = false;
-	//}
-	//// 타이틀 화면 화살표 조정
-	//if (_isStart)
-	//{
-	//	_arrowY = 530;
-	//}
-	//else
-	//{
-	//	_arrowY = 660;
-	//}
 
 	// 인벤토리 UI 띄우기 키
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
