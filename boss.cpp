@@ -449,6 +449,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 			_state = BOSS_LEFT_IDLE;
 			_animPlayer = _anim[BOSS_LEFT_IDLE];
 			_animPlayer->start();
+			_isDelayTime = true;
 		}
 		break;
 	case BOSS_RIGHT_ROAR:
@@ -459,6 +460,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 			_state = BOSS_RIGHT_IDLE;
 			_animPlayer = _anim[BOSS_RIGHT_IDLE];
 			_animPlayer->start();
+			_isDelayTime = true;
 		}
 		break;
 
@@ -746,7 +748,7 @@ void boss::attack(float playerX, float playerZ)
 	// ------ 임시 --------
 	float tempZ = playerZ + 100;
 
-	if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
+	if (getDistance(_x, _z, playerX, tempZ) < 3000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
 	{
 		if ((_state == BOSS_LEFT_ATTACK || _state == BOSS_RIGHT_ATTACK))
 		{
@@ -849,7 +851,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 	// ------ 임시 --------
 	float tempZ = playerZ + 100;
 
-	if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 500) // 플레이어를 찾아다님
+	if (getDistance(_x, _z, playerX, tempZ) < 3000 && getDistance(_x, _z, playerX, tempZ) > 500) // 플레이어를 찾아다님
 	{
 		if ((_state == BOSS_LEFT_HEAVY_ATTACK || _state == BOSS_RIGHT_HEAVY_ATTACK))
 		{
@@ -875,7 +877,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 		}
 		else
 		{
-			_angle = getAngle(_x, _z, playerX, tempZ);
+			
 			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 			{
 				if (_state != BOSS_LEFT_WALK)
@@ -896,7 +898,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 					_animPlayer->start();
 				}
 			}
-
+			_angle = getAngle(_x, _z, playerX, tempZ);
 			_x += cosf(_angle) * 2;	// 따로 빼도 되는건가 
 			_z -= sinf(_angle) * 2; // 따로 빼도 되는건가 
 		}
@@ -945,6 +947,8 @@ void boss::heavyAttack(float playerX, float playerZ)
 			}
 
 		}
+
+		_angle = getAngle(_x, _z, playerX, tempZ);
 	}
 
 } // 강 공격시에는 좋아하는것도 넣기
@@ -1057,7 +1061,7 @@ void boss::elbowAttack(float playerX, float playerZ)
 {// ------ 임시 --------
 	float tempZ = playerZ + 100;
 
-		if (getDistance(_x, _z, playerX, tempZ) < 1000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
+		if (getDistance(_x, _z, playerX, tempZ) < 3000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
 		{
 			if ((_state == BOSS_LEFT_ATTACK_ELBOW || _state == BOSS_RIGHT_ATTACK_ELBOW)) // 적한테 가까이갔다가 멀리 도망친 경우
 			{
