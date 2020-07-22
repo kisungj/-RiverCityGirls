@@ -156,6 +156,21 @@ void idleState::update(player & player)
 		}
 	}
 
+	//강공격
+	if (KEYMANAGER->isOnceKeyDown('Q'))
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setState(player.getAttackState());
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setState(player.getAttackState());
+		}
+	}
+
 	player.mouseCol();
 }
 
@@ -772,25 +787,6 @@ void runState::update(player & player)
 		player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
 	}
 
-	//맞기
-	/*if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
-
-		if (PtInRect(&player.getPlayerRect(), _ptMouse))
-		{
-			if (!player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-			if (player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				player.setState(player.getHitState());
-			}
-		}
-
-	}*/
 	player.mouseCol();
 }
 
@@ -813,12 +809,7 @@ void jumpState::update(player & player)
 	}
 	else _isJump = false;
 	
-	//cout << _isJump << endl;
 
-	//if (player.getIsDeskFall())
-	//{
-	//	player.setPlayerY(player.getPlayerY() + player.getGravity());
-	//}
 	if (player.getIsJumping())
 	{
 		player.setPlayerY(player.getPlayerY() - player.getJumpPower());
@@ -1129,7 +1120,8 @@ void attackState::update(player & player)
 		!KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK3")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_ATTACK3")->isPlay() &&
 		!KEYANIMANAGER->findAnimation("P_RIGHT_DIVE")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_DIVE")->isPlay() &&
 		!KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay() && 
-		!KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
+		!KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay()&&
+		!KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
 	{
 		player.setAttacked(false);
 		//키 누르면 앞으로 걸어가게

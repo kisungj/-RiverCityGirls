@@ -61,8 +61,11 @@ HRESULT player::init()
 	_probeH = _shadowX;
 	_playerProbe = _player.bottom;
 
+	_deskTimer = 0;
+
 	_mapStr = "pixel2";
 
+	
 	return S_OK;
 }
 
@@ -108,6 +111,7 @@ void player::render()
 	//Rectangle(getMemDC(), _player);
 	//Rectangle(getMemDC(), _probeV - 5, 100, _probeV + 5, 110);
 	//_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
+	//IMAGEMANAGER->findImage("PLAYER_STRONG")->render(getMemDC());
 
 }
 
@@ -190,6 +194,13 @@ void player::keyAnimation()
 	
 	int rightKick[] = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_KICK", "PLAYER_KICK", rightKick, 24, 13, false);
+
+	
+	int rightStrong[] = { 19,18,17,16,15,14,13,12,11,10 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_STRONG_ATTACK", "PLAYER_STRONG", rightStrong, 10, 13, false);
+	int leftStrong[] = { 0,1,2,3,4,5,6,7,8,9 };
+	KEYANIMANAGER->addArrayFrameAnimation("P_LEFT_STRONG_ATTACK", "PLAYER_STRONG", leftStrong, 10, 13, false);
+
 	
 	int rightJump[] = { 3, 4 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_JUMP", "PLAYER_JUMP", rightJump, 2, 10, false);
@@ -214,7 +225,7 @@ void player::mouseCol()
 
 		if (PtInRect(&_player, _ptMouse))
 		{
-			cout << "dd" << endl;
+			//cout << "dd" << endl;
 
 			if (!_directionX)
 			{
@@ -237,7 +248,7 @@ void player::pixelCol()
 {
 	if (!_isDesk)
 	{
-		
+
 		//맵 충돌 하고 올라와있음 하지마
 		for (int i = _probeV - 40; i < _probeV - 35; ++i)
 		{
@@ -345,13 +356,39 @@ void player::pixelCol()
 
 		}
 
-	
-	
+
+
 		//점프중에
 		if (_isJumping)
 		{
-			//노란색 닿으면
-			for (int i = _playerProbe - 3; i < _playerProbe + 3; ++i)
+			for (int i = _probeV + 5; i < _probeV + 10; ++i)
+			{
+				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
+
+					int r = GetRValue(color);
+					int g = GetGValue(color);
+					int b = GetBValue(color);
+					if ((r == 160 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
+					{
+						_isDesk = true;
+						_isRight = true;
+						_isLeft = true;
+						_isTop = true;
+						_isBottom = true;
+						_shadowY -= 110;
+						break;
+					}
+			}
+		}
+	}
+
+	if (_isDesk)
+	{
+		_deskTimer++;
+		_shadowAlpha = 200;
+		if (_deskTimer > 20)
+		{
+			for (int i = _probeV - 20; i < _probeV - 15; ++i)
 			{
 				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
 
@@ -359,59 +396,29 @@ void player::pixelCol()
 				int g = GetGValue(color);
 				int b = GetBValue(color);
 
-				if ((r == 255 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
+				if (!(r == 255 && g == 255 && b == 0))
 				{
-					_shadowY = _playerY + 110;
-					_isDesk = true;
-					_isRight = true;
-					_isLeft = true;
-					_isTop = true;
-					_isBottom = true;
+					cout << "d" << endl;
+					_shadowY += 110;
+
+					_isDesk = false;
+					_isJumping = true;
+
+					_jumpPower = 0;
+					_isDeskFall = true;
+					if (!_directionX)
+					{
+						setState(getJumpState());
+					}
+					if (_directionX)
+					{
+						setState(getJumpState());
+					}
 					break;
 				}
-				/*if (_isDeskFall)
-				{
-					if (r == 255 && g == 0 && b == 0)
-					{
-
-					}
-				}*/
 			}
+			_deskTimer = 0;
 		}
-	}
-	//cout << _isTop << endl;
-	if (_isDesk)
-	{
-		_shadowAlpha = 200;
-		for (int i = _playerProbe - 1; i < _playerProbe + 1; ++i)
-		{
-			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
-
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-		
-			if (!(r == 255 && g == 255 && b == 0))
-			{
-				_shadowY = _shadowY + 110;
-	
-				_isDesk = false;
-				_isJumping = true;
-				
-				_jumpPower = 0;
-				_isDeskFall = true;
-				if (!_directionX)
-				{
-					setState(getJumpState());
-				}
-				if (_directionX)
-				{
-					setState(getJumpState());
-				}
-				break;
-			}
-		}
-
 	}
 }
 

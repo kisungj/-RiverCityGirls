@@ -21,10 +21,29 @@ HRESULT stageManager::init()
 	_ui = new ui;
 	_ui->init();
 	_itemManager = new itemManager;
+	_inventory = new inventory;
 	_obstacleManager = new obstacleManager;
 	_enemyManager = new enemyManager;
 	_enemyManager->setPlayerLink(_player);
 	_boss	      =	new boss;
+
+	Item* tempItem1 = new Item;
+	tempItem1->init(HP);
+
+	Item* tempItem2 = new Item;
+	tempItem2->init(POWER);
+	_inventory->setInventory(tempItem2);
+	_inventory->setInventory(tempItem1);
+	_inventory->setInventory(tempItem2);
+	_inventory->setInventory(tempItem1);
+	_inventory->setInventory(tempItem2);
+
+	for (int i = 0; i < _inventory->getInventory().size() ; ++i)
+	{
+		_ui->setInventoryUI(_inventory->getInventory()[i]);
+	}
+
+
 	_stage1 = new stage1;
 	//_stage1->init(_obstacleManager, _itemManager, _enemyManager, _player);
 

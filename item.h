@@ -30,6 +30,7 @@ public:
 	Item();
 	~Item();
 
+	virtual HRESULT init(ITEMSTATE itemstate);
 	virtual HRESULT init(ITEMSTATE itemstate, POINT position);
 	virtual void update();
 	virtual void release();
@@ -37,6 +38,7 @@ public:
 
 	void move();											 //아이템 드랍시 떨어지게
 
+	image* getItemImage() { return _itemImg; }
 	RECT getItemRc() { return _itemRc; }					 //아이템 렉트값 넘기기
 	ITEMSTATE getitemstate() { return _itemState; }			 //아이템 enum값 넘기기
 	string getItemName() { return _itemName; }				 //아이템 이름값 넘기기
