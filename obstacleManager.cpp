@@ -42,15 +42,31 @@ void obstacleManager::setObstacle(OBSTACLESTATE obstacleState)
 	if (obstacleState == VENDING)
 	{
 		obstacle* _obstacle = new obstacle;
-		_obstacle->init(VENDING, PointMake(WINSIZEX + 150, WINSIZEY / 2 - 70));
+		_obstacle->init(VENDING, PointMake(1980, 550));
 		_vObstacle.push_back(_obstacle);
 	}
 
-	//±âµÕ
-	if (obstacleState == PILLAR)
+	//Ã¥»ó
+	if (obstacleState == DESK)
 	{
 		obstacle* _obstacle = new obstacle;
-		_obstacle->init(PILLAR, PointMake(2220, WINSIZEY / 2 + 100));
+		_obstacle->init(DESK, PointMake(100, 100));
+		_vObstacle.push_back(_obstacle);
+	}
+
+	//±âµÕ¿ÞÂÊ
+	if (obstacleState == PILLARLEFT)
+	{
+		obstacle* _obstacle = new obstacle;
+		_obstacle->init(PILLARLEFT, PointMake(917, 405));
+		_vObstacle.push_back(_obstacle);
+	}
+
+	//±âµÕ¿À¸¥ÂÊ
+	if (obstacleState == PILLARRIGHT)
+	{
+		obstacle* _obstacle = new obstacle;
+		_obstacle->init(PILLARRIGHT, PointMake(2700, 405));
 		_vObstacle.push_back(_obstacle);
 	}
 }
