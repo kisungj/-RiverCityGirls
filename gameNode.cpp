@@ -76,7 +76,7 @@ void gameNode::release()
 		KEYANIMANAGER->release();
 		KEYANIMANAGER->releaseSingleton();
 
-		INIDATA->release();
+		//INIDATA->release();
 		INIDATA->releaseSingleton();
 	
 		CAMERAMANAGER->release();
