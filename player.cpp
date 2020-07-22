@@ -437,7 +437,8 @@ void player::pixelCol()
 				{
 					cout << "d" << endl;
 
-					_gravity = 0.1f;
+					_gravity = 0.5f;
+					_jumpPower = 0;
 					_isDesk = false;
 					_isJumping = true;
 
