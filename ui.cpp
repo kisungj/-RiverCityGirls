@@ -50,6 +50,13 @@ void ui::render()
 	IMAGEMANAGER->findImage("coin_ui")->render(getMemDC(), 290, 105);
 	IMAGEMANAGER->findImage("character_hud")->render(getMemDC(), 140, 0);
 
+	SetBkMode(getMemDC(), TRANSPARENT);
+	HFONT font, oldFont;
+	RECT itemNameText = RectMake(200, WINSIZEY / 2 + 180, 1100, 400);
+	RECT itemDiscriptionText = RectMake(320, WINSIZEY / 2 + 210, 250, 400);
+	font = CreateFont(30, 0, 0, 0, 100, 0, 0, 0, HANGUL_CHARSET, 0, 0, 0, 0, TEXT("HY°ß°íµñ"));
+	oldFont = (HFONT)SelectObject(getMemDC(), font);
+
 	if (_isPhone)
 	{
 		IMAGEMANAGER->findImage("phone_active")->alphaRender(getMemDC(), 100);
@@ -71,7 +78,18 @@ void ui::render()
 				_inventory[i].item->getItemImage()->render(getMemDC(), _inventory[i].rc.left, _inventory[i].rc.top);
 		}
 
+		if (!_inventory[_itemSelectIndex].isNull)
+		{
+			SetTextColor(getMemDC(), RGB(255, 255, 255));
+			DrawText(getMemDC(), TEXT(_inventory[_itemSelectIndex].item->getItemName().c_str()), strlen(_inventory[_itemSelectIndex].item->getItemName().c_str()), &itemNameText, DT_LEFT | DT_WORDBREAK);
+			font = CreateFont(25, 0, 0, 0, 100, 0, 0, 0, HANGUL_CHARSET, 0, 0, 0, 0, TEXT("HY°ß°íµñ"));
+			oldFont = (HFONT)SelectObject(getMemDC(), font);
+			SetTextColor(getMemDC(), RGB(0, 0, 0));
+			DrawText(getMemDC(), TEXT(_inventory[_itemSelectIndex].item->getItemDiscription().c_str()), strlen(_inventory[_itemSelectIndex].item->getItemDiscription().c_str()), &itemDiscriptionText, DT_LEFT | DT_WORDBREAK);
+		}
 	}
+	SelectObject(getMemDC(), oldFont);
+	DeleteObject(font);
 
 }
 
