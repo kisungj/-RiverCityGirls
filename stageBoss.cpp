@@ -5,8 +5,8 @@
 HRESULT stageBoss::init(player* player, boss* boss)
 {
 	_boss = boss;
-	_boss->init();
-
+	
+	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2538 - WINSIZEX, 1000 - WINSIZEY);
 	_player = player;
 	return S_OK;
 }
@@ -25,5 +25,5 @@ void stageBoss::update()
 
 void stageBoss::release()
 {
-	SAFE_DELETE(_boss);
+
 }

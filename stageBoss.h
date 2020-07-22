@@ -4,7 +4,7 @@
 class stageBoss : public gameNode
 {
 private:
-	class boss* _boss;
+	class boss*   _boss;
 	class player* _player;
 	
 public:

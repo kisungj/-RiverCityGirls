@@ -1,14 +1,17 @@
 #pragma once
 #include "gameNode.h"
+#include "item.h"
 #include <vector>
+
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 
 class inventory : public gameNode
 {
 private:
-	vector<inventory*>				vInventory;
-	vector<inventory*>::iterator	viInventory;
+	vector<Item*>				vInventory;
+	vector<Item*>::iterator		viInventory;
 
-	image		_inImage;					//아이템 이미지
+	image	_inImage;					//아이템 이미지
 	string	_inItemName;				//아이템 이름
 	string	_inItemDiscription;			//아이템 설명
 	int		_inHpPortion;				//HP 증가 수치
@@ -20,7 +23,7 @@ public:
 
 	virtual HRESULT init();
 	virtual void release();
-	virtual void updatea();
+	virtual void update();
 	virtual void render();
 
 	//string getInItemName() { return _inItemName; }											//아이템 이름 넘겨주기
@@ -32,8 +35,8 @@ public:
 	//int getInPowerPortion() { return _inPowerPortion; }										//POWER 아이템 넘겨주기
 	//void setInPowerPortion(int power) { _inPowerPortion = power; }							//POWER 아이템 설정
 
-	vector<inventory*> getInventory() { return vInventory; }
-	void setInventory(inventory* inven) { vInventory.push_back(inven); }
+	vector<Item*> getInventory() { return vInventory; }
+	void setInventory(Item* inven) { vInventory.push_back(inven); }
 };
 
 

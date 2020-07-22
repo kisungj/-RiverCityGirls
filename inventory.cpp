@@ -23,9 +23,13 @@ void inventory::release()
 {
 }
 
-void inventory::updatea()
+void inventory::update()
 {
-
+	for (int i = 0; i < vInventory.size(); ++i)
+	{
+		cout << vInventory[i]->getItemName() << endl;
+		cout << vInventory.size() << endl;
+	}
 }
 
 void inventory::render()
