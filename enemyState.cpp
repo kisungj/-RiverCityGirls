@@ -21,6 +21,8 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		enemy.setY(enemy.getY() - 2);
 	}
 
+	enemy.setZ(enemy.getY() + 100);
+
 	//==================x축 이동==================//
 	if (enemy.getRight())
 	{
@@ -107,6 +109,8 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		{
 			enemy.setY(enemy.getY() - 1);
 		}
+
+		enemy.setZ(enemy.getY() + 100);
 
 		if (enemy.getRight()) enemy.setX(enemy.getX() + 5);
 		else enemy.setX(enemy.getX() - 5);
@@ -220,6 +224,8 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		enemy.setY(enemy.getY() - 1);
 	}
 
+	enemy.setZ(enemy.getY() + 100);
+
 	//==================공격 렉트 생성==================//
 	if (enemy.getRight())
 	{
@@ -331,6 +337,8 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 {
 	RECT temp;
 	_frameCount++;
+
+	enemy.setZ(enemy.getY() + 100);
 
 	if (enemy.getStop())
 	{
@@ -655,6 +663,8 @@ void enemyDizzyState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE
 	_dizzyCount++;
 	_frameCount++;
 
+	enemy.setZ(enemy.getY() + 100);
+
 	enemy.setStop(true);
 
 	if (_frameCount % 7 == 0)
@@ -706,4 +716,5 @@ void enemyDizzyState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE
 
 void enemyDeadState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {
+	enemy.setZ(enemy.getY() + 100);
 }

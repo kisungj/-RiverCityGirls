@@ -25,11 +25,12 @@ HRESULT enemy::init(float x, float y)
 
 	_x = x;
 	_y = y;
+	_z = y + 100;
 	_width = 130;
 	_height = 200;
 
 	_rc = RectMakeCenter(_x, _y, _width, _height);
-	_shadow = RectMakeCenter(_x, _y + 100, 50, 30);
+	_shadow = RectMakeCenter(_x, _z, 50, 30);
 
 	_image = IMAGEMANAGER->findImage("boy_walk");
 
@@ -72,7 +73,7 @@ void enemy::render()
 
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("enemy_shadow"), _x, _shadow.top + IMAGEMANAGER->findImage("enemy_shadow")->getHeight() / 2);
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("enemy_shadow"), _x, _z);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
 }

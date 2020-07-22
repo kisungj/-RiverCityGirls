@@ -120,7 +120,7 @@ void boss::loadImage()
 	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 153, 45, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 2844, 582, 12, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 2322, 552, 9, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 9300, 576, 31, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_hit_getup", "image/boss/boss_hit_getup.bmp", 3915, 552, 15, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_jumpAttack", "image/boss/boss_jumpAttack.bmp", 5832, 618, 24, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_walk", "image/boss/boss_walk.bmp", 1770, 552, 10, 2, true, RGB(255, 0, 255));
@@ -274,7 +274,7 @@ void boss::loadAnimation()
 	_anim[BOSS_LEFT_HIT] = new animation;
 	_anim[BOSS_LEFT_HIT]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_LEFT_HIT]->setPlayFrame(17, 9, false, false);
+	_anim[BOSS_LEFT_HIT]->setPlayFrame(59, 31, false, false);
 	_anim[BOSS_LEFT_HIT]->setFPS(1);
 	// --------------- LEFT HIT --------------- //
 
@@ -282,7 +282,7 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_HIT] = new animation;
 	_anim[BOSS_RIGHT_HIT]->init(IMAGEMANAGER->findImage("boss_hit")->getWidth(), IMAGEMANAGER->findImage("boss_hit")->getHeight()
 		, IMAGEMANAGER->findImage("boss_hit")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit")->getFrameHeight());
-	_anim[BOSS_RIGHT_HIT]->setPlayFrame(0, 8, false, false);
+	_anim[BOSS_RIGHT_HIT]->setPlayFrame(0, 30, false, false);
 	_anim[BOSS_RIGHT_HIT]->setFPS(1);
 	// --------------- RIGHT HIT --------------- //
 
