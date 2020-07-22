@@ -41,6 +41,7 @@ private:
 	float _attackSizeX, _attackSizeY;//어택렉트의 사이즈
 	float _currentHP, _maxHP;		//체력
 	float _jumpPower, _gravity;		//플레이어 점프파워, 중력
+	float _deskTimer;
 
 	bool _isBottom;					//아래
 	bool _isTop;					//위

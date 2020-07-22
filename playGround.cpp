@@ -100,7 +100,9 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addFrameImage("PLAYER_STOMP", "image/player/Kyoko_Stomp.bmp", 1290, 451, 10, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_STUNNED", "image/player/Kyoko_Stunned.bmp", 384, 384, 4, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_KICK", "image/player/Kyoko_HurricaneKick.bmp", 2997, 657, 9, 3, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_STRONG", "image/player/player_strongAttack.bmp", 3030, 474, 10, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("PLAYER_SHADOW", "image/player/Kyoko_Shadow.bmp", 128, 38, true, RGB(255, 0, 255));
+
 	// ======= player
 
 	IMAGEMANAGER->addImage("stage2", "image/map/stage2.bmp", 4000, 1200, false, RGB(0, 0, 0));
