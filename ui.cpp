@@ -144,6 +144,7 @@ void ui::update()
 	}
 	else
 	{
+		_itemSelectIndex = 0;
 		_phoneAlpha = 0;
 	}
 }

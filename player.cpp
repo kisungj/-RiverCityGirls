@@ -3,7 +3,7 @@
 
 HRESULT player::init()
 {
-
+	//++++++플레이어 사용법++++++
 	//방향키로 움직
 	//Z키로 점프
 	//A키로 기본공격 3단
@@ -55,6 +55,7 @@ HRESULT player::init()
 	_directionX = true;
 
 	_isAttack = _attacked = false;
+	_isDeskJump = false;
 
 	keyAnimation();
 
@@ -100,108 +101,13 @@ void player::update()
 	_playerProbe = _player.bottom;
 
 	_state->update(*this);
+	
+	pixelCol();
 
-	//픽셀충돌
-	for (int i = _probeV - 40; i < _probeV -35; ++i)
-	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+	boolCheck();
+	
+	
 
-		int r = GetRValue(color);
-		int g = GetGValue(color);
-		int b = GetBValue(color);
-
-
-		if ((r == 255 && g == 0 && b == 255)|| (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
-		{
-			_isTop = true;
-		}
-		else
-		{
-			_isTop = false;
-		}
-	}
-
-	for (int i = _probeV + 5; i < _probeV +10; ++i)
-	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
-
-		int r = GetRValue(color);
-		int g = GetGValue(color);
-		int b = GetBValue(color);
-
-		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
-		{
-			_isBottom = true;
-		}
-		else
-		{
-			_isBottom = false;
-		}
-
-	}
-	for (int i = _probeH - 40; i < _probeH - 35; ++i)
-	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(),i, (_shadow.top + _shadow.bottom) / 2);
-
-		int r = GetRValue(color);
-		int g = GetGValue(color);
-		int b = GetBValue(color);
-
-		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
-		{
-			_isLeft = true;
-		}
-		else
-		{
-			_isLeft = false;
-		}
-	}
-	for (int i = _probeH + 45; i < _probeH + 50; ++i)
-	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
-
-		int r = GetRValue(color);
-		int g = GetGValue(color);
-		int b = GetBValue(color);
-
-		if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
-		{
-			_isRight = true;
-		}
-		
-		else
-		{
-			_isRight = false;
-		}
-	}
-
-	if (!_isJumping)
-	{
-		_playerY = _shadowY - 110;
-	}
-	//cout << _isJumping << endl;
-
-	if (_isJumping)
-	{
-		for (int i = _playerProbe -10; i < _playerProbe + 10; ++i)
-		{
-			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX,i);
-
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
-
-			if (r == 255 && g == 255 && b == 0)
-			{
-				_isDesk = true;
-			}
-			else
-			{
-				_isDesk = false;
-			}
-		}
-	}
-	cout << _isDesk << endl;
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
@@ -341,6 +247,165 @@ void player::mouseCol()
 			}
 		}
 
+	}
+}
+
+void player::pixelCol()
+{
+	if (!_isDesk)
+	{
+		//데스크에 올라와있지 않으면
+		if (!_isJumping)
+		{
+			//cout << "d" << endl;
+			//맵 충돌 하고 올라와있음 하지마
+			for (int i = _probeV - 40; i < _probeV - 35; ++i)
+			{
+				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+
+				int r = GetRValue(color);
+				int g = GetGValue(color);
+				int b = GetBValue(color);
+
+
+				if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
+				{
+
+					_isTop = true;
+				}
+				else
+				{
+					_isTop = false;
+				}
+			}
+
+			for (int i = _probeV + 5; i < _probeV + 10; ++i)
+			{
+				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+
+				int r = GetRValue(color);
+				int g = GetGValue(color);
+				int b = GetBValue(color);
+
+				if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
+				{
+					_isBottom = true;
+				}
+				else
+				{
+					_isBottom = false;
+				}
+
+			}
+			for (int i = _probeH - 40; i < _probeH - 35; ++i)
+			{
+				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+
+				int r = GetRValue(color);
+				int g = GetGValue(color);
+				int b = GetBValue(color);
+
+				if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
+				{
+					_isLeft = true;
+				}
+				else
+				{
+					_isLeft = false;
+				}
+			}
+			for (int i = _probeH + 45; i < _probeH + 50; ++i)
+			{
+				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+
+				int r = GetRValue(color);
+				int g = GetGValue(color);
+				int b = GetBValue(color);
+
+				if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
+				{
+					_isRight = true;
+				}
+
+				else
+				{
+					_isRight = false;
+				}
+			}
+
+		}
+
+		//점프중에
+		if (_isJumping || _isDeskJump)
+		{
+			//노란색 닿으면
+			for (int i = _playerProbe - 5; i < _playerProbe + 5; ++i)
+			{
+				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
+
+				int r = GetRValue(color);
+				int g = GetGValue(color);
+				int b = GetBValue(color);
+
+				if (r == 255 && g == 255 && b == 0)
+				{
+					_shadowY = _playerY + 110;
+					_isDesk = true;
+					_isRight = true;
+					_isLeft = true;
+					_isTop = true;
+					_isBottom = true;
+					break;
+				}
+			}
+		}
+	}
+	cout << _isTop << endl;
+	if (_isDesk)
+	{
+		for (int i = _playerProbe - 1; i < _playerProbe + 1; ++i)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+			if (!(r == 255 && g == 255 && b == 0))
+			{
+				_shadowY = _shadowY + 110;
+				_isDesk = false;
+				break;
+			}
+		}
+
+	}
+}
+
+void player::boolCheck()
+{
+	//점프중이 아니고 데스크랑 닿아있는 것도 아니고
+	//얘는 기본
+	if (!_isJumping && !_isDeskJump)
+	{
+		_playerY = _shadowY - 110;
+	}
+
+	//책상이랑 닿았다면
+	if (_isDesk)
+	{
+		//떨어질때
+		if (_jumpPower < 0)
+		{
+			_isDeskJump = true;
+			_isJumping = false;
+		}
+	}
+	//책상위에 서라
+	if (_isDeskJump)
+	{
+		
+		_isDeskJump = false;
 	}
 }
 
