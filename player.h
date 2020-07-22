@@ -164,6 +164,7 @@ public:
 	void setAttacked(bool attacked) { _attacked = attacked; }
 	void setIsDeskFall(bool fall) { _isDeskFall = fall; }
 	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
+	void setMapStr(string str) { _mapStr = str; }
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
 };
 
