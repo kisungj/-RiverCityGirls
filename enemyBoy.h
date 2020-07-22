@@ -4,5 +4,5 @@
 class enemyBoy : public enemy
 {
 public:
-	virtual void update();
+	//virtual void update();
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "gameNode.h"
 #include "enemyBoy.h"
+class player;
 
 class enemyManager : public gameNode
 {
@@ -9,6 +10,7 @@ class enemyManager : public gameNode
 private:
 	getVEnemy _vBoy;
 	getVIEnemy _viBoy;
+	player* _player;
 
 
 public:
@@ -27,6 +29,7 @@ public:
 	void eraseGirl(int arrNum);
 	void eraseCheer(int arrNum);
 
+	void setPlayerLink(player* player) { _player = player; }
 
 public:
 	vector<enemy*> getVBoy() { return _vBoy; }
