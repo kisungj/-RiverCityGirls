@@ -14,12 +14,14 @@ class enemy : public gameNode
 protected:
 	enemyState* _state;				//현재 클래스 상태
 	CONDITION _condition;			//상태
+	ENEMYTYPE _et;
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
 	RECT _attackRC;					//에너미 공격 렉트
 
 	image* _image;					//에너미 이미지
+	image* _shadowImg;				//쉐도우 이미지
 	int _currentX, _currentY;		//프레임 x축 , y축
 	int _frameCount;				//프레임 돌리는 용도
 
@@ -31,7 +33,6 @@ protected:
 	bool _isHit;					//맞고 있는지
 	bool _isStop;					//프레임 조절용
 	bool _isLay;					//누웠는지
-	bool _isDead;					//죽었는지
 
 	int _hitCount;					//맞은 횟수
 	int _layCount;					//누운 시간
@@ -54,7 +55,7 @@ public:
 	enemy();
 	~enemy();
 
-	virtual HRESULT init(float x, float y);
+	virtual HRESULT init(float x, float y, ENEMYTYPE et);
 	virtual void release();
 	virtual void update();
 	virtual void render();

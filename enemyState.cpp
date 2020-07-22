@@ -45,6 +45,18 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		if (enemy.getRight()) enemy.setX(enemy.getX() + 2);
 		else enemy.setX(enemy.getX() - 2);
 
+		if (enemy.getY() < y - 20)
+		{
+			enemy.setY(enemy.getY() + 1);
+		}
+
+		if (enemy.getY() > y + 20)
+		{
+			enemy.setY(enemy.getY() - 1);
+		}
+
+		enemy.setZ(enemy.getY() + 100);
+
 		//==================런 클래스로 이동==================//
 		if (getDistance(x, y, enemy.getX(), enemy.getY()) > 500)
 		{
@@ -75,7 +87,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 	{
 		_delayCount++;		
 
-		if (_delayCount > 30)
+		if (_delayCount > 50)
 		{
 			if (enemyType == ENEMYTYPE::BOY)
 			{
@@ -89,8 +101,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		}		
 	}
 
-	cout << "move class" << endl;
-	cout << x - enemy.getX() << endl;
+	//cout << "move class" << endl;
 }
 
 //===================================================런클래스===================================================//
@@ -141,7 +152,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			if (enemy.getFrameX() == 1)
 			{
-				if (IntersectRect(&temp, &rc, &_attack))
+				if (IntersectRect(&temp, &rc, &enemy.getAtk()))
 				{
 					enemy.setAtk(0, 0, 0, 0);
 				}
@@ -159,7 +170,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 1)
 			{
-				if (IntersectRect(&temp, &rc, &_attack))
+				if (IntersectRect(&temp, &rc, &enemy.getAtk()))
 				{
 					enemy.setAtk(0, 0, 0, 0);
 				}
@@ -205,7 +216,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		_kickCount = 0;
 	}
 
-	cout << "run class" << endl;
+	//cout << "run class" << endl;
 }
 
 //===================================================어택 클래스===================================================//
@@ -214,52 +225,48 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 	RECT temp;
 	_isAttack = true;
 
-	if (enemy.getY() < y - 20)
-	{
-		enemy.setY(enemy.getY() + 1);
-	}
-
-	if (enemy.getY() > y + 20)
-	{
-		enemy.setY(enemy.getY() - 1);
-	}
-
-	enemy.setZ(enemy.getY() + 100);
-
 	//==================공격 렉트 생성==================//
 	if (enemy.getRight())
 	{
-		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 1)
+		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 3)
 		{
 			enemy.setAtk(enemy.getX() + 65, enemy.getY(), 95, 200);
 		}
 
 		if (enemy.getFrameX() == 0)
 		{
-			if (IntersectRect(&temp, &rc, &_attack))
+			if (IntersectRect(&temp, &rc, &enemy.getAtk()))
 			{
 				_comboCount++;
 				enemy.setAtk(0, 0, 0, 0);
 			}
-			else enemy.setAtk(0, 0, 0, 0);
+
+			else
+			{
+				enemy.setAtk(0, 0, 0, 0);
+			}
 		}
 	}
 
 	if (!enemy.getRight())
 	{
-		if (enemy.getFrameX() == 1)
+		if (enemy.getFrameX() == 3)
 		{
 			enemy.setAtk(enemy.getX() - 65, enemy.getY(), 95, 200);
 		}
 
 		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX())
 		{
-			if (IntersectRect(&temp, &rc, &_attack))
+			if (IntersectRect(&temp, &rc, &enemy.getAtk()))
 			{
 				_comboCount++;
 				enemy.setAtk(0, 0, 0, 0);
+			}			
+
+			else
+			{
+				enemy.setAtk(0, 0, 0, 0);
 			}
-			else enemy.setAtk(0, 0, 0, 0);
 		}
 	}
 
@@ -313,11 +320,13 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getMove());
+		_isStrike = false;
 	}
 
 	//==================힛 클래스로 이동==================//
 	if (enemy.getOuch())
 	{
+		_isStrike = false;
 		_comboCount = 0;
 		if (enemyType == ENEMYTYPE::BOY)
 		{
@@ -328,8 +337,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		enemy.setState(enemy.getHit());
 	}
 
-	cout << "attack class" << endl;
-	cout << enemy.getFrameX() << endl;
+	//cout << "attack class" << endl;
 }
 
 //===================================================힛 클래스===================================================//
@@ -549,9 +557,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		}
 	}
 
-	cout << "hit class" << endl;
-	cout << enemy.getLayCount() << ", " << enemy.getStop() << ", " << enemy.getLay() << endl;
-
+	//cout << "hit class" << endl;
 }
 
 //===================================================다운 클래스===================================================//
@@ -653,8 +659,7 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		}
 	}
 
-	cout << "down class" << endl;
-	cout << enemy.getHitCount() << ", " << enemy.getOuch() << endl;
+	//cout << "down class" << endl;
 }
 
 //===================================================어질어질 클래스===================================================//
@@ -711,7 +716,7 @@ void enemyDizzyState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE
 		_dizzyCount = 0;		
 	}
 
-	cout << "dizzy class" << endl;
+	//cout << "dizzy class" << endl;
 }
 
 void enemyDeadState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)

@@ -9,7 +9,7 @@ enemy::~enemy()
 {
 }
 
-HRESULT enemy::init(float x, float y)
+HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 {
 	{
 		_move	 = new enemyMoveState();
@@ -23,6 +23,7 @@ HRESULT enemy::init(float x, float y)
 
 	addImage();
 
+	_et = et;
 	_x = x;
 	_y = y;
 	_z = y + 100;
@@ -32,7 +33,17 @@ HRESULT enemy::init(float x, float y)
 	_rc = RectMakeCenter(_x, _y, _width, _height);
 	_shadow = RectMakeCenter(_x, _z, 50, 30);
 
-	_image = IMAGEMANAGER->findImage("boy_walk");
+	switch (_et)
+	{
+	case ENEMYTYPE::BOY:
+		_image = IMAGEMANAGER->findImage("boy_walk");
+		break;
+	case ENEMYTYPE::GIRL:
+		break;
+	case ENEMYTYPE::CHEER:
+		break;
+	}
+	_shadowImg = IMAGEMANAGER->findImage("enemy_shadow");
 
 	_right = _isHit = false;
 	_jumpPower = _gravity = 0;
@@ -47,13 +58,14 @@ void enemy::release()
 
 void enemy::update()
 {
+
 	_y -= _jumpPower;
 	_jumpPower -= _gravity;
 
 	_rc = RectMakeCenter(_x, _y, _width, _height);
 	_shadow = RectMakeCenter(_x, _y + 100, 80, 30);
 
-	_state->update(*this, _playerRC, _playerX, _playerY, ENEMYTYPE::BOY);
+	_state->update(*this, _playerRC, _playerX, _playerY, _et);
 
 	if (_isLay) _layCount++;
 
@@ -65,15 +77,15 @@ void enemy::update()
 
 	//CAMERAMANAGER->setX(_x);
 	//CAMERAMANAGER->setY(_y);
+
+	draw();
 }
 
 void enemy::render()
 {
-	draw();
-
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("enemy_shadow"), _x, _z);
+	CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
 }
@@ -129,8 +141,7 @@ void enemy::draw()
 }
 
 void enemy::pixelCollision()
-{
-	
+{	
 	int _probeU = _shadow.top;
 	int _probeB = _shadow.bottom;
 	int _probeL = _shadow.left;
@@ -153,7 +164,12 @@ void enemy::pixelCollision()
 
 		if (r == 255 && g == 0 && b == 0) 
 		{
-			_probeU -= i;
+			_z = i + _shadowImg->getHeight() / 2;
+		}
+
+		if (r == 0 && g == 255 && b == 0)
+		{
+
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -176,6 +192,11 @@ void enemy::pixelCollision()
 			
 		}
 
+		if (r == 0 && g == 255 && b == 0)
+		{
+
+		}
+
 		if (r == 255 && g == 255 && b == 0)
 		{
 
@@ -192,6 +213,11 @@ void enemy::pixelCollision()
 		int b = GetBValue(color);
 
 		if (r == 255 && g == 0 && b == 255)
+		{
+
+		}
+
+		if (r == 0 && g == 255 && b == 0)
 		{
 
 		}
@@ -214,6 +240,11 @@ void enemy::pixelCollision()
 		if (r == 255 && g == 0 && b == 255)
 		{
 			
+		}
+
+		if (r == 0 && g == 255 && b == 0)
+		{
+
 		}
 
 		if (r == 255 && g == 255 && b == 0)
