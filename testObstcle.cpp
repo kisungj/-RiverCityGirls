@@ -93,6 +93,7 @@ void testObstcle::update()
 
 	_om->update();
 	_im->update();
+	_in->update();
 
 
 }
@@ -131,6 +132,7 @@ void testObstcle::collision()
 			if (_im->getVItem()[i]->getitemstate() == SILVER)
 			{
 				_moneyCount += rndsilver;
+
 			}
 
 			//HPÆ÷¼Ç È¹µæ½Ã
@@ -140,6 +142,7 @@ void testObstcle::collision()
 				//_in->setInItemName(_im->getVItem()[i]->getItemName());
 				//_in->setInItemDiscription(_im->getVItem()[i]->getItemDiscription());
 				//_in->setInHpPortion(_im->getVItem()[i]->getHpPortion());
+				_in->setInventory(_im->getVItem()[i]);
 			}
 
 			//ÆÄ¿öÆ÷¼Ç È¹µæ½Ã
@@ -148,9 +151,11 @@ void testObstcle::collision()
 				//_in->setInItemName(_im->getVItem()[i]->getItemName());
 				//_in->setInItemDiscription(_im->getVItem()[i]->getItemDiscription());
 				//_in->setInPowerPortion(_im->getVItem()[i]->getPowerPortion());
+				_in->setInventory(_im->getVItem()[i]);
 			}
 
 			_im->removeItem(i);
+			break;
 		}
 	}
 
