@@ -3,24 +3,27 @@
 
 HRESULT ui::init()
 {
+	_inven = new inventory;
+	_inven->init();
+
 	_loading = IMAGEMANAGER->findImage("loading_sprite");
 	_hpUI = IMAGEMANAGER->findImage("full_hd");
 
 	// 장비창
-	_inventory[0] = RectMake(250, 300, 110, 110);
-	_inventory[1] = RectMake(405, 300, 110, 110);
+	_inventory[0].rc = RectMake(250, 300, 110, 110);
+	_inventory[1].rc = RectMake(405, 300, 110, 110);
 
 	// 첫번째 줄 인벤토리 
-	_inventory[2] = RectMake(248, 448, 63, 61);
-	_inventory[3] = RectMake(317, 448, 63, 61);
-	_inventory[4] = RectMake(386, 448, 63, 61);
-	_inventory[5] = RectMake(455, 448, 63, 61);
+	_inventory[2].rc = RectMake(248, 448, 63, 61);
+	_inventory[3].rc = RectMake(317, 448, 63, 61);
+	_inventory[4].rc = RectMake(386, 448, 63, 61);
+	_inventory[5].rc = RectMake(455, 448, 63, 61);
 
 	// 두번째 줄 인벤토리
-	_inventory[6] = RectMake(248, 522, 63, 61);
-	_inventory[7] = RectMake(317, 522, 63, 61);
-	_inventory[8] = RectMake(386, 522, 63, 61);
-	_inventory[9] = RectMake(455, 522, 63, 61);
+	_inventory[6].rc = RectMake(248, 522, 63, 61);
+	_inventory[7].rc = RectMake(317, 522, 63, 61);
+	_inventory[8].rc = RectMake(386, 522, 63, 61);
+	_inventory[9].rc = RectMake(455, 522, 63, 61);
 
 
 	_hpRC = RectMake(290, 55, _hpUI->getWidth(), _hpUI->getHeight());
@@ -52,13 +55,15 @@ void ui::render()
 
 		if (_itemSelectIndex == 0 || _itemSelectIndex == 1)
 		{
-			IMAGEMANAGER->findImage("equip_select")->alphaRender(getMemDC(), _inventory[_itemSelectIndex].left + 35 , _inventory[_itemSelectIndex].top - 27, _phoneAlpha);
+			IMAGEMANAGER->findImage("equip_select")->alphaRender(getMemDC(), _inventory[_itemSelectIndex].rc.left + 35 , _inventory[_itemSelectIndex].rc.top - 27, _phoneAlpha);
 		}
 
 		if (_itemSelectIndex > 1 && _itemSelectIndex < 10)
 		{
-			IMAGEMANAGER->findImage("select_item")->alphaRender(getMemDC(), _inventory[_itemSelectIndex].left, _inventory[_itemSelectIndex].top, _phoneAlpha);
+			IMAGEMANAGER->findImage("select_item")->alphaRender(getMemDC(), _inventory[_itemSelectIndex].rc.left, _inventory[_itemSelectIndex].rc.top, _phoneAlpha);
 		}
+
+
 	}
 
 }
