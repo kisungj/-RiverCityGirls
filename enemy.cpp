@@ -56,7 +56,7 @@ void enemy::update()
 
 	if (_isLay) _layCount++;
 
-	pixelCollision();
+	//pixelCollision();
 
 	//if (_hitCount == 1) _hitState = HITSTATE::HIT1;
 	//if (_hitCount == 2) _hitState = HITSTATE::HIT2;

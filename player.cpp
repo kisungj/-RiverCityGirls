@@ -254,93 +254,83 @@ void player::pixelCol()
 {
 	if (!_isDesk)
 	{
-		//데스크에 올라와있지 않으면
-		/*if (!_isJumping)
-		{*/
-			//cout << "d" << endl;
-			//맵 충돌 하고 올라와있음 하지마
-			for (int i = _probeV - 40; i < _probeV - 35; ++i)
+		
+		//맵 충돌 하고 올라와있음 하지마
+		for (int i = _probeV - 40; i < _probeV - 35; ++i)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+
+			if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 			{
-				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
-				int r = GetRValue(color);
-				int g = GetGValue(color);
-				int b = GetBValue(color);
+				_isTop = true;
+			}
+			else
+			{
+				_isTop = false;
+			}
+		}
 
+		for (int i = _probeV + 5; i < _probeV + 10; ++i)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
-				if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
-				{
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
 
-					_isTop = true;
-				}
-				else
-				{
-					_isTop = false;
-				}
+			if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
+			{
+				_isBottom = true;
+			}
+			else
+			{
+				_isBottom = false;
 			}
 
-			for (int i = _probeV + 5; i < _probeV + 10; ++i)
+		}
+		for (int i = _probeH - 40; i < _probeH - 35; ++i)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+			if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 			{
-				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
-
-				int r = GetRValue(color);
-				int g = GetGValue(color);
-				int b = GetBValue(color);
-
-				if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
-				{
-					_isBottom = true;
-				}
-				else
-				{
-					_isBottom = false;
-				}
-
+				_isLeft = true;
 			}
-			for (int i = _probeH - 40; i < _probeH - 35; ++i)
+			else
 			{
-				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
-
-				int r = GetRValue(color);
-				int g = GetGValue(color);
-				int b = GetBValue(color);
-
-				if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
-				{
-					_isLeft = true;
-				}
-				else
-				{
-					_isLeft = false;
-				}
+				_isLeft = false;
 			}
-			for (int i = _probeH + 45; i < _probeH + 50; ++i)
+		}
+		for (int i = _probeH + 45; i < _probeH + 50; ++i)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+			if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
 			{
-				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
-
-				int r = GetRValue(color);
-				int g = GetGValue(color);
-				int b = GetBValue(color);
-
-				if ((r == 255 && g == 0 && b == 255) || (r == 0 && g == 0 && b == 255) || (r == 255 && g == 255 && b == 0))
-				{
-					_isRight = true;
-				}
-
-				else
-				{
-					_isRight = false;
-				}
+				_isRight = true;
 			}
 
-		//}
-		//if (_isJumping)
-		//{
-		//	_isRight = true;
-		//	_isLeft = true;
-		//	_isTop = true;
-		//	_isBottom = true;
-	//	}/
+			else
+			{
+				_isRight = false;
+			}
+		}
+
+	
 		//점프중에
 		if ((_isJumping && _shadowY < 850 && _shadowY > 700))
 		{
@@ -421,22 +411,6 @@ void player::boolCheck()
 			_isJumping = false;
 		}
 	}
-	/*if (_isDeskFall)
-	{
-		_isJumping = true;
-		_jumpPower = 0;
-		_gravity = 0.5f;
-		if (!_directionX)
-		{
-			setAni(KEYANIMANAGER->findAnimation("P_LEFT_FALL"), IMAGEMANAGER->findImage("PLAYER_FALL"));
-			setState(getJumpState());
-		}
-		if (_directionX)
-		{
-			setAni(KEYANIMANAGER->findAnimation("P_RIGHT_FALL"), IMAGEMANAGER->findImage("PLAYER_FALL"));
-			setState(getJumpState());
-		}
-
-	}*/
+	
 }
 
