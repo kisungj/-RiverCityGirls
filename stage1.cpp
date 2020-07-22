@@ -12,7 +12,6 @@ HRESULT stage1::init(obstacleManager * obstacleManager, itemManager* itemManager
 	_player = player;
 
 
-	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2395 - WINSIZEX, 1100 - WINSIZEY);
 	return S_OK;
 }
 
@@ -25,6 +24,7 @@ void stage1::render()
 
 void stage1::update()
 {
+	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2395 - WINSIZEX, 1100 - WINSIZEY);
 	CAMERAMANAGER->setX(_player->getPlayerX());
 	CAMERAMANAGER->setY(_player->getPlayerY());
 }
