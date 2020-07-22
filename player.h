@@ -10,10 +10,11 @@ class runState;
 class jumpState;
 class attackState;
 class hitState;
-class invinState;		//무적 invincibility 줄인거ㅎ
+class downState;		//힝
 class startState;
 class guardState;
 class overState;
+class stunState;
 
 
 class player : public gameNode
@@ -21,6 +22,7 @@ class player : public gameNode
 private:
 	playerState* _state;
 	image* _img;					//플레이어 이미지
+	image* _shadowImg;				//쉐도우 이미지
 	RECT _shadow;					//플레이어 그림자 이미지 
 	RECT _player;					//플레이어
 	RECT _attackRc;					//공격렉트
@@ -31,6 +33,7 @@ private:
 	int _probeH;					//픽셀충돌 수평
 	int _playerProbe;				//책상 올라가는용
 	int _runCount;					//빠르게 달리기
+	int _shadowAlpha;				//그림자 알파
 
 	float _shadowX, _shadowY;		//그림자 중점
 	float _playerX, _playerY;		//플레이어 중점
@@ -62,10 +65,11 @@ private:
 	playerState* _jump;
 	playerState* _attack;
 	playerState* _hit;
-	playerState* _invin;
+	playerState* _down;
 	playerState* _start;
 	playerState* _guard;
 	playerState* _over;
+	playerState* _stun;
 
 
 public:
@@ -100,6 +104,7 @@ public:
 	float getPlayerHp() { return _currentHP; }
 	float getPlayerMaxHP() { return _maxHP; }
 	int getRunCount() { return _runCount; }
+	int getShadow() { return _shadowAlpha; }
 	bool getDirectionX() { return _directionX; }
 	bool getDirectionY() { return _directionY; }
 	bool getIsBottom() { return _isBottom; }
@@ -123,10 +128,11 @@ public:
 	playerState* getJumpState() { return _jump; }
 	playerState* getAttackState() { return _attack; }
 	playerState* getHitState() { return _hit; }
-	playerState* getInvinState() { return _invin; }
+	playerState* getDownState() { return _down; }
 	playerState* getStartState() { return _start; }
 	playerState* getGuardState() { return _guard; }
 	playerState* getOverState() { return _over; }
+	playerState* getStunState() { return _stun; }
 
 	//=====================SET================================
 	void setShadowX(float x) { _shadowX = x; }
@@ -135,11 +141,13 @@ public:
 	void setPlayerY(float playerY) { _playerY = playerY; }
 	void setJumpPower(float jumpPower) { _jumpPower = jumpPower; }
 	void setGravity(float gravity) { _gravity = gravity; }
+	void setPlayerHP(float hp) { _currentHP = hp; }
 	void setAttack(float attackX, float attackY, float attackSizeX, float attackSizeY)
 	{
 		_attackX = attackX; _attackY = attackY; _attackSizeX = attackSizeX; _attackSizeY = attackSizeY;
 	}
 	void setRunCount(int runCount) { _runCount = runCount; }
+	void setShadow(int shadow) { _shadowAlpha = shadow; }
 	void setDirectionX(bool direction) { _directionX = direction; }
 	void setDirectionY(bool direction) { _directionY = direction; }
 	void setIsJumping(bool jumping) { _isJumping = jumping; }
@@ -167,10 +175,11 @@ public:
 	static jumpState* jump;
 	static attackState* attack;
 	static hitState* hit;
-	static invinState* invin;
+	static downState* down;
 	static startState* gameStart;
 	static guardState* guard;
 	static overState* over;
+	static stunState* stun;
 };
 
 class idleState : public playerState
@@ -222,7 +231,7 @@ public:
 	virtual void update(player& player) override;
 };
 
-class invinState : public playerState
+class downState : public playerState
 {
 private:
 	int _downCount;
@@ -246,5 +255,11 @@ public:
 class overState : public playerState
 {
 public: 
+	virtual void update(player& player) override;
+};
+
+class stunState : public playerState
+{
+public:
 	virtual void update(player& player) override;
 };

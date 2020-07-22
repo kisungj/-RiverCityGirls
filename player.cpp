@@ -28,6 +28,7 @@ HRESULT player::init()
 	IMAGEMANAGER->addFrameImage("PLAYER_STOMP", "image/player/Kyoko_Stomp.bmp", 1290, 420, 10, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_STUNNED", "image/player/Kyoko_Stunned.bmp", 384, 384, 4, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("PLAYER_KICK", "image/player/Kyoko_HurricaneKick.bmp", 2997, 657, 9, 3, true, RGB(255, 0, 255));
+	_shadowImg = IMAGEMANAGER->addImage("PLAYER_SHADOW", "image/player/Kyoko_Shadow.bmp", 128, 38, true, RGB(255, 0, 255));
 
 
 	_idle = new idleState();
@@ -36,9 +37,11 @@ HRESULT player::init()
 	_jump = new jumpState();
 	_attack = new attackState();
 	_hit = new hitState();
-	_invin = new invinState();
+	_down = new downState();
 	_start = new startState();
+	_over = new overState();
 	_guard = new guardState();
+	_stun = new stunState();
 
 	_state = _start;
 	_img = IMAGEMANAGER->findImage("PLAYER_START");
@@ -58,13 +61,15 @@ HRESULT player::init()
 	_attackX = _attackY = _attackSizeX = _attackSizeY = 10;
 
 	_jumpPower = _gravity = 0;
-	_shadow = RectMakeCenter(_shadowX, _playerY, 80, 30);
+	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 	_playerMotion = KEYANIMANAGER->findAnimation("P_RIGHT_START");
 	_playerMotion->start();
 
 	_isJumping = false;
+
+	_shadowAlpha = 200;
 
 	_currentHP = _maxHP = 100;
 
@@ -85,6 +90,9 @@ void player::release()
 
 void player::update()
 {
+
+	//cout << _ptMouse.x << endl;
+	//cout << _ptMouse.y << endl;
 	KEYANIMANAGER->update();
 	_probeV = _shadow.bottom;
 	_probeH = (_shadow.left+ _shadow.right)/2;
@@ -171,13 +179,13 @@ void player::update()
 	{
 		_playerY = _shadowY - 110;
 	}
-	cout << _isJumping << endl;
+	//cout << _isJumping << endl;
 
 	if (_isJumping)
 	{
 		for (int i = _playerProbe -10; i < _playerProbe + 10; ++i)
 		{
-			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX,i);
 
 			int r = GetRValue(color);
 			int g = GetGValue(color);
@@ -187,25 +195,26 @@ void player::update()
 			{
 				_isDesk = true;
 			}
-
 			else
 			{
 				_isDesk = false;
 			}
 		}
 	}
-
+	cout << _isDesk << endl;
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
+
 }
 
 void player::render()
 {
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _player);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
+	CAMERAMANAGER->alphaRender(getMemDC(), _shadowImg, _shadowX, _shadowY, _shadowAlpha);
 	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);
 	//Rectangle(getMemDC(), _player);
 	//Rectangle(getMemDC(), _probeV - 5, 100, _probeV + 5, 110);
@@ -316,19 +325,22 @@ void player::mouseCol()
 
 		if (PtInRect(&_player, _ptMouse))
 		{
+			cout << "dd" << endl;
+
 			if (!_directionX)
 			{
 				setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
 				setState(getHitState());
-				playerDamage(10);
+				playerDamage(50);
 			}
 			if (_directionX)
 			{
 				setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
 				setState(getHitState());
-				playerDamage(10);
+				playerDamage(50);
 			}
 		}
 
 	}
 }
+
