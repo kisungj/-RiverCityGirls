@@ -48,6 +48,7 @@ private:
 	bool _isRight;					//오른쪽
 	bool _isDesk;					//책상위에 올라갔는지
 	bool _isJumping;				//점프하는지
+	bool _isDeskJump;				//데스크 충돌 테스트
 	bool _isRun;					//뛰는지
 	bool _isAttack;					//공격할거?
 	bool _attacked;					//공격 3번 이어주기
@@ -92,6 +93,8 @@ public:
 	void playerDamage(float damage);
 
 	void mouseCol();
+	void pixelCol();
+	void boolCheck();
 
 public:
 	//=====================GET================================
