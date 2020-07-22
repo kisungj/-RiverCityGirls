@@ -149,7 +149,7 @@ void enemy::pixelCollision()
 	//_playerProbe = _player.bottom;
 
 	//위
-	for (int i = _probeU - 10; i < _probeU + 5; ++i)
+	for (int i = _probeU - 5; i < _probeU + 5; ++i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
@@ -158,24 +158,20 @@ void enemy::pixelCollision()
 		int b = GetBValue(color);
 
 
-		if (r == 255 && g == 0 && b == 0) 
+		if ((r == 255 && g == 0 && b == 0) || (r == 160 && g == 255 && b == 0))
 		{
-			_z = i + _shadowImg->getHeight() / 2;
-		}
-
-		if (r == 0 && g == 255 && b == 0)
-		{
-
+			_pixel = PIXEL::TOP;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
 		{
 
 		}
+
 	}
 
 	//아래
-	for (int i = _probeB - 5; i < _probeB + 10; ++i)
+	for (int i = _probeB - 5; i < _probeB + 5; ++i)
 	{
 		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
 
@@ -183,14 +179,9 @@ void enemy::pixelCollision()
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 0) || (r == 160 && g == 255 && b == 0))
 		{
-			
-		}
-
-		if (r == 0 && g == 255 && b == 0)
-		{
-
+			_pixel = PIXEL::BOTTOM;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -202,20 +193,20 @@ void enemy::pixelCollision()
 	//왼쪽
 	for (int i = _probeL - 5; i < _probeL + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), i, _z);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 0) || (r == 160 && g == 255 && b == 0))
 		{
-
+			_pixel = PIXEL::LEFT;
 		}
 
-		if (r == 0 && g == 255 && b == 0)
+		if (r == 255 && g == 0 && b == 255)
 		{
-
+			_pixel = PIXEL::TEMP;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -227,20 +218,15 @@ void enemy::pixelCollision()
 	//오른쪽
 	for (int i = _probeR - 5; i < _probeR + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), i, (_shadow.top + _shadow.bottom) / 2);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), i, _z);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		if ((r == 255 && g == 0 && b == 0) || (r == 160 && g == 255 && b == 0))
 		{
-			
-		}
-
-		if (r == 0 && g == 255 && b == 0)
-		{
-
+			_pixel = PIXEL::RIGHT;
 		}
 
 		if (r == 255 && g == 255 && b == 0)

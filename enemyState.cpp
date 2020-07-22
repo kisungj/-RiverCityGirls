@@ -11,12 +11,12 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 
 	//==================y축 이동==================//
 
-	if (enemy.getY() < y - 100)
+	if (enemy.getY() < y - 100 && enemy.getPixel() != PIXEL::BOTTOM)
 	{
 		enemy.setY(enemy.getY() + 2);
 	}
 
-	if (enemy.getY() > y + 100)
+	if (enemy.getY() > y + 100 && enemy.getPixel() != PIXEL::TOP)
 	{
 		enemy.setY(enemy.getY() - 2);
 	}
@@ -26,7 +26,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 	//==================x축 이동==================//
 	if (enemy.getRight())
 	{
-		if (enemy.getX() < x - 400)
+		if (enemy.getX() < x - 400 && enemy.getPixel() != PIXEL::RIGHT)
 		{
 			enemy.setX(enemy.getX() + 2);
 		}
@@ -34,23 +34,30 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 
 	if (!enemy.getRight())
 	{
-		if (enemy.getX() > x + 400)
+		if (enemy.getX() > x + 400 && enemy.getPixel() != PIXEL::LEFT)
 		{
-			enemy.setX(enemy.getX() - 2);
+			enemy.setX(enemy.getX() - 2); 
 		}
 	}
 
 	if (_waitCount > 200 && enemy.getCondition() == CONDITION::SEARCH)
 	{
-		if (enemy.getRight()) enemy.setX(enemy.getX() + 2);
-		else enemy.setX(enemy.getX() - 2);
+		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT)
+		{
+			enemy.setX(enemy.getX() + 2);
+		}
 
-		if (enemy.getY() < y - 20)
+		if (!enemy.getRight() && enemy.getPixel() != PIXEL::LEFT)
+		{
+			enemy.setX(enemy.getX() - 2);
+		}
+
+		if (enemy.getY() < y - 20 && enemy.getPixel() != PIXEL::BOTTOM)
 		{
 			enemy.setY(enemy.getY() + 1);
 		}
 
-		if (enemy.getY() > y + 20)
+		if (enemy.getY() > y + 20 && enemy.getPixel() != PIXEL::TOP)
 		{
 			enemy.setY(enemy.getY() - 1);
 		}
@@ -120,23 +127,31 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {
 	RECT temp;
+	_limitCount++;
+
+	enemy.setZ(enemy.getY() + 100);
 
 	if (!enemy.getStop() && !_isKick)
 	{
-		if (enemy.getY() < y - 20)
+		if (enemy.getY() < y - 20 && enemy.getPixel() != PIXEL::BOTTOM)
 		{
 			enemy.setY(enemy.getY() + 1);
 		}
 
-		if (enemy.getY() > y + 20)
+		if (enemy.getY() > y + 20 && enemy.getPixel() != PIXEL::TOP)
 		{
 			enemy.setY(enemy.getY() - 1);
 		}
 
-		enemy.setZ(enemy.getY() + 100);
+		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT)
+		{
+			enemy.setX(enemy.getX() + 5);
+		}
 
-		if (enemy.getRight()) enemy.setX(enemy.getX() + 5);
-		else enemy.setX(enemy.getX() - 5);
+		if (!enemy.getRight() && enemy.getPixel() != PIXEL::LEFT)
+		{
+			enemy.setX(enemy.getX() - 5);
+		}
 
 		if (getDistance(x, y, enemy.getX(), enemy.getY()) < 100)
 		{
@@ -201,7 +216,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 	}
 
 	//==================무브 클래스로 이동==================//
-	if (_kickCount > 50)
+	if (_kickCount > 50 || _limitCount > 150 || (enemy.getX() - x < 50 && x - enemy.getX() < 50) )
 	{
 		enemy.setStop(false);
 		_isKick = false;
@@ -218,6 +233,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getMove());
 		_kickCount = 0;
+		_limitCount = 0;
 	}
 
 	//==================힛 클래스로 이동==================//
@@ -238,6 +254,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getHit());
 		_kickCount = 0;
+		_limitCount = 0;
 	}
 
 	//cout << "run class" << endl;

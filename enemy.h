@@ -4,9 +4,12 @@
 
 enum class CONDITION
 {
-	SEARCH,
-	CLOSE,
-	DEAD
+	SEARCH,	CLOSE, DEAD
+};
+
+enum class PIXEL
+{
+	LEFT, RIGHT, TOP, BOTTOM, DESK, TEMP
 };
 
 class enemy : public gameNode
@@ -15,6 +18,7 @@ protected:
 	enemyState* _state;				//현재 클래스 상태
 	CONDITION _condition;			//상태
 	ENEMYTYPE _et;					//에너미 타입
+	PIXEL _pixel;					//픽셀 충돌용
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
@@ -33,6 +37,7 @@ protected:
 	bool _isHit;					//맞고 있는지
 	bool _isStop;					//프레임 조절용
 	bool _isLay;					//누웠는지
+	bool _isJump;					//점프하고 있는지
 
 	int _hitCount;					//맞은 횟수
 	int _layCount;					//누운 시간
@@ -72,6 +77,7 @@ public:
 	RECT getAtk() { return _attackRC; }							//공격 렉트 가져가기
 	image* getImage() { return _image; }						//이미지 가져가기
 	CONDITION getCondition() { return _condition; }				//CONDITION 가져가기
+	PIXEL getPixel() { return _pixel; }							//PIXEL 가져가기
 
 	float getX() { return _x; }									//x축 가져가기
 	float getY() { return _y; }									//y축 가져가기
