@@ -7,6 +7,8 @@ private:
 	class itemManager*     _itemManager;
 	class enemyManager*    _enemyManager;
 	class player*          _player;
+	RECT				   _doorRc;
+
 public:
 	stage1() {}
 	~stage1() {}
