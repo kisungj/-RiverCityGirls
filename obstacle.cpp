@@ -67,17 +67,18 @@ void obstacle::render()
 		CAMERAMANAGER->frameRender(getMemDC(), _obstacleImg, (_obstacleRc.left + _obstacleRc.right) / 2, (_obstacleRc.top + _obstacleRc.bottom) / 2, _obstacleImg->getFrameX(), _obstacleImg->getFrameY());
 	}
 
+	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
 	//Ã¥»ó
 	if (_obstacleState == DESK)
 	{
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 540, 800);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 835, 800);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1150, 800);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1460, 800);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 360, 1050);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 660, 1050);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 970, 1050);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1280, 1050);
+		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 515, 705);
+		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 810, 705);
+		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1125, 705);
+		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1435, 705);
+		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 310, 940);
+		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 610, 940);
+		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 920, 940);
+		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1230, 940);
 	}
 
 	//±âµÕ¿ÞÂÊ
@@ -115,6 +116,8 @@ void obstacle::render()
 		CAMERAMANAGER->renderRectangle(getMemDC(), _obstacleRc);
 		CAMERAMANAGER->renderRectangle(getMemDC(), _PillarRc);
 	}
+
+	
 }
 
 //±âµÕ°ú Ãæµ¹ÇßÀ»¶§
