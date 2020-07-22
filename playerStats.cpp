@@ -815,6 +815,10 @@ void jumpState::update(player & player)
 	
 	//cout << _isJump << endl;
 
+	//if (player.getIsDeskFall())
+	//{
+	//	player.setPlayerY(player.getPlayerY() + player.getGravity());
+	//}
 	if (player.getIsJumping())
 	{
 		player.setPlayerY(player.getPlayerY() - player.getJumpPower());

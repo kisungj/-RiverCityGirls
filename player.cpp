@@ -55,7 +55,7 @@ HRESULT player::init()
 	_directionX = true;
 
 	_isAttack = _attacked = false;
-	_isDeskJump = false;
+	_isDeskFall = false;
 
 	keyAnimation();
 
@@ -255,8 +255,8 @@ void player::pixelCol()
 	if (!_isDesk)
 	{
 		//데스크에 올라와있지 않으면
-		if (!_isJumping)
-		{
+		/*if (!_isJumping)
+		{*/
 			//cout << "d" << endl;
 			//맵 충돌 하고 올라와있음 하지마
 			for (int i = _probeV - 40; i < _probeV - 35; ++i)
@@ -333,13 +333,19 @@ void player::pixelCol()
 				}
 			}
 
-		}
-
+		//}
+		//if (_isJumping)
+		//{
+		//	_isRight = true;
+		//	_isLeft = true;
+		//	_isTop = true;
+		//	_isBottom = true;
+	//	}/
 		//점프중에
-		if (_isJumping || _isDeskJump)
+		if ((_isJumping && _shadowY < 850 && _shadowY > 700))
 		{
 			//노란색 닿으면
-			for (int i = _playerProbe - 5; i < _playerProbe + 5; ++i)
+			for (int i = _playerProbe - 3; i < _playerProbe + 3; ++i)
 			{
 				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
 
@@ -347,7 +353,7 @@ void player::pixelCol()
 				int g = GetGValue(color);
 				int b = GetBValue(color);
 
-				if (r == 255 && g == 255 && b == 0)
+				if ((r == 255 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
 				{
 					_shadowY = _playerY + 110;
 					_isDesk = true;
@@ -360,9 +366,10 @@ void player::pixelCol()
 			}
 		}
 	}
-	cout << _isTop << endl;
+	//cout << _isTop << endl;
 	if (_isDesk)
 	{
+		_shadowAlpha = 200;
 		for (int i = _playerProbe - 1; i < _playerProbe + 1; ++i)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
@@ -370,11 +377,24 @@ void player::pixelCol()
 			int r = GetRValue(color);
 			int g = GetGValue(color);
 			int b = GetBValue(color);
-
+		
 			if (!(r == 255 && g == 255 && b == 0))
 			{
 				_shadowY = _shadowY + 110;
+	
 				_isDesk = false;
+				_isJumping = true;
+				
+				_jumpPower = 0;
+				_isDeskFall = true;
+				if (!_directionX)
+				{
+					setState(getJumpState());
+				}
+				if (_directionX)
+				{
+					setState(getJumpState());
+				}
 				break;
 			}
 		}
@@ -386,9 +406,10 @@ void player::boolCheck()
 {
 	//점프중이 아니고 데스크랑 닿아있는 것도 아니고
 	//얘는 기본
-	if (!_isJumping && !_isDeskJump)
+	if (!_isJumping)
 	{
 		_playerY = _shadowY - 110;
+		_isDeskFall = false;
 	}
 
 	//책상이랑 닿았다면
@@ -397,15 +418,25 @@ void player::boolCheck()
 		//떨어질때
 		if (_jumpPower < 0)
 		{
-			_isDeskJump = true;
 			_isJumping = false;
 		}
 	}
-	//책상위에 서라
-	if (_isDeskJump)
+	/*if (_isDeskFall)
 	{
-		
-		_isDeskJump = false;
-	}
+		_isJumping = true;
+		_jumpPower = 0;
+		_gravity = 0.5f;
+		if (!_directionX)
+		{
+			setAni(KEYANIMANAGER->findAnimation("P_LEFT_FALL"), IMAGEMANAGER->findImage("PLAYER_FALL"));
+			setState(getJumpState());
+		}
+		if (_directionX)
+		{
+			setAni(KEYANIMANAGER->findAnimation("P_RIGHT_FALL"), IMAGEMANAGER->findImage("PLAYER_FALL"));
+			setState(getJumpState());
+		}
+
+	}*/
 }
 
