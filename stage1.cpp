@@ -6,12 +6,10 @@
 #include "player.h"
 HRESULT stage1::init(obstacleManager * obstacleManager, itemManager* itemManager, enemyManager* enemyManager, player* player)
 {
-	
 	_obstacleManager = obstacleManager;
 	_itemManager = itemManager;
 	_enemyManager = enemyManager;
 	_player = player;
-
 
 	_obstacleManager->init();
 	_enemyManager->init();
