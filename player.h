@@ -58,6 +58,7 @@ private:
 
 
 
+
 	animation* _playerMotion;
 
 

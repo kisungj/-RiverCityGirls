@@ -401,13 +401,30 @@ void player::pixelCol()
 			}
 		}
 	}
-
+	//cout << _isDesk << endl;
 	if (_isDesk)
 	{
 		_deskTimer++;
 		_shadowAlpha = 200;
 		if (_deskTimer > 20)
 		{
+			_deskTimer = 0;
+			if(KEYMANAGER->isOnceKeyDown('Z'))
+			{
+				if (!_directionX)
+				{
+					setAni(KEYANIMANAGER->findAnimation("P_LEFT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+						setState(getHitState());
+						playerDamage(10);
+				}
+				if (_directionX)
+				{
+					setAni(KEYANIMANAGER->findAnimation("P_RIGHT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+						setState(getHitState());
+					playerDamage(10);
+				}
+			}
+
 			for (int i = _probeV - 20; i < _probeV - 15; ++i)
 			{
 				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
@@ -419,13 +436,13 @@ void player::pixelCol()
 				if (!(r == 255 && g == 255 && b == 0))
 				{
 					cout << "d" << endl;
-					_shadowY += 110;
 
+					_gravity = 0.1f;
 					_isDesk = false;
 					_isJumping = true;
 
-					_jumpPower = 0;
 					_isDeskFall = true;
+					_shadowY += 110;
 					if (!_directionX)
 					{
 						setState(getJumpState());
@@ -436,8 +453,12 @@ void player::pixelCol()
 					}
 					break;
 				}
+				else
+				{
+				//	cout << "d" << endl;
+
+				}
 			}
-			_deskTimer = 0;
 		}
 	}
 }
@@ -451,16 +472,8 @@ void player::boolCheck()
 		_playerY = _shadowY - 110;
 		_isDeskFall = false;
 	}
-
-	//Ã¥»óÀÌ¶û ´ê¾Ò´Ù¸é
-	if (_isDesk)
-	{
-		//¶³¾îÁú¶§
-		if (_jumpPower < 0)
-		{
-			_isJumping = false;
-		}
-	}
+	
+	
 	
 }
 
