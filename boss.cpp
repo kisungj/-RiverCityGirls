@@ -4,7 +4,6 @@
 HRESULT boss::init()
 {
 	// ------------ 임시 변수 ------------ //
-	loadImage();
 	loadAnimation();
 
 	_hp = 100;
@@ -27,15 +26,13 @@ HRESULT boss::init()
 	_animPlayer = _anim[BOSS_LEFT_IDLE];
 	_animPlayer->start();
 
-	_playerX = 100;
-	_playerY = WINSIZEY / 2;
-	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
-	// ------------ 임시 변수 ------------ //
+
 	return S_OK;
 }
 
 void boss::release()
 {
+
 }
 
 void boss::render()
@@ -47,11 +44,11 @@ void boss::render()
 
 	// ================================ 임시 ================================ //
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _player);
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	// ================================ 임시 ================================ //
 }
 
-void boss::update()
+void boss::update(float playerX, float playerZ)
 {
 	stateUpdate();
 
@@ -62,7 +59,7 @@ void boss::update()
 
 	if (_hp <= 0 && _state != BOSS_LEFT_DEATH && _state != BOSS_RIGHT_DEATH && _state != BOSS_LEFT_DEATH_LOOP && _state != BOSS_RIGHT_DEATH_LOOP)
 	{
-		if (_x >= _playerX) // 보스가 플레이어 오른쪽에 있는 경우 // 임시
+		if (_x >= playerX) 
 		{
 			_state = BOSS_LEFT_DEATH;
 			_characterImg = IMAGEMANAGER->findImage("boss_death");
@@ -76,7 +73,7 @@ void boss::update()
 			_animPlayer = _anim[BOSS_RIGHT_DEATH];
 			_animPlayer->start();
 		}
-		cout << "죽었을 때 한번만 들어오는지 체크" << endl;
+		
 	}
 
 	if (KEYMANAGER->isOnceKeyDown('T'))
@@ -85,40 +82,12 @@ void boss::update()
 	}
 
 
-	// ================================ 임시 ================================ //
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
-	{
-		_playerX += 5;
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
-	{
-		_playerX -= 5;
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_UP))
-	{
-		_playerY -= 5;
-	}
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
-	{
-		_playerY += 5;
-	}
-
-
-	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
-
-	CAMERAMANAGER->setX(_playerX);
-	CAMERAMANAGER->setY(_playerY);
-	// ================================ 임시 ================================ //
-	changePattern();
+	changePattern(playerX, playerZ);
 
 	_rc = RectMakeCenter(_x, _y, 100, 250);
 
 }
 
-void boss::loadImage()
-{
-
-}
 
 void boss::loadAnimation()
 {
@@ -979,7 +948,7 @@ void boss::elbowAttack(float playerX, float playerZ)
 
 }
 
-void boss::changePattern()
+void boss::changePattern(float playerX, float playerZ)
 {
 	if (_state == BOSS_LEFT_DEATH || _state == BOSS_RIGHT_DEATH || _state == BOSS_LEFT_DEATH_LOOP || _state == BOSS_RIGHT_DEATH_LOOP) return;
 
@@ -997,23 +966,23 @@ void boss::changePattern()
 
 	if (_patternNumber == 0)
 	{
-		attack(_playerX, _playerY);
+		attack(playerX, playerZ);
 	}
 	else if (_patternNumber == 1)
 	{
-		heavyAttack(_playerX, _playerY);
+		heavyAttack(playerX, playerZ);
 	}
 	else if (_patternNumber == 2)
 	{
-		dashAttack(_playerX, _playerY);
+		dashAttack(playerX, playerZ);
 	}
 	else if (_patternNumber == 3)
 	{
-		elbowAttack(_playerX, _playerY);
+		elbowAttack(playerX, playerZ);
 	}
 	else if (_patternNumber == 4)
 	{
-		jumpAttack(_playerX, _playerY);
+		jumpAttack(playerX, playerZ);
 	}
 
 }

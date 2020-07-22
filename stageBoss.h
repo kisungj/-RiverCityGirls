@@ -1,15 +1,17 @@
 #pragma once
 #include "gameNode.h"
-#include "boss.h"
+
 class stageBoss : public gameNode
 {
 private:
-	boss* _boss;
+	class boss* _boss;
+	class player* _player;
+	
 public:
 	stageBoss() {}
 	~stageBoss() {}
 public:
-	virtual HRESULT init();
+	virtual HRESULT init(player* player, boss* boss);
 	virtual void render();
 	virtual void update();
 	virtual void release();

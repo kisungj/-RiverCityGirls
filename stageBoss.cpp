@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "stageBoss.h"
-HRESULT stageBoss::init()
+#include "player.h"
+#include "boss.h"
+HRESULT stageBoss::init(player* player, boss* boss)
 {
-	_boss = new boss;
+	_boss = boss;
 	_boss->init();
 
+	_player = player;
 	return S_OK;
 }
 
@@ -15,10 +18,12 @@ void stageBoss::render()
 
 void stageBoss::update()
 {
-	_boss->update();
+	CAMERAMANAGER->setX(_player->getPlayerX());
+	CAMERAMANAGER->setY(_player->getPlayerY());
+	_boss->update(_player->getPlayerX(), _player->getPlayerY());
 }
 
 void stageBoss::release()
 {
-	_boss->release();
+	SAFE_DELETE(_boss);
 }

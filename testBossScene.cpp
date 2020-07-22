@@ -15,7 +15,7 @@ void testBossScene::render()
 
 void testBossScene::update()
 {
-	_boss->update();
+	//_boss->update(_player->getPlayerX(), _player->getPlayerY());
 }
 
 void testBossScene::release()

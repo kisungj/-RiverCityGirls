@@ -16,6 +16,11 @@ HRESULT itemManager::init()
 
 void itemManager::release()
 {
+	for (int i = 0; i < _vItems.size(); i++)
+	{
+		SAFE_DELETE(_vItems[i]);
+	}
+	_vItems.clear();
 }
 
 void itemManager::update()

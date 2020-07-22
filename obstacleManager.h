@@ -24,5 +24,6 @@ public:
 	vector<obstacle*> getVObstacle() { return _vObstacle; }
 
 	void setObstacle(OBSTACLESTATE obstacleState);				//장애물 생성함수
+
 };
 

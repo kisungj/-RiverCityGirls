@@ -6,10 +6,20 @@
 #include "player.h"
 HRESULT stage1::init(obstacleManager * obstacleManager, itemManager* itemManager, enemyManager* enemyManager, player* player)
 {
+	
 	_obstacleManager = obstacleManager;
 	_itemManager = itemManager;
 	_enemyManager = enemyManager;
 	_player = player;
+
+
+	_obstacleManager->init();
+	_enemyManager->init();
+	_itemManager->init();
+	//---- 임시
+	_obstacleManager->setObstacle(DESK);
+	_enemyManager->setBoy();
+	//---- 임시
 	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2395 - WINSIZEX, 1100 - WINSIZEY);
 	return S_OK;
 }
@@ -29,4 +39,5 @@ void stage1::update()
 
 void stage1::release()
 {
+
 }

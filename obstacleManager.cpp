@@ -25,7 +25,13 @@ void obstacleManager::update()
 
 void obstacleManager::release()
 {
+	for (int i = 0; i < _vObstacle.size(); i++)
+	{
+		SAFE_DELETE(_vObstacle[i]);
+	}
+	_vObstacle.clear();
 }
+
 
 void obstacleManager::render()
 {

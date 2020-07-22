@@ -3,10 +3,10 @@
 
 HRESULT stageManager::init()
 {
-	_playerScene   = new testPlayerScene;
-	_enemyScene    = new testEnemyScene;
-	_bossScene     = new testBossScene;
-	_uiScene       = new testUIScene;
+	_playerScene = new testPlayerScene;
+	_enemyScene = new testEnemyScene;
+	_bossScene = new testBossScene;
+	_uiScene = new testUIScene;
 	_obstacleScene = new testObstcle;
 	SCENEMANAGER->addScene("PLAYER_SCENE", _playerScene);
 	SCENEMANAGER->addScene("ENEMY_SCENE", _enemyScene);
@@ -20,31 +20,31 @@ HRESULT stageManager::init()
 	_player->init();
 
 	_itemManager = new itemManager;
-	_itemManager->init();
-
 	_obstacleManager = new obstacleManager;
-	_obstacleManager->init();
-
 	_enemyManager = new enemyManager;
-	_enemyManager->init();
-	//---- 임시
-	_enemyManager->setBoy();
-	//---- 임시
+	_boss	      =	new boss;
 	_stage1 = new stage1;
-	_stage1->init(_obstacleManager,_itemManager, _enemyManager, _player);
+	_stage1->init(_obstacleManager, _itemManager, _enemyManager, _player);
 
 	_stage2 = new stage2;
-	_stage2->init(_obstacleManager, _itemManager, _enemyManager);
+	_stage2->init(_obstacleManager, _itemManager, _enemyManager, _player);
 
+	_stageBoss = new stageBoss;
+	_stageBoss->init(_player,_boss);
 	SCENEMANAGER->addScene("STAGE1_SCENE", _stage1);
 	SCENEMANAGER->changeScene("STAGE1_SCENE");
+
+	SCENEMANAGER->addScene("STAGE2_SCENE", _stage2);
+
+	SCENEMANAGER->addScene("STAGEBOSS_SCENE", _stageBoss);
+
 	return S_OK;
 }
 
 void stageManager::render()
 {
 	SCENEMANAGER->render();
-	
+
 	for (int i = 0; i < _itemManager->getVItem().size(); i++)
 	{
 		_itemManager->getVItem()[i]->render();
@@ -81,15 +81,38 @@ void stageManager::update()
 
 	_player->update();
 	// ================================================================
-	if (KEYMANAGER->isOnceKeyDown(VK_F1)) SCENEMANAGER->changeScene("PLAYER_SCENE");
+	//if (KEYMANAGER->isOnceKeyDown(VK_F1)) SCENEMANAGER->changeScene("PLAYER_SCENE");
+	//
+	//if (KEYMANAGER->isOnceKeyDown(VK_F2)) SCENEMANAGER->changeScene("ENEMY_SCENE");
+	//
+	//if (KEYMANAGER->isOnceKeyDown(VK_F3)) SCENEMANAGER->changeScene("BOSS_SCENE");
+	//
+	//if (KEYMANAGER->isOnceKeyDown(VK_F4)) SCENEMANAGER->changeScene("UI_SCENE");
+	//
+	//if (KEYMANAGER->isOnceKeyDown(VK_F5)) SCENEMANAGER->changeScene("OBSTACLE_SCENE");
 
-	if (KEYMANAGER->isOnceKeyDown(VK_F2)) SCENEMANAGER->changeScene("ENEMY_SCENE");
-
-	if (KEYMANAGER->isOnceKeyDown(VK_F3)) SCENEMANAGER->changeScene("BOSS_SCENE");
-
-	if (KEYMANAGER->isOnceKeyDown(VK_F4)) SCENEMANAGER->changeScene("UI_SCENE");
-
-	if (KEYMANAGER->isOnceKeyDown(VK_F5)) SCENEMANAGER->changeScene("OBSTACLE_SCENE");
+	if (KEYMANAGER->isOnceKeyDown(VK_F1))
+	{
+		_obstacleManager->release();
+		_enemyManager->release();
+		_itemManager->release();
+		SCENEMANAGER->changeScene("STAGE1_SCENE");
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_F2))
+	{
+		_obstacleManager->release();
+		_enemyManager->release();
+		_itemManager->release();
+		SCENEMANAGER->changeScene("STAGE2_SCENE");
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_F3))
+	{
+		_obstacleManager->release();
+		_enemyManager->release();
+		_itemManager->release();
+		_boss->release();
+		SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
+	}
 }
 
 void stageManager::release()

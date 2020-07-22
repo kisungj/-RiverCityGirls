@@ -2,6 +2,7 @@
 #include "gameNode.h"
 #include "stage1.h"
 #include "stage2.h"
+#include "stageBoss.h"
 
 #include "testPlayerScene.h"
 #include "testEnemyScene.h"
@@ -11,6 +12,7 @@
 #include "obstacleManager.h"
 #include "itemManager.h"
 #include "enemyManager.h"
+#include "boss.h"
 #include "player.h"
 enum GAMETYPE 
 {
@@ -33,8 +35,10 @@ private:
 	obstacleManager* _obstacleManager;
 	itemManager*     _itemManager;
 	enemyManager*    _enemyManager;
+	boss*            _boss;
 	stage1*          _stage1;
 	stage2*          _stage2;
+	stageBoss*       _stageBoss;
 	player*          _player;
 public:
 	stageManager() {}
