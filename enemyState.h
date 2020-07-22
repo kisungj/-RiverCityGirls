@@ -51,9 +51,10 @@ class enemyRunState : public enemyState
 private:
 	RECT _attack;
 	int _kickCount;
+	int _limitCount;
 	bool _isKick;
 public:
-	enemyRunState() { _kickCount = 0; _isKick = false; }
+	enemyRunState() { _kickCount = 0; _limitCount = 0; _isKick = false; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

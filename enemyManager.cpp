@@ -56,7 +56,7 @@ void enemyManager::setBoy()
 	{
 		enemy* boy;
 		boy = new enemyBoy;
-		boy->init(1000, WINSIZEY / 2 + 300, ENEMYTYPE::BOY);
+		boy->init(1000, WINSIZEY / 2 + 250, ENEMYTYPE::BOY);
 
 		_vBoy.push_back(boy);
 	}
