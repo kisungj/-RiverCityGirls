@@ -136,6 +136,9 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addFrameImage("boss_attack", "image/boss/boss_attack.bmp", 4788, 534, 14, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_dash", "image/boss/boss_dash.bmp", 3276, 528, 14, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_heavyAttack", "image/boss/boss_heavyAttack.bmp", 10452, 546, 26, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_block", "image/boss/boss_block.bmp", 744, 528, 4, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_roar", "image/boss/boss_roar.bmp", 2592, 534, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_taunt", "image/boss/boss_taunt.bmp", 5016, 690, 22, 2, true, RGB(255, 0, 255));
 
 
 	// ========== Àû
