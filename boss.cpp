@@ -7,7 +7,11 @@ HRESULT boss::init()
 	loadImage();
 	loadAnimation();
 
+	_hp = 100;
+
 	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2538 - WINSIZEX, 1000 - WINSIZEY);
+	_jumpAlphaMax = _jumpAlpha = 200;
+	_jumpAlphaMin = 70;
 
 	_x = WINSIZEX / 2 + 800;
 	_z = WINSIZEY / 2 + 180;
@@ -18,9 +22,9 @@ HRESULT boss::init()
 	_characterImg = IMAGEMANAGER->findImage("boss_idle");
 	_shadowImg = IMAGEMANAGER->findImage("보스그림자");
 
-	_state = BOSS_LEFT_ANGRY;
-	_characterImg = IMAGEMANAGER->findImage("boss_angry");
-	_animPlayer = _anim[BOSS_LEFT_ANGRY];
+	_state = BOSS_LEFT_IDLE;
+	_characterImg = IMAGEMANAGER->findImage("boss_idle");
+	_animPlayer = _anim[BOSS_LEFT_IDLE];
 	_animPlayer->start();
 
 	_playerX = 100;
@@ -38,12 +42,7 @@ void boss::render()
 {
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("보스배경"), IMAGEMANAGER->findImage("보스배경")->getWidth() / 2, IMAGEMANAGER->findImage("보스배경")->getHeight() / 2);
 
-	for (int i = 0; i < BOSS_END; i++)
-	{
-		_anim[i]->frameUpdate(TIMEMANAGER->getElapsedTime() * 10);
-	}
-
-	CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
+	CAMERAMANAGER->alphaRender(getMemDC(), _shadowImg, _x, _z, _jumpAlpha);
 	CAMERAMANAGER->aniRender(getMemDC(), _characterImg, _x, _y, _animPlayer);
 
 	// ================================ 임시 ================================ //
@@ -55,9 +54,34 @@ void boss::render()
 void boss::update()
 {
 	stateUpdate();
+
 	if (_state != BOSS_LEFT_JUMP && _state != BOSS_RIGHT_JUMP && _state != BOSS_LEFT_JUMP_ATTACK && _state != BOSS_RIGHT_JUMP_ATTACK) // 점프 관련 상태일 때는 꺼주기
 	{
 		_y = _z - 137;
+	}
+
+	if (_hp <= 0 && _state != BOSS_LEFT_DEATH && _state != BOSS_RIGHT_DEATH && _state != BOSS_LEFT_DEATH_LOOP && _state != BOSS_RIGHT_DEATH_LOOP)
+	{
+		if (_x >= _playerX) // 보스가 플레이어 오른쪽에 있는 경우 // 임시
+		{
+			_state = BOSS_LEFT_DEATH;
+			_characterImg = IMAGEMANAGER->findImage("boss_death");
+			_animPlayer = _anim[BOSS_LEFT_DEATH];
+			_animPlayer->start();
+		}
+		else
+		{
+			_state = BOSS_RIGHT_DEATH;
+			_characterImg = IMAGEMANAGER->findImage("boss_death");
+			_animPlayer = _anim[BOSS_RIGHT_DEATH];
+			_animPlayer->start();
+		}
+		cout << "죽었을 때 한번만 들어오는지 체크" << endl;
+	}
+
+	if (KEYMANAGER->isOnceKeyDown('T'))
+	{
+		_hp -= 100;
 	}
 
 
@@ -97,6 +121,7 @@ void boss::loadImage()
 	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 153, 45, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 2844, 582, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 2322, 552, 9, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_hit_getup", "image/boss/boss_hit_getup.bmp", 3915, 552, 15, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_jumpAttack", "image/boss/boss_jumpAttack.bmp", 5832, 618, 24, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_walk", "image/boss/boss_walk.bmp", 1770, 552, 10, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_death", "image/boss/boss_death.bmp", 4329, 540, 13, 2, true, RGB(255, 0, 255));
@@ -261,21 +286,53 @@ void boss::loadAnimation()
 	_anim[BOSS_RIGHT_HIT]->setFPS(1);
 	// --------------- RIGHT HIT --------------- //
 
-	// --------------- LEFT HIT --------------- //
+	// --------------- LEFT HIT GETUP --------------- //
+	_anim[BOSS_LEFT_HIT_GETUP] = new animation;
+	_anim[BOSS_LEFT_HIT_GETUP]->init(IMAGEMANAGER->findImage("boss_hit_getup")->getWidth(), IMAGEMANAGER->findImage("boss_hit_getup")->getHeight()
+		, IMAGEMANAGER->findImage("boss_hit_getup")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit_getup")->getFrameHeight());
+	_anim[BOSS_LEFT_HIT_GETUP]->setPlayFrame(29, 15, false, false);
+	_anim[BOSS_LEFT_HIT_GETUP]->setFPS(1);
+	// --------------- LEFT HIT GETUP --------------- //
+
+	// --------------- RIGHT HIT GETUP --------------- //
+	_anim[BOSS_RIGHT_HIT_GETUP] = new animation;
+	_anim[BOSS_RIGHT_HIT_GETUP]->init(IMAGEMANAGER->findImage("boss_hit_getup")->getWidth(), IMAGEMANAGER->findImage("boss_hit_getup")->getHeight()
+		, IMAGEMANAGER->findImage("boss_hit_getup")->getFrameWidth(), IMAGEMANAGER->findImage("boss_hit_getup")->getFrameHeight());
+	_anim[BOSS_RIGHT_HIT_GETUP]->setPlayFrame(0, 14, false, false);
+	_anim[BOSS_RIGHT_HIT_GETUP]->setFPS(1);
+	// --------------- RIGHT HIT GETUP --------------- //
+
+	// --------------- LEFT DEATH --------------- //
 	_anim[BOSS_LEFT_DEATH] = new animation;
 	_anim[BOSS_LEFT_DEATH]->init(IMAGEMANAGER->findImage("boss_death")->getWidth(), IMAGEMANAGER->findImage("boss_death")->getHeight()
 		, IMAGEMANAGER->findImage("boss_death")->getFrameWidth(), IMAGEMANAGER->findImage("boss_death")->getFrameHeight());
 	_anim[BOSS_LEFT_DEATH]->setPlayFrame(25, 13, false, false);
 	_anim[BOSS_LEFT_DEATH]->setFPS(1);
-	// --------------- LEFT HIT --------------- //
+	// --------------- LEFT DEATH --------------- //
 
-	// --------------- RIGHT HIT --------------- //
+	// --------------- RIGHT DEATH --------------- //
 	_anim[BOSS_RIGHT_DEATH] = new animation;
 	_anim[BOSS_RIGHT_DEATH]->init(IMAGEMANAGER->findImage("boss_death")->getWidth(), IMAGEMANAGER->findImage("boss_death")->getHeight()
 		, IMAGEMANAGER->findImage("boss_death")->getFrameWidth(), IMAGEMANAGER->findImage("boss_death")->getFrameHeight());
 	_anim[BOSS_RIGHT_DEATH]->setPlayFrame(0, 12, false, false);
 	_anim[BOSS_RIGHT_DEATH]->setFPS(1);
-	// --------------- RIGHT HIT --------------- //
+	// --------------- RIGHT DEATH --------------- //
+
+	// --------------- LEFT DEATH LOOP --------------- //
+	_anim[BOSS_LEFT_DEATH_LOOP] = new animation;
+	_anim[BOSS_LEFT_DEATH_LOOP]->init(IMAGEMANAGER->findImage("boss_death")->getWidth(), IMAGEMANAGER->findImage("boss_death")->getHeight()
+		, IMAGEMANAGER->findImage("boss_death")->getFrameWidth(), IMAGEMANAGER->findImage("boss_death")->getFrameHeight());
+	_anim[BOSS_LEFT_DEATH_LOOP]->setPlayFrame(16, 13, false, true);
+	_anim[BOSS_LEFT_DEATH_LOOP]->setFPS(1);
+	// --------------- LEFT DEATH LOOP --------------- //
+
+	// --------------- RIGHT DEATH LOOP --------------- //
+	_anim[BOSS_RIGHT_DEATH_LOOP] = new animation;
+	_anim[BOSS_RIGHT_DEATH_LOOP]->init(IMAGEMANAGER->findImage("boss_death")->getWidth(), IMAGEMANAGER->findImage("boss_death")->getHeight()
+		, IMAGEMANAGER->findImage("boss_death")->getFrameWidth(), IMAGEMANAGER->findImage("boss_death")->getFrameHeight());
+	_anim[BOSS_RIGHT_DEATH_LOOP]->setPlayFrame(9, 12, false, true);
+	_anim[BOSS_RIGHT_DEATH_LOOP]->setFPS(1);
+	// --------------- RIGHT DEATH LOOP --------------- //
 
 	// --------------- LEFT HEAVY ATTACK --------------- //
 	_anim[BOSS_LEFT_HEAVY_ATTACK] = new animation;
@@ -297,6 +354,11 @@ void boss::loadAnimation()
 
 void boss::stateUpdate()
 {
+	for (int i = 0; i < BOSS_END; i++)
+	{
+		_anim[i]->frameUpdate(TIMEMANAGER->getElapsedTime() * 10);
+	}
+
 	switch (_state)
 	{
 	case BOSS_LEFT_IDLE:
@@ -323,22 +385,22 @@ void boss::stateUpdate()
 		break;
 
 	case BOSS_LEFT_HIT:
-		_applySpeed = 0;
+
 		break;
 	case BOSS_RIGHT_HIT:
-		_applySpeed = 0;
+
 		break;
 	case BOSS_LEFT_ATTACK:
-		_applySpeed = 0;
+
 		break;
 	case BOSS_RIGHT_ATTACK:
-		_applySpeed = 0;
+
 		break;
 	case BOSS_LEFT_ATTACK_ELBOW:
-		_applySpeed = 0;
+
 		break;
 	case BOSS_RIGHT_ATTACK_ELBOW:
-		_applySpeed = 0;
+
 		break;
 	case BOSS_LEFT_JUMP:
 	case BOSS_RIGHT_JUMP:
@@ -348,6 +410,12 @@ void boss::stateUpdate()
 			_x += cosf(_angle) * _applySpeed;
 			_y -= sinf(_angle) * _applySpeed + _jumpPower;
 			_z -= sinf(_angle) * _applySpeed;
+
+			_jumpAlpha -= 2;
+			if (_jumpAlpha <= _jumpAlphaMin)
+			{
+				_jumpAlpha = _jumpAlphaMin;
+			}
 
 			if (_y < -200)
 			{
@@ -362,6 +430,14 @@ void boss::stateUpdate()
 	case BOSS_RIGHT_JUMP_ATTACK:
 		_y += _jumpPower + _gravity;
 		_gravity += 0.5f;
+
+		_jumpAlpha += 2;
+
+		if (_jumpAlpha >= _jumpAlphaMax)
+		{
+			_jumpAlpha = _jumpAlphaMax;
+		}
+
 		if (_y >= _z - 137)
 		{
 			_y = _z - 137;
@@ -377,16 +453,33 @@ void boss::stateUpdate()
 		}
 		break;
 	case BOSS_LEFT_DEATH:
-		_applySpeed = 0;
+
+		if (!_animPlayer->isPlay())
+		{
+			_state = BOSS_LEFT_DEATH_LOOP;
+			_animPlayer = _anim[BOSS_LEFT_DEATH_LOOP];
+			_animPlayer->start();
+
+		}
 		break;
 	case BOSS_RIGHT_DEATH:
-		_applySpeed = 0;
+
+		if (!_animPlayer->isPlay())
+		{
+			_state = BOSS_RIGHT_DEATH_LOOP;
+			_animPlayer = _anim[BOSS_RIGHT_DEATH_LOOP];
+			_animPlayer->start();
+		}
+		break;
+	case BOSS_LEFT_DEATH_LOOP:
+		break;
+	case BOSS_RIGHT_DEATH_LOOP:
 		break;
 	case BOSS_LEFT_ANGRY:
-		_applySpeed = 0;
+
 		break;
 	case BOSS_RIGHT_ANGRY:
-		_applySpeed = 0;
+
 		break;
 	}
 
@@ -900,6 +993,8 @@ void boss::elbowAttack(float playerX, float playerZ)
 
 void boss::changePattern()
 {
+	if (_state == BOSS_LEFT_DEATH || _state == BOSS_RIGHT_DEATH || _state == BOSS_LEFT_DEATH_LOOP || _state == BOSS_RIGHT_DEATH_LOOP) return;
+
 	if (_isDelayTime) // 딜레이 타임 인 경우.
 	{
 		_delayTime++;
