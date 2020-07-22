@@ -12,8 +12,10 @@ enemy::~enemy()
 HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 {
 	{
+		_idle	 = new enemyIdleState();
 		_move	 = new enemyMoveState();
 		_run	 = new enemyRunState();
+		_jump	 = new enemyJumpState();
 		_attack	 = new enemyAttackState();
 		_hit	 = new enemyHitState();
 		_down	 = new enemyDownState();
@@ -36,10 +38,10 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 	switch (_et)
 	{
 	case ENEMYTYPE::BOY:
-		_image = IMAGEMANAGER->findImage("boy_walk");
+		_image = IMAGEMANAGER->findImage("boy_idle");
 		break;
 	case ENEMYTYPE::GIRL:
-		_image = IMAGEMANAGER->findImage("girl_walk");
+		_image = IMAGEMANAGER->findImage("girl_idle");
 		break;
 	case ENEMYTYPE::CHEER:
 		break;
@@ -48,7 +50,8 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 
 	_right = _isHit = false;
 	_jumpPower = _gravity = 0;
-	_state = _move;
+	_state = _idle;
+	_maxHP = 100;
 
 	return S_OK;
 }
@@ -68,6 +71,7 @@ void enemy::update()
 	_state->update(*this, _playerRC, _playerX, _playerY, _et);
 
 	if (_isLay) _layCount++;
+	if (_maxHP <= 0) _condition = CONDITION::DEAD;
 
 	pixelCollision();
 
@@ -158,9 +162,15 @@ void enemy::pixelCollision()
 		int b = GetBValue(color);
 
 
-		if ((r == 255 && g == 0 && b == 0) || (r == 160 && g == 255 && b == 0))
+		if (r == 255 && g == 0 && b == 0)
 		{
 			_pixel = PIXEL::TOP;
+		}
+
+		if (r == 160 && g == 255 && b == 0)
+		{
+			_pixel = PIXEL::TOP;
+			_condition = CONDITION::GREEN;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -179,9 +189,15 @@ void enemy::pixelCollision()
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if ((r == 255 && g == 0 && b == 0) || (r == 160 && g == 255 && b == 0))
+		if (r == 255 && g == 0 && b == 0)
 		{
 			_pixel = PIXEL::BOTTOM;
+		}
+
+		if (r == 160 && g == 255 && b == 0)
+		{
+			_pixel = PIXEL::BOTTOM;
+			_condition = CONDITION::GREEN;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -199,9 +215,15 @@ void enemy::pixelCollision()
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if ((r == 255 && g == 0 && b == 0) || (r == 160 && g == 255 && b == 0))
+		if (r == 255 && g == 0 && b == 0)
 		{
 			_pixel = PIXEL::LEFT;
+		}
+
+		if (r == 160 && g == 255 && b == 0)
+		{
+			_pixel = PIXEL::LEFT;
+			_condition = CONDITION::GREEN;
 		}
 
 		if (r == 255 && g == 0 && b == 255)
@@ -224,9 +246,15 @@ void enemy::pixelCollision()
 		int g = GetGValue(color);
 		int b = GetBValue(color);
 
-		if ((r == 255 && g == 0 && b == 0) || (r == 160 && g == 255 && b == 0))
+		if (r == 255 && g == 0 && b == 0)
 		{
 			_pixel = PIXEL::RIGHT;
+		}
+
+		if (r == 160 && g == 255 && b == 0)
+		{
+			_pixel = PIXEL::RIGHT;
+			_condition = CONDITION::GREEN;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
