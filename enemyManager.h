@@ -1,6 +1,8 @@
 #pragma once
 #include "gameNode.h"
 #include "enemyBoy.h"
+#include "enemyGirl.h"
+
 class player;
 
 class enemyManager : public gameNode
@@ -8,9 +10,13 @@ class enemyManager : public gameNode
 	typedef vector<enemy*> getVEnemy;
 	typedef vector<enemy*>::iterator getVIEnemy;
 private:
+	player* _player;
+
 	getVEnemy _vBoy;
 	getVIEnemy _viBoy;
-	player* _player;
+
+	getVEnemy _vGirl;
+	getVIEnemy _viGirl;
 
 
 public:
