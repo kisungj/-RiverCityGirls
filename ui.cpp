@@ -33,7 +33,7 @@ HRESULT ui::init()
 
 	_hpWidth = _hpUI->getWidth();
 
-	_isStart = true;
+	_isStart = false;
 	_isPhone = false;
 	return S_OK;
 }
@@ -86,26 +86,26 @@ void ui::update()
 	}
 
 
-	// 타이틀 화면 조종 키
-	if (KEYMANAGER->isOnceKeyDown(VK_UP))
-	{
-		if (!_isStart)
-			_isStart = true;
-	}
-	if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
-	{
-		if (_isStart)
-			_isStart = false;
-	}
-	// 타이틀 화면 화살표 조정
-	if (_isStart)
-	{
-		_arrowY = 530;
-	}
-	else
-	{
-		_arrowY = 660;
-	}
+	//// 타이틀 화면 조종 키
+	//if (KEYMANAGER->isOnceKeyDown(VK_UP))
+	//{
+	//	if (!_isStart)
+	//		_isStart = true;
+	//}
+	//if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+	//{
+	//	if (_isStart)
+	//		_isStart = false;
+	//}
+	//// 타이틀 화면 화살표 조정
+	//if (_isStart)
+	//{
+	//	_arrowY = 530;
+	//}
+	//else
+	//{
+	//	_arrowY = 660;
+	//}
 
 	// 인벤토리 UI 띄우기 키
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
@@ -114,17 +114,20 @@ void ui::update()
 	}
 
 	// 인벤토리 조종키
-	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+	if (_isPhone)
 	{
-		_itemSelectIndex--;
-		if (_itemSelectIndex < 0)
-			_itemSelectIndex = 9;
-	}
-	if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
-	{
-		_itemSelectIndex++;
-		if (_itemSelectIndex > 9)
-			_itemSelectIndex = 0;
+		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		{
+			_itemSelectIndex--;
+			if (_itemSelectIndex < 0)
+				_itemSelectIndex = 9;
+		}
+		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		{
+			_itemSelectIndex++;
+			if (_itemSelectIndex > 9)
+				_itemSelectIndex = 0;
+		}
 	}
 
 	if (_isPhone)
