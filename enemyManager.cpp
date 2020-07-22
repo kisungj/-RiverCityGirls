@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "enemyManager.h"
 #include "player.h"
+
 HRESULT enemyManager::init()
 {
 	return S_OK;
@@ -56,16 +57,16 @@ void enemyManager::setBoy()
 	{
 		enemy* boy;
 		boy = new enemyBoy;
-		boy->init(1000, WINSIZEY / 2 + 250, ENEMYTYPE::BOY);
+		boy->init(300, WINSIZEY / 2 + 300, ENEMYTYPE::BOY);
 
 		_vBoy.push_back(boy);
 	}
 
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		enemy* girl;
 		girl = new enemyGirl;
-		girl->init(1600, WINSIZEY / 2 + 300, ENEMYTYPE::GIRL);
+		girl->init(2000 + i * 100, (WINSIZEY / 2 + 200) + i * 200, ENEMYTYPE::GIRL);
 
 		_vGirl.push_back(girl);
 	}

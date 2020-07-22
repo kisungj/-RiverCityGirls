@@ -4,8 +4,10 @@
 
 class enemy;
 
+class enemyIdleState;
 class enemyMoveState;
 class enemyRunState;
+class enemyJumpState;
 class enemyAttackState;
 class enemyHitState;
 class enemyDownState;
@@ -25,8 +27,10 @@ public:
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) = 0;
 
 public:
+	static enemyIdleState* enemyIdle;
 	static enemyMoveState* enemyMove;
 	static enemyRunState* enemyRun;
+	static enemyJumpState* enemyJump;
 	static enemyAttackState* enemyAttack;
 	static enemyHitState* enemyHit;
 	static enemyDownState* enemyDown;
@@ -34,9 +38,22 @@ public:
 	static enemyDeadState* enemyDead;
 };
 
+class enemyIdleState : public enemyState
+{
+private:
+	int _searchCount;
+	bool _isDiscover;
+public:
+	enemyIdleState() { _searchCount = 0; _isDiscover = false; }
+
+	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
+};
+
 class enemyMoveState : public enemyState
 {
 private:
+	int _randomCount;
+	int _rnd;
 	int _waitCount;
 	int _delayCount;
 public:
@@ -56,6 +73,12 @@ private:
 public:
 	enemyRunState() { _kickCount = 0; _limitCount = 0; _isKick = false; }
 
+	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
+};
+
+class enemyJumpState : public enemyState
+{
+public:
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
 

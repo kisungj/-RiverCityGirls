@@ -4,7 +4,7 @@
 
 enum class CONDITION
 {
-	SEARCH,	CLOSE, DEAD
+	SEARCH,	CLOSE, GREEN, DEAD
 };
 
 enum class PIXEL
@@ -47,8 +47,10 @@ protected:
 	RECT _playerRC;					//플레이어 렉트
 	RECT _playerAttack;				//플레이어 공격렉트
 
+	enemyState* _idle;
 	enemyState*	_move;
 	enemyState* _run;
+	enemyState* _jump;
 	enemyState*	_attack;
 	enemyState* _hit;
 	enemyState* _down;
@@ -87,6 +89,7 @@ public:
 	bool getStop() { return _isStop; }							//_isStop 가져가기
 	bool getOuch() { return _isHit; }							//_isHit 가져가기
 	bool getLay() { return _isLay; }							//_isLay 가져가기
+	bool getJumping() { return _isJump; }						//_isJump 가져가기
 
 	int getHitCount() { return _hitCount; }						//_hitCount 가져가기
 	int getLayCount() { return _layCount; }						//_layCount 가져가기
@@ -131,8 +134,10 @@ public:
 
 
 public:
+	enemyState* getIdle() { return _idle; }
 	enemyState* getMove() { return _move; }						//상태 클래스 변경할 때 필요
 	enemyState* getRun() { return _run; }
+	enemyState* getJump() { return _jump; }
 	enemyState* getAttack() { return _attack; }
 	enemyState* getHit() { return _hit; }
 	enemyState* getDown() { return _down; }
