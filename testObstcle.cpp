@@ -13,7 +13,9 @@ HRESULT testObstcle::init()
 	_in->init();
 
 	_om->setObstacle(VENDING);
-	_om->setObstacle(PILLAR);
+	_om->setObstacle(DESK);
+	_om->setObstacle(PILLARLEFT);
+	_om->setObstacle(PILLARRIGHT);
 
 	_x = 500;
 	_y = 500;
@@ -23,12 +25,14 @@ HRESULT testObstcle::init()
 	_attackbool = false;
 	_moneyCount = 0;
 
+	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2395 - WINSIZEX, 1100 - WINSIZEY);
+
 	return S_OK;
 }
 
 void testObstcle::render()
 {
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2"), IMAGEMANAGER->findImage("stage2")->getWidth() / 2, IMAGEMANAGER->findImage("stage2")->getHeight() / 2);
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage1"), IMAGEMANAGER->findImage("stage1")->getWidth() / 2, IMAGEMANAGER->findImage("stage1")->getHeight() / 2);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _testRc);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _testAttackRc);
 
@@ -82,8 +86,6 @@ void testObstcle::update()
 
 	collision();
 
-	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 3000 - WINSIZEX, 1000 - WINSIZEY);
-
 
 	_testRc = RectMakeCenter(_x, _y, 50, 50);
 	CAMERAMANAGER->setX(_x);
@@ -104,11 +106,14 @@ void testObstcle::release()
 void testObstcle::imageLoad()
 {
 	IMAGEMANAGER->addImage("stage2", "image/map/stage2.bmp", 4000, 1200, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("stage1", "image/map/stage.bmp", 2395, 1100, false, RGB(0, 0, 0));
 	IMAGEMANAGER->addImage("±Ýµ¿Àü", "image/item/±Ýµ¿Àü.bmp", 36, 36, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Àºµ¿Àü", "image/item/Àºµ¿Àü.bmp", 36, 37, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("¹°¾à1", "image/item/¹°¾à1.bmp", 70, 74, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("¹°¾à2", "image/item/¹°¾à2.bmp", 70, 60, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("±âµÕ", "image/obstacle/±âµÕ.bmp", 228, 950, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("±âµÕÁÂ", "image/obstacle/±âµÕÁÂ.bmp", 170, 630, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("±âµÕ¿ì", "image/obstacle/±âµÕ¿ì.bmp", 170, 630, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Ã¥»ó", "image/obstacle/Ã¥»ó.bmp", 185, 175, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("ÀÚÆÇ±â", "image/obstacle/ÀÚÆÇ±â.bmp", 700, 346, 2, 1, true, RGB(255, 0, 255));
 }
 
@@ -140,17 +145,18 @@ void testObstcle::collision()
 			//HPÆ÷¼Ç È¹µæ½Ã
 			if (_im->getVItem()[i]->getitemstate() == HP)
 			{
-				_in->setInItemName(_im->getVItem()[i]->getItemName());
-				_in->setInItemDiscription(_im->getVItem()[i]->getItemDiscription());
-				_in->setInHpPortion(_im->getVItem()[i]->getHpPortion());
+
+				//_in->setInItemName(_im->getVItem()[i]->getItemName());
+				//_in->setInItemDiscription(_im->getVItem()[i]->getItemDiscription());
+				//_in->setInHpPortion(_im->getVItem()[i]->getHpPortion());
 			}
 
 			//ÆÄ¿öÆ÷¼Ç È¹µæ½Ã
 			if (_im->getVItem()[i]->getitemstate() == POWER)
 			{
-				_in->setInItemName(_im->getVItem()[i]->getItemName());
-				_in->setInItemDiscription(_im->getVItem()[i]->getItemDiscription());
-				_in->setInPowerPortion(_im->getVItem()[i]->getPowerPortion());
+				//_in->setInItemName(_im->getVItem()[i]->getItemName());
+				//_in->setInItemDiscription(_im->getVItem()[i]->getItemDiscription());
+				//_in->setInPowerPortion(_im->getVItem()[i]->getPowerPortion());
 			}
 
 			_im->removeItem(i);

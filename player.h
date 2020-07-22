@@ -48,7 +48,7 @@ private:
 	bool _isRight;					//오른쪽
 	bool _isDesk;					//책상위에 올라갔는지
 	bool _isJumping;				//점프하는지
-	bool _isDeskJump;				//데스크 충돌 테스트
+	bool _isDeskFall;				//데스크 충돌 테스트
 	bool _isRun;					//뛰는지
 	bool _isAttack;					//공격할거?
 	bool _attacked;					//공격 3번 이어주기
@@ -118,6 +118,7 @@ public:
 	bool getIsRun() { return _isRun; }
 	bool getAttacked() { return _attacked; }
 	bool getIsAttack() { return _isAttack; }
+	bool getIsDeskFall() { return _isDeskFall; }
 	RECT getAttackRect() { return _attackRc; }
 	RECT getPlayerRect() { return _player; }
 	image* getImgge() { return _img; }
@@ -161,6 +162,7 @@ public:
 	void setIsRun(bool isRun) { _isRun = isRun; }
 	void setIsAttack(bool isAttack) { _isAttack = isAttack; }
 	void setAttacked(bool attacked) { _attacked = attacked; }
+	void setIsDeskFall(bool fall) { _isDeskFall = fall; }
 	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
 };

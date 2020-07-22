@@ -9,11 +9,18 @@ class testUIScene : public gameNode
 private:
 	ui* _ui;
 	string _test;
+	string _typeStr;
+	string _firstNotStr;
 
 	char _indexStr[255];
 
 	int _index;
 	float _chatCount;
+
+	float _playerX;
+	float _bossX;
+
+	bool _isTalk;
 
 public:
 	testUIScene() {}
