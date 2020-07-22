@@ -18,7 +18,8 @@ HRESULT stageManager::init()
 	// ======================================================== //
 	_player = new player;
 	_player->init();
-
+	_ui = new ui;
+	_ui->init();
 	_itemManager = new itemManager;
 	_obstacleManager = new obstacleManager;
 	_enemyManager = new enemyManager;
@@ -59,6 +60,8 @@ void stageManager::render()
 	}
 
 	_player->render();
+
+	_ui->render();
 }
 
 void stageManager::update()
@@ -78,7 +81,7 @@ void stageManager::update()
 		_enemyManager->getVBoy()[i]->update();
 		_enemyManager->getVBoy()[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getPlayerY());
 	}
-
+	_ui->update();
 	_player->update();
 	// ================================================================
 	//if (KEYMANAGER->isOnceKeyDown(VK_F1)) SCENEMANAGER->changeScene("PLAYER_SCENE");
@@ -97,6 +100,13 @@ void stageManager::update()
 		_enemyManager->release();
 		_itemManager->release();
 		SCENEMANAGER->changeScene("STAGE1_SCENE");
+		_obstacleManager->init();
+		_enemyManager->init();
+		_itemManager->init();
+		//---- 임시
+		_obstacleManager->setObstacle(DESK);
+		_enemyManager->setBoy();
+		//---- 임시
 	}
 	if (KEYMANAGER->isOnceKeyDown(VK_F2))
 	{
@@ -110,8 +120,9 @@ void stageManager::update()
 		_obstacleManager->release();
 		_enemyManager->release();
 		_itemManager->release();
-		_boss->release();
+		_boss->init();
 		SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
+
 	}
 }
 

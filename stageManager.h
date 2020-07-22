@@ -14,6 +14,8 @@
 #include "enemyManager.h"
 #include "boss.h"
 #include "player.h"
+#include "ui.h"
+
 enum GAMETYPE 
 {
 	GAMETITLE,
@@ -31,11 +33,12 @@ private:
 	testBossScene*   _bossScene;
 	testUIScene*	 _uiScene;
 	testObstcle*     _obstacleScene;
-
+	
 	obstacleManager* _obstacleManager;
 	itemManager*     _itemManager;
 	enemyManager*    _enemyManager;
 	boss*            _boss;
+	ui*              _ui;
 	stage1*          _stage1;
 	stage2*          _stage2;
 	stageBoss*       _stageBoss;

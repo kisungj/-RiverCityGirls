@@ -5,10 +5,8 @@ HRESULT boss::init()
 {
 	// ------------ 임시 변수 ------------ //
 	loadAnimation();
-
 	_hp = 100;
 
-	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2538 - WINSIZEX, 1000 - WINSIZEY);
 	_jumpAlphaMax = _jumpAlpha = 200;
 	_jumpAlphaMin = 70;
 
