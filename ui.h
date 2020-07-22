@@ -14,12 +14,11 @@ private:
 	int _itemSelectIndex;
 
 	float _timer;
-	float _arrowX, _arrowY;
 
 	float _phoneAlpha;
 	float _hpWidth;
 	
-	bool _isStart;
+
 	bool _isPhone;
 
 public:

@@ -3,6 +3,10 @@
 class titleStage : public gameNode
 {
 private:
+	bool _isStart;
+	image* _selectArrow;
+
+	float _arrowX, _arrowY;
 
 public:
 	titleStage() {}
