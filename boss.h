@@ -28,7 +28,7 @@ private:
 	float      _x, _y, _z;                                 // 보스 중심점
 	float      _jumpPower, _gravity;                       // 보스 점프 관련 변수		
 	float      _angle;                                     // 보스의 이동 각도
-	float      _applySpeed;                                // 적용 스피드
+	float      _applySpeed;                                // 스피드
 	STATEBOSS  _state;                                     // 보스 상태 저장용
 	RECT       _rc;                                        // 보스 충돌 렉트
 	image*     _characterImg;                              // 보스 이미지
@@ -65,10 +65,10 @@ public:
 	void    stateUpdate();              // 보스 스테이트 업데이트.
 public:
 	void    attack(float playerX, float playerZ);                   // 플레이어를 찾아서 약 공격
-	void    heavyAttack(float playerX, float playerZ);              // 플레이어를 찾아서 약 공격
-	void    dashAttack(float playerX, float playerZ);               // 대쉬 공격
-	void    jumpAttack(float playerX, float playerZ);               // 점프 공격
-	void    elbowAttack(float playerX, float playerZ);              // 엘보우공격
-	void    changePattern();
+	void    heavyAttack(float playerX, float playerZ);              // 플레이어를 찾아서 강 공격
+	void    dashAttack(float playerX, float playerZ);               // 대쉬  공격
+	void    jumpAttack(float playerX, float playerZ);               // 점프  공격
+	void    elbowAttack(float playerX, float playerZ);              // 엘보우 공격
+	void    changePattern();                                        // 패턴 바꾸는용
 };
 
