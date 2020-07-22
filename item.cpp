@@ -9,6 +9,39 @@ Item::~Item()
 {
 }
 
+HRESULT Item::init(ITEMSTATE itemstate)
+{
+	_itemState = itemstate;
+
+	switch (_itemState)
+	{
+	case HP:
+		_itemImg = IMAGEMANAGER->findImage("물약1");
+		_itemName = "HP포션";
+		_itemDiscription = "체력을 30만큼 회복시켜준다.";
+		_hpPortion = 30;
+		break;
+
+	case POWER:
+		_itemImg = IMAGEMANAGER->findImage("물약2");
+		_itemName = "파워포션";
+		_itemDiscription = "공격력을 20만큼 증가시켜준다.";
+		_powerPortion = 20;
+		break;
+
+	case GOLD:
+		_itemImg = IMAGEMANAGER->findImage("금동전");
+		break;
+
+
+	case SILVER:
+		_itemImg = IMAGEMANAGER->findImage("은동전");
+		break;
+	}
+
+	return S_OK;
+}
+
 HRESULT Item::init(ITEMSTATE itemstate, POINT position)
 {
 	_itemState = itemstate;

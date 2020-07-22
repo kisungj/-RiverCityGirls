@@ -3,9 +3,6 @@
 
 HRESULT ui::init()
 {
-	_inven = new inventory;
-	_inven->init();
-
 	_loading = IMAGEMANAGER->findImage("loading_sprite");
 	_hpUI = IMAGEMANAGER->findImage("full_hd");
 
@@ -34,6 +31,11 @@ HRESULT ui::init()
 	_hpWidth = _hpUI->getWidth();
 
 	_isPhone = false;
+
+	for (int i = 0; i < 10; i++)
+	{
+		_inventory[i].isNull = true;
+	}
 	return S_OK;
 }
 
@@ -43,7 +45,7 @@ void ui::render()
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 0);
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 800);
 	IMAGEMANAGER->findImage("status_hud_back")->render(getMemDC(), 270, 50);
-	IMAGEMANAGER->findImage("full_hd")->render(getMemDC(), _hpRC.left, _hpRC.top,0,0,_hpWidth,_hpUI->getHeight());
+	IMAGEMANAGER->findImage("full_hd")->render(getMemDC(), _hpRC.left, _hpRC.top, 0, 0, _hpWidth, _hpUI->getHeight());
 	IMAGEMANAGER->findImage("status_hud")->render(getMemDC(), 270, 50);
 	IMAGEMANAGER->findImage("coin_ui")->render(getMemDC(), 290, 105);
 	IMAGEMANAGER->findImage("character_hud")->render(getMemDC(), 140, 0);
@@ -51,11 +53,11 @@ void ui::render()
 	if (_isPhone)
 	{
 		IMAGEMANAGER->findImage("phone_active")->alphaRender(getMemDC(), 100);
-		IMAGEMANAGER->findImage("phone_ui")->alphaRender(getMemDC(),150,50, _phoneAlpha);
+		IMAGEMANAGER->findImage("phone_ui")->alphaRender(getMemDC(), 150, 50, _phoneAlpha);
 
 		if (_itemSelectIndex == 0 || _itemSelectIndex == 1)
 		{
-			IMAGEMANAGER->findImage("equip_select")->alphaRender(getMemDC(), _inventory[_itemSelectIndex].rc.left + 35 , _inventory[_itemSelectIndex].rc.top - 27, _phoneAlpha);
+			IMAGEMANAGER->findImage("equip_select")->alphaRender(getMemDC(), _inventory[_itemSelectIndex].rc.left + 35, _inventory[_itemSelectIndex].rc.top - 27, _phoneAlpha);
 		}
 
 		if (_itemSelectIndex > 1 && _itemSelectIndex < 10)
@@ -63,6 +65,11 @@ void ui::render()
 			IMAGEMANAGER->findImage("select_item")->alphaRender(getMemDC(), _inventory[_itemSelectIndex].rc.left, _inventory[_itemSelectIndex].rc.top, _phoneAlpha);
 		}
 
+		for (int i = 0; i < 10; i++)
+		{
+			if (!_inventory[i].isNull)
+				_inventory[i].item->getItemImage()->render(getMemDC(), _inventory[i].rc.left, _inventory[i].rc.top);
+		}
 
 	}
 
@@ -109,7 +116,7 @@ void ui::update()
 	if (_isPhone)
 	{
 		if (_phoneAlpha < 255)
-			_phoneAlpha+= 8.5;
+			_phoneAlpha += 8.5;
 	}
 	else
 	{
