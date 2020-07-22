@@ -23,7 +23,7 @@ protected:
 	int _currentX, _currentY;		//프레임 x축 , y축
 	int _frameCount;				//프레임 돌리는 용도
 
-	float _x, _y;					//에너미 x, y축
+	float _x, _y, _z;				//에너미 x, y, z축
 	float _width, _height;			//에너미 너비, 높이
 	float _jumpPower, _gravity;		//에너미 점프파워, 그래비티
 
@@ -74,6 +74,7 @@ public:
 
 	float getX() { return _x; }									//x축 가져가기
 	float getY() { return _y; }									//y축 가져가기
+	float getZ() { return _z; }									//z축 가져가기
 
 	bool getRight() { return _right; }							//_right 가져가기
 	bool getStop() { return _isStop; }							//_isStop 가져가기
@@ -105,6 +106,7 @@ public:
 
 	void setX(float x) { _x = x; }								//x축 움직이게 하기
 	void setY(float y) { _y = y; }								//y축 움직이게 하기
+	void setZ(float z) { _z = z; }								//z축 움직이게 하기
 
 	void setStop(BOOL stop = FALSE) { _isStop = stop; }			//_isStop 세팅해주기
 	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기
