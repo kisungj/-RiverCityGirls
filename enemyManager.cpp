@@ -1,19 +1,26 @@
 #include "stdafx.h"
 #include "enemyManager.h"
-
+#include "player.h"
 HRESULT enemyManager::init()
 {
-
 	return S_OK;
 }
 
 void enemyManager::render()
 {
-	
+	for (int i = 0; i < _vBoy.size(); i++)
+	{
+		_vBoy[i]->render();
+	}
 }
 
 void enemyManager::update()
 {
+	for (int i = 0; i < _vBoy.size(); i++)
+	{
+		_vBoy[i]->update();
+		_vBoy[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getPlayerY());
+	}
 }
 
 void enemyManager::release()
@@ -31,7 +38,7 @@ void enemyManager::setBoy()
 	{
 		enemy* boy;
 		boy = new enemyBoy;
-		boy->init(1000, WINSIZEY / 2 + 300);
+		boy->init(1000, WINSIZEY / 2 + 300, ENEMYTYPE::BOY);
 
 		_vBoy.push_back(boy);
 	}

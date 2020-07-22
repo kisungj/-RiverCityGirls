@@ -21,9 +21,26 @@ HRESULT stageManager::init()
 	_ui = new ui;
 	_ui->init();
 	_itemManager = new itemManager;
+	_inventory = new inventory;
 	_obstacleManager = new obstacleManager;
 	_enemyManager = new enemyManager;
+	_enemyManager->setPlayerLink(_player);
 	_boss	      =	new boss;
+
+	Item* tempItem = new Item;
+	tempItem->init(HP);
+	_inventory->setInventory(tempItem);
+	_inventory->setInventory(tempItem);
+	_inventory->setInventory(tempItem);
+	_inventory->setInventory(tempItem);
+	_inventory->setInventory(tempItem);
+
+	for (int i = 0; i < _inventory->getInventory().size() ; ++i)
+	{
+		_ui->setInventoryUI(_inventory->getInventory()[i]);
+	}
+
+
 	_stage1 = new stage1;
 	//_stage1->init(_obstacleManager, _itemManager, _enemyManager, _player);
 
@@ -53,18 +70,9 @@ void stageManager::render()
 {
 	SCENEMANAGER->render();
 
-	for (int i = 0; i < _itemManager->getVItem().size(); i++)
-	{
-		_itemManager->getVItem()[i]->render();
-	}
-	for (int i = 0; i < _obstacleManager->getVObstacle().size(); i++)
-	{
-		_obstacleManager->getVObstacle()[i]->render();
-	}
-	for (int i = 0; i < _enemyManager->getVBoy().size(); i++)
-	{
-		_enemyManager->getVBoy()[i]->render();
-	}
+	_itemManager->render();
+	_obstacleManager->render();
+	_enemyManager->render();
 
 	_player->render();
 
@@ -82,21 +90,9 @@ void stageManager::update()
 	{
 		_player->update();
 
-		for (int i = 0; i < _itemManager->getVItem().size(); i++)
-		{
-			_itemManager->getVItem()[i]->update();
-		}
-
-		for (int i = 0; i < _obstacleManager->getVObstacle().size(); i++)
-		{
-			_obstacleManager->getVObstacle()[i]->update();
-		}
-
-		for (int i = 0; i < _enemyManager->getVBoy().size(); i++)
-		{
-			//_enemyManager->getVBoy()[i]->update();
-			_enemyManager->getVBoy()[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getPlayerY());
-		}
+		_itemManager->update();
+		_obstacleManager->update();
+		_enemyManager->update();
 
 	}
 	// ================================================================

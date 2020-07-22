@@ -1,6 +1,16 @@
 #pragma once
 #include "gameNode.h"
+#include "item.h"
+
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+
+struct tagInvenUi
+{
+	RECT rc;
+	Item* item;
+
+	bool isNull;
+};
 
 class ui : public gameNode
 {
@@ -9,7 +19,7 @@ private:
 	image* _selectArrow;
 	image* _loading;
 	RECT _hpRC;
-	RECT _inventory[10];
+	tagInvenUi _inventory[10];
 
 	int _itemSelectIndex;
 
@@ -32,5 +42,18 @@ public:
 
 	void setHpGauge(float curHp, float maxHp);
 	bool getIsPhone() { return _isPhone; }
+
+	void setInventoryUI(Item* item) 
+	{
+		for (int i = 2; i < 10; i++)
+		{
+			if (_inventory[i].isNull)
+			{
+				_inventory[i].item = item;
+				_inventory[i].isNull = false;
+				break;
+			}
+		}
+	}
 };
 

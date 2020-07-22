@@ -12,6 +12,7 @@
 #include "testObstcle.h"
 #include "obstacleManager.h"
 #include "itemManager.h"
+#include "inventory.h"
 #include "enemyManager.h"
 #include "boss.h"
 #include "player.h"
@@ -37,6 +38,7 @@ private:
 	
 	obstacleManager* _obstacleManager;
 	itemManager*     _itemManager;
+	inventory*		 _inventory;
 	enemyManager*    _enemyManager;
 	boss*            _boss;
 	ui*              _ui;

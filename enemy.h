@@ -14,6 +14,7 @@ class enemy : public gameNode
 protected:
 	enemyState* _state;				//현재 클래스 상태
 	CONDITION _condition;			//상태
+	ENEMYTYPE _et;
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
@@ -54,7 +55,7 @@ public:
 	enemy();
 	~enemy();
 
-	virtual HRESULT init(float x, float y);
+	virtual HRESULT init(float x, float y, ENEMYTYPE et);
 	virtual void release();
 	virtual void update();
 	virtual void render();

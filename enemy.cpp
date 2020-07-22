@@ -9,7 +9,7 @@ enemy::~enemy()
 {
 }
 
-HRESULT enemy::init(float x, float y)
+HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 {
 	{
 		_move	 = new enemyMoveState();
@@ -23,6 +23,7 @@ HRESULT enemy::init(float x, float y)
 
 	addImage();
 
+	_et = et;
 	_x = x;
 	_y = y;
 	_z = y + 100;
@@ -32,7 +33,16 @@ HRESULT enemy::init(float x, float y)
 	_rc = RectMakeCenter(_x, _y, _width, _height);
 	_shadow = RectMakeCenter(_x, _z, 50, 30);
 
-	_image = IMAGEMANAGER->findImage("boy_walk");
+	switch (_et)
+	{
+	case ENEMYTYPE::BOY:
+		_image = IMAGEMANAGER->findImage("boy_walk");
+		break;
+	case ENEMYTYPE::GIRL:
+		break;
+	case ENEMYTYPE::CHEER:
+		break;
+	}
 	_shadowImg = IMAGEMANAGER->findImage("enemy_shadow");
 
 	_right = _isHit = false;
@@ -55,7 +65,7 @@ void enemy::update()
 	_rc = RectMakeCenter(_x, _y, _width, _height);
 	_shadow = RectMakeCenter(_x, _y + 100, 80, 30);
 
-	_state->update(*this, _playerRC, _playerX, _playerY, ENEMYTYPE::BOY);
+	_state->update(*this, _playerRC, _playerX, _playerY, _et);
 
 	if (_isLay) _layCount++;
 
