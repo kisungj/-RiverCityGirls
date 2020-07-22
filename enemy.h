@@ -10,12 +10,13 @@ enum class CONDITION
 
 class enemy : public gameNode
 {
-private:
+protected:
 	enemyState* _state;				//현재 클래스 상태
 	CONDITION _condition;			//상태
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
+	RECT _attackRC;					//에너미 공격 렉트
 
 	image* _image;					//에너미 이미지
 	int _currentX, _currentY;		//프레임 x축 , y축
@@ -40,7 +41,6 @@ private:
 	enemyState*	_move;
 	enemyState* _run;
 	enemyState*	_attack;
-	enemyState* _guard;
 	enemyState* _hit;
 	enemyState* _down;
 	enemyState* _beg;
@@ -58,12 +58,14 @@ public:
 	virtual void directionCheck(RECT rc, float x, float y);
 	//virtual void type() = 0;									//에너미 타입 지정 용도(이미지 때문에)
 	void draw();												//프레임 돌리는 용도
+	void pixelCollision();										//픽셀 충돌
 	void addImage();											//이미지매니저 한곳에 모아두기
 
 
 public:
 	RECT getRC() { return _rc; }								//에너미 렉트 가져가기
-	RECT getShadow() { return _shadow; }						//그림자 가져가기
+	RECT getShadow() { return _shadow; }						//그림자 렉트 가져가기
+	RECT getAtk() { return _attackRC; }						//공격 렉트 가져가기
 	image* getImage() { return _image; }						//이미지 가져가기
 	CONDITION getCondition() { return _condition; }				//CONDITION 가져가기
 
@@ -85,6 +87,11 @@ public:
 	void setRC(float x, float y, float width, float height)		//에너미 렉트 설정해주기
 	{
 		_rc = RectMakeCenter(x, y, width, height);
+	}
+
+	void setAtk(float x, float y, float width, float height)	//에너미 공격 렉트 설정해주기
+	{
+		_attackRC = RectMakeCenter(x, y, width, height);
 	}
 
 	void setState(enemyState* state) { this->_state = state; }	//상태 클래스 변경해주기
@@ -110,9 +117,7 @@ public:
 	enemyState* getMove() { return _move; }						//상태 클래스 변경할 때 필요
 	enemyState* getRun() { return _run; }
 	enemyState* getAttack() { return _attack; }
-	enemyState* getGuard() { return _guard; }
 	enemyState* getHit() { return _hit; }
 	enemyState* getDown() { return _down; }
-	enemyState* getBeg() { return _beg; }
 	enemyState* getDizzy() { return _dizzy; }
 };

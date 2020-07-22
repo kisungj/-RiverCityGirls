@@ -7,10 +7,8 @@ class enemy;
 class enemyMoveState;
 class enemyRunState;
 class enemyAttackState;
-class enemyGuardState;
 class enemyHitState;
 class enemyDownState;
-class enemyBegState;
 class enemyDizzyState;
 
 enum class ENEMYTYPE
@@ -37,10 +35,8 @@ public:
 	static enemyMoveState* enemyMove;
 	static enemyRunState* enemyRun;
 	static enemyAttackState* enemyAttack;
-	static enemyGuardState* enemyGuard;
 	static enemyHitState* enemyHit;
 	static enemyDownState* enemyDown;
-	static enemyBegState* enemyBeg;
 	static enemyDizzyState* enemyDizzy;
 };
 
@@ -79,12 +75,6 @@ public:
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
 
-class enemyGuardState : public enemyState
-{
-public:
-	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
-};
-
 class enemyHitState : public enemyState
 {
 private:
@@ -104,12 +94,6 @@ class enemyDownState : public enemyState
 public:
 	enemyDownState() {}
 
-	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
-};
-
-class enemyBegState : public enemyState
-{
-public:
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
 

@@ -1,11 +1,11 @@
 #pragma once
 #include "gameNode.h"
-#include "enemy.h"
+#include "enemyManager.h"
 
 class testEnemyScene : public gameNode
 {
 private:
-	enemy* _enemy;
+	enemyManager* _em;
 
 	RECT _testPlayer;
 	RECT _punch;

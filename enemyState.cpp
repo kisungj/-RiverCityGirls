@@ -4,7 +4,6 @@
 
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 
-
 //===================================================무브 클래스===================================================//
 void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {	
@@ -126,14 +125,14 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		{
 			if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 1)
 			{
-				_attack = RectMakeCenter(enemy.getX() + 65, enemy.getY(), 95, 200);
+				enemy.setAtk(enemy.getX() + 65, enemy.getY(), 95, 200);
 			}
 
 			if (enemy.getFrameX() == 0)
 			{
 				if (IntersectRect(&temp, &rc, &_attack))
 				{
-					_attack = RectMakeCenter(0, 0, 0, 0);
+					enemy.setAtk(0, 0, 0, 0);
 					enemy.setStop(true);
 				}
 			}
@@ -143,14 +142,14 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		{
 			if (enemy.getFrameX() == 1)
 			{
-				_attack = RectMakeCenter(enemy.getX() - 65, enemy.getY(), 95, 200);
+				enemy.setAtk(enemy.getX() - 65, enemy.getY(), 95, 200);
 			}
 
 			if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX())
 			{
 				if (IntersectRect(&temp, &rc, &_attack))
 				{
-					_attack = RectMakeCenter(0, 0, 0, 0);
+					enemy.setAtk(0, 0, 0, 0);
 					enemy.setStop(true);
 				}
 			}
@@ -174,6 +173,19 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		_kickCount = 0;
 	}
 
+	//==================힛 클래스로 이동==================//
+	if (enemy.getOuch())
+	{		
+		if (enemyType == ENEMYTYPE::BOY)
+		{
+			enemy.setImage(IMAGEMANAGER->findImage("boy_hit1"));
+		}
+		if (enemy.getRight()) enemy.setFrameX(0);
+		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+		enemy.setState(enemy.getHit());
+		_kickCount = 0;
+	}
+
 	cout << "run class" << endl;
 }
 
@@ -188,7 +200,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 	{
 		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 1)
 		{
-			_attack = RectMakeCenter(enemy.getX() + 65, enemy.getY(), 95, 200);
+			enemy.setAtk(enemy.getX() + 65, enemy.getY(), 95, 200);
 		}
 
 		if (enemy.getFrameX() == 0)
@@ -196,7 +208,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 			if (IntersectRect(&temp, &rc, &_attack))
 			{
 				_comboCount++;
-				_attack = RectMakeCenter(0, 0, 0, 0);
+				enemy.setAtk(0, 0, 0, 0);
 			}
 		}
 	}
@@ -205,7 +217,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 	{
 		if (enemy.getFrameX() == 1)
 		{
-			_attack = RectMakeCenter(enemy.getX() - 65, enemy.getY(), 95, 200);
+			enemy.setAtk(enemy.getX() - 65, enemy.getY(), 95, 200);
 		}
 
 		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX())
@@ -213,7 +225,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 			if (IntersectRect(&temp, &rc, &_attack))
 			{
 				_comboCount++;
-				_attack = RectMakeCenter(0, 0, 0, 0);
+				enemy.setAtk(0, 0, 0, 0);
 			}
 		}
 	}
@@ -285,12 +297,6 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 
 	cout << "attack class" << endl;
 	cout << enemy.getFrameX() << endl;
-}
-
-//===================================================가드 클래스===================================================//
-void enemyGuardState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
-{
-
 }
 
 //===================================================힛 클래스===================================================//
@@ -614,12 +620,6 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 
 	cout << "down class" << endl;
 	cout << enemy.getHitCount() << ", " << enemy.getOuch() << endl;
-}
-
-//===================================================빌기 클래스===================================================//
-void enemyBegState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
-{
-	//데미지
 }
 
 //===================================================어질어질 클래스===================================================//

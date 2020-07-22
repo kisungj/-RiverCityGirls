@@ -3,8 +3,10 @@
 
 HRESULT testEnemyScene::init()
 {
-	_enemy = new enemy;
-	_enemy->init();
+	IMAGEMANAGER->addImage("background", "image/map/01_Detention_BG_x3_start_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
+
+	_em = new enemyManager;
+	_em->init();
 
 	_x = WINSIZEX / 2;
 	_y = WINSIZEY / 2;
@@ -18,27 +20,28 @@ void testEnemyScene::render()
 {
 	TextOut(getMemDC(), 10, 100, "Enemy Scene", strlen("Enemy Scene"));
 
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("background"), IMAGEMANAGER->findImage("background")->getWidth() / 2, IMAGEMANAGER->findImage("background")->getHeight()/2);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _punch);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _testPlayer);
-	_enemy->render();
+	_em->render();
 }
 
 void testEnemyScene::update()
 {
-	_enemy->update();
+	_em->update();
 
 	//테스트용
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
 			_right = false;
-			_x -= 3;
+			_x -= 5;
 		}
 
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
 			_right = true;
-			_x += 3;
+			_x += 5;
 		}
 
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
