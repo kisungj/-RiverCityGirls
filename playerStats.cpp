@@ -138,7 +138,7 @@ void idleState::update(player & player)
 	{
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
-		player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+		player.setAttack(player.getPlayerX(), player.getPlayerY(), 300, 80);
 	}
 
 	//가드
@@ -162,11 +162,13 @@ void idleState::update(player & player)
 		if (!player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 160, 170);
 			player.setState(player.getAttackState());
 		}
 		if (player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 160, 170);
 			player.setState(player.getAttackState());
 		}
 	}
@@ -468,7 +470,7 @@ void walkState::update(player & player)
 	{
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
-		player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+		player.setAttack(player.getPlayerX(), player.getPlayerY(), 300, 80);
 	}
 
 
@@ -484,6 +486,23 @@ void walkState::update(player & player)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"), IMAGEMANAGER->findImage("PLAYER_GUARD"));
 			player.setState(player.getGuardState());
+		}
+	}
+
+	//강공격
+	if (KEYMANAGER->isOnceKeyDown('Q'))
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 160, 170);
+			player.setState(player.getAttackState());
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 160, 170);
+			player.setState(player.getAttackState());
 		}
 	}
 
@@ -784,7 +803,25 @@ void runState::update(player & player)
 	{
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
-		player.setAttack(player.getPlayerX(), player.getPlayerY() + 100, 120, 20);
+		player.setAttack(player.getPlayerX(), player.getPlayerY() - 50, 120, 80);
+	}
+
+	//강공격
+	if (KEYMANAGER->isOnceKeyDown('Q'))
+	{
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
+			player.setState(player.getAttackState());
+
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
+			player.setState(player.getAttackState());
+		}
 	}
 
 	player.mouseCol();
@@ -829,7 +866,7 @@ void jumpState::update(player & player)
 	}
 
 	//제일 높게 있는 상태면 떨어지는 자세로 바뀌기
-	if (player.getJumpPower() < 0 && !_isJump)
+	if (player.getJumpPower() < 0 && !_isJump && (!KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay()))
 	{
 		if (player.getDirectionX())
 		{
@@ -873,6 +910,7 @@ void jumpState::update(player & player)
 	if (player.getPlayerY() >= player.getShadowY() - 110)
 	{
 		_jumpCount = 0;
+		player.setShadow(200);
 		//아무것도 안누르면 아이들로
 		if (KEYMANAGER->getKeyUp() == NULL)
 		{
@@ -982,25 +1020,28 @@ void jumpState::update(player & player)
 		}
 	}
 
-	////맞기
-	//if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	//{
+	//강공격
+	if (KEYMANAGER->isOnceKeyDown('Q'))
+	{
+		if (player.getShadow() <= 200)
+		{
+			player.setShadow(player.getShadow() + 5);
+		}
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 160, 170);
+			//player.setState(player.getAttackState());
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 160, 170);
+			//player.setState(player.getAttackState());
+		}
+	}
 
-	//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
-	//	{
-	//		if (!player.getDirectionX())
-	//		{
-	//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-	//			player.setState(player.getHitState());
-	//		}
-	//		if (player.getDirectionX())
-	//		{
-	//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-	//			player.setState(player.getHitState());
-	//		}
-	//	}
-
-	//}
+	
 	player.mouseCol();
 }
 

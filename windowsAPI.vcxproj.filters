@@ -237,6 +237,9 @@
     <ClInclude Include="titleStage.h">
       <Filter>playGround\stage</Filter>
     </ClInclude>
+    <ClInclude Include="enemyGirl.h">
+      <Filter>playGround\enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -385,6 +388,9 @@
     </ClCompile>
     <ClCompile Include="titleStage.cpp">
       <Filter>playGround\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="enemyGirl.cpp">
+      <Filter>playGround\enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

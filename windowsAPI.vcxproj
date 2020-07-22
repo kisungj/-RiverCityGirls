@@ -157,6 +157,7 @@
     <ClInclude Include="effectManager.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemyBoy.h" />
+    <ClInclude Include="enemyGirl.h" />
     <ClInclude Include="enemyManager.h" />
     <ClInclude Include="enemyState.h" />
     <ClInclude Include="eventManager.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="effectManager.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemyBoy.cpp" />
+    <ClCompile Include="enemyGirl.cpp" />
     <ClCompile Include="enemyManager.cpp" />
     <ClCompile Include="enemyState.cpp" />
     <ClCompile Include="eventManager.cpp" />
