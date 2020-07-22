@@ -220,13 +220,13 @@ void player::mouseCol()
 			{
 				setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
 				setState(getHitState());
-				playerDamage(50);
+				playerDamage(10);
 			}
 			if (_directionX)
 			{
 				setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
 				setState(getHitState());
-				playerDamage(50);
+				playerDamage(10);
 			}
 		}
 
