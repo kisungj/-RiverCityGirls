@@ -843,6 +843,10 @@ void jumpState::update(player & player)
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_FALL"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
 			}
+			if (player.getShadow() <= 200)
+			{
+				player.setShadow(player.getShadow() + 5);
+			}
 		}
 		if (!player.getDirectionX())
 		{
@@ -850,6 +854,10 @@ void jumpState::update(player & player)
 			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_FALL"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+			}
+			if (player.getShadow() <= 200)
+			{
+				player.setShadow(player.getShadow() + 5);
 			}
 		}
 		
@@ -859,6 +867,10 @@ void jumpState::update(player & player)
 		if (KEYMANAGER->isStayKeyDown('Z'))
 		{
 			player.setJumpPower(player.getJumpPower() + 0.8f);
+			if (player.getShadow() >= 0)
+			{
+				player.setShadow(player.getShadow() - 5);
+			}
 		}
 	}
 	
@@ -1422,7 +1434,25 @@ void guardState::update(player & player)
 
 void overState::update(player & player)
 {
-
+	if (!player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_OVER")->isPlay() && !player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_OVER")->isPlay())
+	{
+		if (!player.getDirectionX())
+		{
+			player.setIsJumping(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			player.setState(player.getIdleState());
+			player.setDirectionX(false);
+			player.setPlayerHP(100);
+		}
+		if (player.getDirectionX())
+		{
+			player.setIsJumping(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			player.setState(player.getIdleState());
+			player.setDirectionX(true);
+			player.setPlayerHP(100);
+		}
+	}
 }
 
 void stunState::update(player & player)
