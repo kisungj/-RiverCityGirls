@@ -14,7 +14,7 @@ class enemy : public gameNode
 protected:
 	enemyState* _state;				//현재 클래스 상태
 	CONDITION _condition;			//상태
-	ENEMYTYPE _et;
+	ENEMYTYPE _et;					//에너미 타입
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트

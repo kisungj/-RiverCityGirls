@@ -27,13 +27,16 @@ HRESULT stageManager::init()
 	_enemyManager->setPlayerLink(_player);
 	_boss	      =	new boss;
 
-	Item* tempItem = new Item;
-	tempItem->init(HP);
-	_inventory->setInventory(tempItem);
-	_inventory->setInventory(tempItem);
-	_inventory->setInventory(tempItem);
-	_inventory->setInventory(tempItem);
-	_inventory->setInventory(tempItem);
+	Item* tempItem1 = new Item;
+	tempItem1->init(HP);
+
+	Item* tempItem2 = new Item;
+	tempItem2->init(POWER);
+	_inventory->setInventory(tempItem2);
+	_inventory->setInventory(tempItem1);
+	_inventory->setInventory(tempItem2);
+	_inventory->setInventory(tempItem1);
+	_inventory->setInventory(tempItem2);
 
 	for (int i = 0; i < _inventory->getInventory().size() ; ++i)
 	{

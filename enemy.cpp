@@ -39,6 +39,7 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 		_image = IMAGEMANAGER->findImage("boy_walk");
 		break;
 	case ENEMYTYPE::GIRL:
+		_image = IMAGEMANAGER->findImage("girl_walk");
 		break;
 	case ENEMYTYPE::CHEER:
 		break;
@@ -58,7 +59,6 @@ void enemy::release()
 
 void enemy::update()
 {
-
 	_y -= _jumpPower;
 	_jumpPower -= _gravity;
 
@@ -69,11 +69,7 @@ void enemy::update()
 
 	if (_isLay) _layCount++;
 
-	//pixelCollision();
-
-	//if (_hitCount == 1) _hitState = HITSTATE::HIT1;
-	//if (_hitCount == 2) _hitState = HITSTATE::HIT2;
-	//if (_hitCount == 3) _hitState = HITSTATE::HIT3;
+	pixelCollision();
 
 	//CAMERAMANAGER->setX(_x);
 	//CAMERAMANAGER->setY(_y);
@@ -283,5 +279,32 @@ void enemy::pixelCollision()
 
 void enemy::addImage()
 {
+	IMAGEMANAGER->addFrameImage("girl_idle", "image/enemy/girl_idle.bmp", 1170, 354, 10, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_walk", "image/enemy/girl_walk.bmp", 1296, 372, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_run", "image/enemy/girl_run.bmp", 1470, 330, 10, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_attack1", "image/enemy/girl_attack1.bmp", 1239, 354, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_attack2", "image/enemy/girl_attack2.bmp", 1197, 357, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_attack3", "image/enemy/girl_attack3.bmp", 2412, 414, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_hit1", "image/enemy/girl_hit1.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_hit2", "image/enemy/girl_hit2.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_hit3", "image/enemy/girl_hit3.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_groundhit", "image/enemy/girl_groundhit.bmp", 639, 132, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_knockdown", "image/enemy/girl_knockdown.bmp", 7425, 360, 33, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_dizzy", "image/enemy/girl_dizzy.bmp", 456, 324, 4, 2, true, RGB(255, 0, 255));
 
+	/*
+	_idle
+	_walk
+	_run
+	_attack1
+	_attack2
+	_attack3
+	_sidekick
+	_hit1
+	_hit2
+	_hit3
+	_groundhit
+	_knockdown
+	_dizzy
+	*/
 }
