@@ -3,13 +3,6 @@
 
 HRESULT testUIScene::init()
 {
-	IMAGEMANAGER->addImage("s_boss_name", "image/ui/small_boss_name.bmp", 143, 38, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("s_kyoko_name", "image/ui/small_kyoyo_name.bmp", 143, 38, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("s_misako_name", "image/ui/small_misako_name.bmp", 143, 38, true, RGB(255, 0, 255));
-
-	IMAGEMANAGER->addImage("kyoko_img", "image/ui/kyoko_img.bmp", 600, 600, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("misuzu_img", "image/ui/misuzu_img.bmp", 600, 600, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("misako_img", "image/ui/misako_img.bmp", 600, 600, true, RGB(255, 0, 255));
 
 	_ui = new ui;
 	_ui->init();

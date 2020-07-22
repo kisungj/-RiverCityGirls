@@ -52,3 +52,4 @@ void enemyManager::eraseGirl(int arrNum)
 void enemyManager::eraseCheer(int arrNum)
 {
 }
+

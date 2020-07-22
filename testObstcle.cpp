@@ -105,16 +105,7 @@ void testObstcle::release()
 
 void testObstcle::imageLoad()
 {
-	IMAGEMANAGER->addImage("stage2", "image/map/stage2.bmp", 4000, 1200, false, RGB(0, 0, 0));
-	IMAGEMANAGER->addImage("stage1", "image/map/stage.bmp", 2395, 1100, false, RGB(0, 0, 0));
-	IMAGEMANAGER->addImage("금동전", "image/item/금동전.bmp", 36, 36, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("은동전", "image/item/은동전.bmp", 36, 37, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("물약1", "image/item/물약1.bmp", 70, 74, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("물약2", "image/item/물약2.bmp", 70, 60, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("기둥좌", "image/obstacle/기둥좌.bmp", 170, 630, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("기둥우", "image/obstacle/기둥우.bmp", 170, 630, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("책상", "image/obstacle/책상.bmp", 185, 175, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("자판기", "image/obstacle/자판기.bmp", 700, 346, 2, 1, true, RGB(255, 0, 255));
+
 }
 
 //충돌용

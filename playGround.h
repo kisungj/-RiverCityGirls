@@ -17,5 +17,6 @@ public:
 	virtual void update();
 	virtual void render();
 public:
+	void imageLoad();
 };
 

@@ -117,19 +117,7 @@ void boss::update()
 
 void boss::loadImage()
 {
-	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 153, 45, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 2844, 582, 12, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 9300, 576, 31, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_hit_getup", "image/boss/boss_hit_getup.bmp", 3915, 552, 15, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_jumpAttack", "image/boss/boss_jumpAttack.bmp", 5832, 618, 24, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_walk", "image/boss/boss_walk.bmp", 1770, 552, 10, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_death", "image/boss/boss_death.bmp", 4329, 540, 13, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_attack_elbow", "image/boss/boss_attack_elbow.bmp", 2739, 600, 11, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_angry", "image/boss/boss_angry.bmp", 3840, 534, 16, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_attack", "image/boss/boss_attack.bmp", 4788, 534, 14, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_dash", "image/boss/boss_dash.bmp", 3276, 528, 14, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boss_heavyAttack", "image/boss/boss_heavyAttack.bmp", 10452, 546, 26, 2, true, RGB(255, 0, 255));
+
 }
 
 void boss::loadAnimation()

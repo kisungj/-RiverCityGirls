@@ -3,7 +3,6 @@
 
 HRESULT testEnemyScene::init()
 {
-	IMAGEMANAGER->addImage("background", "image/map/01_Detention_BG_x3_start_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
 
 	_em = new enemyManager;
 	_em->init();

@@ -1,10 +1,25 @@
 #pragma once
 #include "gameNode.h"
+#include "stage1.h"
+#include "stage2.h"
+
 #include "testPlayerScene.h"
 #include "testEnemyScene.h"
 #include "testBossScene.h"
 #include "testUIScene.h"
 #include "testObstcle.h"
+#include "obstacleManager.h"
+#include "itemManager.h"
+#include "enemyManager.h"
+#include "player.h"
+enum GAMETYPE 
+{
+	GAMETITLE,
+	GAMELOADING,
+	GAMESTART,
+	GAMEOVER,
+};
+
 
 class stageManager : public gameNode
 {
@@ -14,6 +29,13 @@ private:
 	testBossScene*   _bossScene;
 	testUIScene*	 _uiScene;
 	testObstcle*     _obstacleScene;
+
+	obstacleManager* _obstacleManager;
+	itemManager*     _itemManager;
+	enemyManager*    _enemyManager;
+	stage1*          _stage1;
+	stage2*          _stage2;
+	player*          _player;
 public:
 	stageManager() {}
 	~stageManager() {}

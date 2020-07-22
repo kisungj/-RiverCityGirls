@@ -15,11 +15,9 @@ playGround::~playGround()
 HRESULT playGround::init()
 {
 	gameNode::init(true);
-
+	imageLoad();
 	_stageManager = new stageManager;
 	_stageManager->init();
-
-	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2016 - WINSIZEX, 672 - WINSIZEY);
 
 	return S_OK;
 }
@@ -52,4 +50,103 @@ void playGround::render()
 	TIMEMANAGER->render(getMemDC());
 	//=============================================
 	_backBuffer->render(getHDC(), 0, 0);
+}
+
+void playGround::imageLoad()
+{
+	// ======= UI
+	IMAGEMANAGER->addImage("s_boss_name", "image/ui/small_boss_name.bmp", 143, 38, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("s_kyoko_name", "image/ui/small_kyoyo_name.bmp", 143, 38, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("s_misako_name", "image/ui/small_misako_name.bmp", 143, 38, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("kyoko_img", "image/ui/kyoko_img.bmp", 600, 600, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("misuzu_img", "image/ui/misuzu_img.bmp", 600, 600, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("misako_img", "image/ui/misako_img.bmp", 600, 600, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("letter_box", "image/ui/UI_footer.bmp", 1600, 100, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("character_hud", "image/ui/UI_RCG_HUD_portrait_Kyoko_default.bmp", 150, 169, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("status_hud", "image/ui/NULL_UHD_BAR2.bmp", 414, 94, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("status_hud_back", "image/ui/NULL_UHD_BAR.bmp", 414, 94, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("title_background", "image/ui/titleBackGround.bmp", WINSIZEX, WINSIZEY, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("coin_ui", "image/ui/coin.bmp", 36, 36, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("phone_ui", "image/ui/Phone.bmp", 463, 800, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("phone_active", "image/ui/phone_active.bmp", 1600, 900, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("select_item", "image/ui/select_item.bmp", 63, 61, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("equip_select", "image/ui/equip_select.bmp", 42, 25, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("loading_sprite", "image/ui/loadingSprite4x1.bmp", 1152, 227, 4, 1, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("select_arrow", "image/ui/select_arrow.bmp", 66, 76, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("full_hd", "image/ui/hpBar.bmp", 389, 21, true, RGB(255, 0, 255));
+	// ======= UI
+
+	// ======= player
+
+	IMAGEMANAGER->addImage("backGround", "image/map/01_Detention_BG_x3_start.bmp", 2395, 1100, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("pixel1", "image/map/01_Detention_BG_x3_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("pixel2", "image/map/01_Detention_BG_x3_start_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
+
+	IMAGEMANAGER->addFrameImage("PLAYER_IDLE", "image/player/Kyoko_Idle.bmp", 1440, 450, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_WALK", "image/player/Kyoko_Walk.bmp", 1476, 402, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_RUN", "image/player/Kyoko_Run.bmp", 2736, 384, 16, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_JUMP", "image/player/Kyoko_Jump.bmp", 405, 414, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK1", "image/player/Kyoko_ComboAttack1.bmp", 1548, 390, 6, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK2", "image/player/Kyoko_ComboAttack2.bmp", 1869, 402, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_ATTACK3", "image/player/Kyoko_ComboAttack3.bmp", 2970, 462, 9, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_DIVE", "image/player/Kyoko_Dive.bmp", 5040, 360, 21, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_START", "image/player/Kyoko_BattleStart.bmp", 2964, 420, 26, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_DOWN", "image/player/Kyoko_Down.bmp", 4896, 366, 24, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_OVER", "image/player/Kyoko_GameOver.bmp", 6240, 282, 26, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_GUARD", "image/player/Kyoko_Guard.bmp", 351, 378, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_HIT", "image/player/Kyoko_Hit.bmp", 246, 348, 2, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_STAND_UP", "image/player/Kyoko_StandUp.bmp", 3315, 330, 17, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_STOMP", "image/player/Kyoko_Stomp.bmp", 1290, 420, 10, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_STUNNED", "image/player/Kyoko_Stunned.bmp", 384, 384, 4, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("PLAYER_KICK", "image/player/Kyoko_HurricaneKick.bmp", 2997, 657, 9, 3, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("PLAYER_SHADOW", "image/player/Kyoko_Shadow.bmp", 128, 38, true, RGB(255, 0, 255));
+	// ======= player
+
+	IMAGEMANAGER->addImage("stage2", "image/map/stage2.bmp", 4000, 1200, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("stage1", "image/map/stage.bmp", 2395, 1100, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("금동전", "image/item/금동전.bmp", 36, 36, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("은동전", "image/item/은동전.bmp", 36, 37, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("물약1", "image/item/물약1.bmp", 70, 74, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("물약2", "image/item/물약2.bmp", 70, 60, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("기둥좌", "image/obstacle/기둥좌.bmp", 170, 630, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("기둥우", "image/obstacle/기둥우.bmp", 170, 630, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("책상", "image/obstacle/책상.bmp", 185, 175, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("자판기", "image/obstacle/자판기.bmp", 700, 346, 2, 1, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addImage("background", "image/map/01_Detention_BG_x3_start_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
+
+
+
+	// ======= 보스
+	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 153, 45, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 2844, 582, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 9300, 576, 31, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_hit_getup", "image/boss/boss_hit_getup.bmp", 3915, 552, 15, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_jumpAttack", "image/boss/boss_jumpAttack.bmp", 5832, 618, 24, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_walk", "image/boss/boss_walk.bmp", 1770, 552, 10, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_death", "image/boss/boss_death.bmp", 4329, 540, 13, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_attack_elbow", "image/boss/boss_attack_elbow.bmp", 2739, 600, 11, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_angry", "image/boss/boss_angry.bmp", 3840, 534, 16, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_attack", "image/boss/boss_attack.bmp", 4788, 534, 14, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_dash", "image/boss/boss_dash.bmp", 3276, 528, 14, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boss_heavyAttack", "image/boss/boss_heavyAttack.bmp", 10452, 546, 26, 2, true, RGB(255, 0, 255));
+
+
+	// ========== 적
+	IMAGEMANAGER->addImage("enemy_shadow", "image/enemy/enemy_shadow.bmp", 128, 38, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_idle", "image/enemy/boy_idle.bmp", 1224, 432, 8, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_walk", "image/enemy/boy_walk.bmp", 1620, 444, 12, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_run", "image/enemy/boy_run.bmp", 1920, 390, 10, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_attack1", "image/enemy/boy_attack1.bmp", 1764, 426, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_attack2", "image/enemy/boy_attack2.bmp", 1386, 510, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_attack3", "image/enemy/boy_attack3.bmp", 1863, 558, 9, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_sidekick", "image/enemy/boy_sidekick.bmp", 1764, 444, 7, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_hit1", "image/enemy/boy_hit1.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_hit2", "image/enemy/boy_hit2.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_hit3", "image/enemy/boy_hit3.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 690, 127, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_knockdown", "image/enemy/boy_knockdown.bmp", 8910, 420, 33, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_dizzy", "image/enemy/boy_dizzy.bmp", 633, 408, 4, 2, true, RGB(255, 0, 255));
 }

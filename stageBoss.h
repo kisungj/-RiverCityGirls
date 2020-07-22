@@ -1,10 +1,10 @@
 #pragma once
 #include "gameNode.h"
+#include "boss.h"
 class stageBoss : public gameNode
 {
 private:
-
-
+	boss* _boss;
 public:
 	stageBoss() {}
 	~stageBoss() {}

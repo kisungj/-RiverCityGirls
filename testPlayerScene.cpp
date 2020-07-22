@@ -3,9 +3,6 @@
 
 HRESULT testPlayerScene::init()
 {
-	IMAGEMANAGER->addImage("backGround", "image/map/01_Detention_BG_x3_start.bmp", 2395, 1100, false, RGB(0, 0, 0));
-	IMAGEMANAGER->addImage("pixel1", "image/map/01_Detention_BG_x3_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
-	IMAGEMANAGER->addImage("pixel2", "image/map/01_Detention_BG_x3_start_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
 
 	_player = new player;
 	_player->init();

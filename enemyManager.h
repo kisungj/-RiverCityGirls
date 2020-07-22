@@ -10,6 +10,7 @@ private:
 	getVEnemy _vBoy;
 	getVIEnemy _viBoy;
 
+
 public:
 	enemyManager() {}
 	~enemyManager() {}
@@ -25,6 +26,7 @@ public:
 	void eraseBoy(int arrNum);
 	void eraseGirl(int arrNum);
 	void eraseCheer(int arrNum);
+
 
 public:
 	vector<enemy*> getVBoy() { return _vBoy; }

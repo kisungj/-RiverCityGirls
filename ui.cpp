@@ -3,19 +3,9 @@
 
 HRESULT ui::init()
 {
-	IMAGEMANAGER->addImage("letter_box", "image/ui/UI_footer.bmp", 1600, 100, false, RGB(0, 0, 0));
-	IMAGEMANAGER->addImage("character_hud", "image/ui/UI_RCG_HUD_portrait_Kyoko_default.bmp", 150, 169, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("status_hud", "image/ui/NULL_UHD_BAR2.bmp", 414, 94, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("status_hud_back", "image/ui/NULL_UHD_BAR.bmp", 414, 94, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("title_background", "image/ui/titleBackGround.bmp", WINSIZEX, WINSIZEY, false, RGB(0, 0, 0));
-	IMAGEMANAGER->addImage("coin_ui", "image/ui/coin.bmp", 36, 36, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("phone_ui", "image/ui/Phone.bmp", 463, 800, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("phone_active", "image/ui/phone_active.bmp", 1600, 900, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("select_item", "image/ui/select_item.bmp", 63, 61, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("equip_select", "image/ui/equip_select.bmp", 42, 25, true, RGB(255, 0, 255));
-	_loading = IMAGEMANAGER->addFrameImage("loading_sprite", "image/ui/loadingSprite4x1.bmp", 1152, 227, 4, 1, false, RGB(0, 0, 0));
-	_selectArrow = IMAGEMANAGER->addImage("select_arrow", "image/ui/select_arrow.bmp", 66, 76, true, RGB(255, 0, 255));
-	_hpUI = IMAGEMANAGER->addImage("full_hd", "image/ui/hpBar.bmp", 389, 21, true, RGB(255, 0, 255));
+	_loading = IMAGEMANAGER->findImage("loading_sprite");
+	_selectArrow = IMAGEMANAGER->findImage("select_arrow");
+	_hpUI = IMAGEMANAGER->findImage("full_hd");
 
 	// ¿Â∫Ò√¢
 	_inventory[0] = RectMake(250, 300, 110, 110);
