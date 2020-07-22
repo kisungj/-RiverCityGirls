@@ -12,9 +12,6 @@ HRESULT stage1::init(obstacleManager * obstacleManager, itemManager* itemManager
 	_enemyManager = enemyManager;
 	_player = player;
 
-	_obstacleManager->release();
-	_enemyManager->release();
-	_itemManager->release();
 
 	_obstacleManager->init();
 	_enemyManager->init();

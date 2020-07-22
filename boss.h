@@ -45,11 +45,6 @@ private:
 	int        _hp, maxHp;
 	int        _damage;
 	// ----------------- 스텟 관련 변수 -----------------//
-
-	// ================= 임시 변수 삭제하세요 ================= //
-	RECT       _player;
-	float      _playerX, _playerY;
-	// ================= 임시 변수 삭제하세요 ================= //
 	
 public:
 	boss() {}
@@ -58,9 +53,8 @@ public:
 	HRESULT init();
 	void    release();
 	void    render();
-	void    update();
+	void    update(float playerX, float playerZ);
 public:
-	void    loadImage();                // 보스 이미지 리소스 로드
 	void    loadAnimation();            // 보스 애니메이션 로드
 	void    stateUpdate();              // 보스 스테이트 업데이트.
 public:
@@ -69,6 +63,6 @@ public:
 	void    dashAttack(float playerX, float playerZ);               // 대쉬  공격
 	void    jumpAttack(float playerX, float playerZ);               // 점프  공격
 	void    elbowAttack(float playerX, float playerZ);              // 엘보우 공격
-	void    changePattern();                                        // 패턴 바꾸는용
+	void    changePattern(float playerX, float playerZ);                                        // 패턴 바꾸는용
 };
 
