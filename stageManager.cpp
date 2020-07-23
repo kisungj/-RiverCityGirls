@@ -27,21 +27,21 @@ HRESULT stageManager::init()
 	_enemyManager->setPlayerLink(_player);
 	_boss	      =	new boss;
 
-	Item* tempItem1 = new Item;
-	tempItem1->init(HP);
+	//Item* tempItem1 = new Item;
+	//tempItem1->init(HP);
 
-	Item* tempItem2 = new Item;
-	tempItem2->init(POWER);
-	_inventory->setInventory(tempItem2);
-	_inventory->setInventory(tempItem1);
-	_inventory->setInventory(tempItem2);
-	_inventory->setInventory(tempItem1);
-	_inventory->setInventory(tempItem2);
+	//Item* tempItem2 = new Item;
+	//tempItem2->init(POWER);
+	//_inventory->setInventory(tempItem2);
+	//_inventory->setInventory(tempItem1);
+	//_inventory->setInventory(tempItem2);
+	//_inventory->setInventory(tempItem1);
+	//_inventory->setInventory(tempItem2);
 
-	for (int i = 0; i < _inventory->getInventory().size() ; ++i)
-	{
-		_ui->setInventoryUI(_inventory->getInventory()[i]);
-	}
+	//for (int i = 0; i < _inventory->getInventory().size() ; ++i)
+	//{
+	//	_ui->setInventoryUI(_inventory->getInventory()[i]);
+	//}
 
 
 	_stage1 = new stage1;
@@ -205,13 +205,13 @@ void stageManager::collision()
 			//HP물약 충돌
 			if (_itemManager->getVItem()[i]->getitemstate() == HP)
 			{
-				_inventory->setInventory(_itemManager->getVItem()[i]);
+				_ui->setInventoryUI(_itemManager->getVItem()[i]);
 			}
 
 			//POWER물약 충돌
 			if (_itemManager->getVItem()[i]->getitemstate() == POWER)
 			{
-				_inventory->setInventory(_itemManager->getVItem()[i]);
+				_ui->setInventoryUI(_itemManager->getVItem()[i]);
 			}
 
 			//금동전 충돌

@@ -72,6 +72,33 @@ void obstacle::update()
 			_pillarAlpha = 255;
 		}
 	}
+
+
+	if (_obstacleState == VENDING)
+	{
+
+	}
+
+	if (_obstacleState == DESK)
+	{
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 515, 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 810, 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1125, 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1435, 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 310, 705);
+
+	}
+
+	if (_obstacleState == PILLARLEFT)
+	{
+
+	}
+
+	if (_obstacleState == PILLARRIGHT)
+	{
+
+	}
+
 }
 
 void obstacle::render()

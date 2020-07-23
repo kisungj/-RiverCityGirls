@@ -18,7 +18,7 @@ private:
 	RECT _PillarRc;						//기둥 렉트
 	OBSTACLESTATE  _obstacleState;		//장애물 enum값
 
-	float _x, _y;						//장애물 위치값
+	float _x, _y, _z;						//장애물 위치값
 	int	_pillarAlpha;					//기둥 알파 수치
 	bool _alpha;						//기둥 알파 처리
 
