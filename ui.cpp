@@ -134,7 +134,7 @@ void ui::update()
 	_timer++;
 	if (_timer > 50)
 	{
-		if (_loading->getFrameX() >= _loading->getMaxFrameX())
+		if (_loading->getFrameX() >= _loading->getMaxFrameX())  
 		{
 			_loading->setFrameX(-1);
 		}

@@ -64,7 +64,7 @@ void obstacleManager::setObstacle(OBSTACLESTATE obstacleState)
 	if (obstacleState == PILLARLEFT)
 	{
 		obstacle* _obstacle = new obstacle;
-		_obstacle->init(PILLARLEFT, PointMake(890, 640));
+		_obstacle->init(PILLARLEFT, PointMake(890, 550));
 		_vObstacle.push_back(_obstacle);
 	}
 
@@ -72,7 +72,7 @@ void obstacleManager::setObstacle(OBSTACLESTATE obstacleState)
 	if (obstacleState == PILLARRIGHT)
 	{
 		obstacle* _obstacle = new obstacle;
-		_obstacle->init(PILLARRIGHT, PointMake(2740, 640));
+		_obstacle->init(PILLARRIGHT, PointMake(2740, 550));
 		_vObstacle.push_back(_obstacle);
 	}
 }

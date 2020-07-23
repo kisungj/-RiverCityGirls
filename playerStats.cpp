@@ -104,6 +104,7 @@ void idleState::update(player & player)
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
 		player.setIsAttack(true);
+		player.setIsAttackRect(true);
 		if (!player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_ATTACK1"), IMAGEMANAGER->findImage("PLAYER_ATTACK1"));
@@ -807,19 +808,17 @@ void runState::update(player & player)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DIVE"), IMAGEMANAGER->findImage("PLAYER_DIVE"));
 			player.setState(player.getAttackState());
-			/*if (player.getIsAttackRect() == true)
-			{*/
-				player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
-			//}
+
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
+			
 		}
 		if (player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DIVE"), IMAGEMANAGER->findImage("PLAYER_DIVE"));
 			player.setState(player.getAttackState());
-		/*	if (player.getIsAttackRect() == true)
-			{*/
-				player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
-			//}
+
+			player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 120, 100);
+
 		}
 	}
 

@@ -27,10 +27,10 @@ HRESULT stage2::init(obstacleManager* obstacleManager, itemManager* itemManager,
 
 void stage2::render()
 {
-	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2pixel"), IMAGEMANAGER->findImage("stage2pixel")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2pixel")->getHeight() * 0.5f);
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2"), IMAGEMANAGER->findImage("stage2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2")->getHeight() * 0.5f);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _stage2DoorRc);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _bossDoorRc);
+	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2pixel"), IMAGEMANAGER->findImage("stage2pixel")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2pixel")->getHeight() * 0.5f);
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2"), IMAGEMANAGER->findImage("stage2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2")->getHeight() * 0.5f);
 }
 
 void stage2::update()
@@ -38,6 +38,8 @@ void stage2::update()
 	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 4000 - WINSIZEX, 1200 - WINSIZEY);
 	CAMERAMANAGER->setX(_player->getPlayerX());
 	CAMERAMANAGER->setY(_player->getPlayerY());
+
+
 }
 
 void stage2::release()
