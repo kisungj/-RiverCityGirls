@@ -73,30 +73,29 @@ void obstacle::update()
 		}
 	}
 
-
-	if (_obstacleState == VENDING)
-	{
-
-	}
-
+	//Ã¥»ó
 	if (_obstacleState == DESK)
 	{
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 515, 705);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 810, 705);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1125, 705);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1435, 705);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 310, 705);
-
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 515, 705 , 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 810, 705, 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1125, 705, 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1435, 705, 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 310, 940 , 940);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 610, 940, 940);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 920, 940 , 940);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1230, 940 , 940);
 	}
 
+	//±âµÕ ÁÂ
 	if (_obstacleState == PILLARLEFT)
 	{
-
+		ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2, _PillarRc.bottom, _pillarAlpha);
 	}
 
+	//±âµÕ ¿ì
 	if (_obstacleState == PILLARRIGHT)
 	{
-
+		ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2,  _PillarRc.bottom, _pillarAlpha);
 	}
 
 }
@@ -110,30 +109,6 @@ void obstacle::render()
 	}
 
 	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
-	//Ã¥»ó
-	if (_obstacleState == DESK)
-	{
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 515, 705);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 810, 705);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1125, 705);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1435, 705);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 310, 940);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 610, 940);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 920, 940);
-		CAMERAMANAGER->render(getMemDC(), _obstacleImg, 1230, 940);
-	}
-
-	//±âµÕ¿ÞÂÊ
-	if (_obstacleState == PILLARLEFT)
-	{
-		CAMERAMANAGER->alphaRender(getMemDC(), _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2, _pillarAlpha);
-	}
-
-	//±âµÕ ¿À¸¥ÂÊ
-	if (_obstacleState == PILLARRIGHT)
-	{
-		CAMERAMANAGER->alphaRender(getMemDC(), _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2, _pillarAlpha);
-	}
 
 	if (KEYMANAGER->isToggleKey('V'))
 	{
