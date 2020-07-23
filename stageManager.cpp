@@ -70,6 +70,7 @@ HRESULT stageManager::init()
 	//ÂüÁ¶
 	_player->setBossLink(_boss);
 	_player->setEnemyLink(_enemyManager);
+	_player->setObsLink(_obstacleManager);
 	_boss->setPlayerMemoryAddressLink(_player);
 	return S_OK;
 }

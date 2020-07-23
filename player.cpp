@@ -2,6 +2,7 @@
 #include "player.h"
 #include "boss.h"
 #include "enemyManager.h"
+#include "obstacle.h"
 
 
 HRESULT player::init()
@@ -72,6 +73,7 @@ HRESULT player::init()
 	_mapStr = "pixel2";
 	_enemyBLay = false;
 	_enemyGLay = false;
+	_isObs = false;
 	
 	return S_OK;
 }
@@ -101,20 +103,21 @@ void player::update()
 	bossCol();
 
 	boolCheck();
+	doorCol();
 	
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 
-	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _shadowX, _shadowY, _shadowY, _shadowAlpha);
-	ZORDERMANAGER->addAniRender(getMemDC(), renderType::ANI_RENDER, _img, _playerX, _playerY, _shadowY, _playerMotion);
 }
 
 void player::render()
 {
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
+	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _shadowX, _shadowY, _shadowY - 1, _shadowAlpha);
+	ZORDERMANAGER->addAniRender(getMemDC(), renderType::ANI_RENDER, _img, _playerX, _playerY, _shadowY, _playerMotion);
 	if (_attackRect)
 	{
 		CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
@@ -259,9 +262,8 @@ void player::mouseCol()
 
 void player::pixelCol()
 {
-	if (!_isDesk)
+	if (!_isDesk && !_isObs)
 	{
-
 		//맵 충돌 하고 올라와있음 하지마
 		for (int i = _probeV - 40; i < _probeV - 35; ++i)
 		{
@@ -279,7 +281,7 @@ void player::pixelCol()
 			}
 			else if (_isJumping)
 			{
-				if (r == 160 && g == 255 && b == 0)
+				if ((r == 160 && g == 255 && b == 0) || (r == 0 && g == 255 && b == 0))
 				{
 					_isTop = true;
 					break;
@@ -310,7 +312,7 @@ void player::pixelCol()
 			}
 			else if (_isJumping)
 			{
-				if (r == 160 && g == 255 && b == 0)
+				if ((r == 160 && g == 255 && b == 0) || (r == 0 && g == 255 && b == 0))
 				{
 					_isBottom = true;
 					break;
@@ -341,7 +343,7 @@ void player::pixelCol()
 			}
 			else if (_isJumping)
 			{
-				if (r == 160 && g == 255 && b == 0)
+				if (r == 160 && g == 255 && b == 0 || (r == 0 && g == 255 && b == 0))
 				{
 					_isLeft = true;
 					break;
@@ -371,7 +373,7 @@ void player::pixelCol()
 			}
 			else if (_isJumping)
 			{
-				if (r == 160 && g == 255 && b == 0)
+				if ((r == 160 && g == 255 && b == 0) || (r == 0 && g == 255 && b == 0))
 				{
 					_isRight = true;
 					break;
@@ -394,6 +396,7 @@ void player::pixelCol()
 		//점프중에
 		if (_isJumping)
 		{
+						//cout << "ed" << endl;
 			_runCount = 0;
 			for (int i = _probeV + 5; i < _probeV + 10; ++i)
 			{
@@ -402,19 +405,32 @@ void player::pixelCol()
 					int r = GetRValue(color);
 					int g = GetGValue(color);
 					int b = GetBValue(color);
+			
 					if (!(r == 255 && g == 0 && b == 0))
 					{
 						_isRight = true;
 						if ((r == 160 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
 						{
-						_isLeft = true;
-						_isTop = true;
-						_isBottom = true;
-						_isDesk = true;
-						_shadowY -= 110;
+							cout << "d" << endl;
+							_isLeft = true;
+							_isTop = true;
+							_isBottom = true;
+							_isDesk = true;
+							_shadowY -= 110;
+						}
+						else if ((r == 0 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
+						{
+						//	_isRight = true;
+							_isLeft = true;
+							_isTop = true;
+							_isBottom = true;
+							_isObs = true;
+							_shadowY -= 500;
 						}
 						break;
+
 					}
+					
 			}
 		}
 	}
@@ -431,14 +447,14 @@ void player::pixelCol()
 				if (!_directionX)
 				{
 					setAni(KEYANIMANAGER->findAnimation("P_LEFT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
-						setState(getHitState());
-						playerDamage(10);
+						setState(getJumpState());
+						//playerDamage(10);
 				}
 				if (_directionX)
 				{
 					setAni(KEYANIMANAGER->findAnimation("P_RIGHT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
-						setState(getHitState());
-					playerDamage(10);
+						setState(getJumpState());
+					//playerDamage(10);
 				}
 			}
 
@@ -454,8 +470,8 @@ void player::pixelCol()
 				{
 					//cout << "d" << endl;
 
-					_gravity = 0.5f;
-					_jumpPower = 0;
+					//_gravity = 0.5f;
+					//_jumpPower = 0;
 					_isDesk = false;
 					_isJumping = true;
 
@@ -472,11 +488,63 @@ void player::pixelCol()
 					}
 					break;
 				}
-				else
+				
+			}
+		}
+	}
+	cout << _isObs << endl;
+	if (_isObs)
+	{
+		_deskTimer++;
+		_shadowAlpha = 200;
+		if (_deskTimer > 50)
+		{
+			_deskTimer = 0;
+			if (KEYMANAGER->isOnceKeyDown('Z'))
+			{
+				if (!_directionX)
 				{
-				//	cout << "d" << endl;
-
+					setAni(KEYANIMANAGER->findAnimation("P_LEFT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+					setState(getJumpState());
+					//playerDamage(10);
 				}
+				if (_directionX)
+				{
+					setAni(KEYANIMANAGER->findAnimation("P_RIGHT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+					setState(getJumpState());
+					//playerDamage(10);
+				}
+			}
+
+			for (int i = _probeV - 20; i < _probeV - 15; ++i)
+			{
+				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
+
+				int r = GetRValue(color);
+				int g = GetGValue(color);
+				int b = GetBValue(color);
+
+				if (!(r == 0 && g == 160 && b == 0))
+				{
+					//_gravity = 0.5f;
+					//_jumpPower = 0;
+					_isObs = false;
+					_isJumping = true;
+
+					_isDeskFall = true;
+					_shadowY += 300;
+					_runCount = 0;
+					if (!_directionX)
+					{
+						setState(getJumpState());
+					}
+					if (_directionX)
+					{
+						setState(getJumpState());
+					}
+					break;
+				}
+
 			}
 		}
 	}
@@ -527,27 +595,32 @@ void player::boolCheck()
 
 void player::enemyCol()
 {
+	
 	RECT temp;
+	
 	if (_state == _attack || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay())
 	{
-		for (int i = 0; i < _enemy->getVBoy().size(); ++i)
+		if (_attackRect)
 		{
-			if (_enemy->getVBoy()[i]->getLay())
+			
+			for (int i = 0; i < _enemy->getVBoy().size(); ++i)
 			{
-				if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
+				if (_enemy->getVBoy()[i]->getLay())
 				{
-					if (KEYANIMANAGER->findAnimation("P_RIGHT_DIVE")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_DIVE")->isPlay())
+					if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
 					{
-						//_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-						_enemy->getVBoy()[i]->setHP(10);
+						if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
+						{
+							//_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+							_enemy->getVBoy()[i]->setHP(1);
+							//_attackRect = false;
+						}
 					}
-				}
 
-			}
-			else if (_shadowY + 15 > _enemy->getVBoy()[i]->getZ() && _shadowY - 15 < _enemy->getVBoy()[i]->getZ() && !_enemy->getVBoy()[i]->getLay())
-			{
-				if (_attackRect)
+				}
+				else if (_shadowY + 15 > _enemy->getVBoy()[i]->getZ() && _shadowY - 15 < _enemy->getVBoy()[i]->getZ() && !_enemy->getVBoy()[i]->getLay())
 				{
+
 					if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
 					{
 
@@ -555,41 +628,44 @@ void player::enemyCol()
 						//_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 						_enemy->getVBoy()[i]->setOuch(true);
 						_enemy->getVBoy()[i]->setHitCount(1);
-						_enemy->getVBoy()[i]->setHP(10);
+						_enemy->getVBoy()[i]->setHP(100);
 						_attackRect = false;
 					}
+
 				}
+
 			}
 
-		}
-
-		for (int i = 0; i < _enemy->getVGirl().size(); ++i)
-		{
-			if (_shadowY + 15 > _enemy->getVGirl()[i]->getZ() && _shadowY - 15 < _enemy->getVGirl()[i]->getZ())
+			for (int i = 0; i < _enemy->getVGirl().size(); ++i)
 			{
-				if (_enemy->getVGirl()[i]->getLay())
+				if (_shadowY + 15 > _enemy->getVGirl()[i]->getZ() && _shadowY - 15 < _enemy->getVGirl()[i]->getZ())
 				{
-					if (KEYANIMANAGER->findAnimation("P_RIGHT_DIVE")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_DIVE")->isPlay())
+					if (_enemy->getVGirl()[i]->getLay())
 					{
-						_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-						_enemy->getVGirl()[i]->setHP(10);
+						if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
+						{
+							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+							_enemy->getVGirl()[i]->setHP(1);
+							//_attackRect = false;
+						}
+
 					}
 
-				}
-
-				else if (_shadowY + 15 > _enemy->getVGirl()[i]->getZ() && _shadowY - 15 < _enemy->getVGirl()[i]->getZ() && !_enemy->getVGirl()[i]->getLay())
-				{
-					if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
+					else if (_shadowY + 15 > _enemy->getVGirl()[i]->getZ() && _shadowY - 15 < _enemy->getVGirl()[i]->getZ() && !_enemy->getVGirl()[i]->getLay())
 					{
-						_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-						_enemy->getVGirl()[i]->setOuch(true);
-						_enemy->getVGirl()[i]->setHitCount(1);
-						_enemy->getVGirl()[i]->setHP(10);
-						_attackRect = false;
+						if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
+						{
+							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+							_enemy->getVGirl()[i]->setOuch(true);
+							_enemy->getVGirl()[i]->setHitCount(1);
+							_enemy->getVGirl()[i]->setHP(1);
+							_attackRect = false;
+						}
 					}
 				}
+
 			}
-
+			
 		}
 	}
 
@@ -616,5 +692,13 @@ void player::bossCol()
 
 		}
 	}
+}
+
+void player::doorCol()
+{
+	/*RECT temp;
+	if (IntersectRect(&temp, & _obs->get))*/
+
+
 }
 

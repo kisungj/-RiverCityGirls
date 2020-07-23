@@ -18,6 +18,8 @@ class stunState;
 
 class boss; // 상호참조용
 class enemyManager;
+class obstacleManager;
+;
 class player : public gameNode
 {
 private:
@@ -29,6 +31,7 @@ private:
 	RECT _attackRc;					//공격렉트
 	boss* _boss;
 	enemyManager* _enemy;
+	obstacleManager* _obs;
 	string _mapStr;					//픽셀충돌 맵 바꾸는용
 
 	int _probeV;					//픽셀충돌 수직
@@ -62,7 +65,8 @@ private:
 	bool _directionY;				//top = 0, bottom = 1
 	bool _attackRect;				//어택렉트 꺼주기
 	bool _enemyBLay;				//에너미 누워읶니?
-	bool _enemyGLay;				
+	bool _enemyGLay;		
+	bool _isObs;
 
 
 
@@ -107,6 +111,7 @@ public:
 	void boolCheck();
 	void enemyCol();
 	void bossCol();
+	void doorCol();
 
 public:
 	//=====================GET================================
@@ -190,6 +195,7 @@ public:
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
 	void setBossLink(boss* boss) { _boss = boss; }
 	void setEnemyLink(enemyManager* enemy) { _enemy = enemy; }
+	void setObsLink(obstacleManager* obs) { _obs = obs; }
 };
 
 
@@ -244,6 +250,7 @@ class attackState : public playerState
 {
 private:
 	int _diveCount;		//다이브 속도 주려구
+	int _kickCount;		//킥 세번 때리려구
 public:
 	HRESULT init();
 	virtual void update(player& player) override;
