@@ -94,6 +94,7 @@ void player::update()
 	pixelCol();
 
 	enemyCol();
+	bossCol();
 
 	boolCheck();
 	
