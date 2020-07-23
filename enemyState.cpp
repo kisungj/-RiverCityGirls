@@ -697,7 +697,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 				enemy.setHitCount(-enemy.getHitCount());
 				enemy.setStop(true);
 
-				if(_downCount ==3 || enemy.getLayCount() == DELAYMAX) enemy.setFrameX(24);
+				if(_downCount == 3 || enemy.getLayCount() == DELAYMAX) enemy.setFrameX(24);
 			}
 		}
 
@@ -824,8 +824,8 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		}
 	}
 
-	//cout << "hit class" << endl;
-	//cout << _downCount << endl;
+	cout << "hit class" << endl;
+	cout << _downCount << ", " << enemy.getHitCount() << endl;
 }
 
 //===================================================다운 클래스===================================================//

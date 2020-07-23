@@ -101,6 +101,8 @@ void enemyManager::plEnCollision()
 			_vBoy[i]->setAtk(0, 0, 0, 0);
 			_vBoy[i]->setStrike(true);
 
+			if (_vBoy[i]->getCondition() == CONDITION::STRONG) _player->setIsDown(true);
+
 			if (!_player->getDirectionX())
 			{
 				_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
@@ -127,6 +129,8 @@ void enemyManager::plEnCollision()
 			_player->playerDamage(2);
 			_vGirl[i]->setAtk(0, 0, 0, 0);
 			_vGirl[i]->setStrike(true);
+
+			if (_vGirl[i]->getCondition() == CONDITION::STRONG) _player->setIsDown(true);
 
 			if (!_player->getDirectionX())
 			{
