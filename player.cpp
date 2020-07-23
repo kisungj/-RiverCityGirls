@@ -104,15 +104,17 @@ void player::update()
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
 	_attackRc = RectMakeCenter(_attackX, _attackY, _attackSizeX, _attackSizeY);
 
+	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _shadowX, _shadowY, _shadowY, _shadowAlpha);
+	ZORDERMANAGER->addAniRender(getMemDC(), renderType::ANI_RENDER, _img, _playerX, _playerY, _shadowY, _playerMotion);
 }
 
 void player::render()
 {
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _player);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
+	/*CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
 	CAMERAMANAGER->alphaRender(getMemDC(), _shadowImg, _shadowX, _shadowY, _shadowAlpha);
-	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);
+	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);*/
 	//Rectangle(getMemDC(), _player);
 	//Rectangle(getMemDC(), _probeV - 5, 100, _probeV + 5, 110);
 	//_img->aniRender(getMemDC(), _player.left, _player.top, _playerMotion);
@@ -493,7 +495,7 @@ void player::enemyCol()
 			_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 			_enemy->getVBoy()[i]->setOuch(true);
 			_enemy->getVBoy()[i]->setHitCount(1);
-			_enemy->getVBoy()[i]->setHP(30);
+			_enemy->getVBoy()[i]->setHP(10);
 		}
 
 	}
