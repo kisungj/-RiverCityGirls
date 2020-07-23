@@ -47,6 +47,8 @@ HRESULT player::init()
 
 	_attackX = _attackY = _attackSizeX = _attackSizeY = 10;
 
+	_gameOver = false;
+
 	_jumpPower = _gravity = 0;
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
@@ -98,8 +100,6 @@ void player::update()
 
 	boolCheck();
 	
-	
-
 
 	_shadow = RectMakeCenter(_shadowX, _shadowY, 80, 30);
 	_player = RectMakeCenter(_playerX, _playerY, 110, 200);
