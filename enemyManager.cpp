@@ -88,7 +88,7 @@ void enemyManager::plEnCollision()
 	for (int i = 0; i < _vBoy.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
-			(_player->getShadowY() - _vBoy[i]->getZ() > 10 && _vBoy[i]->getZ() - _player->getShadowY() > 10))
+			(_player->getShadowY() - _vBoy[i]->getZ() < 10 && _vBoy[i]->getZ() - _player->getShadowY() < 10))
 		{
 			_player->playerDamage(2);
 
@@ -110,7 +110,7 @@ void enemyManager::plEnCollision()
 	for (int i = 0; i < _vGirl.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vGirl[i]->getAtk()) &&
-			(_player->getShadowY() - _vGirl[i]->getZ() > 10 && _vGirl[i]->getZ() - _player->getShadowY() > 10))
+			(_player->getShadowY() - _vGirl[i]->getZ() < 10 && _vGirl[i]->getZ() - _player->getShadowY() < 10))
 		{
 			_player->playerDamage(2);
 

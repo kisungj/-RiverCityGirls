@@ -283,7 +283,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			if (enemy.getFrameX() == 1)
 			{
-				if (IntersectRect(&temp, &rc, &enemy.getAtk()))
+				if (IntersectRect(&temp, &rc, &enemy.getAtk()) && y - enemy.getZ() < 10 && enemy.getZ() - y < 10)
 				{
 					enemy.setAtk(0, 0, 0, 0);
 				}
@@ -301,7 +301,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 1)
 			{
-				if (IntersectRect(&temp, &rc, &enemy.getAtk()))
+				if (IntersectRect(&temp, &rc, &enemy.getAtk()) && y - enemy.getZ() < 10 && enemy.getZ() - y < 10)
 				{
 					enemy.setAtk(0, 0, 0, 0);
 				}
@@ -389,16 +389,12 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 
 		if (enemy.getFrameX() == 0)
 		{
-			if (IntersectRect(&temp, &rc, &enemy.getAtk()))
+			if (IntersectRect(&temp, &rc, &enemy.getAtk()) && y - enemy.getZ() < 10 && enemy.getZ() - y < 10)
 			{
 				_comboCount++;
 				enemy.setAtk(0, 0, 0, 0);
 			}
-
-			else
-			{
-				enemy.setAtk(0, 0, 0, 0);
-			}
+			else enemy.setAtk(0, 0, 0, 0);
 		}
 	}
 
@@ -411,16 +407,12 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 
 		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX())
 		{
-			if (IntersectRect(&temp, &rc, &enemy.getAtk()))
+			if (IntersectRect(&temp, &rc, &enemy.getAtk()) && y - enemy.getZ() < 10 && enemy.getZ() - y < 10)
 			{
 				_comboCount++;
 				enemy.setAtk(0, 0, 0, 0);
-			}			
-
-			else
-			{
-				enemy.setAtk(0, 0, 0, 0);
 			}
+			else enemy.setAtk(0, 0, 0, 0);
 		}
 	}
 
@@ -584,7 +576,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			_oneCount++;
 
-			if (_oneCount > 15)
+			if (_oneCount > 30)
 			{
 				enemy.setStop(false);
 			}
@@ -605,7 +597,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			_twoCount++;
 
-			if (_twoCount > 15)
+			if (_twoCount > 30)
 			{
 				enemy.setStop(false);
 			}
@@ -619,14 +611,14 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			enemy.setImage(IMAGEMANAGER->findImage("girl_hit2"));
 		}	
 
-		if (_oneCount > 20)
+		if (_oneCount > 35)
 		{
 			_oneCount = 0;
 			enemy.setOuch(false);
 			enemy.setHitCount(-enemy.getHitCount());
 		}
 
-		if (_twoCount > 20)
+		if (_twoCount > 35)
 		{
 			_twoCount = 0;
 			enemy.setOuch(false);
