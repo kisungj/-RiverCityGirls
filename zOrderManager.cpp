@@ -25,6 +25,7 @@ void zOrderManager::addRender(HDC hdc, renderType rendertype, image * img, float
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
+	tempZorder.z    = z;
 	tempZorder.frame.x = NULL;
 	tempZorder.frame.y = NULL;
 	tempZorder.ani = NULL;
@@ -43,6 +44,7 @@ void zOrderManager::addFrameRender(HDC hdc, renderType rendertype, image * img, 
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
+	tempZorder.z    = z;
 	tempZorder.frame.x = frmaeX;
 	tempZorder.frame.y = frameY;
 	tempZorder.ani = NULL;
@@ -61,6 +63,7 @@ void zOrderManager::addAlphaRender(HDC hdc, renderType rendertype, image * img, 
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
+	tempZorder.z    = z;
 	tempZorder.frame.x = NULL;
 	tempZorder.frame.y = NULL;
 	tempZorder.ani = NULL;
@@ -134,8 +137,10 @@ void zOrderManager::zOrderRender()
 			CAMERAMANAGER->aniRender(_vZorder[i].hdc, _vZorder[i].img, _vZorder[i].pt.x, _vZorder[i].pt.y, _vZorder[i].ani);
 			break;
 		}
+
+		cout << _vZorder[i].z << endl;
 	}
 
-	cout << _vZorder.capacity() << endl;
+	//cout << _vZorder.capacity() << endl;
 	zOrderClear();
 }

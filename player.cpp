@@ -384,10 +384,11 @@ void player::pixelCol()
 		}
 
 
-
+		//cout << _runCount << endl;
 		//점프중에
 		if (_isJumping)
 		{
+			_runCount = 0;
 			for (int i = _probeV + 5; i < _probeV + 10; ++i)
 			{
 				COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
@@ -395,14 +396,17 @@ void player::pixelCol()
 					int r = GetRValue(color);
 					int g = GetGValue(color);
 					int b = GetBValue(color);
-					if ((r == 160 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
+					if (!(r == 255 && g == 0 && b == 0))
 					{
-						_isDesk = true;
 						_isRight = true;
+						if ((r == 160 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
+						{
 						_isLeft = true;
 						_isTop = true;
 						_isBottom = true;
+						_isDesk = true;
 						_shadowY -= 110;
+						}
 						break;
 					}
 			}
@@ -451,6 +455,7 @@ void player::pixelCol()
 
 					_isDeskFall = true;
 					_shadowY += 110;
+					_runCount = 0;
 					if (!_directionX)
 					{
 						setState(getJumpState());
@@ -488,16 +493,22 @@ void player::boolCheck()
 void player::enemyCol()
 {
 	RECT temp;
-	for (int i = 0; i < _enemy->getVBoy().size(); ++i)
+	if (_state == _attack || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay() || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
 	{
-		if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
+		for (int i = 0; i < _enemy->getVBoy().size(); ++i)
 		{
-			_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-			_enemy->getVBoy()[i]->setOuch(true);
-			_enemy->getVBoy()[i]->setHitCount(1);
-			_enemy->getVBoy()[i]->setHP(10);
-		}
+			if (_shadowY + 15 > _enemy->getVBoy()[i]->getZ() && _shadowY - 15 < _enemy->getVBoy()[i]->getZ())
+			{
+				if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
+				{
+					_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+					_enemy->getVBoy()[i]->setOuch(true);
+					_enemy->getVBoy()[i]->setHitCount(1);
+					_enemy->getVBoy()[i]->setHP(10);
+				}
+			}
 
+		}
 	}
 
 }
