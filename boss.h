@@ -55,14 +55,15 @@ private:
 	int        _attackCount;                               // ÁßÃ¸ ¸·¾ÆÁÜ
 	int        _damege;
 	// ----------------- ½ºÅÝ °ü·Ã º¯¼ö ----------------- //
-	int        _hp, maxHp;
+	int        _hp, _maxHp;
 	float      _applySpeed;
 	// ----------------- ½ºÅÝ °ü·Ã º¯¼ö ----------------- //
 
 	// ----------------- ÇÈ¼¿ Ãæµ¹ º¯¼ö ----------------- //
 	COLORREF _colorF;
-	int _probeLeft, _probeRight, _probeUp, _probeDown;
-	int _r, _g, _b;
+	int      _probeLeft, _probeRight, _probeUp, _probeDown;
+	int      _r, _g, _b;
+	bool     _isPixelCollision;
 	// ----------------- ÇÈ¼¿ Ãæµ¹ º¯¼ö ----------------- //
 
 	player* _player;
@@ -95,8 +96,9 @@ public:
 	RECT      getRect() { return _rc; }
 	RECT      getAttackRect() { return _attackRect; }
 	float     getBossZ() { return _z; }
+	int       getHP() { return _hp; }
+	int       getMaxHP() { return _maxHp; }
 public:
 	void      setPlayerMemoryAddressLink(player* player) { _player = player; }
-
 };
 

@@ -94,12 +94,18 @@ void stageManager::render()
 
 void stageManager::update()
 {
-
-
-
 	SCENEMANAGER->update();
-
+	if (_curStageName == "STAGEBOSS_SCENE")
+	{
+		_ui->setBossStage(true);
+	}
+	else
+	{
+		_ui->setBossStage(false);
+	}
+	_ui->setBossHpGauge(_boss->getHP(), _boss->getMaxHP());
 	_ui->update();
+	
 
 	if (!_ui->getIsPhone())
 	{
@@ -162,7 +168,7 @@ void stageManager::update()
 		_boss->init();
 		SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
 		_stageBoss->init(_player, _boss);
-		//_curStageName = "STAGEBOSS_SCENE";
+		_curStageName = "STAGEBOSS_SCENE";
 	}
 
 	
