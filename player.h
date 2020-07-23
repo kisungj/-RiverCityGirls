@@ -36,6 +36,7 @@ private:
 	int _playerProbe;				//책상 올라가는용
 	int _runCount;					//빠르게 달리기
 	int _shadowAlpha;				//그림자 알파
+	int _money;
 
 	float _shadowX, _shadowY;		//그림자 중점
 	float _playerX, _playerY;		//플레이어 중점
@@ -99,6 +100,7 @@ public:
 	void mouseCol();
 	void pixelCol();
 	void boolCheck();
+	void enemyCol();
 
 public:
 	//=====================GET================================
@@ -112,6 +114,7 @@ public:
 	float getPlayerMaxHP() { return _maxHP; }
 	int getRunCount() { return _runCount; }
 	int getShadow() { return _shadowAlpha; }
+	int getMomey() { return _money; }
 	bool getDirectionX() { return _directionX; }
 	bool getDirectionY() { return _directionY; }
 	bool getIsBottom() { return _isBottom; }
@@ -156,6 +159,7 @@ public:
 	}
 	void setRunCount(int runCount) { _runCount = runCount; }
 	void setShadow(int shadow) { _shadowAlpha = shadow; }
+	void setMoney(int money) { _money += money; }
 	void setDirectionX(bool direction) { _directionX = direction; }
 	void setDirectionY(bool direction) { _directionY = direction; }
 	void setIsJumping(bool jumping) { _isJumping = jumping; }
