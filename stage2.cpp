@@ -19,6 +19,8 @@ HRESULT stage2::init(obstacleManager* obstacleManager, itemManager* itemManager,
 	_obstacleManager->setObstacle(VENDING);
 	_obstacleManager->setObstacle(PILLARLEFT);
 	_obstacleManager->setObstacle(PILLARRIGHT);
+	_stage2DoorRc = RectMakeCenter(2475, 600, 200, 30);
+	_bossDoorRc = RectMakeCenter(3750, 770, 30, 200);
 
 	return S_OK;
 }
@@ -27,6 +29,8 @@ void stage2::render()
 {
 	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2pixel"), IMAGEMANAGER->findImage("stage2pixel")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2pixel")->getHeight() * 0.5f);
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2"), IMAGEMANAGER->findImage("stage2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2")->getHeight() * 0.5f);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _stage2DoorRc);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _bossDoorRc);
 }
 
 void stage2::update()

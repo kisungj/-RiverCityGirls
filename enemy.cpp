@@ -120,8 +120,8 @@ void enemy::directionCheck(RECT rc, float x, float y)
 	}
 
 	//거리 체크
-	if (getDistance(x, y, _x, _z) < 100 && _maxHP > 0) _condition = CONDITION::CLOSE;
-	if (getDistance(x, y, _x, _z) > 100 && _maxHP > 0) _condition = CONDITION::SEARCH;
+	if (getDistance(x, y, _x, _z) < 200 && _maxHP > 0) _condition = CONDITION::CLOSE;
+	if (getDistance(x, y, _x, _z) > 200 && _maxHP > 0) _condition = CONDITION::SEARCH;
 }
 
 void enemy::draw()
@@ -315,7 +315,7 @@ void enemy::addImage()
 	IMAGEMANAGER->addFrameImage("girl_hit1", "image/enemy/girl_hit1.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_hit2", "image/enemy/girl_hit2.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_hit3", "image/enemy/girl_hit3.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_groundhit", "image/enemy/girl_groundhit.bmp", 639, 132, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_groundhit", "image/enemy/girl_groundhit.bmp", 660, 360, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_knockdown", "image/enemy/girl_knockdown.bmp", 7425, 360, 33, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_dizzy", "image/enemy/girl_dizzy.bmp", 456, 324, 4, 2, true, RGB(255, 0, 255));
 

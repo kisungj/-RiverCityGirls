@@ -13,6 +13,9 @@ void enemyIdleState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 
 	if (_searchCount > 100 && _isDiscover)
 	{
+		_searchCount = 0;
+		_isDiscover = false;
+
 		if (enemyType == ENEMYTYPE::BOY)
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("boy_walk"));
@@ -24,12 +27,13 @@ void enemyIdleState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getMove());
-		_searchCount = 0;
-		_isDiscover = false;
 	}
 
 	if (enemy.getOuch())
 	{
+		_searchCount = 0;
+		_isDiscover = false;
+
 		if (enemyType == ENEMYTYPE::BOY)
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("boy_hit1"));
@@ -41,9 +45,9 @@ void enemyIdleState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getHit());
-		_searchCount = 0;
-		_isDiscover = false;
 	}
+
+	//cout << "idle class" << endl;
 }
 
 //===================================================무브 클래스===================================================//
@@ -553,8 +557,6 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 	{
 		_comboCount = 0; 
 		_strikeCount = 0;
-		enemy.setStrike(false);
-		enemy.setStop(false);
 		
 		if (enemyType == ENEMYTYPE::BOY)
 		{
@@ -567,6 +569,8 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getHit());
+		enemy.setStrike(false);
+		enemy.setStop(false);
 	}
 
 	//cout << "attack class" << endl;
@@ -623,7 +627,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			if (enemyType == ENEMYTYPE::BOY)
 			enemy.setImage(IMAGEMANAGER->findImage("boy_hit1"));
 			if (enemyType == ENEMYTYPE::GIRL)
-			enemy.setImage(IMAGEMANAGER->findImage("girl_walk"));
+			enemy.setImage(IMAGEMANAGER->findImage("girl_hit1"));
 
 			if (_oneCount == 0)
 			{
@@ -665,17 +669,17 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			if (enemyType == ENEMYTYPE::BOY)
 			enemy.setImage(IMAGEMANAGER->findImage("boy_hit3"));
 			if (enemyType == ENEMYTYPE::GIRL)
-			enemy.setImage(IMAGEMANAGER->findImage("girl_hit2"));
+			enemy.setImage(IMAGEMANAGER->findImage("girl_hit3"));
 		}	
 
-		if (_oneCount > 40)
+		if (_oneCount > 35)
 		{
 			_oneCount = 0;
 			enemy.setOuch(false);
 			enemy.setHitCount(-enemy.getHitCount());
 		}
 
-		if (_twoCount > 40)
+		if (_twoCount > 35)
 		{
 			_twoCount = 0;
 			enemy.setOuch(false);
@@ -692,7 +696,6 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			{
 				enemy.setHitCount(-enemy.getHitCount());
 				enemy.setStop(true);
-				_downCount++;
 
 				if(_downCount ==3 || enemy.getLayCount() == DELAYMAX) enemy.setFrameX(24);
 			}
@@ -704,7 +707,6 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			{
 				enemy.setHitCount(-enemy.getHitCount());
 				enemy.setStop(true); 
-				_downCount++;
 
 				if (_downCount == 3 || enemy.getLayCount() == DELAYMAX) enemy.setFrameX(8);
 			}
@@ -792,7 +794,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		
 	}
 
-	//==================무브 클래스로 이동==================//
+	//==================아이들 클래스로 이동==================//
 	if ((enemy.getCondition() == CONDITION::SEARCH || !enemy.getOuch()) && !enemy.getLay())
 	{
 		_oneCount = 0;
@@ -804,18 +806,18 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 		if (enemyType == ENEMYTYPE::BOY)
 		{
-			enemy.setImage(IMAGEMANAGER->findImage("boy_walk"));
+			enemy.setImage(IMAGEMANAGER->findImage("boy_idle"));
 		}
 		if (enemyType == ENEMYTYPE::GIRL)
 		{
-			enemy.setImage(IMAGEMANAGER->findImage("girl_walk"));
+			enemy.setImage(IMAGEMANAGER->findImage("girl_idle"));
 		}
 
 		if (_delayCount > 50)
 		{
 			if (enemy.getRight()) enemy.setFrameX(0);
 			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
-			enemy.setState(enemy.getMove());
+			enemy.setState(enemy.getIdle());
 
 			enemy.setHitCount(-enemy.getHitCount());
 			_delayCount = 0;
@@ -823,6 +825,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 	}
 
 	//cout << "hit class" << endl;
+	//cout << _downCount << endl;
 }
 
 //===================================================다운 클래스===================================================//

@@ -153,7 +153,7 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addFrameImage("boy_hit1", "image/enemy/boy_hit1.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit2", "image/enemy/boy_hit2.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit3", "image/enemy/boy_hit3.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 690, 127, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 821, 410, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_knockdown", "image/enemy/boy_knockdown.bmp", 8910, 420, 33, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_dizzy", "image/enemy/boy_dizzy.bmp", 633, 408, 4, 2, true, RGB(255, 0, 255));
 }
