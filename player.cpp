@@ -509,7 +509,41 @@ void player::enemyCol()
 			}
 
 		}
+
+		for (int i = 0; i < _enemy->getVGirl().size(); ++i)
+		{
+			if (_shadowY + 15 > _enemy->getVGirl()[i]->getZ() && _shadowY - 15 < _enemy->getVGirl()[i]->getZ())
+			{
+				if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
+				{
+					_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+					_enemy->getVGirl()[i]->setOuch(true);
+					_enemy->getVGirl()[i]->setHitCount(1);
+					_enemy->getVGirl()[i]->setHP(10);
+				}
+			}
+
+		}
 	}
 
+}
+
+void player::bossCol()
+{
+	RECT temp;
+	if (_state == _attack || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay() || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
+	{
+		
+		/*if (_shadowY + 15 > _boss->getPointerRect() && _shadowY - 15 < _enemy->getVBoy()[i]->getZ())
+		{*/
+		if (IntersectRect(&temp, &_attackRc, _boss->getPointerRect()))
+		{
+			_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+			_boss->hit(_playerX, _shadowY, 10);
+		
+		}
+
+		
+	}
 }
 

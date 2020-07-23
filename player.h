@@ -54,6 +54,7 @@ private:
 	bool _isJumping;				//점프하는지
 	bool _isDeskFall;				//데스크 충돌 테스트
 	bool _isRun;					//뛰는지
+	bool _isDown;					//누울건지
 	bool _isAttack;					//공격할거?
 	bool _attacked;					//공격 3번 이어주기
 	bool _directionX;				//left = 0, right = 1
@@ -101,6 +102,7 @@ public:
 	void pixelCol();
 	void boolCheck();
 	void enemyCol();
+	void bossCol();
 
 public:
 	//=====================GET================================
@@ -126,6 +128,7 @@ public:
 	bool getAttacked() { return _attacked; }
 	bool getIsAttack() { return _isAttack; }
 	bool getIsDeskFall() { return _isDeskFall; }
+	bool getIsDown() { return _isDown; }
 	RECT getAttackRect() { return _attackRc; }
 	RECT getPlayerRect() { return _player; }
 	image* getImgge() { return _img; }
@@ -171,6 +174,7 @@ public:
 	void setIsAttack(bool isAttack) { _isAttack = isAttack; }
 	void setAttacked(bool attacked) { _attacked = attacked; }
 	void setIsDeskFall(bool fall) { _isDeskFall = fall; }
+	void setIsDown(bool down) { _isDown = down; }
 	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
 	void setMapStr(string str) { _mapStr = str; }
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
