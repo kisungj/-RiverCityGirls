@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "player.h"
+#include "boss.h"
+#include "enemyManager.h"
+
 
 HRESULT player::init()
 {
@@ -435,7 +438,7 @@ void player::pixelCol()
 
 				if (!(r == 255 && g == 255 && b == 0))
 				{
-					cout << "d" << endl;
+					//cout << "d" << endl;
 
 					_gravity = 0.5f;
 					_jumpPower = 0;
