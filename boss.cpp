@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "boss.h"
-
+#include "player.h"
 HRESULT boss::init()
 {
 	loadAnimation();
@@ -41,35 +41,25 @@ void boss::render()
 	// ================================ 임시 ================================ //
 	if (_setActiveAttackRect)
 		CAMERAMANAGER->renderRectangle(getMemDC(), _attackRect);
-	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _playerRect);
 	// ================================ 임시 ================================ //
 }
 
 void boss::update(float playerX, float playerZ)
 {
-
-	// ------------------ 지워
-	_playerRect = RectMakeCenter(playerX, playerZ, 110, 200);
-	// ------------------ 지워
-
-
 	stateUpdate(playerX, playerZ);
 
 	if (_setActiveAttackRect)
 		_attackRect = RectMakeCenter(_attackPos.x, _attackPos.y, _attackSize.x, _attackSize.y);
-
 
 	if (_state != BOSS_LEFT_JUMP && _state != BOSS_RIGHT_JUMP && _state != BOSS_LEFT_JUMP_ATTACK && _state != BOSS_RIGHT_JUMP_ATTACK && _state != BOSS_LEFT_HIT3 && _state != BOSS_RIGHT_HIT3) // 점프 관련 상태일 때는 꺼주기
 	{
 		_y = _z - 137;
 	}
 	death(playerX, playerZ);
-
-	hit(playerX, playerZ, 100);// 데미지 임시값
-
 	changePattern(playerX, playerZ);
-
+	toPlayerCollision();
 	_rc = RectMakeCenter(_x, _y, 100, 250);
 
 	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z, _jumpAlpha);
@@ -394,9 +384,6 @@ void boss::stateUpdate(float playerX, float playerZ)
 	case BOSS_RIGHT_ATTACK:
 		if (_animPlayer->getNowIndex() == 7 || _animPlayer->getNowIndex() == 8)
 		{
-			if (_isCollision) return;
-
-			_setActiveAttackRect = true;
 			if (_state == BOSS_LEFT_ATTACK)
 				_attackPos.x = _x - 100;
 
@@ -407,18 +394,11 @@ void boss::stateUpdate(float playerX, float playerZ)
 			_attackSize.y = 100;
 
 		}
-		else
-		{
-			_setActiveAttackRect = false;
-		}
 		break;
 	case BOSS_LEFT_ATTACK_ELBOW:
 	case BOSS_RIGHT_ATTACK_ELBOW:
 		if (_animPlayer->getNowIndex() == 5 || _animPlayer->getNowIndex() == 6 || _animPlayer->getNowIndex() == 7)
 		{
-			if (_isCollision) return;
-
-			_setActiveAttackRect = true;
 			if (_state == BOSS_LEFT_ATTACK_ELBOW)
 				_attackPos.x = _x - 100;
 
@@ -427,12 +407,8 @@ void boss::stateUpdate(float playerX, float playerZ)
 			_attackPos.y = _y;
 			_attackSize.x = 100;
 			_attackSize.y = 100;
+		}
 
-		}
-		else
-		{
-			_setActiveAttackRect = false;
-		}
 
 		break;
 
@@ -514,24 +490,17 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 			_animPlayer->start();
 			_isDelayTime = true;
-			_setActiveAttackRect = false;
 		}
 		else
 		{
 			if (_animPlayer->getNowIndex() >= 5)
 			{
-				if (_isCollision) return;
 
-				_setActiveAttackRect = true;
 
 				_attackPos.x = _x;
 				_attackPos.y = _y;
 				_attackSize.x = 200;
 				_attackSize.y = 200;
-			}
-			else
-			{
-				_setActiveAttackRect = false;
 			}
 		}
 
@@ -564,11 +533,8 @@ void boss::stateUpdate(float playerX, float playerZ)
 		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 3 && _animPlayer->isPlay())
 		{
-			if (_isCollision) return;
-
 			_x += cosf(_angle) * _applySpeed;
 			_z -= sinf(_angle) * _applySpeed;
-			_setActiveAttackRect = true;
 			if (_state == BOSS_LEFT_DASH) // 왼쪽으로 대쉬 할 경우 공격 범위.
 			{
 				_attackPos.x = _x - 100;
@@ -600,10 +566,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 			}
 			_animPlayer->start();
 			_isDelayTime = true;
-			_setActiveAttackRect = false;
 		}
-
-
 		break;
 
 	case BOSS_LEFT_HIT1:
@@ -785,15 +748,11 @@ void boss::stateUpdate(float playerX, float playerZ)
 			_characterImg = IMAGEMANAGER->findImage("boss_idle");
 			_animPlayer->start();
 			_isDelayTime = true;
-			_setActiveAttackRect = false;
 		}
 		else
 		{
 			if (_animPlayer->getNowIndex() == 5 || _animPlayer->getNowIndex() == 6 || _animPlayer->getNowIndex() == 7)
 			{
-				if (_isCollision) return;
-
-				_setActiveAttackRect = true;
 				if (_state == BOSS_LEFT_HIT_GETUP)
 					_attackPos.x = _x - 50;
 				else
@@ -802,10 +761,6 @@ void boss::stateUpdate(float playerX, float playerZ)
 				_attackPos.y = _y + 100;
 				_attackSize.x = 200;
 				_attackSize.y = 80;
-			}
-			else
-			{
-				_setActiveAttackRect = false;
 			}
 		}
 		break;
@@ -852,19 +807,12 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		if (_animPlayer->getNowIndex() == 3 || _animPlayer->getNowIndex() == 4 || _animPlayer->getNowIndex() == 5)
 		{
-			if (_isCollision) return;
 
-			_setActiveAttackRect = true;
 			_attackPos.x = _x;
 			_attackPos.y = _y + 150;
 			_attackSize.x = 400;
 			_attackSize.y = 100;
 		}
-		else
-		{
-			_setActiveAttackRect = false;
-		}
-
 
 		break;
 	case BOSS_LEFT_HEAVY_ATTACK:
@@ -878,7 +826,6 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 		if (_animPlayer->getNowIndex() == 15 || _animPlayer->getNowIndex() == 16)
 		{
-			if (_isCollision) return;
 
 			if (_state == BOSS_LEFT_HEAVY_ATTACK)
 			{
@@ -892,13 +839,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 			_attackPos.y = _y;
 			_attackSize.x = 200;
 			_attackSize.y = 100;
-			_setActiveAttackRect = true;
 		}
-		else
-		{
-			_setActiveAttackRect = false;
-		}
-
 		break;
 	case BOSS_LEFT_DEATH:
 
@@ -1354,7 +1295,7 @@ void boss::changePattern(float playerX, float playerZ)
 		if (_delayTime % 100 == 0)
 		{
 			_delayTime = 0;
-			_patternNumber = 1;//RND->getInt(5);
+			_patternNumber = RND->getInt(5);
 			_isDelayTime = false;
 		}
 	}
@@ -1407,94 +1348,109 @@ void boss::death(float playerX, float playerZ)
 
 void boss::hit(float playerX, float playerZ, int damege)
 {
-	if (KEYMANAGER->isOnceKeyDown('T'))
+	if (_state == BOSS_LEFT_HIT3 || _state == BOSS_RIGHT_HIT3 || _state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP ||
+		_state == BOSS_LEFT_BLOCK || _state == BOSS_RIGHT_BLOCK || _state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR || _state == BOSS_LEFT_JUMP ||
+		_state == BOSS_RIGHT_JUMP || _state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK ||
+		_state == BOSS_LEFT_DASH || _state == BOSS_RIGHT_DASH) return; // 3타중이면 못들어오게 // 공격 안받는 상황
+
+	_characterImg = IMAGEMANAGER->findImage("boss_hit");
+	if (playerX <= _x) //플레이어가 왼쪽에 있는경우 --> 왼쪽을 봐야함 보스가
 	{
-		if (_state == BOSS_LEFT_HIT3 || _state == BOSS_RIGHT_HIT3 || _state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP ||
-			_state == BOSS_LEFT_BLOCK || _state == BOSS_RIGHT_BLOCK || _state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR || _state == BOSS_LEFT_JUMP ||
-			_state == BOSS_RIGHT_JUMP || _state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK ||
-			_state == BOSS_LEFT_DASH || _state == BOSS_RIGHT_DASH) return; // 3타중이면 못들어오게 // 공격 안받는 상황
-
-		_characterImg = IMAGEMANAGER->findImage("boss_hit");
-		if (playerX <= _x) //플레이어가 왼쪽에 있는경우 --> 왼쪽을 봐야함 보스가
+		// 30퍼 확률로 막기
+		if (_hitCount == 0)
 		{
-			// 30퍼 확률로 막기
-			if (_hitCount == 0)
+			int rndBlock = RND->getInt(10);
+			if (rndBlock < 5)
 			{
-				int rndBlock = RND->getInt(10);
-				if (rndBlock < 5)
-				{
-					_characterImg = IMAGEMANAGER->findImage("boss_block");
-					_state = BOSS_LEFT_BLOCK;
-					_animPlayer = _anim[BOSS_LEFT_BLOCK];
-					_animPlayer->start();
-					_hitCount = 0;
-					_blockDistance = 5;
-					_blockFriction = 0.01f;
-				}
-				else
-				{
-					_state = BOSS_LEFT_HIT1;
-					_animPlayer = _anim[BOSS_LEFT_HIT1];
-					_animPlayer->start();
-					_hitCount++;
-				}
-
+				_characterImg = IMAGEMANAGER->findImage("boss_block");
+				_state = BOSS_LEFT_BLOCK;
+				_animPlayer = _anim[BOSS_LEFT_BLOCK];
+				_animPlayer->start();
+				_hitCount = 0;
+				_blockDistance = 5;
+				_blockFriction = 0.01f;
 			}
-			else if (_hitCount == 1)
+			else
 			{
 				_state = BOSS_LEFT_HIT1;
 				_animPlayer = _anim[BOSS_LEFT_HIT1];
-				_hitCount++;
-			}
-			else if (_hitCount == 2)
-			{
-				_state = BOSS_LEFT_HIT2;
-				_animPlayer = _anim[BOSS_LEFT_HIT2];
+				_animPlayer->start();
 				_hitCount++;
 			}
 
 		}
-		else
+		else if (_hitCount == 1)
 		{
-			if (_hitCount == 0)
+			_state = BOSS_LEFT_HIT1;
+			_animPlayer = _anim[BOSS_LEFT_HIT1];
+			_hitCount++;
+		}
+		else if (_hitCount == 2)
+		{
+			_state = BOSS_LEFT_HIT2;
+			_animPlayer = _anim[BOSS_LEFT_HIT2];
+			_hitCount++;
+		}
+
+	}
+	else
+	{
+		if (_hitCount == 0)
+		{
+			int rndBlock = RND->getInt(10);
+			if (rndBlock < 5)
 			{
-				int rndBlock = RND->getInt(10);
-				if (rndBlock < 5)
-				{
-					_characterImg = IMAGEMANAGER->findImage("boss_block");
-					_blockDistance = 5;
-					_blockFriction = 0.01f;
-					_state = BOSS_RIGHT_BLOCK;
-					_animPlayer = _anim[BOSS_RIGHT_BLOCK];
-					_animPlayer->start();
-					_hitCount = 0;
-				}
-				else
-				{
-					_state = BOSS_RIGHT_HIT1;
-					_animPlayer = _anim[BOSS_RIGHT_HIT1];
-					_animPlayer->start();
-					_hitCount++;
-				}
+				_characterImg = IMAGEMANAGER->findImage("boss_block");
+				_blockDistance = 5;
+				_blockFriction = 0.01f;
+				_state = BOSS_RIGHT_BLOCK;
+				_animPlayer = _anim[BOSS_RIGHT_BLOCK];
+				_animPlayer->start();
+				_hitCount = 0;
 			}
-			else if (_hitCount == 1)
+			else
 			{
 				_state = BOSS_RIGHT_HIT1;
 				_animPlayer = _anim[BOSS_RIGHT_HIT1];
+				_animPlayer->start();
 				_hitCount++;
-			}
-			else if (_hitCount == 2)
-			{
-				_state = BOSS_RIGHT_HIT2;
-				_animPlayer = _anim[BOSS_RIGHT_HIT2];
-				_hitCount++;
-
 			}
 		}
-		_angle = getAngle(playerX, playerZ, _x, _z);
+		else if (_hitCount == 1)
+		{
+			_state = BOSS_RIGHT_HIT1;
+			_animPlayer = _anim[BOSS_RIGHT_HIT1];
+			_hitCount++;
+		}
+		else if (_hitCount == 2)
+		{
+			_state = BOSS_RIGHT_HIT2;
+			_animPlayer = _anim[BOSS_RIGHT_HIT2];
+			_hitCount++;
+
+		}
 	}
+	_angle = getAngle(playerX, playerZ, _x, _z);
+}
 
+void boss::toPlayerCollision()
+{
+	RECT temp;
+	if (IntersectRect(&temp, &_player->getPlayerRect(), &_attackRect))
+	{
+		_player->playerDamage(2);
+		if (!_player->getDirectionX())
+		{
+			_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+			_player->setState(_player->getHitState());
+		}
 
+		if (_player->getDirectionX())
+		{
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+			_player->setState(_player->getHitState());
+		}
+	}
 }
 
 

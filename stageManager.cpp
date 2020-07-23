@@ -16,6 +16,7 @@ HRESULT stageManager::init()
 
 	SCENEMANAGER->changeScene("PLAYER_SCENE");
 	// ======================================================== //
+
 	_player = new player;
 	_player->init();
 	_ui = new ui;
@@ -69,7 +70,7 @@ HRESULT stageManager::init()
 	//참조
 	_player->setBossLink(_boss);
 	_player->setEnemyLink(_enemyManager);
-
+	_boss->setPlayerMemoryAddressLink(_player);
 	return S_OK;
 }
 
@@ -191,6 +192,7 @@ void stageManager::collision()
 		{
 			_obstacleManager->getVObstacle()[i]->collision();
 			_itemManager->setItem(_obstacleManager->getVObstacle()[i]->getObsRc());
+			_player->setAttack(0, 0, 0, 0);
 		}
 
 		//기둥과 충돌할때
