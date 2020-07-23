@@ -52,7 +52,7 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 	_jumpPower = _gravity = 0;
 	_state = _idle;
 	_maxHP = 100;
-
+	
 	return S_OK;
 }
 
@@ -89,15 +89,17 @@ void enemy::update()
 	//CAMERAMANAGER->setY(_y);
 
 	draw();
+	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z, 200);
+	ZORDERMANAGER->addFrameRender(getMemDC(), renderType::FRAME_RENDER, _image, _x, _y, _z, _currentX, _currentY);
 }
 
 void enemy::render()
 {
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
-	CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
+	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
-	CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
+	//CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
 }
 
 void enemy::directionCheck(RECT rc, float x, float y)
