@@ -16,7 +16,8 @@ class guardState;
 class overState;
 class stunState;
 
-
+class boss; // 상호참조용
+class enemyManager;
 class player : public gameNode
 {
 private:
@@ -26,7 +27,8 @@ private:
 	RECT _shadow;					//플레이어 그림자 이미지 
 	RECT _player;					//플레이어
 	RECT _attackRc;					//공격렉트
-
+	boss* _boss;
+	enemyManager* _enemy;
 	string _mapStr;					//픽셀충돌 맵 바꾸는용
 
 	int _probeV;					//픽셀충돌 수직
@@ -168,6 +170,8 @@ public:
 	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
 	void setMapStr(string str) { _mapStr = str; }
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
+	void setBossLink(boss* boss) { _boss = boss; }
+	void setEnemyLink(enemyManager* enemy) { _enemy = enemy; }
 };
 
 

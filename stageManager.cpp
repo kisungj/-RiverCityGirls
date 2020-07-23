@@ -66,6 +66,10 @@ HRESULT stageManager::init()
 
 	SCENEMANAGER->addScene("STAGEBOSS_SCENE", _stageBoss);
 
+	//ÂüÁ¶
+	_player->setBossLink(_boss);
+	_player->setEnemyLink(_enemyManager);
+
 	return S_OK;
 }
 

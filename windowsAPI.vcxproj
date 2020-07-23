@@ -201,6 +201,7 @@
     <ClInclude Include="ui.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="windowsAPI.h" />
+    <ClInclude Include="zOrderManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
@@ -258,6 +259,7 @@
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="windowsAPI.cpp" />
+    <ClCompile Include="zOrderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowsAPI.rc" />
