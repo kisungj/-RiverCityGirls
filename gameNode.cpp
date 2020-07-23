@@ -40,6 +40,7 @@ HRESULT gameNode::init(bool managerInit)
 		INIDATA->init();
 		CAMERAMANAGER->init();
 		EVENTMANAGER->init();
+		ZORDERMANAGER->init();
 	}
 
 
@@ -84,6 +85,9 @@ void gameNode::release()
 
 		EVENTMANAGER->release();
 		EVENTMANAGER->releaseSingleton();
+
+		ZORDERMANAGER->release();
+		ZORDERMANAGER->releaseSingleton();
 	}
 	
 	ReleaseDC(_hWnd, _hdc);

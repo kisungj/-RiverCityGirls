@@ -29,6 +29,7 @@ using namespace std;
 #include "iniDataManager.h"
 #include "cameraManager.h"
 #include "eventManager.h"
+#include "zOrderManager.h"
 
 using namespace TTYONE_UTIL;
 
@@ -44,18 +45,19 @@ using namespace TTYONE_UTIL;
 #define WINSIZEY	900
 #define WINSTYLE	WS_CAPTION | WS_SYSMENU
 
-#define RND           randomFunction::getSingleton()
-#define KEYMANAGER    keyManager::getSingleton()
-#define IMAGEMANAGER  imageManager::getSingleton()
-#define TIMEMANAGER   timeManager::getSingleton()
-#define EFFECTMANAGER effectManager::getSingleton()
-#define SOUNDMANAGER  soundManager::getSingleton()
-#define SCENEMANAGER  sceneManager::getSingleton()
-#define KEYANIMANAGER keyAniManager::getSingleton()
-#define TXTDATA       txtData::getSingleton()
-#define INIDATA       iniDataManager::getSingleton()
-#define CAMERAMANAGER cameraManager::getSingleton()
-#define EVENTMANAGER  eventManager::getSingleton()
+#define RND            randomFunction::getSingleton()
+#define KEYMANAGER     keyManager::getSingleton()
+#define IMAGEMANAGER   imageManager::getSingleton()
+#define TIMEMANAGER    timeManager::getSingleton()
+#define EFFECTMANAGER  effectManager::getSingleton()
+#define SOUNDMANAGER   soundManager::getSingleton()
+#define SCENEMANAGER   sceneManager::getSingleton()
+#define KEYANIMANAGER  keyAniManager::getSingleton()
+#define TXTDATA        txtData::getSingleton()
+#define INIDATA        iniDataManager::getSingleton()
+#define CAMERAMANAGER  cameraManager::getSingleton()
+#define EVENTMANAGER   eventManager::getSingleton()
+#define ZORDERMANAGER zOrderManager::getSingleton()
 
 #define SAFE_DELETE(p)		 {if(p) {delete(p); (p) = NULL;}}
 #define SAFE_RELEASE(p)		 {if(p) {(p)->release(); (p) = NULL;}}
