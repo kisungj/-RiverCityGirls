@@ -86,6 +86,7 @@ public:
 public:
 	STATEBOSS getState() { return _state; }
 	RECT*     getPointerRect() { return &_rc; }
+	RECT      getRect() { return _rc; }
 	RECT      getAttackRect() { return _attackRect; }
 public:
 	void      setPlayerMemoryAddressLink(player* player) { _player = player; }
