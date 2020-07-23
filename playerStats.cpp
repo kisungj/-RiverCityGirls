@@ -1239,7 +1239,7 @@ HRESULT hitState::init()
 
 void hitState::update(player & player)
 {
-	//_hitCount++;
+	_hitCount++;
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
@@ -1269,7 +1269,7 @@ void hitState::update(player & player)
 
 		//if (_hitNum > 3)
 		//{
-			//cout << "d" << endl;
+		
 		if (player.getIsDown())
 		{
 			if (!player.getDirectionX())
