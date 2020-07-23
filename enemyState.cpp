@@ -623,7 +623,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			if (enemyType == ENEMYTYPE::BOY)
 			enemy.setImage(IMAGEMANAGER->findImage("boy_hit1"));
 			if (enemyType == ENEMYTYPE::GIRL)
-			enemy.setImage(IMAGEMANAGER->findImage("girl_walk"));
+			enemy.setImage(IMAGEMANAGER->findImage("girl_hit1"));
 
 			if (_oneCount == 0)
 			{
@@ -665,7 +665,7 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			if (enemyType == ENEMYTYPE::BOY)
 			enemy.setImage(IMAGEMANAGER->findImage("boy_hit3"));
 			if (enemyType == ENEMYTYPE::GIRL)
-			enemy.setImage(IMAGEMANAGER->findImage("girl_hit2"));
+			enemy.setImage(IMAGEMANAGER->findImage("girl_hit3"));
 		}	
 
 		if (_oneCount > 40)

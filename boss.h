@@ -88,6 +88,7 @@ public:
 	RECT*     getPointerRect() { return &_rc; }
 	RECT      getRect() { return _rc; }
 	RECT      getAttackRect() { return _attackRect; }
+	float     getBossZ() { return _z; }
 public:
 	void      setPlayerMemoryAddressLink(player* player) { _player = player; }
 
