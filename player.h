@@ -16,7 +16,8 @@ class guardState;
 class overState;
 class stunState;
 
-
+class boss; // 상호참조용
+class enemyManager;
 class player : public gameNode
 {
 private:
@@ -26,7 +27,8 @@ private:
 	RECT _shadow;					//플레이어 그림자 이미지 
 	RECT _player;					//플레이어
 	RECT _attackRc;					//공격렉트
-
+	boss* _boss;
+	enemyManager* _enemy;
 	string _mapStr;					//픽셀충돌 맵 바꾸는용
 
 	int _probeV;					//픽셀충돌 수직
@@ -34,6 +36,7 @@ private:
 	int _playerProbe;				//책상 올라가는용
 	int _runCount;					//빠르게 달리기
 	int _shadowAlpha;				//그림자 알파
+	int _money;
 
 	float _shadowX, _shadowY;		//그림자 중점
 	float _playerX, _playerY;		//플레이어 중점
@@ -97,6 +100,7 @@ public:
 	void mouseCol();
 	void pixelCol();
 	void boolCheck();
+	void enemyCol();
 
 public:
 	//=====================GET================================
@@ -110,6 +114,7 @@ public:
 	float getPlayerMaxHP() { return _maxHP; }
 	int getRunCount() { return _runCount; }
 	int getShadow() { return _shadowAlpha; }
+	int getMomey() { return _money; }
 	bool getDirectionX() { return _directionX; }
 	bool getDirectionY() { return _directionY; }
 	bool getIsBottom() { return _isBottom; }
@@ -154,6 +159,7 @@ public:
 	}
 	void setRunCount(int runCount) { _runCount = runCount; }
 	void setShadow(int shadow) { _shadowAlpha = shadow; }
+	void setMoney(int money) { _money += money; }
 	void setDirectionX(bool direction) { _directionX = direction; }
 	void setDirectionY(bool direction) { _directionY = direction; }
 	void setIsJumping(bool jumping) { _isJumping = jumping; }
@@ -168,6 +174,8 @@ public:
 	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
 	void setMapStr(string str) { _mapStr = str; }
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
+	void setBossLink(boss* boss) { _boss = boss; }
+	void setEnemyLink(enemyManager* enemy) { _enemy = enemy; }
 };
 
 

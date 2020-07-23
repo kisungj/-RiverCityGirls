@@ -28,9 +28,11 @@ public:
 	virtual void update();
 	virtual void release();
 
-	void setBoy();	
-	void setGirl();	
-	void setCheer();
+	void setStage1();	
+	void setStage2();
+
+	void plEnCollision();						//플레이어와 에너미 충돌 함수
+
 	void eraseBoy(int arrNum);
 	void eraseGirl(int arrNum);
 	void eraseCheer(int arrNum);

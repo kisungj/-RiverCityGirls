@@ -62,8 +62,19 @@ void enemy::release()
 
 void enemy::update()
 {
-	_y -= _jumpPower;
-	_jumpPower -= _gravity;
+	if (_isJump)
+	{
+		_jumpPower = 7.f;
+		_gravity = 0.2f;
+		/*_y -= _jumpPower;
+		_jumpPower -= _gravity;*/
+	}
+
+	if (!_isJump)
+	{
+		_jumpPower = 0;
+		_gravity = 0;
+	}
 
 	_rc = RectMakeCenter(_x, _y, _width, _height);
 	_shadow = RectMakeCenter(_x, _y + 100, 80, 30);
@@ -296,6 +307,7 @@ void enemy::addImage()
 	IMAGEMANAGER->addFrameImage("girl_idle", "image/enemy/girl_idle.bmp", 1170, 354, 10, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_walk", "image/enemy/girl_walk.bmp", 1296, 372, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_run", "image/enemy/girl_run.bmp", 1470, 330, 10, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_jump", "image/enemy/girl_jump.bmp", 333, 366, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_attack1", "image/enemy/girl_attack1.bmp", 1239, 354, 7, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_attack2", "image/enemy/girl_attack2.bmp", 1197, 357, 7, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_attack3", "image/enemy/girl_attack3.bmp", 2412, 414, 12, 2, true, RGB(255, 0, 255));

@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "player.h"
+#include "boss.h"
+#include "enemyManager.h"
+
 
 HRESULT player::init()
 {
@@ -89,6 +92,8 @@ void player::update()
 	_state->update(*this);
 	
 	pixelCol();
+
+	enemyCol();
 
 	boolCheck();
 	
@@ -435,7 +440,7 @@ void player::pixelCol()
 
 				if (!(r == 255 && g == 255 && b == 0))
 				{
-					cout << "d" << endl;
+					//cout << "d" << endl;
 
 					_gravity = 0.5f;
 					_jumpPower = 0;
@@ -476,5 +481,19 @@ void player::boolCheck()
 	
 	
 	
+}
+
+void player::enemyCol()
+{
+	RECT temp;
+	for (int i = 0; i < _enemy->getVBoy().size(); ++i)
+	{
+		if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
+		{
+			//_attackX
+		}
+
+	}
+
 }
 
