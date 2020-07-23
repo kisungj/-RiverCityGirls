@@ -42,5 +42,10 @@ public:
 public:
 	vector<enemy*> getVBoy() { return _vBoy; }
 	vector<enemy*>::iterator getVIBoy() { return _viBoy; }
+
+
+	vector<enemy*> getVGirl() { return _vGirl; }
+	vector<enemy*>::iterator getVIGirl() { return _viGirl; }
+
 };
 

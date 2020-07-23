@@ -1244,47 +1244,51 @@ void hitState::update(player & player)
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 
-	//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
-	//	{
-	//		_isHit = true;
-	//		if (!player.getDirectionX())
-	//		{
-	//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-	//			_hitCount = 0;
-	//		}
-	//		if (player.getDirectionX())
-	//		{
-	//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-	//			_hitCount = 0;
-	//		}
-	//	}
-	//}
-	////player.mouseCol();
+		//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
+		//	{
+		//		_isHit = true;
+		//		if (!player.getDirectionX())
+		//		{
+		//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+		//			_hitCount = 0;
+		//		}
+		//		if (player.getDirectionX())
+		//		{
+		//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+		//			_hitCount = 0;
+		//		}
+		//	}
+		//}
+		////player.mouseCol();
 
-	//if (_isHit)
-	//{
-	//	_hitNum++;
-	//	_isHit = false;
-	//}
+		//if (_isHit)
+		//{
+		//	_hitNum++;
+		//	_isHit = false;
+		//}
 
-	//if (_hitNum > 3)
-	//{
-		//cout << "d" << endl;
-		if (!player.getDirectionX())
+		//if (_hitNum > 3)
+		//{
+		
+		if (player.getIsDown())
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
-			player.setState(player.getDownState());
-			player.setDirectionX(false);
-			_hitCount = 0;
-			_hitNum = 0;
-		}
-		if (player.getDirectionX())
-		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
-			player.setState(player.getDownState());
-			player.setDirectionX(true);
-			_hitCount = 0;
-			_hitNum = 0;
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+				player.setState(player.getDownState());
+				player.setDirectionX(false);
+				_hitCount = 0;
+				_hitNum = 0;
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+				player.setState(player.getDownState());
+				player.setDirectionX(true);
+				_hitCount = 0;
+				_hitNum = 0;
+			}
+			player.setIsDown(false);
 		}
 	}
 	//cout << _hitNum << endl;

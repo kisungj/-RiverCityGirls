@@ -16,6 +16,7 @@ HRESULT stageManager::init()
 
 	SCENEMANAGER->changeScene("PLAYER_SCENE");
 	// ======================================================== //
+
 	_player = new player;
 	_player->init();
 	_ui = new ui;
@@ -69,7 +70,7 @@ HRESULT stageManager::init()
 	//ÂüÁ¶
 	_player->setBossLink(_boss);
 	_player->setEnemyLink(_enemyManager);
-
+	_boss->setPlayerMemoryAddressLink(_player);
 	return S_OK;
 }
 
