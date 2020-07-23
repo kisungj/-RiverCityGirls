@@ -490,7 +490,10 @@ void player::enemyCol()
 	{
 		if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
 		{
-			//_attackX
+			_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+			_enemy->getVBoy()[i]->setOuch(true);
+			_enemy->getVBoy()[i]->setHitCount(1);
+			_enemy->getVBoy()[i]->setHP(30);
 		}
 
 	}
