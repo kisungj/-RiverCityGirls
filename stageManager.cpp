@@ -94,6 +94,8 @@ void stageManager::render()
 void stageManager::update()
 {
 
+
+
 	SCENEMANAGER->update();
 
 	_ui->update();

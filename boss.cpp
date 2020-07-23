@@ -14,7 +14,7 @@ HRESULT boss::init()
 	_x = WINSIZEX / 2 + 800;
 	_z = WINSIZEY / 2 + 180;
 	_y = _z - 180;
-	_jumpPower = 30;
+	_jumpPower = 20;
 	_gravity = 0.1f;
 	_rc = RectMakeCenter(_x, _y, 100, 250);
 	_characterImg = IMAGEMANAGER->findImage("boss_idle");
@@ -38,11 +38,17 @@ void boss::render()
 {
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("보스배경"), IMAGEMANAGER->findImage("보스배경")->getWidth() / 2, IMAGEMANAGER->findImage("보스배경")->getHeight() / 2);
 
+	//CAMERAMANAGER->alphaRender(getMemDC(), _shadowImg, _x, _z, _jumpAlpha);
+	//CAMERAMANAGER->aniRender(getMemDC(), _characterImg, _x, _y, _animPlayer);
+
 	// ================================ 임시 ================================ //
 	if (_setActiveAttackRect)
 		CAMERAMANAGER->renderRectangle(getMemDC(), _attackRect);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
+
+
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _playerRect);
+
 	// ================================ 임시 ================================ //
 }
 
@@ -390,52 +396,6 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 	switch (_state)
 	{
-	case BOSS_LEFT_ATTACK:
-	case BOSS_RIGHT_ATTACK:
-		if (_animPlayer->getNowIndex() == 7 || _animPlayer->getNowIndex() == 8)
-		{
-			if (_isCollision) return;
-
-			_setActiveAttackRect = true;
-			if (_state == BOSS_LEFT_ATTACK)
-				_attackPos.x = _x - 100;
-
-			else
-				_attackPos.x = _x + 100;
-			_attackPos.y = _y;
-			_attackSize.x = 100;
-			_attackSize.y = 100;
-			
-		}
-		else
-		{
-			_setActiveAttackRect = false;
-		}
-		break;
-	case BOSS_LEFT_ATTACK_ELBOW:
-	case BOSS_RIGHT_ATTACK_ELBOW:
-		if (_animPlayer->getNowIndex() == 5 || _animPlayer->getNowIndex() == 6 || _animPlayer->getNowIndex() == 7)
-		{
-			if (_isCollision) return;
-
-			_setActiveAttackRect = true;
-			if (_state == BOSS_LEFT_ATTACK_ELBOW)
-				_attackPos.x = _x - 100;
-
-			else
-				_attackPos.x = _x + 100;
-			_attackPos.y = _y;
-			_attackSize.x = 100;
-			_attackSize.y = 100;
-
-		}
-		else
-		{
-			_setActiveAttackRect = false;
-		}
-			
-		break;
-
 	case BOSS_LEFT_BLOCK:
 		if (_animPlayer->getNowIndex() > 0 && _animPlayer->getNowIndex() < 5)
 		{
@@ -461,6 +421,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 				_state = BOSS_LEFT_IDLE;
 				_animPlayer = _anim[BOSS_LEFT_IDLE];
 				_isDelayTime = true;
+
 			}
 			_animPlayer->start();
 		}
@@ -520,14 +481,12 @@ void boss::stateUpdate(float playerX, float playerZ)
 		{
 			if (_animPlayer->getNowIndex() >= 5)
 			{
-				if (_isCollision) return;
-
 				_setActiveAttackRect = true;
 
 				_attackPos.x = _x;
 				_attackPos.y = _y;
-				_attackSize.x = 200;
-				_attackSize.y = 200;
+				_attackSize.x = 150;
+				_attackSize.y = 150;
 			}
 			else
 			{
@@ -564,8 +523,6 @@ void boss::stateUpdate(float playerX, float playerZ)
 		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 3 && _animPlayer->isPlay())
 		{
-			if (_isCollision) return;
-
 			_x += cosf(_angle) * _applySpeed;
 			_z -= sinf(_angle) * _applySpeed;
 			_setActiveAttackRect = true;
@@ -789,10 +746,8 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		else
 		{
-			if (_animPlayer->getNowIndex() == 5 || _animPlayer->getNowIndex() == 6 || _animPlayer->getNowIndex() == 7)
+			if (_animPlayer->getNowIndex() == 5 || _animPlayer->getNowIndex() == 6)
 			{
-				if (_isCollision) return;
-
 				_setActiveAttackRect = true;
 				if (_state == BOSS_LEFT_HIT_GETUP)
 					_attackPos.x = _x - 50;
@@ -800,7 +755,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 					_attackPos.x = _x + 50;
 
 				_attackPos.y = _y + 100;
-				_attackSize.x = 200;
+				_attackSize.x = 80;
 				_attackSize.y = 80;
 			}
 			else
@@ -812,7 +767,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 	case BOSS_LEFT_JUMP:
 	case BOSS_RIGHT_JUMP:
-		_applySpeed = 2;
+		_applySpeed = 4;
 		if (_animPlayer->getNowIndex() > 5)
 		{
 			_x += cosf(_angle) * _applySpeed;
@@ -850,22 +805,6 @@ void boss::stateUpdate(float playerX, float playerZ)
 		{
 			_y = _z - 137;
 		}
-		if (_animPlayer->getNowIndex() == 3|| _animPlayer->getNowIndex() == 4|| _animPlayer->getNowIndex() == 5)
-		{
-			if (_isCollision) return;
-
-			_setActiveAttackRect = true;
-			_attackPos.x = _x;
-			_attackPos.y = _y + 150;
-			_attackSize.x = 400;
-			_attackSize.y = 100;
-		}
-		else
-		{
-			_setActiveAttackRect = false;
-		}
-
-
 		break;
 	case BOSS_LEFT_HEAVY_ATTACK:
 	case BOSS_RIGHT_HEAVY_ATTACK:
@@ -875,30 +814,6 @@ void boss::stateUpdate(float playerX, float playerZ)
 			_x += cosf(_angle) * _applySpeed;
 			_z -= sinf(_angle) * _applySpeed;
 		}
-
-		if (_animPlayer->getNowIndex() == 15 || _animPlayer->getNowIndex() == 16)
-		{
-			if (_isCollision) return;
-
-			if (_state == BOSS_LEFT_HEAVY_ATTACK)
-			{
-				_attackPos.x = _x - 100;
-			}
-			else
-			{
-				_attackPos.x = _x + 100;
-			}
-
-			_attackPos.y = _y;
-			_attackSize.x = 200;
-			_attackSize.y = 100;
-			_setActiveAttackRect = true;
-		}
-		else
-		{
-			_setActiveAttackRect = false;
-		}
-
 		break;
 	case BOSS_LEFT_DEATH:
 
@@ -1198,7 +1113,7 @@ void boss::jumpAttack(float playerX, float playerZ)
 
 
 
-	if (_jumpAndDownAttackCount > 100) // changePattern쪽에서 받아옴 
+	if (_jumpAndDownAttackCount > 300) // changePattern쪽에서 받아옴 
 	{
 		_jumpAndDownAttackCount = 0;
 		if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
@@ -1354,7 +1269,7 @@ void boss::changePattern(float playerX, float playerZ)
 		if (_delayTime % 100 == 0)
 		{
 			_delayTime = 0;
-			_patternNumber = 1;//RND->getInt(5);
+			_patternNumber = RND->getInt(5);
 			_isDelayTime = false;
 		}
 	}
