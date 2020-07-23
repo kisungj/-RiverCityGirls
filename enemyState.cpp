@@ -170,7 +170,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 	}
 
 	//==================점프 클래스로 이동==================//
-	if (enemy.getCondition() == CONDITION::GREEN && enemyType == ENEMYTYPE::GIRL)
+	/*if (enemy.getCondition() == CONDITION::GREEN && enemyType == ENEMYTYPE::GIRL)
 	{
 		if (enemyType == ENEMYTYPE::GIRL)
 		{
@@ -181,7 +181,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 
 		_waitCount = 0;
 		_randomCount = 0;
-	}
+	}*/
 
 	//==================힛 클래스로 이동==================//
 	if (enemy.getOuch())
@@ -420,6 +420,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 				_comboCount++; 
 				enemy.setStrike(false);
 			}
+			else enemy.setAtk(0, 0, 0, 0);
 		}
 	}
 

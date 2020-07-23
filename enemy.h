@@ -6,7 +6,6 @@ enum class CONDITION
 {
 	SEARCH,			//플레이어와 멀 때
 	CLOSE,			//플레이어와 가까울 때
-	GREEN,			//책상 아래 영역에 닿았을 때
 	STRONG,			//강공격
 	DEAD			//주금
 };
