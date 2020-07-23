@@ -38,8 +38,8 @@ void boss::render()
 {
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("보스배경"), IMAGEMANAGER->findImage("보스배경")->getWidth() / 2, IMAGEMANAGER->findImage("보스배경")->getHeight() / 2);
 
-	CAMERAMANAGER->alphaRender(getMemDC(), _shadowImg, _x, _z, _jumpAlpha);
-	CAMERAMANAGER->aniRender(getMemDC(), _characterImg, _x, _y, _animPlayer);
+	//CAMERAMANAGER->alphaRender(getMemDC(), _shadowImg, _x, _z, _jumpAlpha);
+	//CAMERAMANAGER->aniRender(getMemDC(), _characterImg, _x, _y, _animPlayer);
 
 	// ================================ 임시 ================================ //
 	if (_setActiveAttackRect)
@@ -47,12 +47,14 @@ void boss::render()
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 
 
-	CAMERAMANAGER->renderRectangle(getMemDC(), _playerRect);
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _playerRect);
+
 	// ================================ 임시 ================================ //
 }
 
 void boss::update(float playerX, float playerZ)
 {
+
 	// ------------------ 지워
 	_playerRect = RectMakeCenter(playerX, playerZ, 110, 200);
 	// ------------------ 지워
@@ -76,6 +78,8 @@ void boss::update(float playerX, float playerZ)
 
 	_rc = RectMakeCenter(_x, _y, 100, 250);
 
+	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z, _jumpAlpha);
+	ZORDERMANAGER->addAniRender(getMemDC(), renderType::ANI_RENDER, _characterImg, _x, _y, _z, _animPlayer);
 }
 
 void boss::loadAnimation()
