@@ -283,9 +283,9 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			if (enemy.getFrameX() == 1)
 			{
-				if (IntersectRect(&temp, &rc, &enemy.getAtk()) && y - enemy.getZ() < 10 && enemy.getZ() - y < 10)
+				if (enemy.getStrike())
 				{
-					enemy.setAtk(0, 0, 0, 0);
+					enemy.setStrike(false);
 				}
 				else enemy.setAtk(0, 0, 0, 0);
 			}
@@ -301,9 +301,9 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 1)
 			{
-				if (IntersectRect(&temp, &rc, &enemy.getAtk()) && y - enemy.getZ() < 10 && enemy.getZ() - y < 10)
+				if (enemy.getStrike())
 				{
-					enemy.setAtk(0, 0, 0, 0);
+					enemy.setStrike(false);
 				}
 				else enemy.setAtk(0, 0, 0, 0);
 			}
@@ -389,10 +389,10 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 
 		if (enemy.getFrameX() == 0)
 		{
-			if (IntersectRect(&temp, &rc, &enemy.getAtk()) && y - enemy.getZ() < 10 && enemy.getZ() - y < 10)
+			if (enemy.getStrike())
 			{
-				_comboCount++;
-				enemy.setAtk(0, 0, 0, 0);
+				_comboCount++; 
+				enemy.setStrike(false);
 			}
 			else enemy.setAtk(0, 0, 0, 0);
 		}
@@ -407,10 +407,10 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 
 		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX())
 		{
-			if (IntersectRect(&temp, &rc, &enemy.getAtk()) && y - enemy.getZ() < 10 && enemy.getZ() - y < 10)
+			if (enemy.getStrike())
 			{
 				_comboCount++;
-				enemy.setAtk(0, 0, 0, 0);
+				enemy.setStrike(false);
 			}
 			else enemy.setAtk(0, 0, 0, 0);
 		}
@@ -491,7 +491,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getIdle());
-		_isStrike = false;
+		enemy.setStrike(false);
 	}
 
 	//==================힛 클래스로 이동==================//
@@ -510,6 +510,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getHit());
+		enemy.setStrike(false);
 	}
 
 	//cout << "attack class" << endl;
