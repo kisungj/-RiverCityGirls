@@ -75,7 +75,7 @@ void itemManager::setItem(RECT rc)
 			_item->init(SILVER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
 			_vItems.push_back(_item);
 		}
-		//_itemCount++;
+		_itemCount++;
 	}
 }
 

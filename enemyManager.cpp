@@ -26,14 +26,18 @@ void enemyManager::update()
 	{
 		_vBoy[i]->update();
 		_vBoy[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
+
+		if (_vBoy[i]->getCondition() == CONDITION::DEAD) eraseBoy(i);
 	}
 
 	for (int i = 0; i < _vGirl.size(); i++)
 	{
 		_vGirl[i]->update();
 		_vGirl[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
-	}
 
+		if (_vGirl[i]->getCondition() == CONDITION::DEAD) eraseGirl(i);
+	}
+	
 	plEnCollision();
 }
 
@@ -86,11 +90,12 @@ void enemyManager::plEnCollision()
 
 	//==================================남자애==================================//
 	for (int i = 0; i < _vBoy.size(); ++i)
-	{
+	{		
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
-			(_player->getShadowY() - _vBoy[i]->getZ() < 10 && _vBoy[i]->getZ() - _player->getShadowY() < 10))
+			(_player->getShadowY() - _vBoy[i]->getZ() < 10 && _vBoy[i]->getZ() - _player->getShadowY() < 10) &&
+			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN"))
 		{
-			_player->playerDamage(2); 
+			_player->playerDamage(2);
 			_vBoy[i]->setAtk(0, 0, 0, 0);
 			_vBoy[i]->setStrike(true);
 
@@ -105,14 +110,15 @@ void enemyManager::plEnCollision()
 				_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
 				_player->setState(_player->getHitState());
 			}
-		}
+		}	
 	}
 
 	//==================================여자애==================================//
 	for (int i = 0; i < _vGirl.size(); ++i)
-	{
+	{		
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vGirl[i]->getAtk()) &&
-			(_player->getShadowY() - _vGirl[i]->getZ() < 10 && _vGirl[i]->getZ() - _player->getShadowY() < 10))
+			(_player->getShadowY() - _vGirl[i]->getZ() < 10 && _vGirl[i]->getZ() - _player->getShadowY() < 10) &&
+			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN"))
 		{
 			_player->playerDamage(2);
 			_vGirl[i]->setAtk(0, 0, 0, 0);
@@ -129,7 +135,7 @@ void enemyManager::plEnCollision()
 				_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
 				_player->setState(_player->getHitState());
 			}
-		}
+		}	
 	}
 }
 
