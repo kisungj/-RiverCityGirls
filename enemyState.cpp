@@ -484,21 +484,21 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		}
 	}
 
-	//==================무브 클래스로 이동==================//
+	//==================아이들 클래스로 이동==================//
 	if (!_isAttack)
 	{
 		_comboCount = 0;
 		if (enemyType == ENEMYTYPE::BOY)
 		{
-			enemy.setImage(IMAGEMANAGER->findImage("boy_walk"));
+			enemy.setImage(IMAGEMANAGER->findImage("boy_idle"));
 		}
 		if (enemyType == ENEMYTYPE::GIRL)
 		{
-			enemy.setImage(IMAGEMANAGER->findImage("girl_walk"));
+			enemy.setImage(IMAGEMANAGER->findImage("girl_idle"));
 		}
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
-		enemy.setState(enemy.getMove());
+		enemy.setState(enemy.getIdle());
 		_isStrike = false;
 	}
 

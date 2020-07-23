@@ -122,12 +122,12 @@ public:
 	void setZ(float z) { _z = z; }								//z축 움직이게 하기
 
 	void setStop(BOOL stop = FALSE) { _isStop = stop; }			//_isStop 세팅해주기
-	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기
+	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기			//플레이어한테 맞을 때 필요
 	void setLay(BOOL lay = FALSE) { _isLay = lay; }				//_isLay 세팅해주기
 
-	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기
+	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기			//플레이어한테 맞을 때(약공격 1, 강공격 3 이상)
 	void setLayCount(int count) { _layCount += count; }			//_layCount 올려주기
-	void setHP(int hp) { _maxHP -= hp; }						//_maxHP 깎기
+	void setHP(int hp) { _maxHP -= hp; }						//_maxHP 깎기				//플레이어한테 맞을 때 필요
 
 	void setFrameX(int x) { _currentX = x; }					//프레임X 변경해주기
 	void setFrameY(int y) { _currentY = y; }					//프레임y 변경해주기
@@ -137,8 +137,8 @@ public:
 
 
 public:
-	enemyState* getIdle() { return _idle; }
-	enemyState* getMove() { return _move; }						//상태 클래스 변경할 때 필요
+	enemyState* getIdle() { return _idle; }						//상태 클래스 변경할 때 필요
+	enemyState* getMove() { return _move; }
 	enemyState* getRun() { return _run; }
 	enemyState* getJump() { return _jump; }
 	enemyState* getAttack() { return _attack; }
