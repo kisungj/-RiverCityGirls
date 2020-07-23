@@ -1,8 +1,8 @@
 #pragma once
 #include "gameNode.h"
+
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-
-
+class player;
 enum STATEBOSS
 {
 	BOSS_LEFT_IDLE, BOSS_RIGHT_IDLE,          // 기본 상태                          
@@ -52,7 +52,7 @@ private:
 	MYPOINT    _attackPos;                                 // 공격 범위 위치
 	MYPOINT    _attackSize;                                // 공격 범위 사이즈
 	bool       _setActiveAttackRect;
-	//int        _attackCount;                               // 중첩으로 안들어오게 막아줌
+	//int        _attackCount;                             // 중첩으로 안들어오게 막아줌
 	int        _damege;
 	bool       _isCollision;
 	// ----------------- 스텟 관련 변수 -----------------//
@@ -60,8 +60,7 @@ private:
 	float      _applySpeed;
 	// ----------------- 스텟 관련 변수 -----------------//
 
-	// ----------------- 임시 -----------------------//
-	RECT _playerRect;
+	player* _player;
 
 public:
 	boss() {}
@@ -83,10 +82,13 @@ public:
 	void    changePattern(float playerX, float playerZ);            // 패턴 바꾸는용
 	void    death(float playerX, float playerZ);                     // 죽음 판정
 	void    hit(float playerX, float playerZ, int damege);          // 충돌 판정 --> 옮겨야함
-	void    collision();
+	void    toPlayerCollision();
 public:
 	STATEBOSS getState() { return _state; }
 	RECT*     getPointerRect() { return &_rc; }
 	RECT      getAttackRect() { return _attackRect; }
+public:
+	void      setPlayerMemoryAddressLink(player* player) { _player = player; }
+
 };
 
