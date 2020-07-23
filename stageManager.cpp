@@ -169,6 +169,8 @@ void stageManager::update()
 
 	collision();
 
+	_ui->setHpGauge(_player->getPlayerHp(), _player->getPlayerMaxHP());
+
 	//cout << ZORDERMANAGER->zOrderSize() << endl;
 
 }
