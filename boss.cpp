@@ -1589,7 +1589,7 @@ void boss::toPlayerCollision()
 
 				if (_state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR || _state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK || _state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP)
 				{
-					_player->playerDamage(2);
+					_player->playerDamage(30);
 					if (!_player->getDirectionX())
 					{
 						_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
@@ -1606,7 +1606,7 @@ void boss::toPlayerCollision()
 				}
 				else
 				{
-					_player->playerDamage(2);
+					_player->playerDamage(20);
 					if (!_player->getDirectionX())
 					{
 						_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));

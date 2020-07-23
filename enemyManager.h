@@ -18,8 +18,6 @@ private:
 	getVEnemy _vGirl;
 	getVIEnemy _viGirl;
 
-	bool _isCollision;							//충돌용
-	int _attackCount;							//충돌카운트
 public:
 	enemyManager() {}
 	~enemyManager() {}

@@ -38,24 +38,9 @@ void enemyManager::update()
 		if (_vGirl[i]->getCondition() == CONDITION::DEAD) eraseGirl(i);
 	}
 
-	if (!_isCollision)
-	{
-		boyPlCollision();
-		girlPlCollision();
-		cheerPlCollision();
-	}
-
-	/*if (_isCollision)
-	{
-		_attackCount++;
-		if (_attackCount > 19)
-		{
-			_attackCount = 0;
-			_isCollision = false;
-		}
-	}*/
-
-	cout << _isCollision << endl;
+	boyPlCollision();
+	girlPlCollision();
+	cheerPlCollision();
 }
 
 void enemyManager::release()
@@ -90,7 +75,7 @@ void enemyManager::setStage1()
 		enemy* girl;
 		girl = new enemyGirl;
 		girl->init(2000 + i * 100, (WINSIZEY / 2 + 200) + i * 200, ENEMYTYPE::GIRL);
-
+	
 		_vGirl.push_back(girl);
 	}
 }
@@ -108,7 +93,7 @@ void enemyManager::boyPlCollision()
 	for (int i = 0; i < _vBoy.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
-			(_player->getShadowY() - _vBoy[i]->getZ() < 10 && _vBoy[i]->getZ() - _player->getShadowY() < 10) &&
+			(_player->getShadowY() - _vBoy[i]->getZ() < 20 && _vBoy[i]->getZ() - _player->getShadowY() < 20) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
@@ -137,7 +122,22 @@ void enemyManager::boyPlCollision()
 
 			if (_player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_GUARD") && _player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
 			{
-				if (_vBoy[i]->getCondition() == CONDITION::STRONG) _player->setIsDown(true);
+				if (_vBoy[i]->getImage() == IMAGEMANAGER->findImage("boy_attack3") || _vBoy[i]->getImage() == IMAGEMANAGER->findImage("boy_sidekick"))
+				{
+					if (!_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+						_player->setState(_player->getDownState());
+						_player->setIsDown(true);
+					}
+
+					if (_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+						_player->setState(_player->getDownState());
+						_player->setIsDown(true);
+					}
+				}
 
 				if (!_player->getDirectionX())
 				{
@@ -151,7 +151,6 @@ void enemyManager::boyPlCollision()
 					_player->setState(_player->getHitState());
 				}
 			}
-			_isCollision = true;
 		}
 	}
 }
@@ -164,7 +163,7 @@ void enemyManager::girlPlCollision()
 	for (int i = 0; i < _vGirl.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vGirl[i]->getAtk()) &&
-			(_player->getShadowY() - _vGirl[i]->getZ() < 10 && _vGirl[i]->getZ() - _player->getShadowY() < 10) &&
+			(_player->getShadowY() - _vGirl[i]->getZ() < 20 && _vGirl[i]->getZ() - _player->getShadowY() < 20) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
@@ -192,7 +191,22 @@ void enemyManager::girlPlCollision()
 
 			if (_player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_GUARD") && _player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
 			{
-				if (_vGirl[i]->getCondition() == CONDITION::STRONG) _player->setIsDown(true);
+				if (_vGirl[i]->getImage() == IMAGEMANAGER->findImage("boy_attack3"))
+				{
+					if (!_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+						_player->setState(_player->getDownState());
+						_player->setIsDown(true);
+					}
+
+					if (_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+						_player->setState(_player->getDownState());
+						_player->setIsDown(true);
+					}
+				}
 
 				if (!_player->getDirectionX())
 				{
@@ -206,7 +220,6 @@ void enemyManager::girlPlCollision()
 					_player->setState(_player->getHitState());
 				}
 			}
-			_isCollision = true;
 		}
 	}
 }

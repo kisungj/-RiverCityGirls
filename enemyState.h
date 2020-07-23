@@ -42,6 +42,7 @@ class enemyIdleState : public enemyState
 {
 private:
 	int _searchCount;
+	int _delayCount;
 	bool _isDiscover;
 public:
 	enemyIdleState() { _searchCount = 0; _isDiscover = false; }
@@ -87,6 +88,7 @@ public:
 class enemyAttackState : public enemyState
 {
 private:
+	int  _collisionCount;
 	RECT _attack;
 	int _comboCount;
 	int _strikeCount;
@@ -132,6 +134,9 @@ public:
 
 class enemyDeadState : public enemyState
 {
+private:
+	int _deadCount;
 public:
+	enemyDeadState() { _deadCount = 0; }
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

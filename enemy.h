@@ -6,7 +6,7 @@ enum class CONDITION
 {
 	SEARCH,			//플레이어와 멀 때
 	CLOSE,			//플레이어와 가까울 때
-	STRONG,			//강공격
+	GREEN,			//초록바닥
 	DEAD			//주금
 };
 
@@ -129,6 +129,7 @@ public:
 	void setStop(BOOL stop = FALSE) { _isStop = stop; }			//_isStop 세팅해주기
 	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기			//플레이어한테 맞을 때 필요
 	void setLay(BOOL lay = FALSE) { _isLay = lay; }				//_isLay 세팅해주기
+	void setJump(BOOL jump = FALSE) { _isJump = jump; }			//_isJump 세팅해주기
 	void setStrike(BOOL st = FALSE) { _isStrike = st; }			//_isStrike 세팅해주기
 
 	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기			//플레이어한테 맞을 때(약공격 1, 강공격 3 이상)
@@ -138,7 +139,7 @@ public:
 	void setFrameX(int x) { _currentX = x; }					//프레임X 변경해주기
 	void setFrameY(int y) { _currentY = y; }					//프레임y 변경해주기
 
-	void setJump(float power) { _jumpPower -= power; }			//점프파워 정해주기
+	void setJumpPower(float power) { _jumpPower -= power; }		//점프파워 정해주기
 	void setGravity(float g) { _gravity = g; }					//그래비티 정해주기
 
 

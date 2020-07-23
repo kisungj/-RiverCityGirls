@@ -66,8 +66,8 @@ void enemy::update()
 	{
 		_jumpPower = 7.f;
 		_gravity = 0.2f;
-		/*_y -= _jumpPower;
-		_jumpPower -= _gravity;*/
+		_y -= _jumpPower;
+		_jumpPower -= _gravity;
 	}
 
 	if (!_isJump)
@@ -89,8 +89,6 @@ void enemy::update()
 	//CAMERAMANAGER->setY(_y);
 
 	draw();
-	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z, 200);
-	ZORDERMANAGER->addFrameRender(getMemDC(), renderType::FRAME_RENDER, _image, _x, _y, _z, _currentX, _currentY);
 }
 
 void enemy::render()
@@ -98,8 +96,10 @@ void enemy::render()
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
-	//CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	//CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
+	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z - 1, 200);
+	ZORDERMANAGER->addFrameRender(getMemDC(), renderType::FRAME_RENDER, _image, _x, _y, _z, _currentX, _currentY);
 }
 
 void enemy::directionCheck(RECT rc, float x, float y)
@@ -109,19 +109,19 @@ void enemy::directionCheck(RECT rc, float x, float y)
 	_playerY = y;
 
 	//规氢 眉农
-	if (x > _x)
+	if (x > _x && _currentX >= _image->getMaxFrameX())
 	{
 		_right = true;
 	}
 
-	if (x < _x)
+	if (x < _x && _currentX <= 0)
 	{
 		_right = false;
 	}
 
 	//芭府 眉农
-	if (getDistance(x, y, _x, _z) < 200 && _maxHP > 0) _condition = CONDITION::CLOSE;
-	if (getDistance(x, y, _x, _z) > 200 && _maxHP > 0) _condition = CONDITION::SEARCH;
+	if (getDistance(x, y, _x, _z) < 200 && _condition != CONDITION::GREEN && _maxHP > 0) _condition = CONDITION::CLOSE;
+	if (getDistance(x, y, _x, _z) > 200 && _condition != CONDITION::GREEN && _maxHP > 0) _condition = CONDITION::SEARCH;
 }
 
 void enemy::draw()
@@ -158,7 +158,6 @@ void enemy::pixelCollision()
 	int _probeB = _shadow.bottom;
 	int _probeL = _shadow.left;
 	int _probeR = _shadow.right;
-
 	//int _probeV = _shadow.bottom;
 	//int _probeH = (_shadow.left + _shadow.right) / 2;
 	//_playerX = _shadowX;
@@ -181,6 +180,7 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
+			_condition = CONDITION::GREEN;
 			_pixel = PIXEL::TOP;
 		}
 
@@ -207,6 +207,7 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
+			_condition = CONDITION::GREEN;
 			_pixel = PIXEL::BOTTOM;
 		}
 
@@ -232,6 +233,7 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
+			_condition = CONDITION::GREEN;
 			_pixel = PIXEL::LEFT;
 		}
 
@@ -262,6 +264,7 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
+			_condition = CONDITION::GREEN;
 			_pixel = PIXEL::RIGHT;
 		}
 
