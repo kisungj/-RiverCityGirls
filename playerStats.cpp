@@ -173,11 +173,12 @@ void idleState::update(player & player)
 		}
 	}
 
-	player.mouseCol();
+	//player.mouseCol();
 }
 
 void walkState::update(player & player)
 {
+
 	player.setRunCount(player.getRunCount() + 1);
 	//왼쪽
 	if (!player.getDirectionX())
@@ -296,7 +297,9 @@ void walkState::update(player & player)
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
-			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+			
+		player.setRunCount(0);
+		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 			{
 				if (player.getDirectionX())
 				{
@@ -323,6 +326,9 @@ void walkState::update(player & player)
 		//아래
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
+		
+			player.setRunCount(0);
+
 			if (KEYMANAGER->isOnceKeyDown(VK_UP))
 			{
 				if (!player.getDirectionX())
@@ -348,17 +354,20 @@ void walkState::update(player & player)
 	//위
 	if (KEYMANAGER->isOnceKeyUp(VK_UP))
 	{
+
+		player.setRunCount(0);
+		
 		if (KEYMANAGER->getKeyUp() == NULL)
 		{
 			player.setDirectionY(true);
 			if (!player.getDirectionX())
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 				player.setState(player.getIdleState());
 			}
 			if (player.getDirectionX())
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 				player.setState(player.getIdleState());
 			}
 		}
@@ -379,17 +388,20 @@ void walkState::update(player & player)
 	//아래
 	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
 	{
+
+		player.setRunCount(0);
+		
 		if (KEYMANAGER->getKeyUp() == NULL)
 		{
 			player.setDirectionY(false);
 			if (!player.getDirectionX())
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 				player.setState(player.getIdleState());
 			}
 			if (player.getDirectionX())
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 				player.setState(player.getIdleState());
 			}
 		}
@@ -506,7 +518,7 @@ void walkState::update(player & player)
 		}
 	}
 
-	player.mouseCol();
+	//player.mouseCol();
 }
 
 
@@ -823,8 +835,11 @@ void runState::update(player & player)
 			player.setState(player.getAttackState());
 		}
 	}
-
-	player.mouseCol();
+	if (player.getRunCount() > 6)
+	{
+		player.setRunCount(0);
+	}
+	//player.mouseCol();
 }
 
 
@@ -1041,8 +1056,11 @@ void jumpState::update(player & player)
 		}
 	}
 
-	
-	player.mouseCol();
+	if (player.getRunCount() > 6)
+	{
+		player.setRunCount(0);
+	}
+	//player.mouseCol();
 }
 
 HRESULT attackState::init()
@@ -1203,7 +1221,11 @@ void attackState::update(player & player)
 			}
 		}
 	}
-	player.mouseCol();
+	if (player.getRunCount() > 6)
+	{
+		player.setRunCount(0);
+	}
+	//player.mouseCol();
 } 
 
 HRESULT hitState::init()
@@ -1219,35 +1241,34 @@ void hitState::update(player & player)
 {
 	_hitCount++;
 
-	//맞기
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 
-		if (PtInRect(&player.getPlayerRect(), _ptMouse))
-		{
-			_isHit = true;
-			if (!player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				_hitCount = 0;
-			}
-			if (player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				_hitCount = 0;
-			}
-		}
-	}
-	//player.mouseCol();
+	//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
+	//	{
+	//		_isHit = true;
+	//		if (!player.getDirectionX())
+	//		{
+	//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+	//			_hitCount = 0;
+	//		}
+	//		if (player.getDirectionX())
+	//		{
+	//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+	//			_hitCount = 0;
+	//		}
+	//	}
+	//}
+	////player.mouseCol();
 
-	if (_isHit)
-	{
-		_hitNum++;
-		_isHit = false;
-	}
+	//if (_isHit)
+	//{
+	//	_hitNum++;
+	//	_isHit = false;
+	//}
 
-	if (_hitNum > 3)
-	{
+	//if (_hitNum > 3)
+	//{
 		//cout << "d" << endl;
 		if (!player.getDirectionX())
 		{
@@ -1290,20 +1311,43 @@ void hitState::update(player & player)
 	{
 		if (!player.getDirectionX())
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
-			player.setState(player.getOverState());
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+			player.setState(player.getDownState());
 			player.setDirectionX(false);
 			_hitCount = 0;
 			_hitNum = 0;
 		}
 		if (player.getDirectionX())
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
-			player.setState(player.getOverState());
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+			player.setState(player.getDownState());
 			player.setDirectionX(true);
 			_hitCount = 0;
 			_hitNum = 0;
 		}
+		if (!KEYANIMANAGER->findAnimation("P_LEFT_DOWN")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_DOWN")->isPlay())
+		{
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
+				player.setState(player.getOverState());
+				player.setDirectionX(false);
+				_hitCount = 0;
+				_hitNum = 0;
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
+				player.setState(player.getOverState());
+				player.setDirectionX(true);
+				_hitCount = 0;
+				_hitNum = 0;
+			}
+		}
+	}
+	if (player.getRunCount() > 6)
+	{
+		player.setRunCount(0);
 	}
 }
 
@@ -1379,6 +1423,10 @@ void downState::update(player & player)
 			}
 		}
 	}
+	if (player.getRunCount() > 6)
+	{
+		player.setRunCount(0);
+	}
 }
 
 void startState::update(player & player)
@@ -1413,6 +1461,10 @@ void startState::update(player & player)
 			player.setDirectionX(true);
 		
 		}
+	}
+	if (player.getRunCount() > 6)
+	{
+		player.setRunCount(0);
 	}
 }
 void guardState::update(player & player)
@@ -1467,6 +1519,10 @@ void guardState::update(player & player)
 			}
 		}
 	}
+	if (player.getRunCount() > 6)
+	{
+		player.setRunCount(0);
+	}
 }
 
 void overState::update(player & player)
@@ -1489,6 +1545,10 @@ void overState::update(player & player)
 			player.setDirectionX(true);
 			player.setPlayerHP(100);
 		}
+	}
+	if (player.getRunCount() > 6)
+	{
+		player.setRunCount(0);
 	}
 }
 
