@@ -78,6 +78,8 @@ public:
 
 class enemyJumpState : public enemyState
 {
+private:
+	float _angle;
 public:
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

@@ -97,6 +97,9 @@ public:
 
 	int getFrameX() { return _currentX; }						//프레임X 가져가기
 	int getFrameY() { return _currentY; }						//프레임Y 가져가기
+
+	float getJumpPower() { return _jumpPower; }					//점프파워 가져가기
+	float getGravity() { return _gravity; }						//그라비티 가져가기
 	
 
 public:

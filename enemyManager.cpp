@@ -25,13 +25,13 @@ void enemyManager::update()
 	for (int i = 0; i < _vBoy.size(); i++)
 	{
 		_vBoy[i]->update();
-		_vBoy[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getPlayerY());
+		_vBoy[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
 	}
 
 	for (int i = 0; i < _vGirl.size(); i++)
 	{
 		_vGirl[i]->update();
-		_vGirl[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getPlayerY());
+		_vGirl[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
 	}
 }
 
@@ -74,6 +74,15 @@ void enemyManager::setBoy()
 
 void enemyManager::setGirl()
 {
+
+	for (int i = 0; i < 2; ++i)
+	{
+		enemy* girl;
+		girl = new enemyGirl;
+		girl->init(2000 + i * 100, (WINSIZEY / 2 + 200) + i * 200, ENEMYTYPE::GIRL);
+
+		_vGirl.push_back(girl);
+	}
 }
 
 void enemyManager::setCheer()
