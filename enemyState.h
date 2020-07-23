@@ -89,11 +89,10 @@ class enemyAttackState : public enemyState
 private:
 	RECT _attack;
 	int _comboCount;
-	int _attackCount;
+	int _strikeCount;
 	bool _isAttack;
-	bool _isStrike;
 public:
-	enemyAttackState() { _comboCount = 0; _attackCount = 0; _isAttack = false; _isStrike = false; }
+	enemyAttackState() { _comboCount = 0; _strikeCount = 0; _isAttack = false; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

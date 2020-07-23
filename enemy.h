@@ -139,7 +139,7 @@ public:
 	void setFrameX(int x) { _currentX = x; }					//프레임X 변경해주기
 	void setFrameY(int y) { _currentY = y; }					//프레임y 변경해주기
 
-	void setJump(float power) { _jumpPower = power; }			//점프파워 정해주기
+	void setJump(float power) { _jumpPower -= power; }			//점프파워 정해주기
 	void setGravity(float g) { _gravity = g; }					//그래비티 정해주기
 
 
