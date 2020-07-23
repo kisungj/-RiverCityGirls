@@ -191,6 +191,7 @@ void stageManager::collision()
 		{
 			_obstacleManager->getVObstacle()[i]->collision();
 			_itemManager->setItem(_obstacleManager->getVObstacle()[i]->getObsRc());
+			_player->setAttack(0, 0, 0, 0);
 		}
 
 		//기둥과 충돌할때

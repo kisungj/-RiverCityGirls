@@ -29,12 +29,12 @@ HRESULT obstacle::init(OBSTACLESTATE obstacleState, POINT position)
 
 	case PILLARLEFT:
 		_obstacleImg = IMAGEMANAGER->findImage("±âµÕÁÂ");
-		_PillarRc = RectMakeCenter(_x, _y, _obstacleImg->getWidth(), _obstacleImg->getHeight());
+		_PillarRc = RectMakeCenter(_x, _y - 317, _obstacleImg->getWidth(), _obstacleImg->getHeight());
 		break;
 
 	case PILLARRIGHT:
 		_obstacleImg = IMAGEMANAGER->findImage("±âµÕ¿ì");
-		_PillarRc = RectMakeCenter(_x, _y, _obstacleImg->getWidth(), _obstacleImg->getHeight());
+		_PillarRc = RectMakeCenter(_x, _y - 317, _obstacleImg->getWidth(), _obstacleImg->getHeight());
 		break;
 	}
 
@@ -76,10 +76,10 @@ void obstacle::update()
 	//Ã¥»ó
 	if (_obstacleState == DESK)
 	{
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 515, 705 , 705);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 810, 705, 705);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1125, 705, 705);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1435, 705, 705);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 515, 705, 750);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 810, 705, 750);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1125, 705, 750);
+		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1435, 705, 750);
 		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 310, 940 , 940);
 		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 610, 940, 940);
 		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 920, 940 , 940);
@@ -89,13 +89,13 @@ void obstacle::update()
 	//±âµÕ ÁÂ
 	if (_obstacleState == PILLARLEFT)
 	{
-		ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2, _PillarRc.bottom, _pillarAlpha);
+		ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.bottom + _PillarRc.top) / 2 + 317, _PillarRc.bottom + 200, _pillarAlpha);
 	}
 
 	//±âµÕ ¿ì
 	if (_obstacleState == PILLARRIGHT)
 	{
-		ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2,  _PillarRc.bottom, _pillarAlpha);
+		ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2 + 317,  _PillarRc.bottom + 210, _pillarAlpha);
 	}
 
 }
