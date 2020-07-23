@@ -1240,58 +1240,29 @@ HRESULT hitState::init()
 void hitState::update(player & player)
 {
 	_hitCount++;
-
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	
+	if (player.getIsDown())
 	{
-
-		//	if (PtInRect(&player.getPlayerRect(), _ptMouse))
-		//	{
-		//		_isHit = true;
-		//		if (!player.getDirectionX())
-		//		{
-		//			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-		//			_hitCount = 0;
-		//		}
-		//		if (player.getDirectionX())
-		//		{
-		//			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-		//			_hitCount = 0;
-		//		}
-		//	}
-		//}
-		////player.mouseCol();
-
-		//if (_isHit)
-		//{
-		//	_hitNum++;
-		//	_isHit = false;
-		//}
-
-		//if (_hitNum > 3)
-		//{
-		
-		if (player.getIsDown())
+		if (!player.getDirectionX())
 		{
-			if (!player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
-				player.setState(player.getDownState());
-				player.setDirectionX(false);
-				_hitCount = 0;
-				_hitNum = 0;
-			}
-			if (player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
-				player.setState(player.getDownState());
-				player.setDirectionX(true);
-				_hitCount = 0;
-				_hitNum = 0;
-			}
-			player.setIsDown(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+			player.setState(player.getDownState());
+			player.setDirectionX(false);
+			_hitCount = 0;
+			_hitNum = 0;
 		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+			player.setState(player.getDownState());
+			player.setDirectionX(true);
+			_hitCount = 0;
+			_hitNum = 0;
+		}
+		player.setIsDown(false);
 	}
-	//cout << _hitNum << endl;
+	
+	
 	if (_hitCount > 40)
 	{
 		if (!player.getDirectionX())
@@ -1320,6 +1291,7 @@ void hitState::update(player & player)
 			player.setDirectionX(false);
 			_hitCount = 0;
 			_hitNum = 0;
+			player.setGameOver(true);
 		}
 		if (player.getDirectionX())
 		{
@@ -1328,25 +1300,7 @@ void hitState::update(player & player)
 			player.setDirectionX(true);
 			_hitCount = 0;
 			_hitNum = 0;
-		}
-		if (!KEYANIMANAGER->findAnimation("P_LEFT_DOWN")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_DOWN")->isPlay())
-		{
-			if (!player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
-				player.setState(player.getOverState());
-				player.setDirectionX(false);
-				_hitCount = 0;
-				_hitNum = 0;
-			}
-			if (player.getDirectionX())
-			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
-				player.setState(player.getOverState());
-				player.setDirectionX(true);
-				_hitCount = 0;
-				_hitNum = 0;
-			}
+			player.setGameOver(false);
 		}
 	}
 	if (player.getRunCount() > 6)
@@ -1364,12 +1318,32 @@ HRESULT downState::init()
 void downState::update(player & player)
 {
 	_downCount++;
+
 	//cout << _downCount << endl;
 	if (player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_DOWN") || player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"))
 	{
 		if (!KEYANIMANAGER->findAnimation("P_RIGHT_DOWN")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_DOWN")->isPlay())
 		{
-			if (_downCount > 180)
+			if (player.getPlayerHp() <= 0)
+			{
+				
+				if (!player.getDirectionX())
+				{
+					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
+					//player.setState(player.getStartState());
+					player.setDirectionX(false);
+					//player.setGameOver(true);
+				}
+				if (player.getDirectionX())
+				{
+					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
+					//player.setState(player.getStartState());
+					player.setDirectionX(true);
+					//player.setGameOver(false);
+				}
+			
+			}
+			else if (_downCount > 180)
 			{
 				if (!player.getDirectionX())
 				{
@@ -1382,7 +1356,9 @@ void downState::update(player & player)
 					player.setDirectionX(true);
 				}
 			}
+
 		}
+		
 	}
 	if (player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") || player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP"))
 	{

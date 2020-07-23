@@ -169,6 +169,8 @@ void stageManager::update()
 
 	collision();
 
+	_ui->setHpGauge(_player->getPlayerHp(), _player->getPlayerMaxHP());
+
 	//cout << ZORDERMANAGER->zOrderSize() << endl;
 
 }
@@ -195,6 +197,12 @@ void stageManager::collision()
 			_player->setAttack(0, 0, 0, 0);
 		}
 
+		//자판기하고 플레이어 충돌
+		if (IntersectRect(&temp, &_player->getPlayerRect(), &_obstacleManager->getVObstacle()[i]->getObsRc()))
+		{
+
+		}
+
 		//기둥과 충돌할때
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_obstacleManager->getVObstacle()[i]->getPillarRc()))
 		{
@@ -203,6 +211,15 @@ void stageManager::collision()
 		else
 		{
 			_obstacleManager->getVObstacle()[i]->setAlphaValue(false);
+		}
+	}
+
+	//에너미 죽을때 아이템 떨어지게?
+	for (int i = 0; i < _enemyManager->getVBoy().size(); i++)
+	{
+		if (_enemyManager->getVBoy()[i]->getCondition() == CONDITION::DEAD)
+		{
+			_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
 		}
 	}
 

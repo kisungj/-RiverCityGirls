@@ -7,7 +7,7 @@ private:
 	class itemManager*     _itemManager;
 	class enemyManager*    _enemyManager;
 	class player*          _player;
-	RECT				   _doorRc;
+	RECT				   _doorRc;				//æ¿¿Ãµø ∑∫∆Æ
 
 public:
 	stage1() {}
@@ -19,6 +19,6 @@ public:
 	virtual void update();
 	virtual void release();
 public:
-
+	RECT getStage1Door() { return _doorRc; }	//æ¿¿Ãµø ∑∫∆Æ ≥—∞‹¡‹
 };
 

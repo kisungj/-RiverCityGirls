@@ -138,7 +138,6 @@ void zOrderManager::zOrderRender()
 			break;
 		}
 
-		cout << _vZorder[i].z << endl;
 	}
 
 	//cout << _vZorder.capacity() << endl;
