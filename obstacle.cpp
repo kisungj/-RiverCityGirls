@@ -44,6 +44,8 @@ HRESULT obstacle::init(OBSTACLESTATE obstacleState, POINT position)
 		_obstacleImg->setFrameX(1);
 	}
 
+
+
 	//처음 알파상태 false
 	_alpha = false;
 
@@ -56,7 +58,20 @@ void obstacle::release()
 
 void obstacle::update()
 {
-
+	//기둥 좌 우
+	if (_obstacleState == PILLARLEFT || _obstacleState == PILLARRIGHT)
+	{
+		//기둥과 충돌했을때
+		if (_alpha)
+		{
+			_pillarAlpha = 122;
+		}
+		//아닐때
+		else
+		{
+			_pillarAlpha = 255;
+		}
+	}
 }
 
 void obstacle::render()
@@ -84,31 +99,13 @@ void obstacle::render()
 	//기둥왼쪽
 	if (_obstacleState == PILLARLEFT)
 	{
-		//충돌됬을때 기둥 알파처리
-		if (_alpha)
-		{
-			CAMERAMANAGER->alphaRender(getMemDC(), _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2, 122);
-		}
-		//범위 벗어나면 다시 원상태로
-		else
-		{
-			CAMERAMANAGER->render(getMemDC(), _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2);
-		}
+		CAMERAMANAGER->alphaRender(getMemDC(), _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2, _pillarAlpha);
 	}
 
 	//기둥 오른쪽
 	if (_obstacleState == PILLARRIGHT)
 	{
-		//충돌됬을때 기둥 알파처리
-		if (_alpha)
-		{
-			CAMERAMANAGER->alphaRender(getMemDC(), _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2, 122);
-		}
-		//범위 벗어나면 다시 원상태로
-		else
-		{
-			CAMERAMANAGER->render(getMemDC(), _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2);
-		}
+		CAMERAMANAGER->alphaRender(getMemDC(), _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2, _pillarAlpha);
 	}
 
 	if (KEYMANAGER->isToggleKey('V'))
@@ -116,8 +113,6 @@ void obstacle::render()
 		CAMERAMANAGER->renderRectangle(getMemDC(), _obstacleRc);
 		CAMERAMANAGER->renderRectangle(getMemDC(), _PillarRc);
 	}
-
-	
 }
 
 //기둥과 충돌했을때
