@@ -84,16 +84,21 @@ void stageManager::render()
 
 	_player->render();
 
+	ZORDERMANAGER->zOrderRender();
+
+	EFFECTMANAGER->render();
+
 	if(_curStageName != "TITLE_SCENE")
 		_ui->render();
 
-	ZORDERMANAGER->zOrderRender();
-	
+
 	//ZORDERMANAGER->zOrderClear();
 }
 
 void stageManager::update()
 {
+
+	EFFECTMANAGER->update();
 	SCENEMANAGER->update();
 	if (_curStageName == "STAGEBOSS_SCENE")
 	{
@@ -114,6 +119,11 @@ void stageManager::update()
 		_itemManager->update();
 		_obstacleManager->update();
 		_enemyManager->update();
+
+		if (_curStageName == "STAGEBOSS_SCENE")
+		{
+			_boss->update(_player->getPlayerX(), _player->getPlayerY());
+		}
 
 	}
 	// ================================================================

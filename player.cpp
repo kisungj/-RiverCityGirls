@@ -527,7 +527,6 @@ void player::enemyCol()
 	RECT temp;
 	if (_state == _attack || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay())
 	{
-
 		for (int i = 0; i < _enemy->getVBoy().size(); ++i)
 		{
 			if (_enemy->getVBoy()[i]->getLay())
@@ -546,6 +545,7 @@ void player::enemyCol()
 			{
 				if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
 				{
+					EFFECTMANAGER->play("e_hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
 					_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 					_enemy->getVBoy()[i]->setOuch(true);
 					_enemy->getVBoy()[i]->setHitCount(1);
@@ -598,6 +598,8 @@ void player::bossCol()
 		{*/
 		if (IntersectRect(&temp, &_attackRc, _boss->getPointerRect()))
 		{
+
+			EFFECTMANAGER->play("e_hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
 			_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 			_boss->hit(_playerX, _shadowY, 10);
 			//_attackRect = false;

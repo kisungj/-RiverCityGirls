@@ -5,13 +5,13 @@ HRESULT boss::init()
 {
 	loadAnimation();
 	_hp = _maxHp = 200;
-
+	_phaseCount = 100;
 	_jumpAlphaMax = _jumpAlpha = 200;
 	_jumpAlphaMin = 70;
 
 	_blockDistance = 5;
 	_blockFriction = 0.01f;
-	_x = WINSIZEX / 2 + 800;
+	_x = WINSIZEX / 2 + 500;
 	_z = WINSIZEY / 2 + 180;
 	_y = _z - 180;
 	_jumpPower = 30;
@@ -40,6 +40,8 @@ void boss::render()
 
 	// ================================ 임시 ================================ //
 
+	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z - 1, _jumpAlpha);
+	ZORDERMANAGER->addAniRender(getMemDC(), renderType::ANI_RENDER, _characterImg, _x, _y, _z, _animPlayer);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _attackRect);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _playerRect);
@@ -62,8 +64,6 @@ void boss::update(float playerX, float playerZ)
 	pixelCollision();
 	_rc = RectMakeCenter(_x, _y, 100, 250);
 
-	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z, _jumpAlpha);
-	ZORDERMANAGER->addAniRender(getMemDC(), renderType::ANI_RENDER, _characterImg, _x, _y, _z, _animPlayer);
 }
 
 void boss::loadAnimation()
@@ -946,6 +946,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 				_attackPos.x = _x + 100;
 			}
 
+
 			_attackPos.y = _y;
 			_attackSize.x = 200;
 			_attackSize.y = 100;
@@ -1396,7 +1397,6 @@ void boss::elbowAttack(float playerX, float playerZ)
 
 void boss::changePattern(float playerX, float playerZ)
 {
-
 	// 자동으로 다른 스테이트로 실행되는것들 리턴 시키기
 	if (_state == BOSS_LEFT_BLOCK || _state == BOSS_RIGHT_BLOCK) return;
 	if (_state == BOSS_LEFT_TAUNT || _state == BOSS_RIGHT_TAUNT || _state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR) return;
@@ -1404,10 +1404,15 @@ void boss::changePattern(float playerX, float playerZ)
 	if (_state == BOSS_LEFT_HIT1 || _state == BOSS_LEFT_HIT2 || _state == BOSS_LEFT_HIT3 || _state == BOSS_LEFT_HIT_GETUP ||
 		_state == BOSS_RIGHT_HIT1 || _state == BOSS_RIGHT_HIT2 || _state == BOSS_RIGHT_HIT3 || _state == BOSS_RIGHT_HIT_GETUP) return;
 
+	if (_hp <= 100)
+	{
+		_phaseCount = 35;
+	}
+	
 	if (_isDelayTime) // 딜레이 타임 인 경우.
 	{
 		_delayTime++;
-		if (_delayTime % 100 == 0)
+		if (_delayTime % _phaseCount == 0)
 		{
 			_delayTime = 0;
 			_patternNumber = RND->getInt(5);
@@ -1676,8 +1681,3 @@ void boss::pixelCollision()
 		_isPixelCollision = true;
 
 }
-
-
-
-
-
