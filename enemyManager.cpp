@@ -25,14 +25,16 @@ void enemyManager::update()
 	for (int i = 0; i < _vBoy.size(); i++)
 	{
 		_vBoy[i]->update();
-		_vBoy[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getPlayerY());
+		_vBoy[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
 	}
 
 	for (int i = 0; i < _vGirl.size(); i++)
 	{
 		_vGirl[i]->update();
-		_vGirl[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getPlayerY());
+		_vGirl[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
 	}
+
+	plEnCollision();
 }
 
 void enemyManager::release()
@@ -51,7 +53,7 @@ void enemyManager::release()
 	_vGirl.clear();
 }
 
-void enemyManager::setBoy()
+void enemyManager::setStage1()
 {
 	for (int i = 0; i < 1; ++i)
 	{
@@ -72,12 +74,59 @@ void enemyManager::setBoy()
 	}
 }
 
-void enemyManager::setGirl()
+void enemyManager::setStage2()
 {
+
 }
 
-void enemyManager::setCheer()
+//==================================플레이어가 맞을 때==================================//
+void enemyManager::plEnCollision()
 {
+	RECT temp;
+
+	//==================================남자애==================================//
+	for (int i = 0; i < _vBoy.size(); ++i)
+	{
+		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
+			(_player->getShadowY() - _vBoy[i]->getZ() < 10 && _vBoy[i]->getZ() - _player->getShadowY() < 10))
+		{
+			_player->playerDamage(2);
+
+			if (!_player->getDirectionX())
+			{
+				_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				_player->setState(_player->getHitState());
+			}
+
+			if (_player->getDirectionX())
+			{
+				_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				_player->setState(_player->getHitState());
+			}
+		}
+	}
+
+	//==================================여자애==================================//
+	for (int i = 0; i < _vGirl.size(); ++i)
+	{
+		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vGirl[i]->getAtk()) &&
+			(_player->getShadowY() - _vGirl[i]->getZ() < 10 && _vGirl[i]->getZ() - _player->getShadowY() < 10))
+		{
+			_player->playerDamage(2);
+
+			if (!_player->getDirectionX())
+			{
+				_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				_player->setState(_player->getHitState());
+			}
+
+			if (_player->getDirectionX())
+			{
+				_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				_player->setState(_player->getHitState());
+			}
+		}
+	}
 }
 
 void enemyManager::eraseBoy(int arrNum)
@@ -92,5 +141,6 @@ void enemyManager::eraseGirl(int arrNum)
 
 void enemyManager::eraseCheer(int arrNum)
 {
+
 }
 

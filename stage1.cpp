@@ -16,7 +16,7 @@ HRESULT stage1::init(obstacleManager * obstacleManager, itemManager* itemManager
 	_itemManager->init();
 	//---- 임시
 	_obstacleManager->setObstacle(DESK);
-	_enemyManager->setBoy();
+	_enemyManager->setStage1();
 	//---- 임시
 
 

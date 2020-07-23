@@ -6,7 +6,7 @@ HRESULT testEnemyScene::init()
 
 	_em = new enemyManager;
 	_em->init();
-	_em->setBoy();
+	//_em->setBoy();
 
 	_x = WINSIZEX / 2;
 	_y = WINSIZEY / 2;

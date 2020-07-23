@@ -59,6 +59,7 @@ public:
 	virtual void update();
 	virtual void release();
 public:
+	void collision();
 
 };
 

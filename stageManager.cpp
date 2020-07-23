@@ -156,6 +156,8 @@ void stageManager::update()
 		_stageBoss->init(_player, _boss);
 		//_curStageName = "STAGEBOSS_SCENE";
 	}
+
+	collision();
 }
 
 void stageManager::release()
@@ -163,4 +165,68 @@ void stageManager::release()
 	_player->release();
 
 	SCENEMANAGER->release();
+}
+
+void stageManager::collision()
+{
+	//플레이어와 오브젝트 충돌
+	for (int i = 0; i < _obstacleManager->getVObstacle().size(); i++)
+	{
+		RECT temp;
+
+		//자판기 때릴때
+		if (IntersectRect(&temp, &_player->getAttackRect(), &_obstacleManager->getVObstacle()[i]->getObsRc()))
+		{
+			_obstacleManager->getVObstacle()[i]->collision();
+			_itemManager->setItem(_obstacleManager->getVObstacle()[i]->getObsRc());
+		}
+
+		//기둥과 충돌할때
+		if (IntersectRect(&temp, &_player->getPlayerRect(), &_obstacleManager->getVObstacle()[i]->getPillarRc()))
+		{
+			_obstacleManager->getVObstacle()[i]->setAlphaValue(true);
+		}
+		else
+		{
+			_obstacleManager->getVObstacle()[i]->setAlphaValue(false);
+		}
+	}
+
+	//플레이어와 아이템 충돌
+	for (int i = 0; i < _itemManager->getVItem().size(); i++)
+	{
+		int rndGold = RND->getFromIntTo(51, 100);
+		int rndSilver = RND->getFromIntTo(1, 50);
+
+		RECT temp;
+
+		if (IntersectRect(&temp, &_player->getPlayerRect(), &_itemManager->getVItem()[i]->getItemRc()))
+		{
+			//HP물약 충돌
+			if (_itemManager->getVItem()[i]->getitemstate() == HP)
+			{
+				_inventory->setInventory(_itemManager->getVItem()[i]);
+			}
+
+			//POWER물약 충돌
+			if (_itemManager->getVItem()[i]->getitemstate() == POWER)
+			{
+				_inventory->setInventory(_itemManager->getVItem()[i]);
+			}
+
+			//금동전 충돌
+			if (_itemManager->getVItem()[i]->getitemstate() == GOLD)
+			{
+				_player->setMoney(rndGold);
+			}
+
+			//은동전 충돌
+			if (_itemManager->getVItem()[i]->getitemstate() == SILVER)
+			{
+				_player->setMoney(rndSilver);
+			}
+
+			_itemManager->removeItem(i);
+		}
+	}
 }
