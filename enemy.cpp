@@ -82,7 +82,6 @@ void enemy::update()
 	_state->update(*this, _playerRC, _playerX, _playerY, _et);
 
 	if (_isLay) _layCount++;
-	if (_maxHP <= 0) _condition = CONDITION::DEAD;
 
 	pixelCollision();
 
