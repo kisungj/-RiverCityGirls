@@ -51,11 +51,13 @@ private:
 	RECT       _attackRect;                                // 공격 범위
 	MYPOINT    _attackPos;                                 // 공격 범위 위치
 	MYPOINT    _attackSize;                                // 공격 범위 사이즈
-	bool       _setActiveAttackRect;                       
+	bool       _setActiveAttackRect;
+	//int        _attackCount;                               // 중첩으로 안들어오게 막아줌
 	int        _damege;
+	bool       _isCollision;
 	// ----------------- 스텟 관련 변수 -----------------//
 	int        _hp, maxHp;
-	float      _applySpeed;                              
+	float      _applySpeed;
 	// ----------------- 스텟 관련 변수 -----------------//
 
 	// ----------------- 임시 -----------------------//
