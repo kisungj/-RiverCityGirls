@@ -7,6 +7,10 @@ private:
 	class itemManager*     _itemManager;
 	class enemyManager*    _enemyManager;
 	class player*          _player;
+
+	RECT				   _stage2DoorRc;
+	RECT				   _bossDoorRc;
+
 public:
 	stage2() {}
 	~stage2() {}
@@ -16,6 +20,8 @@ public:
 	virtual void update();
 	virtual void release();
 public:
+	RECT getStage2Door() { return _stage2DoorRc; }
+	RECT getBossDoor() { return _bossDoorRc; }
 
 };
 
