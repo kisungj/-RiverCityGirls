@@ -217,10 +217,16 @@ void stageManager::collision()
 	//에너미 죽을때 아이템 떨어지게?
 	for (int i = 0; i < _enemyManager->getVBoy().size(); i++)
 	{
-		if (_enemyManager->getVBoy()[i]->getCondition() == CONDITION::DEAD)
-		{
-			_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
-		}
+		//if (_enemyManager->getVBoy()[i]->getCondition() == CONDITION::DEAD)
+		//{
+		//	_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
+		//}
+		
+
+
+		_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
+		_enemyManager->eraseBoy(i);
+		
 	}
 
 	//플레이어와 아이템 충돌
