@@ -84,22 +84,33 @@ void stageManager::render()
 
 	_player->render();
 
+	ZORDERMANAGER->zOrderRender();
+
+	EFFECTMANAGER->render();
+
 	if(_curStageName != "TITLE_SCENE")
 		_ui->render();
 
-	ZORDERMANAGER->zOrderRender();
-	
+
 	//ZORDERMANAGER->zOrderClear();
 }
 
 void stageManager::update()
 {
 
-
-
+	EFFECTMANAGER->update();
 	SCENEMANAGER->update();
-
+	if (_curStageName == "STAGEBOSS_SCENE")
+	{
+		_ui->setBossStage(true);
+	}
+	else
+	{
+		_ui->setBossStage(false);
+	}
+	_ui->setBossHpGauge(_boss->getHP(), _boss->getMaxHP());
 	_ui->update();
+	
 
 	if (!_ui->getIsPhone())
 	{
@@ -108,6 +119,11 @@ void stageManager::update()
 		_itemManager->update();
 		_obstacleManager->update();
 		_enemyManager->update();
+
+		if (_curStageName == "STAGEBOSS_SCENE")
+		{
+			_boss->update(_player->getPlayerX(), _player->getPlayerY());
+		}
 
 	}
 	// ================================================================
@@ -162,7 +178,7 @@ void stageManager::update()
 		_boss->init();
 		SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
 		_stageBoss->init(_player, _boss);
-		//_curStageName = "STAGEBOSS_SCENE";
+		_curStageName = "STAGEBOSS_SCENE";
 	}
 
 	

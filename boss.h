@@ -51,14 +51,21 @@ private:
 	RECT       _attackRect;                                // 공격 범위
 	MYPOINT    _attackPos;                                 // 공격 범위 위치
 	MYPOINT    _attackSize;                                // 공격 범위 사이즈
-	bool       _setActiveAttackRect;
-	//int        _attackCount;                             // 중첩으로 안들어오게 막아줌
+	bool       _isColision;                                // 중첩으로 안들어오게 막아줌
+	int        _attackCount;                               // 중첩 막아줌
 	int        _damege;
-	bool       _isCollision;
-	// ----------------- 스텟 관련 변수 -----------------//
-	int        _hp, maxHp;
+	// ----------------- 스텟 관련 변수 ----------------- //
+	int        _hp, _maxHp;
 	float      _applySpeed;
-	// ----------------- 스텟 관련 변수 -----------------//
+	int        _phaseCount;
+	// ----------------- 스텟 관련 변수 ----------------- //
+
+	// ----------------- 픽셀 충돌 변수 ----------------- //
+	COLORREF _colorF;
+	int      _probeLeft, _probeRight, _probeUp, _probeDown;
+	int      _r, _g, _b;
+	bool     _isPixelCollision;
+	// ----------------- 픽셀 충돌 변수 ----------------- //
 
 	player* _player;
 
@@ -80,17 +87,19 @@ public:
 	void    jumpAttack(float playerX, float playerZ);               // 점프  공격
 	void    elbowAttack(float playerX, float playerZ);              // 엘보우 공격
 	void    changePattern(float playerX, float playerZ);            // 패턴 바꾸는용
-	void    death(float playerX, float playerZ);                     // 죽음 판정
+	void    death(float playerX, float playerZ);                    // 죽음 판정
 	void    hit(float playerX, float playerZ, int damege);          // 충돌 판정 --> 옮겨야함
-	void    toPlayerCollision();
+	void    toPlayerCollision();                                    // 플레이어 때리는 판정
+	void    pixelCollision();                                       // 픽셀 충돌
 public:
 	STATEBOSS getState() { return _state; }
 	RECT*     getPointerRect() { return &_rc; }
 	RECT      getRect() { return _rc; }
 	RECT      getAttackRect() { return _attackRect; }
 	float     getBossZ() { return _z; }
+	int       getHP() { return _hp; }
+	int       getMaxHP() { return _maxHp; }
 public:
 	void      setPlayerMemoryAddressLink(player* player) { _player = player; }
-
 };
 

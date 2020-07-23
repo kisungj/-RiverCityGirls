@@ -156,4 +156,15 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 821, 410, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_knockdown", "image/enemy/boy_knockdown.bmp", 8910, 420, 33, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_dizzy", "image/enemy/boy_dizzy.bmp", 633, 408, 4, 2, true, RGB(255, 0, 255));
+
+	// ========== effect
+	IMAGEMANAGER->addFrameImage("hit_effect", "image/effect/hit.bmp", 384, 96, 4, 1, true, RGB(255, 0, 255));
+	EFFECTMANAGER->addEffect("hit_effect", "hit_effect", 384, 96, 96, 96, 1, 0.2f, 10);
+
+	IMAGEMANAGER->addFrameImage("e_hit_effect", "image/effect/et_boom_big.bmp", 960, 89, 10, 1, true, RGB(255, 0, 255));
+	EFFECTMANAGER->addEffect("e_hit_effect", "e_hit_effect", 960, 89, 96, 89, 1, 0.7f, 10);
+
+	IMAGEMANAGER->addFrameImage("boss_heavyAttack_effect", "image/effect/superTackle.bmp", 160, 74, 4, 1, true, RGB(255, 0, 255));
+	EFFECTMANAGER->addEffect("boss_heavyAttack_effect", "boss_heavyAttack_effect", 160, 74, 40, 74, 1, 0.7f, 10);
+
 }

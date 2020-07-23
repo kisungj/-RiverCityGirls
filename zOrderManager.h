@@ -27,7 +27,6 @@ class zOrderManager : public singletonBase<zOrderManager>
 {
 private:
 	vector<tagZoder> _vZorder;
-	vector<float>	 _vTempY;
 
 public:
 	zOrderManager() {}

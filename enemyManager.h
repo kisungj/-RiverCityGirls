@@ -18,7 +18,8 @@ private:
 	getVEnemy _vGirl;
 	getVIEnemy _viGirl;
 
-
+	bool _isCollision;							//충돌용
+	int _attackCount;							//충돌카운트
 public:
 	enemyManager() {}
 	~enemyManager() {}
@@ -28,10 +29,12 @@ public:
 	virtual void update();
 	virtual void release();
 
-	void setStage1();	
-	void setStage2();
+	void setStage1();							//스테이지1 에너미
+	void setStage2();							//스테이지2 에너미
 
-	void plEnCollision();						//플레이어와 에너미 충돌 함수
+	void boyPlCollision();						//플레이어와 남자애 충돌 함수
+	void girlPlCollision();						//플레이어와 여자애
+	void cheerPlCollision();					//플레이어와 치어리더
 
 	void eraseBoy(int arrNum);
 	void eraseGirl(int arrNum);

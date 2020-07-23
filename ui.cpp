@@ -3,6 +3,12 @@
 
 HRESULT ui::init()
 {
+	IMAGEMANAGER->addImage("use", "image/ui/Use.bmp", 95, 27, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("cancel", "image/ui/Cancel.bmp", 95, 27, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("select_use", "image/ui/use_select.bmp", 14, 17, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("boss_background_hp", "image/ui/boss_backgroundhp.bmp", 898, 120, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("boss_hp", "image/ui/boss_hp.bmp", 687, 52, true, RGB(255, 0, 255));
+
 	_loading = IMAGEMANAGER->findImage("loading_sprite");
 	_hpUI = IMAGEMANAGER->findImage("full_hd");
 
@@ -24,11 +30,13 @@ HRESULT ui::init()
 
 
 	_hpRC = RectMake(290, 55, _hpUI->getWidth(), _hpUI->getHeight());
+	_hpWidth = _hpUI->getWidth();
+
+	_bossHpRc = RectMake(WINSIZEX / 2 - 394, WINSIZEY / 2 + 280, IMAGEMANAGER->findImage("boss_hp")->getWidth(), IMAGEMANAGER->findImage("boss_hp")->getHeight());
+	_bossHpWidth = IMAGEMANAGER->findImage("boss_hp")->getWidth();
 
 	_itemSelectIndex = 0;
 	_phoneAlpha = 0;
-
-	_hpWidth = _hpUI->getWidth();
 
 	_isPhone = false;
 
@@ -36,6 +44,7 @@ HRESULT ui::init()
 	{
 		_inventory[i].isNull = true;
 	}
+
 	return S_OK;
 }
 
@@ -49,6 +58,12 @@ void ui::render()
 	IMAGEMANAGER->findImage("status_hud")->render(getMemDC(), 270, 50);
 	IMAGEMANAGER->findImage("coin_ui")->render(getMemDC(), 290, 105);
 	IMAGEMANAGER->findImage("character_hud")->render(getMemDC(), 140, 0);
+
+	if (_isBossStage)
+	{
+		IMAGEMANAGER->findImage("boss_background_hp")->render(getMemDC(), WINSIZEX / 2 - 430, WINSIZEY / 2 + 240);
+		IMAGEMANAGER->findImage("boss_hp")->render(getMemDC(), _bossHpRc.left, _bossHpRc.top, 0,0, _bossHpWidth, IMAGEMANAGER->findImage("boss_hp")->getHeight());
+	}
 
 	SetBkMode(getMemDC(), TRANSPARENT);
 	HFONT font, oldFont;
@@ -93,6 +108,22 @@ void ui::render()
 			SelectObject(getMemDC(), oldFont);
 			DeleteObject(font);
 		}
+
+
+		if (_isUse)
+		{
+			IMAGEMANAGER->findImage("use")->render(getMemDC(), _inventory[_itemSelectIndex].rc.right, _inventory[_itemSelectIndex].rc.top);
+			IMAGEMANAGER->findImage("cancel")->render(getMemDC(), _inventory[_itemSelectIndex].rc.right, _inventory[_itemSelectIndex].rc.top + 30);
+
+			if (_select)
+			{
+				IMAGEMANAGER->findImage("select_use")->render(getMemDC(), _inventory[_itemSelectIndex].rc.right + 97, _inventory[_itemSelectIndex].rc.top + 4);
+			}
+			else
+			{
+				IMAGEMANAGER->findImage("select_use")->render(getMemDC(), _inventory[_itemSelectIndex].rc.right + 97, _inventory[_itemSelectIndex].rc.top + 35);
+			}
+		}
 	}
 
 }
@@ -103,9 +134,8 @@ void ui::update()
 	_timer++;
 	if (_timer > 50)
 	{
-		if (_loading->getFrameX() >= _loading->getMaxFrameX())
+		if (_loading->getFrameX() >= _loading->getMaxFrameX())  
 		{
-			cout << "들어옴" << endl;
 			_loading->setFrameX(-1);
 		}
 		_loading->setFrameX(_loading->getFrameX() + 1);
@@ -121,17 +151,55 @@ void ui::update()
 	// 인벤토리 조종키
 	if (_isPhone)
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+		if (!_isUse)
 		{
-			_itemSelectIndex--;
-			if (_itemSelectIndex < 0)
-				_itemSelectIndex = 9;
+			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+			{
+				_itemSelectIndex--;
+				if (_itemSelectIndex < 0)
+					_itemSelectIndex = 9;
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+			{
+				_itemSelectIndex++;
+				if (_itemSelectIndex > 9)
+					_itemSelectIndex = 0;
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
+			{
+				if (_itemSelectIndex > 1 && !_inventory[_itemSelectIndex].isNull)
+				{
+					_isUse = true;
+					_select = true;
+				}
+			}
 		}
-		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+
+
+		if (_isUse)
 		{
-			_itemSelectIndex++;
-			if (_itemSelectIndex > 9)
-				_itemSelectIndex = 0;
+			if (KEYMANAGER->isOnceKeyDown(VK_UP))
+			{
+				_select = true;
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+			{
+				_select = false;
+			}
+
+			if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
+			{
+				if (_select)
+				{
+					// 아이템 사용
+					_inventory[_itemSelectIndex].isNull = true;
+					_isUse = false;
+				}
+				else
+				{
+					_isUse = false;
+				}
+			}
 		}
 	}
 
@@ -153,5 +221,16 @@ void ui::release()
 
 void ui::setHpGauge(float curHp, float maxHp)
 {
+	if (curHp < 0) curHp = 0;
+	if (curHp > maxHp) curHp = maxHp;
+
 	_hpWidth = (curHp / maxHp) * _hpUI->getWidth();
+}
+
+void ui::setBossHpGauge(float curHp, float maxHp)
+{
+	if (curHp < 0) curHp = 0;
+	if (curHp > maxHp) curHp = maxHp;
+
+	_bossHpWidth = (curHp / maxHp) * IMAGEMANAGER->findImage("boss_hp")->getWidth();
 }

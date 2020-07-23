@@ -31,7 +31,6 @@ void zOrderManager::addRender(HDC hdc, renderType rendertype, image * img, float
 	tempZorder.ani = NULL;
 	tempZorder.alpha = NULL;
 
-	_vTempY.push_back(z);
 	_vZorder.push_back(tempZorder);
 }
 
@@ -50,7 +49,6 @@ void zOrderManager::addFrameRender(HDC hdc, renderType rendertype, image * img, 
 	tempZorder.ani = NULL;
 	tempZorder.alpha = NULL;
 
-	_vTempY.push_back(z);
 	_vZorder.push_back(tempZorder);
 }
 
@@ -69,7 +67,6 @@ void zOrderManager::addAlphaRender(HDC hdc, renderType rendertype, image * img, 
 	tempZorder.ani = NULL;
 	tempZorder.alpha = alpha;
 
-	_vTempY.push_back(z);
 	_vZorder.push_back(tempZorder);
 }
 
@@ -88,7 +85,6 @@ void zOrderManager::addAniRender(HDC hdc, renderType rendertype, image * img, fl
 	tempZorder.ani = ani;
 	tempZorder.alpha = NULL;
 
-	_vTempY.push_back(z);
 	_vZorder.push_back(tempZorder);
 }
 
@@ -138,7 +134,6 @@ void zOrderManager::zOrderRender()
 			break;
 		}
 
-		cout << _vZorder[i].z << endl;
 	}
 
 	//cout << _vZorder.capacity() << endl;
