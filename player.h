@@ -60,6 +60,9 @@ private:
 	bool _attacked;					//공격 3번 이어주기
 	bool _directionX;				//left = 0, right = 1
 	bool _directionY;				//top = 0, bottom = 1
+	bool _attackRect;				//어택렉트 꺼주기
+	bool _enemyBLay;					//에너미 누워읶니?
+	bool _enemyGLay;					//에너미 누워읶니?
 
 
 
@@ -131,6 +134,9 @@ public:
 	bool getIsDeskFall() { return _isDeskFall; }
 	bool getIsDown() { return _isDown; }
 	bool getGameOver() { return _gameOver; }
+	bool getEnemyBLay() { return _enemyBLay; }
+	bool getEnemyGLay() { return _enemyGLay; }
+	bool getIsAttackRect() { return _attackRect; }
 	RECT getAttackRect() { return _attackRc; }
 	RECT getPlayerRect() { return _player; }
 	image* getImgge() { return _img; }
@@ -178,6 +184,7 @@ public:
 	void setIsDeskFall(bool fall) { _isDeskFall = fall; }
 	void setIsDown(bool down) { _isDown = down; }
 	void setGameOver(bool over) { _gameOver = over; }
+	void setIsAttackRect(bool att) { _attackRect = att; }
 	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
 	void setMapStr(string str) { _mapStr = str; }
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }

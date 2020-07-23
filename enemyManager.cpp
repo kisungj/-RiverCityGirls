@@ -37,8 +37,25 @@ void enemyManager::update()
 
 		if (_vGirl[i]->getCondition() == CONDITION::DEAD) eraseGirl(i);
 	}
-	
-	plEnCollision();
+
+	if (!_isCollision)
+	{
+		boyPlCollision();
+		girlPlCollision();
+		cheerPlCollision();
+	}
+
+	/*if (_isCollision)
+	{
+		_attackCount++;
+		if (_attackCount > 19)
+		{
+			_attackCount = 0;
+			_isCollision = false;
+		}
+	}*/
+
+	cout << _isCollision << endl;
 }
 
 void enemyManager::release()
@@ -83,43 +100,69 @@ void enemyManager::setStage2()
 
 }
 
-//==================================플레이어가 맞을 때==================================//
-void enemyManager::plEnCollision()
+//==================================남자애==================================//
+void enemyManager::boyPlCollision()
 {
 	RECT temp;
 
-	//==================================남자애==================================//
 	for (int i = 0; i < _vBoy.size(); ++i)
-	{		
+	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
 			(_player->getShadowY() - _vBoy[i]->getZ() < 10 && _vBoy[i]->getZ() - _player->getShadowY() < 10) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
-			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") && 
+			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
 		{
 			_player->playerDamage(2);
 			_vBoy[i]->setAtk(0, 0, 0, 0);
 			_vBoy[i]->setStrike(true);
 
-			if (_vBoy[i]->getCondition() == CONDITION::STRONG) _player->setIsDown(true);
-
-			if (!_player->getDirectionX())
+			if (_player->getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
 			{
-				_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				_player->setState(_player->getHitState());
+				if (_vBoy[i]->getRight())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
 			}
 
-			if (_player->getDirectionX())
+			else if (_player->getAni() == KEYANIMANAGER->findAnimation("P_LEFT_GUARD"))
 			{
-				_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				_player->setState(_player->getHitState());
+				if (!_vBoy[i]->getRight())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
 			}
-		}	
+
+			if (_player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_GUARD") && _player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
+			{
+				if (_vBoy[i]->getCondition() == CONDITION::STRONG) _player->setIsDown(true);
+
+				if (!_player->getDirectionX())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
+
+				if (_player->getDirectionX())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
+			}
+			_isCollision = true;
+		}
 	}
+}
 
-	//==================================여자애==================================//
+//==================================여자애==================================//
+void enemyManager::girlPlCollision()
+{
+	RECT temp;
+
 	for (int i = 0; i < _vGirl.size(); ++i)
-	{		
+	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vGirl[i]->getAtk()) &&
 			(_player->getShadowY() - _vGirl[i]->getZ() < 10 && _vGirl[i]->getZ() - _player->getShadowY() < 10) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
@@ -130,21 +173,46 @@ void enemyManager::plEnCollision()
 			_vGirl[i]->setAtk(0, 0, 0, 0);
 			_vGirl[i]->setStrike(true);
 
-			if (_vGirl[i]->getCondition() == CONDITION::STRONG) _player->setIsDown(true);
-
-			if (!_player->getDirectionX())
+			if (_player->getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
 			{
-				_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				_player->setState(_player->getHitState());
+				if (_vGirl[i]->getRight())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
+			}
+			else if (_player->getAni() == KEYANIMANAGER->findAnimation("P_LEFT_GUARD"))
+			{
+				if (!_vGirl[i]->getRight())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
 			}
 
-			if (_player->getDirectionX())
+			if (_player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_GUARD") && _player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
 			{
-				_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				_player->setState(_player->getHitState());
+				if (_vGirl[i]->getCondition() == CONDITION::STRONG) _player->setIsDown(true);
+
+				if (!_player->getDirectionX())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
+
+				if (_player->getDirectionX())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
 			}
-		}	
+			_isCollision = true;
+		}
 	}
+}
+
+void enemyManager::cheerPlCollision()
+{
 }
 
 void enemyManager::eraseBoy(int arrNum)
