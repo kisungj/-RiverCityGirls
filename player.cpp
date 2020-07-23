@@ -493,7 +493,7 @@ void player::enemyCol()
 			_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 			_enemy->getVBoy()[i]->setOuch(true);
 			_enemy->getVBoy()[i]->setHitCount(1);
-			_enemy->getVBoy()[i]->setHP(30);
+			_enemy->getVBoy()[i]->setHP(10);
 		}
 
 	}
