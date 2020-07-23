@@ -19,6 +19,7 @@ private:
 	image* _selectArrow;
 	image* _loading;
 	RECT _hpRC;
+	RECT _bossHpRc;
 	tagInvenUi _inventory[10];
 
 	int _itemSelectIndex;
@@ -27,9 +28,13 @@ private:
 
 	float _phoneAlpha;
 	float _hpWidth;
-	
+	float _bossHpWidth;
 
 	bool _isPhone;
+	bool _isUse;
+	bool _select;
+	bool _isBossStage;
+
 
 public:
 	ui() {}
@@ -41,6 +46,9 @@ public:
 	virtual void release();
 
 	void setHpGauge(float curHp, float maxHp);
+	void setBossHpGauge(float curHp, float maxHp);
+	void setBossStage(bool arg) { _isBossStage = arg; }
+
 	bool getIsPhone() { return _isPhone; }
 
 	void setInventoryUI(Item* item) 
