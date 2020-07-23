@@ -57,7 +57,7 @@ using namespace TTYONE_UTIL;
 #define INIDATA        iniDataManager::getSingleton()
 #define CAMERAMANAGER  cameraManager::getSingleton()
 #define EVENTMANAGER   eventManager::getSingleton()
-#define ZORDERMANAGER zOrderManager::getSingleton()
+#define ZORDERMANAGER  zOrderManager::getSingleton()
 
 #define SAFE_DELETE(p)		 {if(p) {delete(p); (p) = NULL;}}
 #define SAFE_RELEASE(p)		 {if(p) {(p)->release(); (p) = NULL;}}
