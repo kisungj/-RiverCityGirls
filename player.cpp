@@ -93,6 +93,8 @@ void player::update()
 	
 	pixelCol();
 
+	enemyCol();
+
 	boolCheck();
 	
 	
@@ -479,5 +481,19 @@ void player::boolCheck()
 	
 	
 	
+}
+
+void player::enemyCol()
+{
+	RECT temp;
+	for (int i = 0; i < _enemy->getVBoy().size(); ++i)
+	{
+		if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
+		{
+			//_attackX
+		}
+
+	}
+
 }
 
