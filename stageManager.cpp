@@ -85,10 +85,17 @@ void stageManager::render()
 
 	if(_curStageName != "TITLE_SCENE")
 		_ui->render();
+
+	ZORDERMANAGER->zOrderRender();
+	
+	//ZORDERMANAGER->zOrderClear();
 }
 
 void stageManager::update()
 {
+
+
+
 	SCENEMANAGER->update();
 
 	_ui->update();
@@ -157,7 +164,12 @@ void stageManager::update()
 		//_curStageName = "STAGEBOSS_SCENE";
 	}
 
+	
+
 	collision();
+
+	//cout << ZORDERMANAGER->zOrderSize() << endl;
+
 }
 
 void stageManager::release()

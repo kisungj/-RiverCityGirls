@@ -16,7 +16,7 @@ void zOrderManager::zOrderClear()
 	_vZorder.clear();
 }
 
-void zOrderManager::addRender(HDC hdc, renderType rendertype, image * img, float x, float y)
+void zOrderManager::addRender(HDC hdc, renderType rendertype, image * img, float x, float y, float z)
 {
 	tagZoder tempZorder;
 
@@ -25,15 +25,17 @@ void zOrderManager::addRender(HDC hdc, renderType rendertype, image * img, float
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
+	tempZorder.z    = z;
 	tempZorder.frame.x = NULL;
 	tempZorder.frame.y = NULL;
 	tempZorder.ani = NULL;
 	tempZorder.alpha = NULL;
 
+	_vTempY.push_back(z);
 	_vZorder.push_back(tempZorder);
 }
 
-void zOrderManager::addFrameRender(HDC hdc, renderType rendertype, image * img, float x, float y, float frmaeX, float frameY)
+void zOrderManager::addFrameRender(HDC hdc, renderType rendertype, image * img, float x, float y, float z, float frmaeX, float frameY)
 {
 	tagZoder tempZorder;
 
@@ -42,15 +44,17 @@ void zOrderManager::addFrameRender(HDC hdc, renderType rendertype, image * img, 
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
+	tempZorder.z    = z;
 	tempZorder.frame.x = frmaeX;
 	tempZorder.frame.y = frameY;
 	tempZorder.ani = NULL;
 	tempZorder.alpha = NULL;
 
+	_vTempY.push_back(z);
 	_vZorder.push_back(tempZorder);
 }
 
-void zOrderManager::addAlphaRender(HDC hdc, renderType rendertype, image * img, float x, float y, BYTE alpha)
+void zOrderManager::addAlphaRender(HDC hdc, renderType rendertype, image * img, float x, float y, float z, BYTE alpha)
 {
 	tagZoder tempZorder;
 
@@ -59,15 +63,17 @@ void zOrderManager::addAlphaRender(HDC hdc, renderType rendertype, image * img, 
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
+	tempZorder.z    = z;
 	tempZorder.frame.x = NULL;
 	tempZorder.frame.y = NULL;
 	tempZorder.ani = NULL;
 	tempZorder.alpha = alpha;
 
+	_vTempY.push_back(z);
 	_vZorder.push_back(tempZorder);
 }
 
-void zOrderManager::addAniRender(HDC hdc, renderType rendertype, image * img, float x, float y, animation * ani)
+void zOrderManager::addAniRender(HDC hdc, renderType rendertype, image * img, float x, float y, float z, animation * ani)
 {
 	tagZoder tempZorder;
 
@@ -76,37 +82,44 @@ void zOrderManager::addAniRender(HDC hdc, renderType rendertype, image * img, fl
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
+	tempZorder.z = z;
 	tempZorder.frame.x = NULL;
 	tempZorder.frame.y = NULL;
 	tempZorder.ani = ani;
 	tempZorder.alpha = NULL;
 
+	_vTempY.push_back(z);
 	_vZorder.push_back(tempZorder);
 }
 
 void zOrderManager::zOrderSort(int i, int j)
 {
 	if (i >= j) return;
-	int pivot = _vZorder[(i + j) / 2].pt.y;
+
+	float pivot = _vZorder[(i + j) / 2].z;
 	int left = i;
 	int right = j;
 
 	while (left <= right)
 	{
-		while (_vZorder[left].pt.y < pivot) left++;
-		while (_vZorder[right].pt.y > pivot) right--;
+		while (_vZorder[left].z < pivot) left++;
+		while (_vZorder[right].z > pivot) right--;
 		if (left <= right)
 		{
 			swap(_vZorder[left], _vZorder[right]);
 			left++; right--;
 		}
 	}
+
+	
 	zOrderSort(i, right);
 	zOrderSort(left, j);
 }
 
 void zOrderManager::zOrderRender()
 {
+	zOrderSort(0, _vZorder.size() - 1);
+
 	for (int i = 0; i < _vZorder.size(); i++)
 	{
 		switch (_vZorder[i].rendertype)
@@ -124,5 +137,10 @@ void zOrderManager::zOrderRender()
 			CAMERAMANAGER->aniRender(_vZorder[i].hdc, _vZorder[i].img, _vZorder[i].pt.x, _vZorder[i].pt.y, _vZorder[i].ani);
 			break;
 		}
+
+		cout << _vZorder[i].z << endl;
 	}
+
+	//cout << _vZorder.capacity() << endl;
+	zOrderClear();
 }

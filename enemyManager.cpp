@@ -90,7 +90,9 @@ void enemyManager::plEnCollision()
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
 			(_player->getShadowY() - _vBoy[i]->getZ() < 10 && _vBoy[i]->getZ() - _player->getShadowY() < 10))
 		{
-			_player->playerDamage(2);
+			_player->playerDamage(2); 
+			_vBoy[i]->setAtk(0, 0, 0, 0);
+			_vBoy[i]->setStrike(true);
 
 			if (!_player->getDirectionX())
 			{
@@ -113,6 +115,8 @@ void enemyManager::plEnCollision()
 			(_player->getShadowY() - _vGirl[i]->getZ() < 10 && _vGirl[i]->getZ() - _player->getShadowY() < 10))
 		{
 			_player->playerDamage(2);
+			_vGirl[i]->setAtk(0, 0, 0, 0);
+			_vGirl[i]->setStrike(true);
 
 			if (!_player->getDirectionX())
 			{
