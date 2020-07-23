@@ -59,6 +59,7 @@ void boss::update(float playerX, float playerZ)
 	death(playerX, playerZ);
 	changePattern(playerX, playerZ);
 	toPlayerCollision();
+	pixelCollision();
 	_rc = RectMakeCenter(_x, _y, 100, 250);
 
 	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z, _jumpAlpha);
@@ -1386,7 +1387,7 @@ void boss::hit(float playerX, float playerZ, int damege)
 		if (_hitCount == 0)
 		{
 			int rndBlock = RND->getInt(10);
-			if (rndBlock < 5)
+			if (rndBlock < 2)
 			{
 				_characterImg = IMAGEMANAGER->findImage("boss_block");
 				_state = BOSS_LEFT_BLOCK;
@@ -1424,7 +1425,7 @@ void boss::hit(float playerX, float playerZ, int damege)
 		if (_hitCount == 0)
 		{
 			int rndBlock = RND->getInt(10);
-			if (rndBlock < 5)
+			if (rndBlock < 2)
 			{
 				_characterImg = IMAGEMANAGER->findImage("boss_block");
 				_blockDistance = 5;
@@ -1464,47 +1465,52 @@ void boss::toPlayerCollision()
 	RECT temp;
 	if (!_isColision)
 	{
-		if (IntersectRect(&temp, &_player->getPlayerRect(), &_attackRect))
+		if (_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
+			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
+			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
 		{
-			_attackPos.x = -100;
-			_attackPos.y = -100;
-			/*	if (_state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR)
-				{*/
-			_player->playerDamage(2);
-			if (!_player->getDirectionX())
+			if (IntersectRect(&temp, &_player->getPlayerRect(), &_attackRect))
 			{
-				_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				_player->setState(_player->getHitState());
-				_player->setIsDown(true);
-			}
+				_attackPos.x = -100;
+				_attackPos.y = -100;
 
-			if (_player->getDirectionX())
-			{
-				_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				_player->setState(_player->getHitState());
-				_player->setIsDown(true);
-			}
-			/*}
-			else
-			{
-				_player->playerDamage(2);
-				if (!_player->getDirectionX())
+				if (_state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR || _state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK)
 				{
-					_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-					_player->setState(_player->getHitState());
-					_player->setIsDown(true);
+					_player->playerDamage(2);
+					if (!_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+						_player->setState(_player->getDownState());
+						_player->setIsDown(true);
+					}
+
+					if (_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+						_player->setState(_player->getDownState());
+						_player->setIsDown(true);
+					}
+				}
+				else
+				{
+					_player->playerDamage(2);
+					if (!_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+						_player->setState(_player->getHitState());
+						//_player->setIsDown(true);
+					}
+
+					if (_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+						_player->setState(_player->getHitState());
+						//_player->setIsDown(true);
+					}
 				}
 
-				if (_player->getDirectionX())
-				{
-					_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-					_player->setState(_player->getHitState());
-					_player->setIsDown(true);
-				}
+				_isColision = true;
 			}
-		*/
-			cout << "ㅎㅎㅎ" << endl;
-			_isColision = true;
 		}
 	}
 
@@ -1517,6 +1523,44 @@ void boss::toPlayerCollision()
 			_isColision = false;
 		}
 	}
+
+
+}
+
+void boss::pixelCollision()
+{
+	_probeLeft = _x - 50;
+	_probeRight = _x + 50;
+	_probeUp = _z - 50;
+	_probeDown = _z + 50;
+
+	// 위쪽
+
+	_colorF = GetPixel(IMAGEMANAGER->findImage("보스배경pixel")->getMemDC(), _x, _probeUp);
+
+	_r = GetRValue(_colorF);
+	_g = GetGValue(_colorF);
+	_b = GetBValue(_colorF);
+
+	if (_r == 255 && _g == 0 && _b == 0)
+	{
+		_z = _probeUp + 50;
+	}
+
+
+	// 아래쪽
+
+	_colorF = GetPixel(IMAGEMANAGER->findImage("보스배경pixel")->getMemDC(), _x, _probeDown);
+
+	_r = GetRValue(_colorF);
+	_g = GetGValue(_colorF);
+	_b = GetBValue(_colorF);
+
+	if (_r == 255 && _g == 0 && _b == 0)
+	{
+		_z = _probeDown - 50;
+	}
+
 
 
 }

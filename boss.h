@@ -54,10 +54,16 @@ private:
 	bool       _isColision;                                // 중첩으로 안들어오게 막아줌
 	int        _attackCount;                               // 중첩 막아줌
 	int        _damege;
-	// ----------------- 스텟 관련 변수 -----------------//
+	// ----------------- 스텟 관련 변수 ----------------- //
 	int        _hp, maxHp;
 	float      _applySpeed;
-	// ----------------- 스텟 관련 변수 -----------------//
+	// ----------------- 스텟 관련 변수 ----------------- //
+
+	// ----------------- 픽셀 충돌 변수 ----------------- //
+	COLORREF _colorF;
+	int _probeLeft, _probeRight, _probeUp, _probeDown;
+	int _r, _g, _b;
+	// ----------------- 픽셀 충돌 변수 ----------------- //
 
 	player* _player;
 
@@ -79,9 +85,10 @@ public:
 	void    jumpAttack(float playerX, float playerZ);               // 점프  공격
 	void    elbowAttack(float playerX, float playerZ);              // 엘보우 공격
 	void    changePattern(float playerX, float playerZ);            // 패턴 바꾸는용
-	void    death(float playerX, float playerZ);                     // 죽음 판정
+	void    death(float playerX, float playerZ);                    // 죽음 판정
 	void    hit(float playerX, float playerZ, int damege);          // 충돌 판정 --> 옮겨야함
-	void    toPlayerCollision();
+	void    toPlayerCollision();                                    // 플레이어 때리는 판정
+	void    pixelCollision();                                       // 픽셀 충돌
 public:
 	STATEBOSS getState() { return _state; }
 	RECT*     getPointerRect() { return &_rc; }

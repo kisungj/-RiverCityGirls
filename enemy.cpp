@@ -96,9 +96,9 @@ void enemy::update()
 void enemy::render()
 {
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	//CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
 }
 
@@ -167,7 +167,7 @@ void enemy::pixelCollision()
 	//À§
 	for (int i = _probeU - 5; i < _probeU + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), _x, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -182,7 +182,6 @@ void enemy::pixelCollision()
 		if (r == 160 && g == 255 && b == 0)
 		{
 			_pixel = PIXEL::TOP;
-			_condition = CONDITION::GREEN;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -195,7 +194,7 @@ void enemy::pixelCollision()
 	//¾Æ·¡
 	for (int i = _probeB - 5; i < _probeB + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), (_shadow.right + _shadow.left) / 2, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), _x, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -209,7 +208,6 @@ void enemy::pixelCollision()
 		if (r == 160 && g == 255 && b == 0)
 		{
 			_pixel = PIXEL::BOTTOM;
-			_condition = CONDITION::GREEN;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -235,7 +233,6 @@ void enemy::pixelCollision()
 		if (r == 160 && g == 255 && b == 0)
 		{
 			_pixel = PIXEL::LEFT;
-			_condition = CONDITION::GREEN;
 		}
 
 		if (r == 255 && g == 0 && b == 255)
@@ -266,7 +263,6 @@ void enemy::pixelCollision()
 		if (r == 160 && g == 255 && b == 0)
 		{
 			_pixel = PIXEL::RIGHT;
-			_condition = CONDITION::GREEN;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
