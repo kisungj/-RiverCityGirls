@@ -409,32 +409,35 @@ void player::pixelCol()
 					if (!(r == 255 && g == 0 && b == 0))
 					{
 						_isRight = true;
-						if ((r == 160 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
+						if (_jumpPower < 0 && !_isDeskFall)
 						{
-							cout << "d" << endl;
-							_isLeft = true;
-							_isTop = true;
-							_isBottom = true;
-							_isDesk = true;
-							_shadowY -= 110;
+							if ((r == 160 && g == 255 && b == 0))
+							{
+								cout << "d" << endl;
+								_isLeft = true;
+								_isTop = true;
+								_isBottom = true;
+								_isDesk = true;
+								_shadowY -= 110;
+							}
+							else if ((r == 0 && g == 255 && b == 0))
+							{
+								//	_isRight = true;
+								_isLeft = true;
+								_isTop = true;
+								_isBottom = true;
+								_isObs = true;
+								_shadowY -= 250;
+							}
+							break;
 						}
-						else if ((r == 0 && g == 255 && b == 0) && _jumpPower < 0 && !_isDeskFall)
-						{
-						//	_isRight = true;
-							_isLeft = true;
-							_isTop = true;
-							_isBottom = true;
-							_isObs = true;
-							_shadowY -= 500;
-						}
-						break;
 
 					}
 					
 			}
 		}
 	}
-	//cout << _isDesk << endl;
+	//cout << "데스크: " << _isDesk << "자판기" << _isObs << endl;
 	if (_isDesk)
 	{
 		_deskTimer++;
@@ -492,7 +495,7 @@ void player::pixelCol()
 			}
 		}
 	}
-	cout << _isObs << endl;
+	//cout << _isObs << endl;
 	if (_isObs)
 	{
 		_deskTimer++;
@@ -523,16 +526,20 @@ void player::pixelCol()
 				int r = GetRValue(color);
 				int g = GetGValue(color);
 				int b = GetBValue(color);
-
-				if (!(r == 0 && g == 160 && b == 0))
+				if (r == 255 && g == 255 && b == 0)
 				{
+					_isTop = false;
+				}
+				if (!(r == 255 && g == 255 && b == 0) )
+				{ 
+				
 					//_gravity = 0.5f;
 					//_jumpPower = 0;
 					_isObs = false;
 					_isJumping = true;
 
 					_isDeskFall = true;
-					_shadowY += 300;
+					_shadowY += 250;
 					_runCount = 0;
 					if (!_directionX)
 					{
@@ -612,7 +619,8 @@ void player::enemyCol()
 						if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
 						{
 							//_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-							_enemy->getVBoy()[i]->setHP(1);
+							_enemy->getVBoy()[i]->setOuch(true);
+							_enemy->getVBoy()[i]->setHP(10);
 							//_attackRect = false;
 						}
 					}
@@ -628,7 +636,7 @@ void player::enemyCol()
 						//_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 						_enemy->getVBoy()[i]->setOuch(true);
 						_enemy->getVBoy()[i]->setHitCount(1);
-						_enemy->getVBoy()[i]->setHP(100);
+						_enemy->getVBoy()[i]->setHP(10);
 						_attackRect = false;
 					}
 
@@ -642,11 +650,15 @@ void player::enemyCol()
 				{
 					if (_enemy->getVGirl()[i]->getLay())
 					{
-						if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
+						if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
 						{
-							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-							_enemy->getVGirl()[i]->setHP(1);
-							//_attackRect = false;
+							if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
+							{
+								_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+								_enemy->getVGirl()[i]->setOuch(true);
+								_enemy->getVGirl()[i]->setHP(10);
+								//_attackRect = false;
+							}
 						}
 
 					}
@@ -658,7 +670,7 @@ void player::enemyCol()
 							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 							_enemy->getVGirl()[i]->setOuch(true);
 							_enemy->getVGirl()[i]->setHitCount(1);
-							_enemy->getVGirl()[i]->setHP(1);
+							_enemy->getVGirl()[i]->setHP(10);
 							_attackRect = false;
 						}
 					}
