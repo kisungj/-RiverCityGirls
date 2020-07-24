@@ -70,9 +70,10 @@ private:
 	RECT _attack;
 	int _kickCount;
 	int _limitCount;
+	int _collisionCount;
 	bool _isKick;
 public:
-	enemyRunState() { _kickCount = 0; _limitCount = 0; _isKick = false; }
+	enemyRunState() { _kickCount = 0; _limitCount = 0; _collisionCount = 0; _isKick = false; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
@@ -88,10 +89,10 @@ public:
 class enemyAttackState : public enemyState
 {
 private:
-	int  _collisionCount;
 	RECT _attack;
 	int _comboCount;
 	int _strikeCount;
+	int  _collisionCount;
 	bool _isAttack;
 public:
 	enemyAttackState() { _comboCount = 0; _strikeCount = 0; _isAttack = false; }
