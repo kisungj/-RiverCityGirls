@@ -42,7 +42,8 @@ private:
 	enemyManager*    _enemyManager;
 	boss*            _boss;
 	ui*              _ui;
-	
+	image*			 _loading;
+
 	titleStage*		 _title;
 	stage1*          _stage1;
 	stage2*          _stage2;
@@ -50,6 +51,11 @@ private:
 	player*          _player;
 
 	string			 _curStageName;
+
+	float			 _loadingTimer;
+	float			 _loadingFrameTimer;
+	int				 _changeStageNum;
+	bool			 _isLoading;
 public:
 	stageManager() {}
 	~stageManager() {}

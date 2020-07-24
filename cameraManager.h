@@ -15,7 +15,9 @@ private:
 	float _minY, _maxY;				  // 카메라의 Y    가능한 범위
 	
 	bool  _isShakeCamera;
-
+	int  _shakePower;
+	int  _shakeTime;
+	int  _shakeCount;
 public:
 	cameraManager() {}
 	~cameraManager() {}
@@ -32,10 +34,15 @@ public:
 	void loopRender(HDC hdc, image* img, RECT lpRect, int offsetX, int offsetY);
 	void aniRender(HDC hdc, image* img, int destX, int destY, animation* ani);
 	void alphaRender(HDC hdc, image* img, int destX, int destY, BYTE alpha);
-	void shakeCamera();
+	void shakeCamera(int shakePower, int shakeTime);
+	void update();
 public:
 	float getLeft() { return _left; }
+	float getMinLeft() { return _minLeft; }
+	float getMaxLeft() { return _maxLeft; }
 	float getTop()  { return _top; }
+	float getMinTop()  { return _minTop; }
+	float getMaxTop()  { return _maxTop; }
 	float getX()    { return _x; }
 	float getY()    { return _y; }
 	void  setLeft(float relativeLeft);

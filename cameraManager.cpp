@@ -12,23 +12,25 @@ void cameraManager::release()
 
 void cameraManager::settingCamera(float left, float top, float width, float height, float minLeft, float minTop, float maxLeft, float maxTop)
 {
-	_left   = left;
-	_top    = top;
-	_width  = width;
+	_left = left;
+	_top = top;
+	_width = width;
 	_height = height;
 
 	_minLeft = minLeft;
-	_minTop  = minTop;
+	_minTop = minTop;
 	_maxLeft = maxLeft;
-	_maxTop  = maxTop;
+	_maxTop = maxTop;
+
+	_isShakeCamera = false;
 
 	_x = _left + (_width  * 0.5f);
-	_y = _top  + (_height * 0.5f);
+	_y = _top + (_height * 0.5f);
 
 	_minX = _minLeft + (_width  * 0.5f);
 	_maxX = _maxLeft + (_width  * 0.5f);
-	_minY = _minTop  + (_height * 0.5f);
-	_maxY = _maxTop  + (_height * 0.5f);
+	_minY = _minTop + (_height * 0.5f);
+	_maxY = _maxTop + (_height * 0.5f);
 }
 
 void cameraManager::renderRectangle(HDC hdc, RECT rect)
@@ -61,7 +63,7 @@ void cameraManager::render(HDC hdc, image * img, float destX, float destY)
 	relativeLeft = calcRelativeLeft(destX);
 	relativeTop = calcRelativeTop(destY);
 
-	if (img) img->render(hdc, relativeLeft - img->getWidth() /2 , relativeTop - img->getHeight() / 2);
+	if (img) img->render(hdc, relativeLeft - img->getWidth() / 2, relativeTop - img->getHeight() / 2);
 }
 
 void cameraManager::frameRender(HDC hdc, image * img, float destX, float destY)
@@ -102,7 +104,7 @@ void cameraManager::aniRender(HDC hdc, image * img, int destX, int destY, animat
 	relativeLeft = calcRelativeLeft(destX);
 	relativeTop = calcRelativeTop(destY);
 
-	if (img) img->render(hdc, relativeLeft - img->getFrameWidth() /2, relativeTop - img->getFrameHeight() / 2, ani->getFramePos().x, ani->getFramePos().y, ani->getFrameWidth(), ani->getFrameHeight());
+	if (img) img->render(hdc, relativeLeft - img->getFrameWidth() / 2, relativeTop - img->getFrameHeight() / 2, ani->getFramePos().x, ani->getFramePos().y, ani->getFrameWidth(), ani->getFrameHeight());
 }
 
 void cameraManager::alphaRender(HDC hdc, image * img, int destX, int destY, BYTE alpha)
@@ -115,6 +117,27 @@ void cameraManager::alphaRender(HDC hdc, image * img, int destX, int destY, BYTE
 
 	if (img) img->alphaRender(hdc, relativeLeft - img->getWidth() / 2, relativeTop - img->getHeight() / 2, alpha);
 }
+
+void cameraManager::shakeCamera(int shakePower, int shakeTime)
+{
+	_shakePower = shakePower;
+	_shakeTime = shakeTime;
+	_isShakeCamera = true;
+}
+
+void cameraManager::update()
+{
+	if (_isShakeCamera)
+	{
+		_shakeCount++;
+		if (_shakeCount % _shakeTime == 0)
+		{
+			_shakeCount = 0;
+			_isShakeCamera = false;
+		}
+	}
+}
+
 
 void cameraManager::setLeft(float relativeLeft)
 {
@@ -136,20 +159,43 @@ void cameraManager::setTop(float relativeTop)
 
 void cameraManager::setX(float relativeX)
 {
-	relativeX = min(_maxX, relativeX);
-	relativeX = max(_minX, relativeX);
+	if (_isShakeCamera)
+	{
+		int rnd = RND->getFromFloatTo(-5.0f, 5.0f);
 
-	_x = floor(relativeX);
-	_left = _x - (_width * 0.5f);
+		float newX = relativeX + rnd * _shakePower;
+		newX = min(_maxX, newX);
+		newX = max(_minX, newX);
+		_x = floor(newX);
+		_left = _x - (_width * 0.5f);
+	}
+	else
+	{
+		relativeX = min(_maxX, relativeX);
+		relativeX = max(_minX, relativeX);
+		_x = floor(relativeX);
+		_left = _x - (_width * 0.5f);
+	}
 }
 
 void cameraManager::setY(float relativeY)
 {
-	relativeY = min(_maxY, relativeY);
-	relativeY = max(_minY, relativeY);
+	if (_isShakeCamera)
+	{
+		int rnd = RND->getFromFloatTo(-5.0f, 5.0f);
+		float newY = relativeY + rnd * _shakePower;
+		_y = floor(newY);
+		_top = _y - (_height * 0.5f);
+	}
+	else
+	{
+		relativeY = min(_maxY, relativeY);
+		relativeY = max(_minY, relativeY);
+		_y = floor(relativeY);
+		_top = _y - (_height * 0.5f);
+	}
 
-	_y = floor(relativeY);
-	_top = _y - (_height * 0.5f);
+
 }
 
 float cameraManager::calcRelativeLeft(float left)
@@ -162,4 +208,4 @@ float cameraManager::calcRelativeTop(float top)
 {
 	float relativeTop = top - _top;
 	return relativeTop;
-} 
+}

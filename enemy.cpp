@@ -49,6 +49,8 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 	}
 	_shadowImg = IMAGEMANAGER->findImage("enemy_shadow");
 
+	_mapStr = "background";
+
 	_right = _isHit = false;
 	_jumpPower = _gravity = 0;
 	_state = _idle;
@@ -158,7 +160,7 @@ void enemy::pixelCollision()
 	//위
 	for (int i = _probeU - 5; i < _probeU + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), _x, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _x, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -186,7 +188,7 @@ void enemy::pixelCollision()
 	//아래
 	for (int i = _probeB - 5; i < _probeB + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), _x, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _x, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -212,7 +214,7 @@ void enemy::pixelCollision()
 	//왼쪽
 	for (int i = _probeL - 5; i < _probeL + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), i, _z);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, _z);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -243,7 +245,7 @@ void enemy::pixelCollision()
 	//오른쪽
 	for (int i = _probeR - 5; i < _probeR + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage("background")->getMemDC(), i, _z);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, _z);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);

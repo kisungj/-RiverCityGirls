@@ -15,6 +15,8 @@ HRESULT stageManager::init()
 	SCENEMANAGER->addScene("OBSTACLE_SCENE", _obstacleScene);
 
 	SCENEMANAGER->changeScene("PLAYER_SCENE");
+
+	_loading = IMAGEMANAGER->findImage("loading_sprite");
 	// ======================================================== //
 
 	_player = new player;
@@ -67,6 +69,8 @@ HRESULT stageManager::init()
 
 	SCENEMANAGER->addScene("STAGEBOSS_SCENE", _stageBoss);
 
+	_changeStageNum = 0;
+
 	//ÂüÁ¶
 	_player->setBossLink(_boss);
 	_player->setEnemyLink(_enemyManager);
@@ -93,6 +97,12 @@ void stageManager::render()
 		_ui->render();
 
 
+	if (_isLoading)
+	{
+		IMAGEMANAGER->findImage("phone_active")->render(getMemDC());
+		_loading->frameRender(getMemDC(), WINSIZEX - 300, WINSIZEY - 250, _loading->getFrameX(), 0);
+	}
+
 	//ZORDERMANAGER->zOrderClear();
 }
 
@@ -113,7 +123,7 @@ void stageManager::update()
 	_ui->update();
 	
 
-	if (!_ui->getIsPhone())
+	if (!_ui->getIsPhone() && !_isLoading)
 	{
 		_player->update();
 
@@ -138,17 +148,90 @@ void stageManager::update()
 	//
 	//if (KEYMANAGER->isOnceKeyDown(VK_F5)) SCENEMANAGER->changeScene("OBSTACLE_SCENE");
 
+	if (_isLoading)
+	{	
+		_loadingTimer++;
+
+		_loadingFrameTimer++;
+		if (_loadingFrameTimer > 10)
+		{
+			if (_loading->getFrameX() >= _loading->getMaxFrameX())
+			{
+				_loading->setFrameX(-1);
+			}
+			_loading->setFrameX(_loading->getFrameX() + 1);
+			_loadingFrameTimer = 0;
+		}
+
+
+		if (_loadingTimer > 150)
+		{
+			switch (_changeStageNum)
+			{
+			case 1:
+				_obstacleManager->release();
+				_enemyManager->release();
+				_itemManager->release();
+				SCENEMANAGER->changeScene("STAGE1_SCENE");
+				_stage1->init(_obstacleManager, _itemManager, _enemyManager, _player);
+				_title->setNextScene(false);
+				_curStageName = "STAGE1_SCENE";
+				_loadingTimer = 0;
+				_isLoading = false;
+				break;
+			case 2:
+				_obstacleManager->release();
+				_enemyManager->release();
+				_itemManager->release();
+				SCENEMANAGER->changeScene("STAGE2_SCENE");
+				_stage2->init(_obstacleManager, _itemManager, _enemyManager, _player);
+				_curStageName = "STAGE2_SCENE";
+				_loadingTimer = 0;
+				_isLoading = false;
+				break;
+			case 3:
+				_obstacleManager->release();
+				_enemyManager->release();
+				_itemManager->release();
+				_boss->init();
+				SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
+				_stageBoss->init(_player, _boss);
+				_curStageName = "STAGEBOSS_SCENE";
+				_player->setShadowX(WINSIZEX / 2 - 330);
+				_player->setShadowY(WINSIZEY / 2 + 230);
+				_loadingTimer = 0;
+				_isLoading = false;
+				break;
+			}
+			_loadingTimer = 0;
+			_isLoading = false;
+		}
+	}
+
 	if (_curStageName == "TITLE_SCENE")
 	{
 		if (_title->getNextScene())
 		{
-			_obstacleManager->release();
-			_enemyManager->release();
-			_itemManager->release();
-			SCENEMANAGER->changeScene("STAGE1_SCENE");
-			_stage1->init(_obstacleManager, _itemManager, _enemyManager, _player);
-			_title->setNextScene(false);
-			_curStageName = "STAGE1_SCENE";
+			_changeStageNum = 1;
+			_isLoading = true;
+		}
+
+		if (_title->getStage1())
+		{
+			_changeStageNum = 1;
+			_isLoading = true;
+		}
+
+		if (_title->getStage2())
+		{
+			_changeStageNum = 2;
+			_isLoading = true;
+		}
+
+		if (_title->getStage3())
+		{ 
+			_changeStageNum = 3;
+			_isLoading = true;
 		}
 	}
 	
@@ -241,8 +324,6 @@ void stageManager::collision()
 		//{
 		//	_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
 		//}
-		
-
 
 		_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
 		_enemyManager->eraseBoy(i);
@@ -295,29 +376,16 @@ void stageManager::doorCol()
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP))
 		{
-			_obstacleManager->release();
-			_enemyManager->release();
-			_itemManager->release();
-			SCENEMANAGER->changeScene("STAGE2_SCENE");
-			_stage2->init(_obstacleManager, _itemManager, _enemyManager, _player);
-			_curStageName = "STAGE2_SCENE";
-			_player->setShadowX(_player->getShadowX() + 750);
-			_player->setShadowY(_player->getShadowY() + 30);
+			_changeStageNum = 2;
+			_isLoading = true;
 		}
 	}
 	if (IntersectRect(&temp, &_player->getPlayerRect(), &_stage2->getBossDoor()))
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP))
 		{
-			_obstacleManager->release();
-			_enemyManager->release();
-			_itemManager->release();
-			_boss->init();
-			SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
-			_stageBoss->init(_player, _boss);
-			_curStageName = "STAGEBOSS_SCENE";
-			_player->setShadowX(WINSIZEX / 2 - 330);
-			_player->setShadowY(WINSIZEY / 2 + 230);
+			_changeStageNum = 3;
+			_isLoading = true;
 		}
 	}
 

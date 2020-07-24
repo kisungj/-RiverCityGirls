@@ -864,7 +864,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 	case BOSS_LEFT_JUMP:
 	case BOSS_RIGHT_JUMP:
-		_applySpeed = 5;
+		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 5)
 		{
 			_x += cosf(_angle) * _applySpeed;
@@ -884,6 +884,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 			}
 			_gravity = 0.1f;
 		}
+	
 		break;
 
 	case BOSS_LEFT_JUMP_ATTACK:
@@ -904,11 +905,12 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		if (_animPlayer->getNowIndex() == 3 || _animPlayer->getNowIndex() == 4 || _animPlayer->getNowIndex() == 5)
 		{
+			CAMERAMANAGER->shakeCamera(4, 50);
 
 			_attackPos.x = _x;
 			_attackPos.y = _y + 150;
-			_attackSize.x = 400;
-			_attackSize.y = 100;
+			_attackSize.x = 100;
+			_attackSize.y = 50;
 		}
 		else
 		{
@@ -1415,7 +1417,7 @@ void boss::changePattern(float playerX, float playerZ)
 		if (_delayTime % _phaseCount == 0)
 		{
 			_delayTime = 0;
-			_patternNumber = RND->getInt(5);
+			_patternNumber = 4; //RND->getInt(5);
 			_isDelayTime = false;
 		}
 	}
@@ -1680,4 +1682,11 @@ void boss::pixelCollision()
 	if (_r == 255 && _g == 0 && _b == 0)
 		_isPixelCollision = true;
 
+}
+
+void boss::shakeCamera(int power, int time)
+{
+	_isShake = true;
+	_shakePower = power;
+	_shakeTime = time;
 }
