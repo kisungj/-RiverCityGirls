@@ -905,7 +905,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		if (_animPlayer->getNowIndex() == 3 || _animPlayer->getNowIndex() == 4 || _animPlayer->getNowIndex() == 5)
 		{
-			CAMERAMANAGER->shakeCamera(4, 50);
+			CAMERAMANAGER->shakeCamera(12, 50);
 
 			_attackPos.x = _x;
 			_attackPos.y = _y + 150;
@@ -1240,6 +1240,7 @@ void boss::jumpAttack(float playerX, float playerZ)
 			_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
 			_animPlayer = _anim[BOSS_LEFT_JUMP];
 			_animPlayer->start();
+
 		}
 		else
 		{
@@ -1483,6 +1484,9 @@ void boss::hit(float playerX, float playerZ, int damege)
 		_state == BOSS_RIGHT_JUMP || _state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK ||
 		_state == BOSS_LEFT_DASH || _state == BOSS_RIGHT_DASH || _state == BOSS_LEFT_DEATH_LOOP || _state == BOSS_RIGHT_DEATH_LOOP) return; // 3타중이면 못들어오게 // 공격 안받는 상황
 
+
+	CAMERAMANAGER->shakeCamera(2, 20);
+	//CAMERAMANAGER->shakeCamera(5, 20);
 	_characterImg = IMAGEMANAGER->findImage("boss_hit");
 	if (playerX <= _x) //플레이어가 왼쪽에 있는경우 --> 왼쪽을 봐야함 보스가
 	{

@@ -161,11 +161,24 @@ void cameraManager::setX(float relativeX)
 {
 	if (_isShakeCamera)
 	{
-		int rnd = RND->getFromFloatTo(-5.0f, 5.0f);
-
+		int rnd = RND->getInt(2) == 1 ? -1 : 1;
 		float newX = relativeX + rnd * _shakePower;
 		newX = min(_maxX, newX);
 		newX = max(_minX, newX);
+		if (newX == _minX)
+		{
+			if (rnd * _shakePower <= 0)
+				newX -= rnd * _shakePower;
+			else
+				newX += rnd * _shakePower;	
+		}
+		else if (newX == _maxX)
+		{
+			if (rnd * _shakePower <= 0)
+				newX -= rnd * _shakePower;
+			else
+				newX += rnd * _shakePower;
+		}
 		_x = floor(newX);
 		_left = _x - (_width * 0.5f);
 	}
@@ -182,13 +195,30 @@ void cameraManager::setY(float relativeY)
 {
 	if (_isShakeCamera)
 	{
-		int rnd = RND->getFromFloatTo(-5.0f, 5.0f);
+		int rnd = RND->getInt(2) == 1 ? -1 : 1;
 		float newY = relativeY + rnd * _shakePower;
+	    newY = min(_maxY, newY);
+		newY = max(_minY, newY);
+		if (newY == _minY)
+		{
+			if (rnd * _shakePower <= 0)
+				newY -= rnd * _shakePower;
+			else
+				newY += rnd * _shakePower;
+		}
+		else if (newY == _maxY)
+		{
+			if (rnd * _shakePower <= 0)
+				newY -= rnd * _shakePower;
+			else
+				newY += rnd * _shakePower;
+		}
 		_y = floor(newY);
 		_top = _y - (_height * 0.5f);
 	}
 	else
 	{
+
 		relativeY = min(_maxY, relativeY);
 		relativeY = max(_minY, relativeY);
 		_y = floor(relativeY);
