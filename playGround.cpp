@@ -39,7 +39,7 @@ void playGround::update()
 //그리기 전용
 void playGround::render()
 {	
-	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, WHITENESS);
+	PatBlt(getMemDC(), 0, 0, WINSIZEX, WINSIZEY, BLACKNESS);
 	//=================================================
 
 

@@ -238,8 +238,6 @@ void stageManager::collision()
 		//{
 		//	_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
 		//}
-		
-
 
 		_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
 		_enemyManager->eraseBoy(i);
