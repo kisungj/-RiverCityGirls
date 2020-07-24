@@ -17,7 +17,6 @@ class ui : public gameNode
 private:
 	image* _hpUI;
 	image* _selectArrow;
-	image* _loading;
 	RECT _hpRC;
 	RECT _bossHpRc;
 	tagInvenUi _inventory[10];
