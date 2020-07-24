@@ -49,6 +49,8 @@ HRESULT player::init()
 
 	_attackX = _attackY = _attackSizeX = _attackSizeY = 10;
 
+	_attackPower = 10;
+
 	_gameOver = false;
 
 	_jumpPower = _gravity = 0;
@@ -643,7 +645,7 @@ void player::enemyCol()
 					
 							_enemy->getVBoy()[i]->setOuch(true);
 							_enemy->getVBoy()[i]->setHitCount(1);
-							_enemy->getVBoy()[i]->setHP(10);
+							_enemy->getVBoy()[i]->setHP(_attackPower);
 							_attackRect = false;
 						}
 					}
@@ -665,7 +667,7 @@ void player::enemyCol()
 						}
 						_enemy->getVBoy()[i]->setOuch(true);
 						_enemy->getVBoy()[i]->setHitCount(1);
-						_enemy->getVBoy()[i]->setHP(10);
+						_enemy->getVBoy()[i]->setHP(_attackPower);
 						_attackRect = false;
 
 					}
@@ -696,7 +698,7 @@ void player::enemyCol()
 								_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 								_enemy->getVGirl()[i]->setOuch(true);
 								_enemy->getVGirl()[i]->setHitCount(1);
-								_enemy->getVGirl()[i]->setHP(10);
+								_enemy->getVGirl()[i]->setHP(_attackPower);
 								_attackRect = false;
 							}
 						}
@@ -718,7 +720,7 @@ void player::enemyCol()
 							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 							_enemy->getVGirl()[i]->setOuch(true);
 							_enemy->getVGirl()[i]->setHitCount(1);
-							_enemy->getVGirl()[i]->setHP(10);
+							_enemy->getVGirl()[i]->setHP(_attackPower);
 							_attackRect = false;
 						}
 					}
@@ -748,7 +750,7 @@ void player::enemyCol()
 								_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 								_enemy->getVCheer()[i]->setOuch(true);
 								_enemy->getVCheer()[i]->setHitCount(1);
-								_enemy->getVCheer()[i]->setHP(10);
+								_enemy->getVCheer()[i]->setHP(_attackPower);
 								_attackRect = false;
 							}
 						}
@@ -770,7 +772,7 @@ void player::enemyCol()
 							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 							_enemy->getVCheer()[i]->setOuch(true);
 							_enemy->getVCheer()[i]->setHitCount(1);
-							_enemy->getVCheer()[i]->setHP(10);
+							_enemy->getVCheer()[i]->setHP(_attackPower);
 							_attackRect = false;
 						}
 					}
@@ -803,7 +805,7 @@ void player::bossCol()
 						EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
 					}
 					_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-					_boss->hit(_playerX, _shadowY, 10);
+					_boss->hit(_playerX, _shadowY, _attackPower);
 					_attackRect = false;
 
 				}

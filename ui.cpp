@@ -184,6 +184,14 @@ void ui::update()
 				if (_select)
 				{
 					// 아이템 사용
+					if (_inventory[_itemSelectIndex].item->getitemstate() == HP)
+					{
+						_useHP = true;
+					}
+					if (_inventory[_itemSelectIndex].item->getitemstate() == POWER)
+					{
+						_usePower = true;
+					}
 					_inventory[_itemSelectIndex].isNull = true;
 					_isUse = false;
 				}

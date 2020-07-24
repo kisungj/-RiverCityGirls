@@ -65,7 +65,10 @@ private:
 	float			 _loadingFrameTimer;
 	int				 _changeStageNum;
 
+	float			 _powerItemTimer;
+
 	bool			 _isLoading;
+	bool			 _usePowerItem;
 public:
 	stageManager() {}
 	~stageManager() {}
@@ -79,5 +82,7 @@ public:
 	void doorCol();
 	void playerDead();
 	void saveData();
+
+	void setPlayerHP() { _player->setPlayerHP(30); }
 };
 

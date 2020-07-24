@@ -31,6 +31,14 @@ HRESULT stageManager::init()
 	_temp2->init(PANTS);
 	_ui->setEquipInventoryUI(_temp2);
 
+	Item* _temp3 = new Item;
+	_temp3->init(HP);
+	_ui->setInventoryUI(_temp3);
+
+	Item* _temp4 = new Item;
+	_temp4->init(POWER);
+	_ui->setInventoryUI(_temp4);
+
 	SCENEMANAGER->addScene("TITLE_SCENE", _title);
 	SCENEMANAGER->addScene("STAGE1_SCENE", _stage1);
 	SCENEMANAGER->addScene("STAGE2_SCENE", _stage2);
@@ -150,6 +158,34 @@ void stageManager::update()
 			_boss->update(_player->getPlayerX(), _player->getShadowY());
 		}
 
+	}
+
+	if (_ui->getIsPhone())
+	{
+		if (_ui->getUseHP())
+		{
+			_player->setUseHP(30);
+			_ui->setUseHP(false);
+		}
+		if (_ui->getUsePower())
+		{
+			_usePowerItem = true;
+			_player->setPlayerAttackPower(20);
+			_ui->setUsePower(false);
+		}
+	}
+
+	if (_usePowerItem)
+	{
+		_powerItemTimer++;
+
+		if (_powerItemTimer > 1000)
+		{
+			_player->setPlayerAttackPower(-20);
+
+			_powerItemTimer = 0;
+			_usePowerItem = false;
+		}
 	}
 
 	if (_stageBoss->getIsDialog())
