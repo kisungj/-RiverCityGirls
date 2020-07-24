@@ -92,19 +92,18 @@ void enemyManager::setStage1()
 		_vGirl.push_back(girl);
 	}
 
-	/*for (int i = 0; i < 1; ++i)
-	{
-		enemy* cheer;
-		cheer = new enemyGirl;
-		cheer->init(WINSIZEX / 2 + 500, (WINSIZEY / 2 + 200), ENEMYTYPE::CHEER);
-
-		_vCheer.push_back(cheer);
-	}*/
 }
 
 void enemyManager::setStage2()
 {
+	for (int i = 0; i < 1; ++i)
+	{
+		enemy* cheer;
+		cheer = new enemyGirl;
+		cheer->init(WINSIZEX / 2, WINSIZEY / 2, ENEMYTYPE::CHEER);
 
+		_vCheer.push_back(cheer);
+	}
 }
 
 //==================================³²ÀÚ¾Ö==================================//

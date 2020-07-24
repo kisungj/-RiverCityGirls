@@ -16,6 +16,8 @@ HRESULT stage2::init(obstacleManager* obstacleManager, itemManager* itemManager,
 	_enemyManager->init();
 	_itemManager->init();
 	//---- 임시
+	_enemyManager->setStage2();
+	//---- 임시
 	_obstacleManager->setObstacle(VENDING);
 	_obstacleManager->setObstacle(PILLARLEFT);
 	_obstacleManager->setObstacle(PILLARRIGHT);
