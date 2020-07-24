@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "iEvent.h"
 
-iCameraMove::iCameraMove(POINTFLOAT targetLocation, float speed)
+iCameraMove::iCameraMove(POINTFLOAT targetLocation, float speed, bool* arg)
 {
 	mTargetLocation = targetLocation;
 	mSpeed = speed;
+	_isEnd = arg;
 }
 
 void iCameraMove::eventStart()
@@ -21,11 +22,12 @@ bool iCameraMove::eventUpdate()
 	CAMERAMANAGER->setX(CAMERAMANAGER->getX() + cos(angle) * mSpeed * TIMEMANAGER->getElapsedTime());
 	CAMERAMANAGER->setY(CAMERAMANAGER->getY() - sin(angle) * mSpeed * TIMEMANAGER->getElapsedTime());
 
-	if (getDistance(position.x, position.y, mTargetLocation.x, mTargetLocation.y) < 3)
+	if (getDistance(position.x, position.y, mTargetLocation.x, mTargetLocation.y) < 50)
 	{
 		CAMERAMANAGER->setX(mTargetLocation.x);
 		CAMERAMANAGER->setY(mTargetLocation.y);
 
+		*_isEnd = true;
 		return true;
 	}
 

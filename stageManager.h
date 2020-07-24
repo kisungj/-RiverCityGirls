@@ -52,9 +52,19 @@ private:
 
 	string			 _curStageName;
 
+	string			 _dialogTempStr;
+	string			 _dialogTypeStr;
+	string			 _dialogTalkStr;
+	char			 _dialogIndexStr[255];
+	float			 _dialogPlayerX;
+	float		     _dialogBossX;
+	float			 _dialogChatCount;
+	int				 _dialogIndex;
+
 	float			 _loadingTimer;
 	float			 _loadingFrameTimer;
 	int				 _changeStageNum;
+
 	bool			 _isLoading;
 public:
 	stageManager() {}
@@ -67,6 +77,5 @@ public:
 public:
 	void collision();
 	void doorCol();
-
 };
 
