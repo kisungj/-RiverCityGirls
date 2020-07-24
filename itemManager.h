@@ -11,7 +11,6 @@ private:
 
 private:
 	vItem _vItems;
-	int	  _itemCount;					//아이템 횟수 카운트
 
 public:
 	itemManager();

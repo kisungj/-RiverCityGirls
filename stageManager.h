@@ -66,6 +66,7 @@ private:
 	int				 _changeStageNum;
 
 	float			 _powerItemTimer;
+	int				 _itemCount;
 
 	bool			 _isLoading;
 	bool			 _usePowerItem;

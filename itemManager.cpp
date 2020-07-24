@@ -44,38 +44,33 @@ void itemManager::setItem(RECT rc)
 	//랜덤값줘서 확률 구하기
 	int rnditempercent = RND->getInt(100);
 
-	//아이템은 무적권 하나만?
-	if (_itemCount == 0)
+	//각각 if문은 25퍼 확률로 나오는 아이템이 다름
+	if (rnditempercent >= 0 && rnditempercent <= 25)
 	{
-		//각각 if문은 25퍼 확률로 나오는 아이템이 다름
-		if (rnditempercent >= 0 && rnditempercent <= 25)
-		{
-			Item* _item = new Item;
-			_item->init(HP, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
-			_vItems.push_back(_item);
-		}
+		Item* _item = new Item;
+		_item->init(HP, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+		_vItems.push_back(_item);
+	}
 
-		if (rnditempercent >= 26 && rnditempercent <= 50)
-		{
-			Item* _item = new Item;
-			_item->init(POWER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
-			_vItems.push_back(_item);
-		}
+	if (rnditempercent >= 26 && rnditempercent <= 50)
+	{
+		Item* _item = new Item;
+		_item->init(POWER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+		_vItems.push_back(_item);
+	}
 
-		if (rnditempercent >= 51 && rnditempercent <= 75)
-		{
-			Item* _item = new Item;
-			_item->init(GOLD, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
-			_vItems.push_back(_item);
-		}
+	if (rnditempercent >= 51 && rnditempercent <= 75)
+	{
+		Item* _item = new Item;
+		_item->init(GOLD, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+		_vItems.push_back(_item);
+	}
 
-		if (rnditempercent >= 76 && rnditempercent <= 100)
-		{
-			Item* _item = new Item;
-			_item->init(SILVER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
-			_vItems.push_back(_item);
-		}
-		_itemCount++;
+	if (rnditempercent >= 76 && rnditempercent <= 100)
+	{
+		Item* _item = new Item;
+		_item->init(SILVER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+		_vItems.push_back(_item);
 	}
 }
 

@@ -123,7 +123,7 @@ void stageManager::update()
 	EFFECTMANAGER->update();
 	SCENEMANAGER->update();
 
-	cout << _title->getSelectCount() << endl;
+	//cout << _title->getSelectCount() << endl;
 
 	if (KEYMANAGER->isOnceKeyDown('O'))
 	{
@@ -397,8 +397,13 @@ void stageManager::collision()
 		if (IntersectRect(&temp, &_player->getAttackRect(), &_obstacleManager->getVObstacle()[i]->getObsRc()))
 		{
 			_obstacleManager->getVObstacle()[i]->collision();
-			_itemManager->setItem(_obstacleManager->getVObstacle()[i]->getObsRc());
-			_player->setAttack(0, 0, 0, 0);
+			
+			//자판기 때릴때는 아이템 무적권 하나만
+			if (_itemCount == 0)
+			{
+				_itemManager->setItem(_obstacleManager->getVObstacle()[i]->getObsRc());
+				_itemCount++;
+			}
 		}
 
 		//기둥과 충돌할때
@@ -422,11 +427,45 @@ void stageManager::collision()
 		}
 	}
 
-	//에너미 죽을때 아이템 떨어지게?
+	//에너미 죽을때 아이템 뜨는 확률
+	int rndItem = RND->getInt(10);
+	//boy enemy죽을때
 	for (int i = 0; i < _enemyManager->getVBoy().size(); i++)
 	{
-		_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
-		_enemyManager->eraseBoy(i);
+		if (_enemyManager->getVBoy()[i]->getCondition() == CONDITION::DEAD)
+		{
+			if (rndItem <= 4)
+			{
+				_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
+			}
+			_enemyManager->eraseBoy(i);
+		}
+	}
+
+	////girl enemy죽을때
+	for (int i = 0; i < _enemyManager->getVGirl().size(); i++)
+	{
+		if (_enemyManager->getVGirl()[i]->getCondition() == CONDITION::DEAD)
+		{
+			if (rndItem <= 4)
+			{
+				_itemManager->setItem(_enemyManager->getVGirl()[i]->getRC());
+			}
+			_enemyManager->eraseGirl(i);
+		}
+	}
+
+	////cheer enemy죽을때
+	for (int i = 0; i < _enemyManager->getVCheer().size(); i++)
+	{
+		if(_enemyManager->getVCheer()[i]->getCondition() == CONDITION::DEAD)
+		{
+			if (rndItem <= 4)
+			{
+				_itemManager->setItem(_enemyManager->getVCheer()[i]->getRC());
+			}
+			_enemyManager->eraseCheer(i);
+		}
 	}
 
 	//플레이어와 아이템 충돌
