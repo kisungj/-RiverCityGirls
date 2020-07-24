@@ -107,6 +107,14 @@ void stageManager::update()
 	EVENTMANAGER->update();
 	EFFECTMANAGER->update();
 	SCENEMANAGER->update();
+
+	cout << _title->getSelectCount() << endl;
+
+	if (KEYMANAGER->isOnceKeyDown('O'))
+	{
+		saveData();
+	}
+
 	if (_curStageName == "STAGEBOSS_SCENE")
 	{
 		_ui->setBossStage(true);
@@ -199,6 +207,7 @@ void stageManager::update()
 
 		if (_loadingTimer > 150)
 		{
+			saveData();
 			switch (_changeStageNum)
 			{
 			case 1:
@@ -322,6 +331,7 @@ void stageManager::update()
 
 	collision();
 	doorCol();
+	playerDead();
 
 	_ui->setHpGauge(_player->getPlayerHp(), _player->getPlayerMaxHP());
 }
@@ -459,4 +469,92 @@ void stageManager::doorCol()
 	}
 
 
+}
+
+void stageManager::playerDead()
+{
+	if (_player->getGameOver())
+	{
+		if (_curStageName == "STAGE1_SCENE")
+		{
+			_player->init();
+			_changeStageNum = 1;
+			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 230);
+			_player->setShadowY(WINSIZEY / 2 + 190);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_START"), IMAGEMANAGER->findImage("PLAYER_START"));
+
+
+		}
+		if (_curStageName == "STAGE2_SCENE")
+		{
+			_player->init();
+			_changeStageNum = 2;
+			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 440);
+			_player->setShadowY(WINSIZEY / 2 + 300);
+		}
+
+		if (_curStageName == "STAGEBOSS_SCENE")
+		{
+			_player->init();
+			_changeStageNum = 3;
+			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 440);
+			_player->setShadowY(WINSIZEY / 2 + 300);
+
+		}
+		_player->setGameOver(false);
+	}
+
+}
+
+void stageManager::saveData()
+{
+	switch (_title->getSelectCount())
+	{
+	case 1:
+		switch (_changeStageNum)
+		{
+		case 1:
+			INIDATA->addData("STAGE1", "STAGE", "STAGE 1");
+			break;
+		case 2:
+			INIDATA->addData("STAGE1", "STAGE", "STAGE 2");
+			break;
+		case 3:
+			INIDATA->addData("STAGE1", "STAGE", "STAGE 3");
+			break;
+		}
+		break;
+	case 2:
+		switch (_changeStageNum)
+		{
+		case 1:
+			INIDATA->addData("STAGE2", "STAGE", "STAGE 1");
+			break;
+		case 2:
+			INIDATA->addData("STAGE2", "STAGE", "STAGE 2");
+			break;
+		case 3:
+			INIDATA->addData("STAGE2", "STAGE", "STAGE 3");
+			break;
+		}
+		break;
+	case 3:
+		switch (_changeStageNum)
+		{
+		case 1:
+			INIDATA->addData("STAGE3", "STAGE", "STAGE 1");
+			break;
+		case 2:
+			INIDATA->addData("STAGE3", "STAGE", "STAGE 2");
+			break;
+		case 3:
+			INIDATA->addData("STAGE3", "STAGE", "STAGE 3");
+			break;
+		}
+		break;
+	}
+	INIDATA->iniSave("SELECT_STAGE");
 }

@@ -52,8 +52,10 @@ public:
 	virtual void update();
 	virtual void release();
 public:
-	bool getNextScene() { return _nextScene; }
 	void setNextScene(bool arg) { _nextScene = arg; }
+
+	int getSelectCount() { return _selectCount; }
+	bool getNextScene() { return _nextScene; }
 	bool getStage1() { return _stage1Start; }
 	bool getStage2() { return _stage2Start; }
 	bool getStage3() { return _stage3Start; }

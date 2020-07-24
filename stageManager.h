@@ -77,5 +77,7 @@ public:
 public:
 	void collision();
 	void doorCol();
+	void playerDead();
+	void saveData();
 };
 

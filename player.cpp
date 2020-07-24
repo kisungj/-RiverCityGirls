@@ -168,7 +168,7 @@ void player::keyAnimation()
 	
 	int rightStart[] = { 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46
 	, 47, 48, 49, 50, 51 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_START", "PLAYER_START", rightStart, 26, 8, false);
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_START", "PLAYER_START", rightStart, 26, 13, false);
 	
 	int rightDown[] = { 24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_DOWN", "PLAYER_DOWN", rightDown, 24, 13, false);
@@ -506,7 +506,7 @@ void player::pixelCol()
 			{
 				_isTop = false;
 				_shadowY += 3;
-				cout << "d" << endl;
+				//cout << "d" << endl;
 				break;
 			}
 			else

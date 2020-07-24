@@ -3,12 +3,6 @@
 
 HRESULT titleStage::init()
 {
-	INIDATA->addData("STAGE1", "STAGE", "STAGE 1");
-	INIDATA->addData("STAGE2", "STAGE", "NEW GAME");
-	INIDATA->addData("STAGE3", "STAGE", "NEW GAME");
-
-	INIDATA->iniSave("SELECT_STAGE");
-
 	IMAGEMANAGER->addImage("start_back", "image/ui/StartScene_Background.bmp", 1600, 900, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("start_frame", "image/ui/StartScene_Frame.bmp", 1600, 900, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("start_menu", "image/ui/StartScene_Menu.bmp", 150, 114, true, RGB(255, 0, 255));
@@ -230,15 +224,15 @@ void titleStage::update()
 				{
 					if (_stage1Str == "STAGE 1")
 					{
-
+						_stage1Start = true;
 					}
 					else if (_stage1Str == "STAGE 2")
 					{
-
+						_stage2Start = true;
 					}
 					else if (_stage1Str == "STAGE 3")
 					{
-
+						_stage3Start = true;
 					}
 					else
 					{
@@ -255,15 +249,15 @@ void titleStage::update()
 				{
 					if (_stage2Str == "STAGE 1")
 					{
-
+						_stage1Start = true;
 					}
 					else if (_stage2Str == "STAGE 2")
 					{
-
+						_stage2Start = true;
 					}
 					else if (_stage2Str == "STAGE 3")
 					{
-
+						_stage3Start = true;
 					}
 					else
 					{
@@ -280,15 +274,15 @@ void titleStage::update()
 				{
 					if (_stage3Str == "STAGE 1")
 					{
-
+						_stage1Start = true;
 					}
 					else if (_stage3Str == "STAGE 2")
 					{
-
+						_stage2Start = true;
 					}
 					else if (_stage3Str == "STAGE 3")
 					{
-
+						_stage3Start = true;
 					}
 					else
 					{
