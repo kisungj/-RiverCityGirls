@@ -36,8 +36,8 @@ public:
 	RECT getPillarRc() { return _PillarRc; }					//기둥 렉트값 넘겨줌
 	OBSTACLESTATE getObstacleState() { return _obstacleState; }	//장애물 enum값 넘겨줌
 	void setAlphaValue(bool bol = TRUE) { _alpha = bol; }		//기둥 알파값 설정
-	bool getDestZOrder() { return _deskZOrder; }				//책상 Z-Order
-	//void setDeskZOrder()
+	bool getDeskZOrder() { return _deskZOrder; }				//책상 Z-Order
+	void setDeskZOrder(bool desk) { _deskZOrder = desk; }
 	void collision();											//기둥과 충돌했을때
 };
 

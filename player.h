@@ -49,6 +49,7 @@ private:
 	float _currentHP, _maxHP;		//체력
 	float _jumpPower, _gravity;		//플레이어 점프파워, 중력
 	float _deskTimer;
+	float _attackPower;
 
 	bool _isBottom;					//아래
 	bool _isTop;					//위
@@ -170,6 +171,13 @@ public:
 	void setJumpPower(float jumpPower) { _jumpPower = jumpPower; }
 	void setGravity(float gravity) { _gravity = gravity; }
 	void setPlayerHP(float hp) { _currentHP = hp; }
+	void setUseHP(float hp)
+	{
+		_currentHP += hp;
+		if (_currentHP > 100)
+			_currentHP = 100;
+	}
+	void setPlayerAttackPower(float attack) { _attackPower += attack; }
 	void setAttack(float attackX, float attackY, float attackSizeX, float attackSizeY)
 	{
 		_attackX = attackX; _attackY = attackY; _attackSizeX = attackSizeX; _attackSizeY = attackSizeY;

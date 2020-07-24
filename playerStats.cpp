@@ -306,7 +306,7 @@ void walkState::update(player & player)
 			return;
 		}
 	}
-	cout << KEYMANAGER->getKeyUp() << endl;
+	//cout << KEYMANAGER->getKeyUp() << endl;
 	//오른쪽도 똑같아
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
@@ -1453,15 +1453,17 @@ void downState::update(player & player)
 		{
 			if (player.getPlayerHp() <= 0)
 			{
-				
 				if (!player.getDirectionX())
 				{
 					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
+					player.setState(player.getOverState());
 					player.setDirectionX(false);
+
 				}
 				if (player.getDirectionX())
 				{
 					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
+					player.setState(player.getOverState());
 					player.setDirectionX(true);
 				}
 			
@@ -1620,7 +1622,8 @@ void overState::update(player & player)
 {
 	if (!player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_OVER")->isPlay() && !player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_OVER")->isPlay())
 	{
-		if (!player.getDirectionX())
+		player.setGameOver(true);
+		/*if (!player.getDirectionX())
 		{
 			player.setIsJumping(false);
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
@@ -1635,7 +1638,7 @@ void overState::update(player & player)
 			player.setState(player.getIdleState());
 			player.setDirectionX(true);
 			player.setPlayerHP(100);
-		}
+		}*/
 	}
 }
 

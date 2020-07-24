@@ -34,6 +34,9 @@ private:
 	bool _select;
 	bool _isBossStage;
 
+	bool _useHP;
+	bool _usePower;
+
 
 public:
 	ui() {}
@@ -49,6 +52,10 @@ public:
 	void setBossStage(bool arg) { _isBossStage = arg; }
 
 	bool getIsPhone() { return _isPhone; }
+	bool getUseHP() { return _useHP; }
+	bool getUsePower() { return _usePower; }
+	void setUseHP(bool arg) { _useHP = arg; }
+	void setUsePower(bool arg) { _usePower = arg; }
 
 	void setInventoryUI(Item* item) 
 	{
@@ -62,5 +69,20 @@ public:
 			}
 		}
 	}
+
+	void setEquipInventoryUI(Item* item)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			if (_inventory[i].isNull)
+			{
+				_inventory[i].item = item;
+				_inventory[i].isNull = false;
+				break;
+			}
+		}
+	}
+
+	
 };
 

@@ -11,7 +11,6 @@ HRESULT stageManager::init()
 	_ui = new ui;
 	_ui->init();
 	_itemManager = new itemManager;
-	_inventory = new inventory;
 	_obstacleManager = new obstacleManager;
 	_enemyManager = new enemyManager;
 	_enemyManager->setPlayerLink(_player);
@@ -23,6 +22,22 @@ HRESULT stageManager::init()
 	_stageBoss = new stageBoss;
 	_title = new titleStage;
 	_title->init();
+
+	Item* _temp1 = new Item;
+	_temp1->init(PANTS);
+	_ui->setEquipInventoryUI(_temp1);
+
+	Item* _temp2 = new Item;
+	_temp2->init(PANTS);
+	_ui->setEquipInventoryUI(_temp2);
+
+	Item* _temp3 = new Item;
+	_temp3->init(HP);
+	_ui->setInventoryUI(_temp3);
+
+	Item* _temp4 = new Item;
+	_temp4->init(POWER);
+	_ui->setInventoryUI(_temp4);
 
 	SCENEMANAGER->addScene("TITLE_SCENE", _title);
 	SCENEMANAGER->addScene("STAGE1_SCENE", _stage1);
@@ -107,6 +122,14 @@ void stageManager::update()
 	EVENTMANAGER->update();
 	EFFECTMANAGER->update();
 	SCENEMANAGER->update();
+
+	cout << _title->getSelectCount() << endl;
+
+	if (KEYMANAGER->isOnceKeyDown('O'))
+	{
+		saveData();
+	}
+
 	if (_curStageName == "STAGEBOSS_SCENE")
 	{
 		_ui->setBossStage(true);
@@ -135,6 +158,34 @@ void stageManager::update()
 			_boss->update(_player->getPlayerX(), _player->getShadowY());
 		}
 
+	}
+
+	if (_ui->getIsPhone())
+	{
+		if (_ui->getUseHP())
+		{
+			_player->setUseHP(30);
+			_ui->setUseHP(false);
+		}
+		if (_ui->getUsePower())
+		{
+			_usePowerItem = true;
+			_player->setPlayerAttackPower(20);
+			_ui->setUsePower(false);
+		}
+	}
+
+	if (_usePowerItem)
+	{
+		_powerItemTimer++;
+
+		if (_powerItemTimer > 1000)
+		{
+			_player->setPlayerAttackPower(-20);
+
+			_powerItemTimer = 0;
+			_usePowerItem = false;
+		}
 	}
 
 	if (_stageBoss->getIsDialog())
@@ -199,6 +250,7 @@ void stageManager::update()
 
 		if (_loadingTimer > 150)
 		{
+			saveData();
 			switch (_changeStageNum)
 			{
 			case 1:
@@ -322,6 +374,7 @@ void stageManager::update()
 
 	collision();
 	doorCol();
+	playerDead();
 
 	_ui->setHpGauge(_player->getPlayerHp(), _player->getPlayerMaxHP());
 }
@@ -361,7 +414,11 @@ void stageManager::collision()
 		//Ã¥»ó Z-Order
 		if (_player->getIsDesk() == true)
 		{
-			_obstacleManager->getVObstacle()[i]->getDestZOrder();
+			_obstacleManager->getVObstacle()[i]->setDeskZOrder(true);
+		}
+		else
+		{
+			_obstacleManager->getVObstacle()[i]->setDeskZOrder(false);
 		}
 	}
 
@@ -459,4 +516,92 @@ void stageManager::doorCol()
 	}
 
 
+}
+
+void stageManager::playerDead()
+{
+	if (_player->getGameOver())
+	{
+		if (_curStageName == "STAGE1_SCENE")
+		{
+			_player->init();
+			_changeStageNum = 1;
+			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 230);
+			_player->setShadowY(WINSIZEY / 2 + 190);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_START"), IMAGEMANAGER->findImage("PLAYER_START"));
+
+
+		}
+		if (_curStageName == "STAGE2_SCENE")
+		{
+			_player->init();
+			_changeStageNum = 2;
+			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 440);
+			_player->setShadowY(WINSIZEY / 2 + 300);
+		}
+
+		if (_curStageName == "STAGEBOSS_SCENE")
+		{
+			_player->init();
+			_changeStageNum = 3;
+			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 440);
+			_player->setShadowY(WINSIZEY / 2 + 300);
+
+		}
+		_player->setGameOver(false);
+	}
+
+}
+
+void stageManager::saveData()
+{
+	switch (_title->getSelectCount())
+	{
+	case 1:
+		switch (_changeStageNum)
+		{
+		case 1:
+			INIDATA->addData("STAGE1", "STAGE", "STAGE 1");
+			break;
+		case 2:
+			INIDATA->addData("STAGE1", "STAGE", "STAGE 2");
+			break;
+		case 3:
+			INIDATA->addData("STAGE1", "STAGE", "STAGE 3");
+			break;
+		}
+		break;
+	case 2:
+		switch (_changeStageNum)
+		{
+		case 1:
+			INIDATA->addData("STAGE2", "STAGE", "STAGE 1");
+			break;
+		case 2:
+			INIDATA->addData("STAGE2", "STAGE", "STAGE 2");
+			break;
+		case 3:
+			INIDATA->addData("STAGE2", "STAGE", "STAGE 3");
+			break;
+		}
+		break;
+	case 3:
+		switch (_changeStageNum)
+		{
+		case 1:
+			INIDATA->addData("STAGE3", "STAGE", "STAGE 1");
+			break;
+		case 2:
+			INIDATA->addData("STAGE3", "STAGE", "STAGE 2");
+			break;
+		case 3:
+			INIDATA->addData("STAGE3", "STAGE", "STAGE 3");
+			break;
+		}
+		break;
+	}
+	INIDATA->iniSave("SELECT_STAGE");
 }

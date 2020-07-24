@@ -15,6 +15,8 @@ HRESULT ui::init()
 	_inventory[0].rc = RectMake(250, 300, 110, 110);
 	_inventory[1].rc = RectMake(405, 300, 110, 110);
 
+	
+
 	// 첫번째 줄 인벤토리 
 	_inventory[2].rc = RectMake(248, 448, 63, 61);
 	_inventory[3].rc = RectMake(317, 448, 63, 61);
@@ -182,6 +184,14 @@ void ui::update()
 				if (_select)
 				{
 					// 아이템 사용
+					if (_inventory[_itemSelectIndex].item->getitemstate() == HP)
+					{
+						_useHP = true;
+					}
+					if (_inventory[_itemSelectIndex].item->getitemstate() == POWER)
+					{
+						_usePower = true;
+					}
 					_inventory[_itemSelectIndex].isNull = true;
 					_isUse = false;
 				}

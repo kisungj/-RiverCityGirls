@@ -49,6 +49,8 @@ HRESULT player::init()
 
 	_attackX = _attackY = _attackSizeX = _attackSizeY = 10;
 
+	_attackPower = 10;
+
 	_gameOver = false;
 
 	_jumpPower = _gravity = 0;
@@ -168,7 +170,7 @@ void player::keyAnimation()
 	
 	int rightStart[] = { 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46
 	, 47, 48, 49, 50, 51 };
-	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_START", "PLAYER_START", rightStart, 26, 8, false);
+	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_START", "PLAYER_START", rightStart, 26, 13, false);
 	
 	int rightDown[] = { 24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47 };
 	KEYANIMANAGER->addArrayFrameAnimation("P_RIGHT_DOWN", "PLAYER_DOWN", rightDown, 24, 13, false);
@@ -506,7 +508,7 @@ void player::pixelCol()
 			{
 				_isTop = false;
 				_shadowY += 3;
-				cout << "d" << endl;
+				//cout << "d" << endl;
 				break;
 			}
 			else
@@ -643,7 +645,7 @@ void player::enemyCol()
 					
 							_enemy->getVBoy()[i]->setOuch(true);
 							_enemy->getVBoy()[i]->setHitCount(1);
-							_enemy->getVBoy()[i]->setHP(10);
+							_enemy->getVBoy()[i]->setHP(_attackPower);
 							_attackRect = false;
 						}
 					}
@@ -665,7 +667,7 @@ void player::enemyCol()
 						}
 						_enemy->getVBoy()[i]->setOuch(true);
 						_enemy->getVBoy()[i]->setHitCount(1);
-						_enemy->getVBoy()[i]->setHP(10);
+						_enemy->getVBoy()[i]->setHP(_attackPower);
 						_attackRect = false;
 
 					}
@@ -696,7 +698,7 @@ void player::enemyCol()
 								_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 								_enemy->getVGirl()[i]->setOuch(true);
 								_enemy->getVGirl()[i]->setHitCount(1);
-								_enemy->getVGirl()[i]->setHP(10);
+								_enemy->getVGirl()[i]->setHP(_attackPower);
 								_attackRect = false;
 							}
 						}
@@ -718,7 +720,7 @@ void player::enemyCol()
 							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 							_enemy->getVGirl()[i]->setOuch(true);
 							_enemy->getVGirl()[i]->setHitCount(1);
-							_enemy->getVGirl()[i]->setHP(10);
+							_enemy->getVGirl()[i]->setHP(_attackPower);
 							_attackRect = false;
 						}
 					}
@@ -748,7 +750,7 @@ void player::enemyCol()
 								_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 								_enemy->getVCheer()[i]->setOuch(true);
 								_enemy->getVCheer()[i]->setHitCount(1);
-								_enemy->getVCheer()[i]->setHP(10);
+								_enemy->getVCheer()[i]->setHP(_attackPower);
 								_attackRect = false;
 							}
 						}
@@ -770,7 +772,7 @@ void player::enemyCol()
 							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 							_enemy->getVCheer()[i]->setOuch(true);
 							_enemy->getVCheer()[i]->setHitCount(1);
-							_enemy->getVCheer()[i]->setHP(10);
+							_enemy->getVCheer()[i]->setHP(_attackPower);
 							_attackRect = false;
 						}
 					}
@@ -803,7 +805,7 @@ void player::bossCol()
 						EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
 					}
 					_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-					_boss->hit(_playerX, _shadowY, 10);
+					_boss->hit(_playerX, _shadowY, _attackPower);
 					_attackRect = false;
 
 				}
