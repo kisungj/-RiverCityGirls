@@ -111,13 +111,13 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addImage("stage1", "image/map/stage.bmp", 2395, 1100, false, RGB(0, 0, 0));
 	IMAGEMANAGER->addImage("금동전", "image/item/금동전.bmp", 36, 36, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("은동전", "image/item/은동전.bmp", 36, 37, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("물약1", "image/item/물약1.bmp", 70, 74, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("물약1", "image/item/물약1.bmp", 70, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("물약2", "image/item/물약2.bmp", 70, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("기둥좌", "image/obstacle/기둥좌.bmp", 200, 880, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("기둥우", "image/obstacle/기둥우.bmp", 200, 880, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("책상", "image/obstacle/책상.bmp", 195, 215, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("팬츠", "image/item/팬츠.bmp", 70, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("자판기", "image/obstacle/자판기.bmp", 700, 346, 2, 1, true, RGB(255, 0, 255));
-
 	IMAGEMANAGER->addImage("background", "image/map/01_Detention_BG_x3_start_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
 
 
@@ -182,5 +182,7 @@ void playGround::soundLoad()
 	SOUNDMANAGER->addSound("플레2타", "mp3/플레2타.mp3", true, false);
 	SOUNDMANAGER->addSound("플레3타", "mp3/플레3타.mp3", true, false);
 	SOUNDMANAGER->addSound("플레q공격", "mp3/플레q공격.mp3", true, false);
-	SOUNDMANAGER->play("배경음", 1.0f);
+	SOUNDMANAGER->addSound("플레히트", "mp3/플레히트.mp3", true, false);
+
+	SOUNDMANAGER->play("배경음", 0.1f);
 }
