@@ -34,6 +34,7 @@ void playGround::update()
 {
 	gameNode::update();
 
+	CAMERAMANAGER->update();
 	_stageManager->update();
 }
 

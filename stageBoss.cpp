@@ -29,7 +29,6 @@ void stageBoss::render()
 
 void stageBoss::update()
 {
-	CAMERAMANAGER->update();
 	cout << _isDialog << endl;
 	if (!EVENTMANAGER->isEvnet())
 	{
