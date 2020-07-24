@@ -30,6 +30,7 @@ void idleState::update(player & player)
 	//왼쪽
 	if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 	{
+		player.setRunCount(player.getRunCount() + 1);
 		player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 		player.setState(player.getWalkState());
 		player.setDirectionX(false);
@@ -37,6 +38,7 @@ void idleState::update(player & player)
 	//오른쪽
 	else if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 	{
+		player.setRunCount(player.getRunCount() + 1);
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 		player.setState(player.getWalkState());
 		player.setDirectionX(true);
@@ -192,33 +194,53 @@ void idleState::update(player & player)
 void walkState::update(player & player)
 {
 
-	player.setRunCount(player.getRunCount() + 1);
+	if (player.getRunCount() > 0)
+	{
+		_runTimer++;
+	}
+	if (_runTimer > 30)
+	{
+		player.setRunCount(0);
+		_runTimer = 0;
+	}
 	//왼쪽
 	if (!player.getDirectionX())
 	{
+		//왼쪽키를 꾹 누르면
 		if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 		{
+			//얘는 런카운트 초기화
+			/*if (player.getRunCount() > 6)
+			{
+				player.setRunCount(0);
+			}*/
+			//여기서 같이 업키나
 			if (KEYMANAGER->isOnceKeyDown(VK_UP))
 			{
 				player.setDirectionY(true);
 			}
+			//다운키를 누르면 Y축 불값줘서 올라가게해주기
 			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 			{
 				player.setDirectionY(false);
 			}
+			//만약 왼쪽가다가 오른쪽 키 누르면
 			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			}
+			//아이들로 바뀌고 멈츠ㅜ기
 			else if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 			{
 				return;
 			}
+			//근데 오른쪽키 떼면 다시 왼쪽으로 가게
 			else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 				player.setState(player.getWalkState());
 			}
+			//왼쪽으로만 움직움직
 			if (player.getIsLeft())
 			{
 				player.setShadowX(player.getShadowX() - 3);
@@ -226,11 +248,15 @@ void walkState::update(player & player)
 		}
 	}
 
-	//오른쪽
+	//오른쪽도 똑같다
 	if (player.getDirectionX())
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 		{
+			/*if (player.getRunCount() > 6)
+			{
+				player.setRunCount(0);
+			}*/
 			if (KEYMANAGER->isOnceKeyDown(VK_UP))
 			{
 				player.setDirectionY(true);
@@ -261,26 +287,30 @@ void walkState::update(player & player)
 		}
 	}
 
-	//왼쪽
+	//왼쪽키를 딱 떼면
 	if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 	{
+		//아무키도 안눌렀음 아이들로 바뀌고
 		if (KEYMANAGER->getKeyUp() == NULL)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
 			player.setDirectionX(false);
-			if (player.getRunCount() > 6)
+			//얘는 런카운트 초기화 시켜준거
+		/*	if (player.getRunCount() > 6)
 			{
 				player.setRunCount(0);
-			}
+			}*/
 
 		}
+		//만약 왼쪽키를 뗐는데 아래키나 위키 누르면 왼쪽으로 가게,,?
 		else if (KEYMANAGER->isOnceKeyDown(VK_DOWN) || KEYMANAGER->isOnceKeyDown(VK_UP))
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
 		}
-		else
+		//나머지는 오른쪽 키를 누르면 오른쪽으로 가게
+		else if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
@@ -288,7 +318,7 @@ void walkState::update(player & player)
 		}
 	}
 
-	//오른쪽
+	//오른쪽도 똑같아
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
 		if (KEYMANAGER->getKeyUp() == NULL)
@@ -296,17 +326,17 @@ void walkState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
 			player.setDirectionX(true);
-			if (player.getRunCount() > 6)
+			/*if (player.getRunCount() > 6)
 			{
 				player.setRunCount(0);
-			}
+			}*/
 		}
 		else if (KEYMANAGER->isOnceKeyDown(VK_DOWN) || KEYMANAGER->isOnceKeyDown(VK_UP))
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
 		}
-		else
+		else if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
@@ -315,13 +345,14 @@ void walkState::update(player & player)
 	}
 	
 
-	//위
 	if (player.getDirectionY())
 	{
+		//위키를 눌렀을때
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
 			
-		player.setRunCount(0);
+			player.setRunCount(0);
+			//다운키 누르면 아이들로 바뀌고
 			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 			{
 				if (player.getDirectionX())
@@ -333,24 +364,34 @@ void walkState::update(player & player)
 					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 				}
 			}
+			//그리고 멈춰주기
 			else if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 			{
 				return;
 			}
+			//만약 왼쪽일떄
 			if (!player.getDirectionX())
 			{
+				//오른쪽 키 누르면
 				if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 				{
+					//오른쪽으로 바꿔줘라
 					player.setDirectionX(true);
+					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 				}
 			}
+			//이건 오른쪽일떄
 			if (player.getDirectionX())
 			{
+				//왼쪽 키 누르면
 				if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 				{
+					//왼쪽으로 바꿔줘라
 					player.setDirectionX(false);
+					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 				}
 			}
+			//탑일때만 움직여라
 			if (player.getIsTop())
 			{
 				player.setShadowY(player.getShadowY() - 3);
@@ -359,7 +400,7 @@ void walkState::update(player & player)
 	}
 	if (!player.getDirectionY())
 	{
-		//아래
+		//아래키일때도 똑같다
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
 		
@@ -385,6 +426,7 @@ void walkState::update(player & player)
 				if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 				{
 					player.setDirectionX(true);
+					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 				}
 			}
 			if (player.getDirectionX())
@@ -392,6 +434,7 @@ void walkState::update(player & player)
 				if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 				{
 					player.setDirectionX(false);
+					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 				}
 			}
 			if (player.getIsBottom())
@@ -401,12 +444,12 @@ void walkState::update(player & player)
 		}
 	}
 	
-	//위
+	//위키를 떼면
 	if (KEYMANAGER->isOnceKeyUp(VK_UP))
 	{
 
 		player.setRunCount(0);
-		
+		//아무것도 안눌러져있으면 아이들로
 		if (KEYMANAGER->getKeyUp() == NULL)
 		{
 			player.setDirectionY(true);
@@ -422,6 +465,7 @@ void walkState::update(player & player)
 			}
 		}
 		
+		//다른키를 누르면
 		else
 		{
 			player.setDirectionY(false);
@@ -436,7 +480,7 @@ void walkState::update(player & player)
 
 		}
 	}
-	//아래
+	//아래도 같다
 	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
 	{
 
@@ -675,10 +719,10 @@ void runState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
 			player.setDirectionX(false);
-			if (player.getRunCount() > 21)
+			/*if (player.getRunCount() > 21)
 			{
 				player.setRunCount(0);
-			}
+			}*/
 
 		}
 		else
@@ -697,10 +741,10 @@ void runState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
 			player.setDirectionX(true);
-			if (player.getRunCount() > 21)
+			/*if (player.getRunCount() > 21)
 			{
 				player.setRunCount(0);
-			}
+			}*/
 		}
 		else
 		{
@@ -957,10 +1001,10 @@ void runState::update(player & player)
 			player.setState(player.getAttackState());
 		}
 	}
-	if (player.getRunCount() > 6)
+	/*if (player.getRunCount() > 6)
 	{
 		player.setRunCount(0);
-	}
+	}*/
 	//player.mouseCol();
 }
 
@@ -1178,10 +1222,10 @@ void jumpState::update(player & player)
 	//	}
 	//}
 
-	if (player.getRunCount() > 6)
+	/*if (player.getRunCount() > 6)
 	{
 		player.setRunCount(0);
-	}
+	}*/
 	//player.mouseCol();
 }
 
@@ -1211,10 +1255,10 @@ void attackState::update(player & player)
 		{
 			if (!KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK1")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_ATTACK1")->isPlay())
 			{
-				if (player.getRunCount() > 6)
+				/*if (player.getRunCount() > 6)
 				{
 					player.setRunCount(0);
-				}
+				}*/
 				//키 누르면 어택 2로 넘거가게
 				if (player.getAttacked())
 				{
@@ -1370,10 +1414,10 @@ void attackState::update(player & player)
 			}
 		}
 	}
-	if (player.getRunCount() > 6)
+	/*if (player.getRunCount() > 6)
 	{
 		player.setRunCount(0);
-	}
+	}*/
 	//player.mouseCol();
 } 
 
@@ -1452,10 +1496,10 @@ void hitState::update(player & player)
 			player.setGameOver(false);
 		}
 	}
-	if (player.getRunCount() > 6)
+	/*if (player.getRunCount() > 6)
 	{
 		player.setRunCount(0);
-	}
+	}*/
 }
 
 HRESULT downState::init()
@@ -1552,10 +1596,10 @@ void downState::update(player & player)
 			}
 		}
 	}
-	if (player.getRunCount() > 6)
+	/*if (player.getRunCount() > 6)
 	{
 		player.setRunCount(0);
-	}
+	}*/
 }
 
 void startState::update(player & player)
@@ -1591,10 +1635,10 @@ void startState::update(player & player)
 		
 		}
 	}
-	if (player.getRunCount() > 6)
+	/*if (player.getRunCount() > 6)
 	{
 		player.setRunCount(0);
-	}
+	}*/
 }
 void guardState::update(player & player)
 {
@@ -1648,10 +1692,10 @@ void guardState::update(player & player)
 			}
 		}
 	}
-	if (player.getRunCount() > 6)
+	/*if (player.getRunCount() > 6)
 	{
 		player.setRunCount(0);
-	}
+	}*/
 }
 
 void overState::update(player & player)
@@ -1675,10 +1719,10 @@ void overState::update(player & player)
 			player.setPlayerHP(100);
 		}
 	}
-	if (player.getRunCount() > 6)
+	/*if (player.getRunCount() > 6)
 	{
 		player.setRunCount(0);
-	}
+	}*/
 }
 
 void stunState::update(player & player)

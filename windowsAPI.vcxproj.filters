@@ -198,12 +198,6 @@
     <ClInclude Include="stageManager.h">
       <Filter>playGround\stage</Filter>
     </ClInclude>
-    <ClInclude Include="testEnemyScene.h">
-      <Filter>playGround\stage</Filter>
-    </ClInclude>
-    <ClInclude Include="testPlayerScene.h">
-      <Filter>playGround\stage</Filter>
-    </ClInclude>
     <ClInclude Include="enemyState.h">
       <Filter>playGround\enemy</Filter>
     </ClInclude>
@@ -213,20 +207,11 @@
     <ClInclude Include="iEvent.h">
       <Filter>2DGameFramework\event</Filter>
     </ClInclude>
-    <ClInclude Include="testBossScene.h">
-      <Filter>playGround\stage</Filter>
-    </ClInclude>
-    <ClInclude Include="testUIScene.h">
-      <Filter>playGround\stage</Filter>
-    </ClInclude>
     <ClInclude Include="obstacle.h">
       <Filter>playGround\obstacle</Filter>
     </ClInclude>
     <ClInclude Include="obstacleManager.h">
       <Filter>playGround\obstacle</Filter>
-    </ClInclude>
-    <ClInclude Include="testObstcle.h">
-      <Filter>playGround\stage</Filter>
     </ClInclude>
     <ClInclude Include="inventory.h">
       <Filter>playGround\inventory</Filter>
@@ -353,12 +338,6 @@
     <ClCompile Include="stageManager.cpp">
       <Filter>playGround\stage</Filter>
     </ClCompile>
-    <ClCompile Include="testEnemyScene.cpp">
-      <Filter>playGround\stage</Filter>
-    </ClCompile>
-    <ClCompile Include="testPlayerScene.cpp">
-      <Filter>playGround\stage</Filter>
-    </ClCompile>
     <ClCompile Include="playerStats.cpp">
       <Filter>playGround\player</Filter>
     </ClCompile>
@@ -371,20 +350,11 @@
     <ClCompile Include="iEvent.cpp">
       <Filter>2DGameFramework\event</Filter>
     </ClCompile>
-    <ClCompile Include="testBossScene.cpp">
-      <Filter>playGround\stage</Filter>
-    </ClCompile>
-    <ClCompile Include="testUIScene.cpp">
-      <Filter>playGround\stage</Filter>
-    </ClCompile>
     <ClCompile Include="obstacle.cpp">
       <Filter>playGround\obstacle</Filter>
     </ClCompile>
     <ClCompile Include="obstacleManager.cpp">
       <Filter>playGround\obstacle</Filter>
-    </ClCompile>
-    <ClCompile Include="testObstcle.cpp">
-      <Filter>playGround\stage</Filter>
     </ClCompile>
     <ClCompile Include="inventory.cpp">
       <Filter>playGround\inventory</Filter>

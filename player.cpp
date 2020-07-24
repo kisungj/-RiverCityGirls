@@ -74,7 +74,8 @@ HRESULT player::init()
 	_enemyBLay = false;
 	_enemyGLay = false;
 	_isObs = false;
-	
+	//_runCountTest = 0;
+
 	return S_OK;
 }
 
@@ -86,7 +87,16 @@ void player::release()
 
 void player::update()
 {
-
+	/*if (_runCount > 0)
+	{
+		_runCountTest++;
+	}
+	if (_runCountTest > 30)
+	{
+		_runCount = 0;
+		_runCountTest = 0;
+	}*/
+	cout << _runCount << endl;
 	//cout << _ptMouse.x << endl;
 	//cout << _ptMouse.y << endl;
 	//cout << _directionX << endl;

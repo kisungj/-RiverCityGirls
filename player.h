@@ -10,7 +10,7 @@ class runState;
 class jumpState;
 class attackState;
 class hitState;
-class downState;		//힝
+class downState;	
 class startState;
 class guardState;
 class overState;
@@ -40,6 +40,7 @@ private:
 	int _runCount;					//빠르게 달리기
 	int _shadowAlpha;				//그림자 알파
 	int _money;
+	//int _runCountTest;
 
 	float _shadowX, _shadowY;		//그림자 중점
 	float _playerX, _playerY;		//플레이어 중점
@@ -225,6 +226,8 @@ public:
 
 class walkState : public playerState
 {
+private:
+	int _runTimer = 0;
 public:
 	virtual void update(player& player) override;
 };
