@@ -1257,6 +1257,8 @@ void boss::jumpAttack(float playerX, float playerZ)
 
 	if (_jumpAndDownAttackCount > 100) // changePattern쪽에서 받아옴 
 	{
+		SOUNDMANAGER->stop("보스점프");
+
 		_jumpAndDownAttackCount = 0;
 		if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
 		{
@@ -1291,7 +1293,7 @@ void boss::jumpAttack(float playerX, float playerZ)
 			_animPlayer = _anim[BOSS_RIGHT_IDLE];
 			_animPlayer->start();
 		}
-
+		SOUNDMANAGER->stop("보스점프엉덩방아");
 	}
 
 }
@@ -1415,7 +1417,7 @@ void boss::changePattern(float playerX, float playerZ)
 		if (_delayTime % _phaseCount == 0)
 		{
 			_delayTime = 0;
-			_patternNumber = 4; //RND->getInt(5);
+			_patternNumber = RND->getInt(5);
 			_isDelayTime = false;
 		}
 	}
