@@ -62,7 +62,6 @@ void testUIScene::update()
 
 	if (_isTalk)
 	{
-	
 		if (KEYMANAGER->isOnceKeyDown('I'))
 		{
 			if (_index == 13)
@@ -75,17 +74,10 @@ void testUIScene::update()
 			_playerX = -200;
 			_bossX = 1300;
 		}
-		
-		//if (_index == 13 && _chatCount == strlen(_test.c_str()))
-		//{
-		//	_isTalk = false;
-		//}
 
 		sprintf_s(_indexStr, "TALK%d", _index);
 		_test = INIDATA->loadDataString("TALK", "TALK", _indexStr);
 
-		//cout << _test.front() << endl;
-		//_test.erase(_test.front());
 		_typeStr = _test.front();
 		_firstNotStr = _test.substr(1, _test.length());
 
