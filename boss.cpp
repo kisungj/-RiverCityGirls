@@ -983,10 +983,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 void boss::attack(float playerX, float playerZ)
 {
-	// ------ 임시 --------
-	float tempZ = playerZ + 100;
-
-	if (getDistance(_x, _z, playerX, tempZ) < 3000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
+	if (getDistance(_x, _z, playerX, playerZ) < 3000 && getDistance(_x, _z, playerX, playerZ) > 150) // 플레이어를 찾아다님
 	{
 		if ((_state == BOSS_LEFT_ATTACK || _state == BOSS_RIGHT_ATTACK))
 		{
@@ -1012,7 +1009,7 @@ void boss::attack(float playerX, float playerZ)
 		}
 		else
 		{
-			_angle = getAngle(_x, _z, playerX, tempZ);
+			_angle = getAngle(_x, _z, playerX, playerZ);
 			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 			{
 				if (_state != BOSS_LEFT_WALK)
@@ -1039,7 +1036,7 @@ void boss::attack(float playerX, float playerZ)
 		}
 
 	}
-	else if (getDistance(_x, _z, playerX, tempZ) <= 150) // 사정거리에 들어왔을 경우
+	else if (getDistance(_x, _z, playerX, playerZ) <= 150) // 사정거리에 들어왔을 경우
 	{
 		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 		{
@@ -1087,9 +1084,8 @@ void boss::attack(float playerX, float playerZ)
 void boss::heavyAttack(float playerX, float playerZ)
 {
 	// ------ 임시 --------
-	float tempZ = playerZ + 100;
 
-	if (getDistance(_x, _z, playerX, tempZ) < 3000 && getDistance(_x, _z, playerX, tempZ) > 500) // 플레이어를 찾아다님
+	if (getDistance(_x, _z, playerX, playerZ) < 3000 && getDistance(_x, _z, playerX, playerZ) > 500) // 플레이어를 찾아다님
 	{
 		if ((_state == BOSS_LEFT_HEAVY_ATTACK || _state == BOSS_RIGHT_HEAVY_ATTACK))
 		{
@@ -1136,13 +1132,13 @@ void boss::heavyAttack(float playerX, float playerZ)
 					_animPlayer->start();
 				}
 			}
-			_angle = getAngle(_x, _z, playerX, tempZ);
+			_angle = getAngle(_x, _z, playerX, playerZ);
 			_x += cosf(_angle) * 2;	// 따로 빼도 되는건가 
 			_z -= sinf(_angle) * 2; // 따로 빼도 되는건가 
 		}
 
 	}
-	else if (getDistance(_x, _z, playerX, tempZ) <= 500) // 사정거리에 들어왔을 경우
+	else if (getDistance(_x, _z, playerX, playerZ) <= 500) // 사정거리에 들어왔을 경우
 	{
 		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 		{
@@ -1153,7 +1149,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 				_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
 				_animPlayer->start();
 
-				_angle = getAngle(_x, _z, playerX, tempZ);
+				_angle = getAngle(_x, _z, playerX, playerZ);
 			}
 
 		}
@@ -1166,7 +1162,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 				_animPlayer = _anim[BOSS_RIGHT_HEAVY_ATTACK];
 				_animPlayer->start();
 
-				_angle = getAngle(_x, _z, playerX, tempZ);
+				_angle = getAngle(_x, _z, playerX, playerZ);
 			}
 		}
 
@@ -1197,9 +1193,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 void boss::dashAttack(float playerX, float playerZ)
 {
 	// ------ 임시 --------
-	float tempZ = playerZ + 100;
-
-	if (getDistance(_x, _z, playerX, tempZ) <= 3000) // 사정거리에 들어왔을 경우
+	if (getDistance(_x, _z, playerX, playerZ) <= 3000) // 사정거리에 들어왔을 경우
 	{
 		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 		{
@@ -1209,7 +1203,7 @@ void boss::dashAttack(float playerX, float playerZ)
 				_characterImg = IMAGEMANAGER->findImage("boss_dash");
 				_animPlayer = _anim[BOSS_LEFT_DASH];
 				_animPlayer->start();
-				_angle = getAngle(_x, _z, playerX, tempZ);
+				_angle = getAngle(_x, _z, playerX, playerZ);
 			}
 		}
 		else               // 보스가 플레이어 왼쪽에 있는 경우
@@ -1220,7 +1214,7 @@ void boss::dashAttack(float playerX, float playerZ)
 				_characterImg = IMAGEMANAGER->findImage("boss_dash");
 				_animPlayer = _anim[BOSS_RIGHT_DASH];
 				_animPlayer->start();
-				_angle = getAngle(_x, _z, playerX, tempZ);
+				_angle = getAngle(_x, _z, playerX, playerZ);
 			}
 		}
 	}
@@ -1230,8 +1224,6 @@ void boss::dashAttack(float playerX, float playerZ)
 void boss::jumpAttack(float playerX, float playerZ)
 {
 	// ------ 임시 --------
-	float tempZ = playerZ + 100;
-
 	if (_state != BOSS_LEFT_JUMP && _state != BOSS_RIGHT_JUMP && _state != BOSS_LEFT_JUMP_ATTACK && _state != BOSS_RIGHT_JUMP_ATTACK)
 	{
 		if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
@@ -1253,7 +1245,7 @@ void boss::jumpAttack(float playerX, float playerZ)
 	}
 	if (_state == BOSS_LEFT_JUMP || _state == BOSS_RIGHT_JUMP) //점프 상태일 때 각도 구해오기 3초간 유지후 떨어짐
 	{
-		_angle = getAngle(_x, _z, playerX, tempZ);
+		_angle = getAngle(_x, _z, playerX, playerZ);
 	}
 
 
