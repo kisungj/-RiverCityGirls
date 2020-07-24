@@ -11,8 +11,8 @@ HRESULT boss::init()
 
 	_blockDistance = 5;
 	_blockFriction = 0.01f;
-	_x = WINSIZEX + 570;
-	_z = WINSIZEY - 200;
+	_x = WINSIZEX + 500;
+	_z = WINSIZEY - 130;
 	_y = _z - 180;
 	_jumpPower = 30;
 	_gravity = 0.1f;

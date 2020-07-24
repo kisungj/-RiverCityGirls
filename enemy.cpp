@@ -86,7 +86,7 @@ void enemy::update()
 
 void enemy::render()
 {
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
+	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
