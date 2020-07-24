@@ -98,10 +98,6 @@ void player::update()
 
 	_state->update(*this);
 
-	if (_runCount > 6)
-	{
-		_runCount = 0;
-	}
 	
 	pixelCol();
 
