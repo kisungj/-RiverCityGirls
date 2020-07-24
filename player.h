@@ -10,7 +10,7 @@ class runState;
 class jumpState;
 class attackState;
 class hitState;
-class downState;		//힝
+class downState;	
 class startState;
 class guardState;
 class overState;
@@ -40,6 +40,7 @@ private:
 	int _runCount;					//빠르게 달리기
 	int _shadowAlpha;				//그림자 알파
 	int _money;
+	//int _runCountTest;
 
 	float _shadowX, _shadowY;		//그림자 중점
 	float _playerX, _playerY;		//플레이어 중점
@@ -141,6 +142,7 @@ public:
 	bool getEnemyBLay() { return _enemyBLay; }
 	bool getEnemyGLay() { return _enemyGLay; }
 	bool getIsAttackRect() { return _attackRect; }
+	bool getIsDesk() { return _isDesk; }
 	RECT getAttackRect() { return _attackRc; }
 	RECT getPlayerRect() { return _player; }
 	image* getImgge() { return _img; }
@@ -189,6 +191,7 @@ public:
 	void setIsDown(bool down) { _isDown = down; }
 	void setGameOver(bool over) { _gameOver = over; }
 	void setIsAttackRect(bool att) { _attackRect = att; }
+	void setIsDesk(bool desk) { _isDesk = desk; }
 	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
 	void setMapStr(string str) { _mapStr = str; }
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }
@@ -225,6 +228,8 @@ public:
 
 class walkState : public playerState
 {
+private:
+	int _runTimer = 0;
 public:
 	virtual void update(player& player) override;
 };

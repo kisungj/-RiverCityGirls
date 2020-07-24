@@ -3,19 +3,6 @@
 
 HRESULT stageManager::init()
 {
-	_playerScene = new testPlayerScene;
-	_enemyScene = new testEnemyScene;
-	_bossScene = new testBossScene;
-	_uiScene = new testUIScene;
-	_obstacleScene = new testObstcle;
-	SCENEMANAGER->addScene("PLAYER_SCENE", _playerScene);
-	SCENEMANAGER->addScene("ENEMY_SCENE", _enemyScene);
-	SCENEMANAGER->addScene("BOSS_SCENE", _bossScene);
-	SCENEMANAGER->addScene("UI_SCENE", _uiScene);
-	SCENEMANAGER->addScene("OBSTACLE_SCENE", _obstacleScene);
-
-	SCENEMANAGER->changeScene("PLAYER_SCENE");
-
 	_loading = IMAGEMANAGER->findImage("loading_sprite");
 	// ======================================================== //
 
@@ -30,47 +17,22 @@ HRESULT stageManager::init()
 	_enemyManager->setPlayerLink(_player);
 	_boss	      =	new boss;
 
-	//Item* tempItem1 = new Item;
-	//tempItem1->init(HP);
-
-	//Item* tempItem2 = new Item;
-	//tempItem2->init(POWER);
-	//_inventory->setInventory(tempItem2);
-	//_inventory->setInventory(tempItem1);
-	//_inventory->setInventory(tempItem2);
-	//_inventory->setInventory(tempItem1);
-	//_inventory->setInventory(tempItem2);
-
-	//for (int i = 0; i < _inventory->getInventory().size() ; ++i)
-	//{
-	//	_ui->setInventoryUI(_inventory->getInventory()[i]);
-	//}
-
-
-	_stage1 = new stage1;
-	//_stage1->init(_obstacleManager, _itemManager, _enemyManager, _player);
-
-	_stage2 = new stage2;
-	//_stage2->init(_obstacleManager, _itemManager, _enemyManager, _player);
 	
+	_stage1 = new stage1;
+	_stage2 = new stage2;	
 	_stageBoss = new stageBoss;
-	//_stageBoss->init(_player,_boss);
-
 	_title = new titleStage;
 	_title->init();
 
 	SCENEMANAGER->addScene("TITLE_SCENE", _title);
+	SCENEMANAGER->addScene("STAGE1_SCENE", _stage1);
+	SCENEMANAGER->addScene("STAGE2_SCENE", _stage2);
+	SCENEMANAGER->addScene("STAGEBOSS_SCENE", _stageBoss);
+
 	_curStageName = "TITLE_SCENE";
 	SCENEMANAGER->changeScene(_curStageName);
 
-	SCENEMANAGER->addScene("STAGE1_SCENE", _stage1);
-
-	SCENEMANAGER->addScene("STAGE2_SCENE", _stage2);
-
-	SCENEMANAGER->addScene("STAGEBOSS_SCENE", _stageBoss);
-
 	_changeStageNum = 0;
-
 
 	_dialogIndex = 1;
 	_dialogChatCount = 2;
@@ -153,8 +115,11 @@ void stageManager::update()
 	{
 		_ui->setBossStage(false);
 	}
-	_ui->setBossHpGauge(_boss->getHP(), _boss->getMaxHP());
-	_ui->update();
+	if (!_isLoading && !_stageBoss->getIsDialog())
+	{
+		_ui->setBossHpGauge(_boss->getHP(), _boss->getMaxHP());
+		_ui->update();
+	}
 	
 
 	if (!_ui->getIsPhone() && !_isLoading && !_stageBoss->getIsDialog())
@@ -167,7 +132,7 @@ void stageManager::update()
 
 		if (_curStageName == "STAGEBOSS_SCENE")
 		{
-			_boss->update(_player->getPlayerX(), _player->getPlayerY());
+			_boss->update(_player->getPlayerX(), _player->getShadowY());
 		}
 
 	}
@@ -215,16 +180,6 @@ void stageManager::update()
 			_dialogBossX -= 5;
 		}
 	}
-	// ================================================================
-	//if (KEYMANAGER->isOnceKeyDown(VK_F1)) SCENEMANAGER->changeScene("PLAYER_SCENE");
-	//
-	//if (KEYMANAGER->isOnceKeyDown(VK_F2)) SCENEMANAGER->changeScene("ENEMY_SCENE");
-	//
-	//if (KEYMANAGER->isOnceKeyDown(VK_F3)) SCENEMANAGER->changeScene("BOSS_SCENE");
-	//
-	//if (KEYMANAGER->isOnceKeyDown(VK_F4)) SCENEMANAGER->changeScene("UI_SCENE");
-	//
-	//if (KEYMANAGER->isOnceKeyDown(VK_F5)) SCENEMANAGER->changeScene("OBSTACLE_SCENE");
 
 	if (_isLoading)
 	{	
@@ -254,6 +209,7 @@ void stageManager::update()
 				_stage1->init(_obstacleManager, _itemManager, _enemyManager, _player);
 				_title->setNextScene(false);
 				_curStageName = "STAGE1_SCENE";
+				_player->setMapStr("pixel2");
 				_loadingTimer = 0;
 				_isLoading = false;
 				break;
@@ -264,6 +220,7 @@ void stageManager::update()
 				SCENEMANAGER->changeScene("STAGE2_SCENE");
 				_stage2->init(_obstacleManager, _itemManager, _enemyManager, _player);
 				_curStageName = "STAGE2_SCENE";
+				_player->setMapStr("stage2pixel");
 				_loadingTimer = 0;
 				_isLoading = false;
 				break;
@@ -275,8 +232,7 @@ void stageManager::update()
 				SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
 				_stageBoss->init(_player, _boss);
 				_curStageName = "STAGEBOSS_SCENE";
-				_player->setShadowX(WINSIZEX / 2 - 330);
-				_player->setShadowY(WINSIZEY / 2 + 230);
+				_player->setMapStr("보스배경pixel");
 				_loadingTimer = 0;
 				_isLoading = false;
 				break;
@@ -292,24 +248,41 @@ void stageManager::update()
 		{
 			_changeStageNum = 1;
 			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 230);
+			_player->setShadowY(WINSIZEY / 2 + 190);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_START"), IMAGEMANAGER->findImage("PLAYER_START"));
+			_player->setState(_player->getStartState());
 		}
 
 		if (_title->getStage1())
 		{
 			_changeStageNum = 1;
 			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 230);
+			_player->setShadowY(WINSIZEY / 2 + 190);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_START"), IMAGEMANAGER->findImage("PLAYER_START"));
+			_player->setState(_player->getStartState());
+
 		}
 
 		if (_title->getStage2())
 		{
 			_changeStageNum = 2;
 			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 440);
+			_player->setShadowY(WINSIZEY / 2 + 300);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_START"), IMAGEMANAGER->findImage("PLAYER_START"));
+			_player->setState(_player->getStartState());
 		}
 
 		if (_title->getStage3())
 		{ 
 			_changeStageNum = 3;
 			_isLoading = true;
+			_player->setShadowX(WINSIZEX / 2 - 440);
+			_player->setShadowY(WINSIZEY / 2 + 300);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_START"), IMAGEMANAGER->findImage("PLAYER_START"));
+			_player->setState(_player->getStartState());
 		}
 	}
 	
@@ -351,9 +324,6 @@ void stageManager::update()
 	doorCol();
 
 	_ui->setHpGauge(_player->getPlayerHp(), _player->getPlayerMaxHP());
-
-	//cout << ZORDERMANAGER->zOrderSize() << endl;
-
 }
 
 void stageManager::release()
@@ -378,12 +348,6 @@ void stageManager::collision()
 			_player->setAttack(0, 0, 0, 0);
 		}
 
-		//자판기하고 플레이어 충돌
-		if (IntersectRect(&temp, &_player->getPlayerRect(), &_obstacleManager->getVObstacle()[i]->getObsRc()))
-		{
-
-		}
-
 		//기둥과 충돌할때
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_obstacleManager->getVObstacle()[i]->getPillarRc()))
 		{
@@ -393,19 +357,19 @@ void stageManager::collision()
 		{
 			_obstacleManager->getVObstacle()[i]->setAlphaValue(false);
 		}
+
+		//책상 Z-Order
+		if (_player->getIsDesk() == true)
+		{
+			_obstacleManager->getVObstacle()[i]->getDestZOrder();
+		}
 	}
 
 	//에너미 죽을때 아이템 떨어지게?
 	for (int i = 0; i < _enemyManager->getVBoy().size(); i++)
 	{
-		//if (_enemyManager->getVBoy()[i]->getCondition() == CONDITION::DEAD)
-		//{
-		//	_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
-		//}
-
 		_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
 		_enemyManager->eraseBoy(i);
-		
 	}
 
 	//플레이어와 아이템 충돌
@@ -456,6 +420,27 @@ void stageManager::doorCol()
 		{
 			_changeStageNum = 2;
 			_isLoading = true;
+			_player->setIsJumping(false);
+			_player->setDirectionX(true);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			_player->setState(_player->getIdleState());
+			_player->setShadowX(WINSIZEX / 2 + 1700);
+			_player->setShadowY(WINSIZEY / 2 + 270);
+		}
+	}
+
+	if (IntersectRect(&temp, &_player->getPlayerRect(), &_stage2->getStage2Door()))
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			_changeStageNum = 1;
+			_isLoading = true;
+			_player->setIsJumping(false);
+			_player->setDirectionX(true);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			_player->setState(_player->getIdleState());
+			_player->setShadowX(WINSIZEX / 2 + 850);
+			_player->setShadowY(WINSIZEY / 2 + 210);
 		}
 	}
 	if (IntersectRect(&temp, &_player->getPlayerRect(), &_stage2->getBossDoor()))
@@ -464,6 +449,12 @@ void stageManager::doorCol()
 		{
 			_changeStageNum = 3;
 			_isLoading = true;
+			_player->setIsJumping(false);
+			_player->setDirectionX(true);
+			_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			_player->setState(_player->getIdleState());
+			_player->setShadowX(WINSIZEX / 2 - 440);
+			_player->setShadowY(WINSIZEY / 2 + 300);
 		}
 	}
 

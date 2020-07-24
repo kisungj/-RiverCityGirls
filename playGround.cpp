@@ -34,6 +34,7 @@ void playGround::update()
 {
 	gameNode::update();
 
+	CAMERAMANAGER->update();
 	_stageManager->update();
 }
 
@@ -123,8 +124,8 @@ void playGround::imageLoad()
 
 
 	// ======= 보스
-	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("보스배경pixel", "image/map/bossMap1_collision.bmp", 2538, 1000, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1200, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스배경pixel", "image/map/bossMap1_collision.bmp", 2538, 1200, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 153, 45, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 2844, 582, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 9300, 576, 31, 2, true, RGB(255, 0, 255));
@@ -215,9 +216,9 @@ void playGround::soundLoad()
 	SOUNDMANAGER->addSound("플레슬라이딩펀치", "mp3/플레슬라이딩펀치.wav", false, false);
 	SOUNDMANAGER->addSound("게임시작", "mp3/게임시작.mp3", false, false);
 	SOUNDMANAGER->addSound("게임오버", "mp3/게임오버.mp3", false, false);
+	SOUNDMANAGER->addSound("보스내려찍기", "mp3/보스내려찍기.wav", false, false);
 	SOUNDMANAGER->addSound("남자히트", "mp3/남자히트.mp3", false, false);
 	SOUNDMANAGER->addSound("보스강펀치", "mp3/보스강펀치.wav", false, false);
-	SOUNDMANAGER->addSound("보스내려찍기", "mp3/보스내려찍기.wav", false, false);
 	SOUNDMANAGER->addSound("보스박치기", "mp3/보스박치기.wav", false, false);
 	SOUNDMANAGER->addSound("보스뺨갈기기", "mp3/보스뺨갈기기.wav", false, false);
 	SOUNDMANAGER->addSound("보스점프엉덩방아", "mp3/보스점프엉덩방아.wav", false, false);

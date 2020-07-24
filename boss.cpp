@@ -869,6 +869,8 @@ void boss::stateUpdate(float playerX, float playerZ)
 		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 5)
 		{
+			SOUNDMANAGER->stop("보스점프엉덩방아");
+
 			if (!SOUNDMANAGER->isPlaySound("보스점프"))
 			SOUNDMANAGER->play("보스점프", 1.0f);
 
@@ -911,7 +913,12 @@ void boss::stateUpdate(float playerX, float playerZ)
 		if (_animPlayer->getNowIndex() == 3 || _animPlayer->getNowIndex() == 4 || _animPlayer->getNowIndex() == 5)
 		{
 			CAMERAMANAGER->shakeCamera(12, 50);
-
+			if (!SOUNDMANAGER->isPlaySound("보스점프엉덩방아"))
+			{
+				SOUNDMANAGER->stop("보스점프");
+				SOUNDMANAGER->play("보스점프엉덩방아", 1.0f);
+			}
+		
 			_attackPos.x = _x;
 			_attackPos.y = _y + 150;
 			_attackSize.x = 100;
@@ -1257,6 +1264,8 @@ void boss::jumpAttack(float playerX, float playerZ)
 
 	if (_jumpAndDownAttackCount > 100) // changePattern쪽에서 받아옴 
 	{
+		
+
 		_jumpAndDownAttackCount = 0;
 		if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
 		{
@@ -1291,7 +1300,7 @@ void boss::jumpAttack(float playerX, float playerZ)
 			_animPlayer = _anim[BOSS_RIGHT_IDLE];
 			_animPlayer->start();
 		}
-
+		SOUNDMANAGER->stop("보스점프엉덩방아");
 	}
 
 }
@@ -1415,7 +1424,7 @@ void boss::changePattern(float playerX, float playerZ)
 		if (_delayTime % _phaseCount == 0)
 		{
 			_delayTime = 0;
-			_patternNumber = 4; //RND->getInt(5);
+			_patternNumber = RND->getInt(5);
 			_isDelayTime = false;
 		}
 	}
@@ -1719,7 +1728,7 @@ void boss::soundAndCamShakeControl()
 
 	if (_state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK) // 점프는 항상 카메라가 흔들려서 빼놨음
 	{
-		SOUNDMANAGER->play("보스점프엉덩방아", 1.0f);
+	
 	}
 	
 	if (_state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP)

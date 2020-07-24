@@ -74,7 +74,8 @@ HRESULT player::init()
 	_enemyBLay = false;
 	_enemyGLay = false;
 	_isObs = false;
-	
+	//_runCountTest = 0;
+
 	return S_OK;
 }
 
@@ -86,10 +87,6 @@ void player::release()
 
 void player::update()
 {
-
-	//cout << _ptMouse.x << endl;
-	//cout << _ptMouse.y << endl;
-	//cout << _directionX << endl;
 	KEYANIMANAGER->update();
 	_probeV = _shadow.bottom;
 	_probeH = (_shadow.left+ _shadow.right)/2;
@@ -119,10 +116,10 @@ void player::render()
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _shadowX, _shadowY, _shadowY - 1, _shadowAlpha);
 	ZORDERMANAGER->addAniRender(getMemDC(), renderType::ANI_RENDER, _img, _playerX, _playerY, _shadowY, _playerMotion);
-	if (_attackRect)
+	/*if (_attackRect)
 	{
 		CAMERAMANAGER->renderRectangle(getMemDC(), _attackRc);
-	}
+	}*/
 	/*CAMERAMANAGER->alphaRender(getMemDC(), _shadowImg, _shadowX, _shadowY, _shadowAlpha);
 	CAMERAMANAGER->aniRender(getMemDC(), _img, _playerX, _playerY, _playerMotion);*/
 	//Rectangle(getMemDC(), _player);
@@ -243,8 +240,6 @@ void player::mouseCol()
 
 		if (PtInRect(&_player, _ptMouse))
 		{
-			//cout << "dd" << endl;
-
 			if (!_directionX)
 			{
 				setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
@@ -394,12 +389,9 @@ void player::pixelCol()
 
 		}
 
-
-		//cout << _runCount << endl;
 		//점프중에
 		if (_isJumping)
 		{
-						//cout << "ed" << endl;
 			_runCount = 0;
 			for (int i = _probeV + 5; i < _probeV + 10; ++i)
 			{
@@ -417,7 +409,6 @@ void player::pixelCol()
 						{
 							if ((r == 160 && g == 255 && b == 0))
 							{
-							//	cout << "d" << endl;
 								_isLeft = true;
 								_isTop = true;
 								_isBottom = true;
@@ -426,7 +417,6 @@ void player::pixelCol()
 							}
 							else if ((r == 0 && g == 255 && b == 0))
 							{
-								//	_isRight = true;
 								_isLeft = true;
 								_isTop = true;
 								_isBottom = true;
@@ -479,10 +469,6 @@ void player::pixelCol()
 
 				if (!(r == 255 && g == 255 && b == 0))
 				{
-					//cout << "d" << endl;
-
-					//_gravity = 0.5f;
-					//_jumpPower = 0;
 					_isDesk = false;
 					_isJumping = true;
 
@@ -556,19 +542,6 @@ void player::pixelCol()
 				int r = GetRValue(color);
 				int g = GetGValue(color);
 				int b = GetBValue(color);
-
-				//if (r == 255 && g == 0 && b == 0)
-				//{
-				//	_isTop = false;
-				//	_shadowY += 5;
-				//	cout << "d" << endl;
-				//break;
-				//}
-				//else
-				//{
-				//	_isTop = true;
-				//	//break;
-				//}
 
 
 				if (!(r == 255 && g == 255 && b == 0) && _isTop)
@@ -667,8 +640,7 @@ void player::enemyCol()
 							{
 								EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
 							}
-							
-							//_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+					
 							_enemy->getVBoy()[i]->setOuch(true);
 							_enemy->getVBoy()[i]->setHitCount(1);
 							_enemy->getVBoy()[i]->setHP(10);
@@ -691,7 +663,6 @@ void player::enemyCol()
 						{
 							EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
 						}
-						//_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 						_enemy->getVBoy()[i]->setOuch(true);
 						_enemy->getVBoy()[i]->setHitCount(1);
 						_enemy->getVBoy()[i]->setHP(10);
@@ -706,7 +677,7 @@ void player::enemyCol()
 			for (int i = 0; i < _enemy->getVGirl().size(); ++i)
 			{
 
-				if (_shadowY + 15 > _enemy->getVGirl()[i]->getZ() && _shadowY - 15 < _enemy->getVGirl()[i]->getZ())
+				if (_shadowY + 20 > _enemy->getVGirl()[i]->getZ() && _shadowY - 20 < _enemy->getVGirl()[i]->getZ())
 				{
 					if (_enemy->getVGirl()[i]->getLay())
 					{
@@ -732,7 +703,7 @@ void player::enemyCol()
 
 					}
 
-					else if (_shadowY + 15 > _enemy->getVGirl()[i]->getZ() && _shadowY - 15 < _enemy->getVGirl()[i]->getZ() && !_enemy->getVGirl()[i]->getLay())
+					else if (_shadowY + 20 > _enemy->getVGirl()[i]->getZ() && _shadowY - 20 < _enemy->getVGirl()[i]->getZ() && !_enemy->getVGirl()[i]->getLay())
 					{
 						if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
 						{
@@ -758,7 +729,7 @@ void player::enemyCol()
 			for (int i = 0; i < _enemy->getVCheer().size(); ++i)
 			{
 
-				if (_shadowY + 15 > _enemy->getVCheer()[i]->getZ() && _shadowY - 15 < _enemy->getVCheer()[i]->getZ())
+				if (_shadowY + 20 > _enemy->getVCheer()[i]->getZ() && _shadowY - 20 < _enemy->getVCheer()[i]->getZ())
 				{
 					if (_enemy->getVCheer()[i]->getLay())
 					{
@@ -784,7 +755,7 @@ void player::enemyCol()
 
 					}
 
-					else if (_shadowY + 15 > _enemy->getVCheer()[i]->getZ() && _shadowY - 15 < _enemy->getVCheer()[i]->getZ() && !_enemy->getVCheer()[i]->getLay())
+					else if (_shadowY + 20 > _enemy->getVCheer()[i]->getZ() && _shadowY - 20 < _enemy->getVCheer()[i]->getZ() && !_enemy->getVCheer()[i]->getLay())
 					{
 						if (IntersectRect(&temp, &_attackRc, &_enemy->getVCheer()[i]->getRC()))
 						{
@@ -817,26 +788,27 @@ void player::bossCol()
 	RECT temp;
 	if (_state == _attack || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay() || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
 	{
-		/*if (_shadowY + 15 > _boss->getPointerRect() && _shadowY - 15 < _enemy->getVBoy()[i]->getZ())
-		{*/
-		if (_attackRect)
+		if (_shadowY + 20 > _boss->getBossZ() && _shadowY - 20 < _boss->getBossZ())
 		{
-			if (IntersectRect(&temp, &_attackRc, _boss->getPointerRect()))
+			if (_attackRect)
 			{
-				if (_directionX)
+				if (IntersectRect(&temp, &_attackRc, _boss->getPointerRect()))
 				{
-					EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
+					if (_directionX)
+					{
+						EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
+					}
+					else
+					{
+						EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
+					}
+					_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+					_boss->hit(_playerX, _shadowY, 10);
+					_attackRect = false;
+
 				}
-				else
-				{
-					EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
-				}
-				_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
-				_boss->hit(_playerX, _shadowY, 10);
-				_attackRect = false;
 
 			}
-
 		}
 	}
 }
