@@ -100,6 +100,7 @@ public:
 	void    toPlayerCollision();                                    // 플레이어 때리는 판정
 	void    pixelCollision();                                       // 픽셀 충돌
 	void    shakeCamera(int power, int time);                       // 카메라 강도, 시간
+	void    soundAndCamShakeControl();
 public:
 	STATEBOSS getState() { return _state; }
 	RECT*     getPointerRect() { return &_rc; }

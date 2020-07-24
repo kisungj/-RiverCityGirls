@@ -8,7 +8,6 @@ HRESULT ui::init()
 	IMAGEMANAGER->addImage("boss_background_hp", "image/ui/boss_backgroundhp.bmp", 898, 120, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("boss_hp", "image/ui/boss_hp.bmp", 687, 52, true, RGB(255, 0, 255));
 
-	_loading = IMAGEMANAGER->findImage("loading_sprite");
 	_hpUI = IMAGEMANAGER->findImage("full_hd");
 
 	// 장비창
@@ -50,7 +49,6 @@ HRESULT ui::init()
 
 void ui::render()
 {
-	//_loading->frameRender(getMemDC(), WINSIZEX / 2, WINSIZEY / 2,_loading->getFrameX(),0);
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 0);
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 800);
 	IMAGEMANAGER->findImage("status_hud_back")->render(getMemDC(), 270, 50);
@@ -130,22 +128,14 @@ void ui::render()
 
 void ui::update()
 {
-	// 로딩 테스트
-	_timer++;
-	if (_timer > 50)
-	{
-		if (_loading->getFrameX() >= _loading->getMaxFrameX())  
-		{
-			_loading->setFrameX(-1);
-		}
-		_loading->setFrameX(_loading->getFrameX() + 1);
-		_timer = 0;
-	}
 
 	// 인벤토리 UI 띄우기 키
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
 		!_isPhone ? _isPhone = true : _isPhone = false;
+
+		if (_isPhone) SOUNDMANAGER->play("인벤토리창", 1.0f);
+
 	}
 
 	// 인벤토리 조종키

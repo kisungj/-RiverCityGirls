@@ -11,8 +11,8 @@ HRESULT boss::init()
 
 	_blockDistance = 5;
 	_blockFriction = 0.01f;
-	_x = WINSIZEX / 2 + 500;
-	_z = WINSIZEY / 2 + 180;
+	_x = WINSIZEX + 570;
+	_z = WINSIZEY - 200;
 	_y = _z - 180;
 	_jumpPower = 30;
 	_gravity = 0.1f;
@@ -435,7 +435,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 				_x += cosf(_angle) * _blockDistance;
 				_z -= sinf(_angle) * _blockDistance;
 			}
-	
+
 
 		}
 		if (!_animPlayer->isPlay())
@@ -522,6 +522,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 		{
 			if (_animPlayer->getNowIndex() >= 5)
 			{
+				CAMERAMANAGER->shakeCamera(6, 30);
 				_attackPos.x = _x;
 				_attackPos.y = _y;
 				_attackSize.x = 200;
@@ -567,14 +568,14 @@ void boss::stateUpdate(float playerX, float playerZ)
 			{
 				_x += cosf(_angle) * 0;
 				_z -= sinf(_angle) * 0;
-			}	
+			}
 			else
 			{
 				_x += cosf(_angle) * _applySpeed;
 				_z -= sinf(_angle) * _applySpeed;
 			}
 
-		
+
 			if (_state == BOSS_LEFT_DASH) // 왼쪽으로 대쉬 할 경우 공격 범위.
 			{
 				_attackPos.x = _x - 100;
@@ -850,6 +851,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 				else
 					_attackPos.x = _x + 50;
 
+				CAMERAMANAGER->shakeCamera(6, 30);
 				_attackPos.y = _y + 100;
 				_attackSize.x = 200;
 				_attackSize.y = 80;
@@ -867,6 +869,9 @@ void boss::stateUpdate(float playerX, float playerZ)
 		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 5)
 		{
+			if (!SOUNDMANAGER->isPlaySound("보스점프"))
+			SOUNDMANAGER->play("보스점프", 1.0f);
+
 			_x += cosf(_angle) * _applySpeed;
 			_y -= sinf(_angle) * _applySpeed + _jumpPower;
 			_z -= sinf(_angle) * _applySpeed;
@@ -884,7 +889,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 			}
 			_gravity = 0.1f;
 		}
-	
+
 		break;
 
 	case BOSS_LEFT_JUMP_ATTACK:
@@ -905,7 +910,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		if (_animPlayer->getNowIndex() == 3 || _animPlayer->getNowIndex() == 4 || _animPlayer->getNowIndex() == 5)
 		{
-			CAMERAMANAGER->shakeCamera(4, 50);
+			CAMERAMANAGER->shakeCamera(12, 50);
 
 			_attackPos.x = _x;
 			_attackPos.y = _y + 150;
@@ -983,10 +988,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 void boss::attack(float playerX, float playerZ)
 {
-	// ------ 임시 --------
-	float tempZ = playerZ + 100;
-
-	if (getDistance(_x, _z, playerX, tempZ) < 3000 && getDistance(_x, _z, playerX, tempZ) > 150) // 플레이어를 찾아다님
+	if (getDistance(_x, _z, playerX, playerZ) < 3000 && getDistance(_x, _z, playerX, playerZ) > 150) // 플레이어를 찾아다님
 	{
 		if ((_state == BOSS_LEFT_ATTACK || _state == BOSS_RIGHT_ATTACK))
 		{
@@ -1012,7 +1014,7 @@ void boss::attack(float playerX, float playerZ)
 		}
 		else
 		{
-			_angle = getAngle(_x, _z, playerX, tempZ);
+			_angle = getAngle(_x, _z, playerX, playerZ);
 			if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 			{
 				if (_state != BOSS_LEFT_WALK)
@@ -1033,13 +1035,13 @@ void boss::attack(float playerX, float playerZ)
 					_animPlayer->start();
 				}
 			}
-	
+
 			_x += cosf(_angle) * 2;
 			_z -= sinf(_angle) * 2;
 		}
 
 	}
-	else if (getDistance(_x, _z, playerX, tempZ) <= 150) // 사정거리에 들어왔을 경우
+	else if (getDistance(_x, _z, playerX, playerZ) <= 150) // 사정거리에 들어왔을 경우
 	{
 		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 		{
@@ -1087,9 +1089,8 @@ void boss::attack(float playerX, float playerZ)
 void boss::heavyAttack(float playerX, float playerZ)
 {
 	// ------ 임시 --------
-	float tempZ = playerZ + 100;
 
-	if (getDistance(_x, _z, playerX, tempZ) < 3000 && getDistance(_x, _z, playerX, tempZ) > 500) // 플레이어를 찾아다님
+	if (getDistance(_x, _z, playerX, playerZ) < 3000 && getDistance(_x, _z, playerX, playerZ) > 500) // 플레이어를 찾아다님
 	{
 		if ((_state == BOSS_LEFT_HEAVY_ATTACK || _state == BOSS_RIGHT_HEAVY_ATTACK))
 		{
@@ -1136,13 +1137,13 @@ void boss::heavyAttack(float playerX, float playerZ)
 					_animPlayer->start();
 				}
 			}
-			_angle = getAngle(_x, _z, playerX, tempZ);
+			_angle = getAngle(_x, _z, playerX, playerZ);
 			_x += cosf(_angle) * 2;	// 따로 빼도 되는건가 
 			_z -= sinf(_angle) * 2; // 따로 빼도 되는건가 
 		}
 
 	}
-	else if (getDistance(_x, _z, playerX, tempZ) <= 500) // 사정거리에 들어왔을 경우
+	else if (getDistance(_x, _z, playerX, playerZ) <= 500) // 사정거리에 들어왔을 경우
 	{
 		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 		{
@@ -1153,7 +1154,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 				_animPlayer = _anim[BOSS_LEFT_HEAVY_ATTACK];
 				_animPlayer->start();
 
-				_angle = getAngle(_x, _z, playerX, tempZ);
+				_angle = getAngle(_x, _z, playerX, playerZ);
 			}
 
 		}
@@ -1166,7 +1167,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 				_animPlayer = _anim[BOSS_RIGHT_HEAVY_ATTACK];
 				_animPlayer->start();
 
-				_angle = getAngle(_x, _z, playerX, tempZ);
+				_angle = getAngle(_x, _z, playerX, playerZ);
 			}
 		}
 
@@ -1197,9 +1198,7 @@ void boss::heavyAttack(float playerX, float playerZ)
 void boss::dashAttack(float playerX, float playerZ)
 {
 	// ------ 임시 --------
-	float tempZ = playerZ + 100;
-
-	if (getDistance(_x, _z, playerX, tempZ) <= 3000) // 사정거리에 들어왔을 경우
+	if (getDistance(_x, _z, playerX, playerZ) <= 3000) // 사정거리에 들어왔을 경우
 	{
 		if (_x >= playerX) // 보스가 플레이어 오른쪽에 있는 경우
 		{
@@ -1209,7 +1208,7 @@ void boss::dashAttack(float playerX, float playerZ)
 				_characterImg = IMAGEMANAGER->findImage("boss_dash");
 				_animPlayer = _anim[BOSS_LEFT_DASH];
 				_animPlayer->start();
-				_angle = getAngle(_x, _z, playerX, tempZ);
+				_angle = getAngle(_x, _z, playerX, playerZ);
 			}
 		}
 		else               // 보스가 플레이어 왼쪽에 있는 경우
@@ -1220,7 +1219,7 @@ void boss::dashAttack(float playerX, float playerZ)
 				_characterImg = IMAGEMANAGER->findImage("boss_dash");
 				_animPlayer = _anim[BOSS_RIGHT_DASH];
 				_animPlayer->start();
-				_angle = getAngle(_x, _z, playerX, tempZ);
+				_angle = getAngle(_x, _z, playerX, playerZ);
 			}
 		}
 	}
@@ -1230,8 +1229,6 @@ void boss::dashAttack(float playerX, float playerZ)
 void boss::jumpAttack(float playerX, float playerZ)
 {
 	// ------ 임시 --------
-	float tempZ = playerZ + 100;
-
 	if (_state != BOSS_LEFT_JUMP && _state != BOSS_RIGHT_JUMP && _state != BOSS_LEFT_JUMP_ATTACK && _state != BOSS_RIGHT_JUMP_ATTACK)
 	{
 		if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
@@ -1240,6 +1237,7 @@ void boss::jumpAttack(float playerX, float playerZ)
 			_characterImg = IMAGEMANAGER->findImage("boss_jumpAttack");
 			_animPlayer = _anim[BOSS_LEFT_JUMP];
 			_animPlayer->start();
+
 		}
 		else
 		{
@@ -1252,7 +1250,7 @@ void boss::jumpAttack(float playerX, float playerZ)
 	}
 	if (_state == BOSS_LEFT_JUMP || _state == BOSS_RIGHT_JUMP) //점프 상태일 때 각도 구해오기 3초간 유지후 떨어짐
 	{
-		_angle = getAngle(_x, _z, playerX, tempZ);
+		_angle = getAngle(_x, _z, playerX, playerZ);
 	}
 
 
@@ -1410,7 +1408,7 @@ void boss::changePattern(float playerX, float playerZ)
 	{
 		_phaseCount = 35;
 	}
-	
+
 	if (_isDelayTime) // 딜레이 타임 인 경우.
 	{
 		_delayTime++;
@@ -1483,6 +1481,9 @@ void boss::hit(float playerX, float playerZ, int damege)
 		_state == BOSS_RIGHT_JUMP || _state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK ||
 		_state == BOSS_LEFT_DASH || _state == BOSS_RIGHT_DASH || _state == BOSS_LEFT_DEATH_LOOP || _state == BOSS_RIGHT_DEATH_LOOP) return; // 3타중이면 못들어오게 // 공격 안받는 상황
 
+
+	CAMERAMANAGER->shakeCamera(2, 20);
+	//CAMERAMANAGER->shakeCamera(5, 20);
 	_characterImg = IMAGEMANAGER->findImage("boss_hit");
 	if (playerX <= _x) //플레이어가 왼쪽에 있는경우 --> 왼쪽을 봐야함 보스가
 	{
@@ -1623,8 +1624,8 @@ void boss::toPlayerCollision()
 						//_player->setIsDown(true);
 					}
 				}
-
 				_isColision = true;
+				soundAndCamShakeControl();
 			}
 		}
 	}
@@ -1689,4 +1690,47 @@ void boss::shakeCamera(int power, int time)
 	_isShake = true;
 	_shakePower = power;
 	_shakeTime = time;
+}
+
+void boss::soundAndCamShakeControl()
+{
+	if (_state == BOSS_LEFT_HEAVY_ATTACK || _state == BOSS_RIGHT_HEAVY_ATTACK)
+	{
+		CAMERAMANAGER->shakeCamera(6, 30);
+		SOUNDMANAGER->play("보스강펀치", 1.0f);
+	}
+
+	if (_state == BOSS_LEFT_ATTACK_ELBOW || _state == BOSS_RIGHT_ATTACK_ELBOW)
+	{
+		CAMERAMANAGER->shakeCamera(6, 30);
+		SOUNDMANAGER->play("보스내려찍기", 1.0f);
+	}
+	if (_state == BOSS_LEFT_ATTACK || _state == BOSS_RIGHT_ATTACK)
+	{
+		CAMERAMANAGER->shakeCamera(6, 30);
+		SOUNDMANAGER->play("보스뺨갈기기", 1.0f);
+	}
+
+	if (_state == BOSS_LEFT_DASH || _state == BOSS_RIGHT_DASH)
+	{
+		CAMERAMANAGER->shakeCamera(6, 30);
+		SOUNDMANAGER->play("보스박치기", 1.0f);
+	}
+
+	if (_state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK) // 점프는 항상 카메라가 흔들려서 빼놨음
+	{
+		SOUNDMANAGER->play("보스점프엉덩방아", 1.0f);
+	}
+	
+	if (_state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP)
+	{
+		CAMERAMANAGER->shakeCamera(6, 30);
+		//SOUNDMANAGER->play("보스박치기", 1.0f);
+	}
+
+	if (_state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR)
+	{
+		//SOUNDMANAGER->play("보스박치기", 1.0f);
+	}
+
 }

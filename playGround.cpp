@@ -173,16 +173,28 @@ void playGround::imageLoad()
 void playGround::soundLoad()
 {
 	SOUNDMANAGER->addSound("배경음", "mp3/리버시티걸즈-배경음.mp3", true, false);
-	SOUNDMANAGER->addSound("돈소리", "mp3/돈소리.mp3", true, false);
-	SOUNDMANAGER->addSound("발차기스윙", "mp3/발차기스윙.mp3", true, false);
-	SOUNDMANAGER->addSound("인벤토리창", "mp3/인벤토리창.mp3", true, false);
-	SOUNDMANAGER->addSound("자판기", "mp3/자판기.mp3", true, false);
-	SOUNDMANAGER->addSound("플레점프", "mp3/플레점프.mp3", true, false);
-	SOUNDMANAGER->addSound("플레1타", "mp3/플레1타.mp3", true, false);
-	SOUNDMANAGER->addSound("플레2타", "mp3/플레2타.mp3", true, false);
-	SOUNDMANAGER->addSound("플레3타", "mp3/플레3타.mp3", true, false);
-	SOUNDMANAGER->addSound("플레q공격", "mp3/플레q공격.mp3", true, false);
-	SOUNDMANAGER->addSound("플레히트", "mp3/플레히트.mp3", true, false);
+	SOUNDMANAGER->addSound("돈소리", "mp3/돈소리.mp3", false, false);
+	SOUNDMANAGER->addSound("발차기스윙", "mp3/발차기스윙.mp3", false, false);
+	SOUNDMANAGER->addSound("인벤토리창", "mp3/인벤토리창.mp3", false, false);
+	SOUNDMANAGER->addSound("자판기", "mp3/자판기.flac", false, false);
+	SOUNDMANAGER->addSound("플레점프", "mp3/플레점프.mp3", false, false);
+	SOUNDMANAGER->addSound("플레1타", "mp3/플레1타.mp3", false, false);
+	SOUNDMANAGER->addSound("플레q공격", "mp3/플레q공격.mp3", false, false);
+	SOUNDMANAGER->addSound("플레히트", "mp3/플레히트.mp3", false, false);
+	SOUNDMANAGER->addSound("플레밟기", "mp3/플레밟기.wav", false, false);
+	SOUNDMANAGER->addSound("플레맞기", "mp3/플레맞기.mp3", false, false);
+	SOUNDMANAGER->addSound("플레슬라이딩펀치", "mp3/플레슬라이딩펀치.wav", false, false);
+	SOUNDMANAGER->addSound("게임시작", "mp3/게임시작.mp3", false, false);
+	SOUNDMANAGER->addSound("게임오버", "mp3/게임오버.mp3", false, false);
+	SOUNDMANAGER->addSound("남자히트", "mp3/남자히트.mp3", false, false);
+	SOUNDMANAGER->addSound("보스강펀치", "mp3/보스강펀치.wav", false, false);
+	SOUNDMANAGER->addSound("보스내려찍기", "mp3/보스내려찍기.wav", false, false);
+	SOUNDMANAGER->addSound("보스박치기", "mp3/보스박치기.wav", false, false);
+	SOUNDMANAGER->addSound("보스뺨갈기기", "mp3/보스뺨갈기기.wav", false, false);
+	SOUNDMANAGER->addSound("보스점프엉덩방아", "mp3/보스점프엉덩방아.wav", false, false);
+	SOUNDMANAGER->addSound("보스점프", "mp3/보스점프.mp3", false, false);
+	SOUNDMANAGER->addSound("아이템획득", "mp3/아이템획득.mp3", false, false);
+	SOUNDMANAGER->addSound("UI선택", "mp3/UI선택.mp3", false, false);
 
-	SOUNDMANAGER->play("배경음", 0.1f);
+	//SOUNDMANAGER->play("배경음", 0.1f);
 }

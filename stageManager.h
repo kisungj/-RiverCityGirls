@@ -42,7 +42,8 @@ private:
 	enemyManager*    _enemyManager;
 	boss*            _boss;
 	ui*              _ui;
-	
+	image*			 _loading;
+
 	titleStage*		 _title;
 	stage1*          _stage1;
 	stage2*          _stage2;
@@ -50,6 +51,21 @@ private:
 	player*          _player;
 
 	string			 _curStageName;
+
+	string			 _dialogTempStr;
+	string			 _dialogTypeStr;
+	string			 _dialogTalkStr;
+	char			 _dialogIndexStr[255];
+	float			 _dialogPlayerX;
+	float		     _dialogBossX;
+	float			 _dialogChatCount;
+	int				 _dialogIndex;
+
+	float			 _loadingTimer;
+	float			 _loadingFrameTimer;
+	int				 _changeStageNum;
+
+	bool			 _isLoading;
 public:
 	stageManager() {}
 	~stageManager() {}
@@ -61,6 +77,5 @@ public:
 public:
 	void collision();
 	void doorCol();
-
 };
 
