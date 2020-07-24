@@ -31,24 +31,18 @@ void enemyManager::update()
 	{
 		_vBoy[i]->update();
 		_vBoy[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
-
-		if (_vBoy[i]->getCondition() == CONDITION::DEAD) eraseBoy(i);
 	}
 
 	for (int i = 0; i < _vGirl.size(); i++)
 	{
 		_vGirl[i]->update();
 		_vGirl[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
-
-		if (_vGirl[i]->getCondition() == CONDITION::DEAD) eraseGirl(i);
 	}
 
 	for (int i = 0; i < _vCheer.size(); i++)
 	{
 		_vCheer[i]->update();
 		_vCheer[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
-
-		if (_vCheer[i]->getCondition() == CONDITION::DEAD) eraseCheer(i);
 	}
 
 	boyPlCollision();
@@ -80,7 +74,7 @@ void enemyManager::release()
 
 void enemyManager::setStage1()
 {
-	/*for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		enemy* boy;
 		boy = new enemyBoy;
@@ -89,23 +83,23 @@ void enemyManager::setStage1()
 		_vBoy.push_back(boy);
 	}
 
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		enemy* girl;
 		girl = new enemyGirl;
-		girl->init(2000 + i * 100, (WINSIZEY / 2 + 200) + i * 200, ENEMYTYPE::GIRL);
+		girl->init(2000, (WINSIZEY / 2 + 200), ENEMYTYPE::GIRL);
 	
 		_vGirl.push_back(girl);
-	}*/
+	}
 
-	for (int i = 0; i < 1; ++i)
+	/*for (int i = 0; i < 1; ++i)
 	{
 		enemy* cheer;
 		cheer = new enemyGirl;
 		cheer->init(WINSIZEX / 2 + 500, (WINSIZEY / 2 + 200), ENEMYTYPE::CHEER);
 
 		_vCheer.push_back(cheer);
-	}
+	}*/
 }
 
 void enemyManager::setStage2()
@@ -121,7 +115,7 @@ void enemyManager::boyPlCollision()
 	for (int i = 0; i < _vBoy.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
-			(_player->getShadowY() - _vBoy[i]->getZ() < 20 && _vBoy[i]->getZ() - _player->getShadowY() < 20) &&
+			(_player->getShadowY() - _vBoy[i]->getZ() < 15 && _vBoy[i]->getZ() - _player->getShadowY() < 15) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
@@ -191,7 +185,7 @@ void enemyManager::girlPlCollision()
 	for (int i = 0; i < _vGirl.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vGirl[i]->getAtk()) &&
-			(_player->getShadowY() - _vGirl[i]->getZ() < 20 && _vGirl[i]->getZ() - _player->getShadowY() < 20) &&
+			(_player->getShadowY() - _vGirl[i]->getZ() < 15 && _vGirl[i]->getZ() - _player->getShadowY() < 15) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
@@ -259,7 +253,7 @@ void enemyManager::cheerPlCollision()
 	for (int i = 0; i < _vCheer.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vCheer[i]->getAtk()) &&
-			(_player->getShadowY() - _vCheer[i]->getZ() < 20 && _vCheer[i]->getZ() - _player->getShadowY() < 20) &&
+			(_player->getShadowY() - _vCheer[i]->getZ() < 15 && _vCheer[i]->getZ() - _player->getShadowY() < 15) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))

@@ -799,15 +799,6 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			{
 				enemy.setHitCount(-enemy.getHitCount());
 				enemy.setStop(true);
-
-				if (_downCount == 3 || enemy.getLayCount() == DELAYMAX)
-				{
-					if (enemyType == ENEMYTYPE::BOY || enemyType == ENEMYTYPE::CHEER)
-					enemy.setFrameX(24);
-					if (enemyType == ENEMYTYPE::GIRL)
-					enemy.setFrameX(22);
-				}
-
 			}
 		}
 
@@ -817,20 +808,12 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			{
 				enemy.setHitCount(-enemy.getHitCount());
 				enemy.setStop(true); 
-
-				if (_downCount == 3 || enemy.getLayCount() == DELAYMAX)
-				{
-					if (enemyType == ENEMYTYPE::BOY)
-					enemy.setFrameX(8);
-					if (enemyType == ENEMYTYPE::GIRL || enemyType == ENEMYTYPE::CHEER)
-					enemy.setFrameX(10);
-				}
 			}
 		}
 
 		if (enemy.getHitCount() >= 1 && (enemyType == ENEMYTYPE::BOY || enemyType == ENEMYTYPE::GIRL))
 		{
-			enemy.setStop(false);		
+			enemy.setStop(false);	
 		}
 
 		if (enemy.getHitCount() <= 0 && enemy.getStop())
@@ -845,8 +828,31 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			enemy.setImage(IMAGEMANAGER->findImage("boy_knockdown"));
 			if (enemyType == ENEMYTYPE::GIRL)
 			enemy.setImage(IMAGEMANAGER->findImage("girl_knockdown"));
-			if (enemyType == ENEMYTYPE::GIRL)
+			if (enemyType == ENEMYTYPE::CHEER)
 			enemy.setImage(IMAGEMANAGER->findImage("cheer_knockdown"));
+
+			if (enemy.getRight())
+			{
+				if (_downCount == 3 || enemy.getLayCount() == DELAYMAX)
+				{
+					if (enemyType == ENEMYTYPE::BOY || enemyType == ENEMYTYPE::CHEER)
+						enemy.setFrameX(24);
+					if (enemyType == ENEMYTYPE::GIRL)
+						enemy.setFrameX(22);
+				}
+			}
+
+			if (!enemy.getRight())
+			{
+				if (_downCount == 3 || enemy.getLayCount() == DELAYMAX)
+				{
+					if (enemyType == ENEMYTYPE::BOY)
+						enemy.setFrameX(8);
+					if (enemyType == ENEMYTYPE::GIRL || enemyType == ENEMYTYPE::CHEER)
+						enemy.setFrameX(10);
+				}
+			}
+
 			enemy.setOuch(false);
 			enemy.setStop(false);
 
@@ -856,7 +862,6 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 				{
 					enemy.setLay(false);
 					enemy.setLayCount(-enemy.getLayCount());
-					enemy.setFrameX(0);
 				}
 			}
 
@@ -978,8 +983,8 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		enemy.setState(enemy.getDie());
 	}
 
-	//cout << "hit class" << endl;
-	//cout << _downCount << ", " << enemy.getHitCount() << endl;
+	cout << "hit class" << endl;
+	cout << enemy.getLay() << ", " <<enemy.getHitCount() << ", " << _downCount << endl;
 }
 
 //===================================================다운 클래스===================================================//
@@ -1246,4 +1251,6 @@ void enemyDeadState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 			}
 		}
 	}
+
+	//cout << "dead class" << endl;
 }
