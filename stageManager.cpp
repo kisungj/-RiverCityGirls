@@ -414,7 +414,11 @@ void stageManager::collision()
 		//Ã¥»ó Z-Order
 		if (_player->getIsDesk() == true)
 		{
-			_obstacleManager->getVObstacle()[i]->getDestZOrder();
+			_obstacleManager->getVObstacle()[i]->setDeskZOrder(true);
+		}
+		else
+		{
+			_obstacleManager->getVObstacle()[i]->setDeskZOrder(false);
 		}
 	}
 

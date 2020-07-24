@@ -41,9 +41,12 @@ HRESULT Item::init(ITEMSTATE itemstate)
 		_itemImg = IMAGEMANAGER->findImage("팬츠");
 		_itemName = "일찐팬츠";
 		_itemDiscription = "착용하면 학교에서 누구보다 쌜거같은 느낌의 팬츠이다.";
-
 		break;
-
+	
+	case WEAPON:
+		_itemImg = IMAGEMANAGER->findImage("흉기");
+		_itemName = "진짜흉기";
+		_itemDiscription = "진짜흉기를 들었으니 양민들 학살하러 다녀볼까?";
 	}
 
 	return S_OK;
