@@ -11,7 +11,6 @@ HRESULT stageManager::init()
 	_ui = new ui;
 	_ui->init();
 	_itemManager = new itemManager;
-	_inventory = new inventory;
 	_obstacleManager = new obstacleManager;
 	_enemyManager = new enemyManager;
 	_enemyManager->setPlayerLink(_player);
@@ -23,6 +22,14 @@ HRESULT stageManager::init()
 	_stageBoss = new stageBoss;
 	_title = new titleStage;
 	_title->init();
+
+	Item* _temp1 = new Item;
+	_temp1->init(PANTS);
+	_ui->setEquipInventoryUI(_temp1);
+
+	Item* _temp2 = new Item;
+	_temp2->init(PANTS);
+	_ui->setEquipInventoryUI(_temp2);
 
 	SCENEMANAGER->addScene("TITLE_SCENE", _title);
 	SCENEMANAGER->addScene("STAGE1_SCENE", _stage1);

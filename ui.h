@@ -62,5 +62,18 @@ public:
 			}
 		}
 	}
+
+	void setEquipInventoryUI(Item* item)
+	{
+		for (int i = 0; i < 2; i++)
+		{
+			if (_inventory[i].isNull)
+			{
+				_inventory[i].item = item;
+				_inventory[i].isNull = false;
+				break;
+			}
+		}
+	}
 };
 

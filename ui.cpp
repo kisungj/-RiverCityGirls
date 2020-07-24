@@ -15,6 +15,8 @@ HRESULT ui::init()
 	_inventory[0].rc = RectMake(250, 300, 110, 110);
 	_inventory[1].rc = RectMake(405, 300, 110, 110);
 
+	
+
 	// 첫번째 줄 인벤토리 
 	_inventory[2].rc = RectMake(248, 448, 63, 61);
 	_inventory[3].rc = RectMake(317, 448, 63, 61);
