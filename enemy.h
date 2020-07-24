@@ -22,6 +22,7 @@ protected:
 	CONDITION _condition;			//상태
 	ENEMYTYPE _et;					//에너미 타입
 	PIXEL _pixel;					//픽셀 충돌용
+	string _mapStr;					//픽셀충돌 맵 바꾸는용
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
