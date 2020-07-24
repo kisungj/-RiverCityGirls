@@ -16,6 +16,7 @@ HRESULT playGround::init()
 {
 	gameNode::init(true);
 	imageLoad();
+	soundLoad();
 	_stageManager = new stageManager;
 	_stageManager->init();
 
@@ -110,13 +111,13 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addImage("stage1", "image/map/stage.bmp", 2395, 1100, false, RGB(0, 0, 0));
 	IMAGEMANAGER->addImage("금동전", "image/item/금동전.bmp", 36, 36, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("은동전", "image/item/은동전.bmp", 36, 37, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("물약1", "image/item/물약1.bmp", 70, 74, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("물약1", "image/item/물약1.bmp", 70, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("물약2", "image/item/물약2.bmp", 70, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("기둥좌", "image/obstacle/기둥좌.bmp", 200, 880, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("기둥우", "image/obstacle/기둥우.bmp", 200, 880, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("책상", "image/obstacle/책상.bmp", 195, 215, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("팬츠", "image/item/팬츠.bmp", 70, 60, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("자판기", "image/obstacle/자판기.bmp", 700, 346, 2, 1, true, RGB(255, 0, 255));
-
 	IMAGEMANAGER->addImage("background", "image/map/01_Detention_BG_x3_start_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
 
 
@@ -153,7 +154,7 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addFrameImage("boy_hit1", "image/enemy/boy_hit1.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit2", "image/enemy/boy_hit2.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_hit3", "image/enemy/boy_hit3.bmp", 576, 450, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 821, 410, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("boy_groundhit", "image/enemy/boy_groundhit.bmp", 1100, 420, 4, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_knockdown", "image/enemy/boy_knockdown.bmp", 8910, 420, 33, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boy_dizzy", "image/enemy/boy_dizzy.bmp", 633, 408, 4, 2, true, RGB(255, 0, 255));
 
@@ -167,4 +168,21 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addFrameImage("boss_heavyAttack_effect", "image/effect/superTackle.bmp", 160, 74, 4, 1, true, RGB(255, 0, 255));
 	EFFECTMANAGER->addEffect("boss_heavyAttack_effect", "boss_heavyAttack_effect", 160, 74, 40, 74, 1, 0.7f, 10);
 
+}
+
+void playGround::soundLoad()
+{
+	SOUNDMANAGER->addSound("배경음", "mp3/리버시티걸즈-배경음.mp3", true, false);
+	SOUNDMANAGER->addSound("돈소리", "mp3/돈소리.mp3", true, false);
+	SOUNDMANAGER->addSound("발차기스윙", "mp3/발차기스윙.mp3", true, false);
+	SOUNDMANAGER->addSound("인벤토리창", "mp3/인벤토리창.mp3", true, false);
+	SOUNDMANAGER->addSound("자판기", "mp3/자판기.mp3", true, false);
+	SOUNDMANAGER->addSound("플레점프", "mp3/플레점프.mp3", true, false);
+	SOUNDMANAGER->addSound("플레1타", "mp3/플레1타.mp3", true, false);
+	SOUNDMANAGER->addSound("플레2타", "mp3/플레2타.mp3", true, false);
+	SOUNDMANAGER->addSound("플레3타", "mp3/플레3타.mp3", true, false);
+	SOUNDMANAGER->addSound("플레q공격", "mp3/플레q공격.mp3", true, false);
+	SOUNDMANAGER->addSound("플레히트", "mp3/플레히트.mp3", true, false);
+
+	SOUNDMANAGER->play("배경음", 0.1f);
 }

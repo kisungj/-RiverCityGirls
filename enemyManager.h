@@ -18,6 +18,9 @@ private:
 	getVEnemy _vGirl;
 	getVIEnemy _viGirl;
 
+	getVEnemy _vCheer;
+	getVIEnemy _viCheer;
+
 public:
 	enemyManager() {}
 	~enemyManager() {}
@@ -48,5 +51,7 @@ public:
 	vector<enemy*> getVGirl() { return _vGirl; }
 	vector<enemy*>::iterator getVIGirl() { return _viGirl; }
 
+	vector<enemy*> getVCheer() { return _vCheer; }
+	vector<enemy*>::iterator getVICheer() { return _viCheer; }
 };
 

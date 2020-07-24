@@ -18,6 +18,7 @@ public:
 	virtual void render();
 	virtual void update();
 	virtual void release();
+
 public:
 	RECT getStage1Door() { return _doorRc; }	//æ¿¿Ãµø ∑∫∆Æ ≥—∞‹¡‹
 };

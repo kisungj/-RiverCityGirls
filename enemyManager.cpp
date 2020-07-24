@@ -18,6 +18,11 @@ void enemyManager::render()
 	{
 		_vGirl[i]->render();
 	}
+
+	for (int i = 0; i < _vCheer.size(); i++)
+	{
+		_vCheer[i]->render();
+	}
 }
 
 void enemyManager::update()
@@ -26,16 +31,18 @@ void enemyManager::update()
 	{
 		_vBoy[i]->update();
 		_vBoy[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
-
-		if (_vBoy[i]->getCondition() == CONDITION::DEAD) eraseBoy(i);
 	}
 
 	for (int i = 0; i < _vGirl.size(); i++)
 	{
 		_vGirl[i]->update();
 		_vGirl[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
+	}
 
-		if (_vGirl[i]->getCondition() == CONDITION::DEAD) eraseGirl(i);
+	for (int i = 0; i < _vCheer.size(); i++)
+	{
+		_vCheer[i]->update();
+		_vCheer[i]->directionCheck(_player->getPlayerRect(), _player->getPlayerX(), _player->getShadowY());
 	}
 
 	boyPlCollision();
@@ -55,8 +62,14 @@ void enemyManager::release()
 		SAFE_DELETE(_vGirl[i]);
 	}
 
+	for (int i = 0; i < _vCheer.size(); i++)
+	{
+		SAFE_DELETE(_vCheer[i]);
+	}
+
 	_vBoy.clear();
 	_vGirl.clear();
+	_vCheer.clear();
 }
 
 void enemyManager::setStage1()
@@ -70,14 +83,23 @@ void enemyManager::setStage1()
 		_vBoy.push_back(boy);
 	}
 
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		enemy* girl;
 		girl = new enemyGirl;
-		girl->init(2000 + i * 100, (WINSIZEY / 2 + 200) + i * 200, ENEMYTYPE::GIRL);
+		girl->init(2000, (WINSIZEY / 2 + 200), ENEMYTYPE::GIRL);
 	
 		_vGirl.push_back(girl);
 	}
+
+	/*for (int i = 0; i < 1; ++i)
+	{
+		enemy* cheer;
+		cheer = new enemyGirl;
+		cheer->init(WINSIZEX / 2 + 500, (WINSIZEY / 2 + 200), ENEMYTYPE::CHEER);
+
+		_vCheer.push_back(cheer);
+	}*/
 }
 
 void enemyManager::setStage2()
@@ -93,7 +115,7 @@ void enemyManager::boyPlCollision()
 	for (int i = 0; i < _vBoy.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
-			(_player->getShadowY() - _vBoy[i]->getZ() < 20 && _vBoy[i]->getZ() - _player->getShadowY() < 20) &&
+			(_player->getShadowY() - _vBoy[i]->getZ() < 15 && _vBoy[i]->getZ() - _player->getShadowY() < 15) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
@@ -163,7 +185,7 @@ void enemyManager::girlPlCollision()
 	for (int i = 0; i < _vGirl.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vGirl[i]->getAtk()) &&
-			(_player->getShadowY() - _vGirl[i]->getZ() < 20 && _vGirl[i]->getZ() - _player->getShadowY() < 20) &&
+			(_player->getShadowY() - _vGirl[i]->getZ() < 15 && _vGirl[i]->getZ() - _player->getShadowY() < 15) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
@@ -191,7 +213,7 @@ void enemyManager::girlPlCollision()
 
 			if (_player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_GUARD") && _player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
 			{
-				if (_vGirl[i]->getImage() == IMAGEMANAGER->findImage("boy_attack3"))
+				if (_vGirl[i]->getImage() == IMAGEMANAGER->findImage("girl_attack3"))
 				{
 					if (!_player->getDirectionX())
 					{
@@ -226,6 +248,70 @@ void enemyManager::girlPlCollision()
 
 void enemyManager::cheerPlCollision()
 {
+	RECT temp;
+
+	for (int i = 0; i < _vCheer.size(); ++i)
+	{
+		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vCheer[i]->getAtk()) &&
+			(_player->getShadowY() - _vCheer[i]->getZ() < 15 && _vCheer[i]->getZ() - _player->getShadowY() < 15) &&
+			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
+			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
+			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
+		{
+			_player->playerDamage(2);
+			_vCheer[i]->setAtk(0, 0, 0, 0);
+			_vCheer[i]->setStrike(true);
+
+			if (_player->getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
+			{
+				if (_vCheer[i]->getRight())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
+			}
+			else if (_player->getAni() == KEYANIMANAGER->findAnimation("P_LEFT_GUARD"))
+			{
+				if (!_vCheer[i]->getRight())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
+			}
+
+			if (_player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_GUARD") && _player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
+			{
+				if (_vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_attack3") || _vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_flip"));
+				{
+					if (!_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+						_player->setState(_player->getDownState());
+						_player->setIsDown(true);
+					}
+
+					if (_player->getDirectionX())
+					{
+						_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+						_player->setState(_player->getDownState());
+						_player->setIsDown(true);
+					}
+				}
+
+				if (!_player->getDirectionX())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
+
+				if (_player->getDirectionX())
+				{
+					_player->setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+					_player->setState(_player->getHitState());
+				}
+			}
+		}
+	}
 }
 
 void enemyManager::eraseBoy(int arrNum)
@@ -240,6 +326,6 @@ void enemyManager::eraseGirl(int arrNum)
 
 void enemyManager::eraseCheer(int arrNum)
 {
-
+	_vCheer.erase(_vCheer.begin() + arrNum);
 }
 
