@@ -32,7 +32,6 @@ protected:
 	ENEMYTYPE _et;					//에너미 타입
 	PIXEL _pixel;					//픽셀 충돌용
 	GREEN _green;					//점프용
-	DESK _desk;						//책상 위
 
 	string _mapStr;					//픽셀충돌 맵 바꾸는용
 
