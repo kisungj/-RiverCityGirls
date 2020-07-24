@@ -71,6 +71,11 @@ HRESULT stageManager::init()
 
 	_changeStageNum = 0;
 
+
+	_dialogIndex = 1;
+	_dialogChatCount = 2;
+	_dialogPlayerX = -200;
+	_dialogBossX = 1300;
 	//ÂüÁ¶
 	_player->setBossLink(_boss);
 	_player->setEnemyLink(_enemyManager);
@@ -103,12 +108,41 @@ void stageManager::render()
 		_loading->frameRender(getMemDC(), WINSIZEX - 300, WINSIZEY - 250, _loading->getFrameX(), 0);
 	}
 
+	SetBkMode(getMemDC(), TRANSPARENT);
+	HFONT font, oldFont;
+	RECT rcText = RectMake(400, WINSIZEY - 75, 1100, 400);
+
+	font = CreateFont(30, 0, 0, 0, 100, 0, 0, 0, HANGUL_CHARSET, 0, 0, 0, 0, TEXT("HY°ß°íµñ"));
+	oldFont = (HFONT)SelectObject(getMemDC(), font);
+	SetTextColor(getMemDC(), RGB(255, 255, 255));
+	if (_stageBoss->getIsDialog())
+	{
+		IMAGEMANAGER->findImage("phone_active")->alphaRender(getMemDC(), 100);
+		if (_dialogTypeStr == "B")
+		{
+			IMAGEMANAGER->findImage("s_boss_name")->render(getMemDC(), 200, WINSIZEY - 80);
+			IMAGEMANAGER->findImage("misuzu_img")->render(getMemDC(), _dialogBossX, 200);
+		}
+		if (_dialogTypeStr == "M")
+		{
+			IMAGEMANAGER->findImage("s_misako_name")->render(getMemDC(), 200, WINSIZEY - 80);
+			IMAGEMANAGER->findImage("misako_img")->render(getMemDC(), _dialogPlayerX, 210);
+		}
+		if (_dialogTypeStr == "K")
+		{
+			IMAGEMANAGER->findImage("s_kyoko_name")->render(getMemDC(), 200, WINSIZEY - 80);
+			IMAGEMANAGER->findImage("kyoko_img")->render(getMemDC(), _dialogPlayerX, 210);
+		}
+		DrawText(getMemDC(), TEXT(_dialogTalkStr.c_str()), _dialogChatCount, &rcText, DT_LEFT | DT_WORDBREAK);
+	}
+	SelectObject(getMemDC(), oldFont);
+	DeleteObject(font);
 	//ZORDERMANAGER->zOrderClear();
 }
 
 void stageManager::update()
 {
-
+	EVENTMANAGER->update();
 	EFFECTMANAGER->update();
 	SCENEMANAGER->update();
 	if (_curStageName == "STAGEBOSS_SCENE")
@@ -123,7 +157,7 @@ void stageManager::update()
 	_ui->update();
 	
 
-	if (!_ui->getIsPhone() && !_isLoading)
+	if (!_ui->getIsPhone() && !_isLoading && !_stageBoss->getIsDialog())
 	{
 		_player->update();
 
@@ -136,6 +170,50 @@ void stageManager::update()
 			_boss->update(_player->getPlayerX(), _player->getPlayerY());
 		}
 
+	}
+
+	if (_stageBoss->getIsDialog())
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
+		{
+			if (_dialogIndex == 13 && _dialogChatCount == strlen(_dialogTempStr.c_str()))
+			{
+				_stageBoss->setIsDialog(false);
+				return;
+			}
+			if (_dialogChatCount < strlen(_dialogTempStr.c_str()))
+			{
+				_dialogChatCount = strlen(_dialogTempStr.c_str());
+			}
+			else
+			{
+				_dialogIndex += 1;
+				_dialogChatCount = 0;
+				_dialogPlayerX = -200;
+				_dialogBossX = 1300;
+			}
+		}
+
+		sprintf_s(_dialogIndexStr, "TALK%d", _dialogIndex);
+		_dialogTempStr = INIDATA->loadDataString("TALK", "TALK", _dialogIndexStr);
+
+		_dialogTypeStr = _dialogTempStr.front();
+		_dialogTalkStr = _dialogTempStr.substr(1, _dialogTempStr.length());
+
+
+		if (_dialogChatCount < strlen(_dialogTempStr.c_str()))
+		{
+			_dialogChatCount += 0.5f;
+		}
+
+		if (_dialogPlayerX < 0)
+		{
+			_dialogPlayerX += 5;
+		}
+		if (_dialogBossX > 1000)
+		{
+			_dialogBossX -= 5;
+		}
 	}
 	// ================================================================
 	//if (KEYMANAGER->isOnceKeyDown(VK_F1)) SCENEMANAGER->changeScene("PLAYER_SCENE");

@@ -15,9 +15,10 @@ class iCameraMove : public iEvent
 	POINTFLOAT mTargetLocation;
 	// ½ºÇÇµå
 	float mSpeed;
+	bool* _isEnd;
 
 public:
-	iCameraMove(POINTFLOAT targetLocation, float speed);
+	iCameraMove(POINTFLOAT targetLocation, float speed, bool* arg);
 	void eventStart()override;
 	bool eventUpdate()override;
 };
