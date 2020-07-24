@@ -632,6 +632,8 @@ void player::enemyCol()
 				{
 					if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
 					{
+						SOUNDMANAGER->play("boyHit", 1.0f);
+
 						if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
 						{
 							if (_directionX)
@@ -656,6 +658,7 @@ void player::enemyCol()
 
 					if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
 					{
+						SOUNDMANAGER->play("boyHit", 1.0f);
 
 						if (_directionX)
 						{

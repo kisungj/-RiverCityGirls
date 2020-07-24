@@ -835,10 +835,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 5)
 		{
-			SOUNDMANAGER->stop("보스점프엉덩방아");
-
-			if (!SOUNDMANAGER->isPlaySound("보스점프"))
-				SOUNDMANAGER->play("보스점프", 1.0f);
+			if(!SOUNDMANAGER->isPlaySound("보스점프")) SOUNDMANAGER->play("보스점프", 1.0f);
 
 			_x += cosf(_angle) * _applySpeed;
 			_y -= sinf(_angle) * _applySpeed + _jumpPower;
@@ -879,11 +876,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 		if (_animPlayer->getNowIndex() == 3 || _animPlayer->getNowIndex() == 4 || _animPlayer->getNowIndex() == 5)
 		{
 			CAMERAMANAGER->shakeCamera(12, 50);
-			if (!SOUNDMANAGER->isPlaySound("보스점프엉덩방아"))
-			{
-				SOUNDMANAGER->stop("보스점프");
-				SOUNDMANAGER->play("보스점프엉덩방아", 1.0f);
-			}
+			SOUNDMANAGER->play("보스점프엉덩방아", 1.0f);
 
 			_attackPos.x = _x;
 			_attackPos.y = _y + 150;
@@ -1416,10 +1409,9 @@ void boss::changePattern(float playerX, float playerZ)
 
 void boss::death(float playerX, float playerZ)
 {
-
-
 	if (_hp <= 0 && _state != BOSS_LEFT_DEATH && _state != BOSS_RIGHT_DEATH && _state != BOSS_LEFT_DEATH_LOOP && _state != BOSS_RIGHT_DEATH_LOOP)
 	{
+		SOUNDMANAGER->play("gameOver", 0.5f);
 		if (_x >= playerX)
 		{
 			_state = BOSS_LEFT_DEATH;
@@ -1653,7 +1645,6 @@ void boss::soundAndCamShakeControl()
 
 	if (_state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK) // 점프는 항상 카메라가 흔들려서 빼놨음
 	{
-
 	}
 
 	if (_state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP)

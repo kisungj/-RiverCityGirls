@@ -166,11 +166,13 @@ void titleStage::update()
 		// 타이틀 화면 조종 키
 		if (KEYMANAGER->isOnceKeyDown(VK_UP))
 		{
+			SOUNDMANAGER->play("init", 1.0f);
 			if (!_isStart)
 				_isStart = true;
 		}
 		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 		{
+			SOUNDMANAGER->play("init", 1.0f);
 			if (_isStart)
 				_isStart = false;
 		}
@@ -182,6 +184,7 @@ void titleStage::update()
 
 			if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 			{
+				SOUNDMANAGER->play("informationSelect", 1.0f);
 				// 다음 씬으로 넘기기
 				//_nextScene = true;
 				_titleState = TITLE_SECOND;
@@ -193,6 +196,7 @@ void titleStage::update()
 
 			if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 			{
+				SOUNDMANAGER->play("informationSelect", 1.0f);
 				// 게임 종료
 				PostQuitMessage(0);
 			}
@@ -204,11 +208,13 @@ void titleStage::update()
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_UP))
 			{
+				SOUNDMANAGER->play("select", 1.0f);
 				if (_selectCount > 1)
 					_selectCount--;
 			}
 			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 			{
+				SOUNDMANAGER->play("select", 1.0f);
 				if (_selectCount < 3)
 					_selectCount++;
 			}
@@ -222,6 +228,8 @@ void titleStage::update()
 
 				if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 				{
+					SOUNDMANAGER->play("gameStart", 0.5f);
+
 					if (_stage1Str == "STAGE 1")
 					{
 						_stage1Start = true;
@@ -247,6 +255,8 @@ void titleStage::update()
 
 				if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 				{
+					SOUNDMANAGER->play("gameStart", 0.5f);
+
 					if (_stage2Str == "STAGE 1")
 					{
 						_stage1Start = true;
@@ -272,6 +282,8 @@ void titleStage::update()
 
 				if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
 				{
+					SOUNDMANAGER->play("gameStart", 0.5f);
+
 					if (_stage3Str == "STAGE 1")
 					{
 						_stage1Start = true;
@@ -321,10 +333,12 @@ void titleStage::update()
 	case TITLE_THIRD:
 		if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 		{
+			SOUNDMANAGER->play("select", 1.0f);
 			_selectPlayer = true;
 		}
 		if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 		{
+			SOUNDMANAGER->play("select", 1.0f);
 			_selectPlayer = false;
 		}
 

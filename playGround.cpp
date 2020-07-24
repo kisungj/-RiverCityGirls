@@ -36,6 +36,11 @@ void playGround::update()
 
 	CAMERAMANAGER->update();
 	_stageManager->update();
+
+	if (KEYMANAGER->isOnceKeyDown('Y'))
+	{
+		SOUNDMANAGER->play("보스점프", 0.5f);
+	}
 }
 
 //그리기 전용
@@ -204,10 +209,10 @@ void playGround::imageLoad()
 void playGround::soundLoad()
 {
 	SOUNDMANAGER->addSound("배경음", "mp3/리버시티걸즈-배경음.mp3", true, false);
-	SOUNDMANAGER->addSound("돈소리", "mp3/돈소리.mp3", false, false);
-	SOUNDMANAGER->addSound("발차기스윙", "mp3/발차기스윙.mp3", false, false);
-	SOUNDMANAGER->addSound("인벤토리창", "mp3/인벤토리창.mp3", false, false);
-	SOUNDMANAGER->addSound("자판기", "mp3/자판기.flac", false, false);
+	SOUNDMANAGER->addSound("money", "mp3/돈소리.mp3", false, false);
+	SOUNDMANAGER->addSound("발차기스윙", "mp3/플레발차기스윙.wav", false, false);
+	SOUNDMANAGER->addSound("inventory", "mp3/인벤토리창.mp3", false, false);
+	SOUNDMANAGER->addSound("vending", "mp3/자판기.wav", false, false);
 	SOUNDMANAGER->addSound("플레점프", "mp3/플레점프.mp3", false, false);
 	SOUNDMANAGER->addSound("플레1타", "mp3/플레1타.mp3", false, false);
 	SOUNDMANAGER->addSound("플레q공격", "mp3/플레q공격.mp3", false, false);
@@ -215,17 +220,21 @@ void playGround::soundLoad()
 	SOUNDMANAGER->addSound("플레밟기", "mp3/플레밟기.wav", false, false);
 	SOUNDMANAGER->addSound("플레맞기", "mp3/플레맞기.mp3", false, false);
 	SOUNDMANAGER->addSound("플레슬라이딩펀치", "mp3/플레슬라이딩펀치.wav", false, false);
-	SOUNDMANAGER->addSound("게임시작", "mp3/게임시작.mp3", false, false);
-	SOUNDMANAGER->addSound("게임오버", "mp3/게임오버.mp3", false, false);
+	SOUNDMANAGER->addSound("gameStart", "mp3/게임시작.wav", false, false);
+	SOUNDMANAGER->addSound("gameOver", "mp3/게임오버.wav", false, false);
 	SOUNDMANAGER->addSound("보스내려찍기", "mp3/보스내려찍기.wav", false, false);
-	SOUNDMANAGER->addSound("남자히트", "mp3/남자히트.mp3", false, false);
+	SOUNDMANAGER->addSound("boyHit", "mp3/남자히트.wav", false, false);
 	SOUNDMANAGER->addSound("보스강펀치", "mp3/보스강펀치.wav", false, false);
 	SOUNDMANAGER->addSound("보스박치기", "mp3/보스박치기.wav", false, false);
 	SOUNDMANAGER->addSound("보스뺨갈기기", "mp3/보스뺨갈기기.wav", false, false);
 	SOUNDMANAGER->addSound("보스점프엉덩방아", "mp3/보스점프엉덩방아.wav", false, false);
-	SOUNDMANAGER->addSound("보스점프", "mp3/보스점프.mp3", false, false);
-	SOUNDMANAGER->addSound("아이템획득", "mp3/아이템획득.mp3", false, false);
-	SOUNDMANAGER->addSound("UI선택", "mp3/UI선택.mp3", false, false);
+	SOUNDMANAGER->addSound("보스점프", "mp3/보스점프.wav", false, false);
+	SOUNDMANAGER->addSound("item", "mp3/아이템획득.mp3", false, false);
+	SOUNDMANAGER->addSound("inventorySelect", "mp3/인벤토리선택.wav", false, false);
+	SOUNDMANAGER->addSound("informationSelect", "mp3/정보선택.mp3", false, false);
+	SOUNDMANAGER->addSound("select", "mp3/선택.mp3", false, false);
+	SOUNDMANAGER->addSound("init", "mp3/init.mp3", false, false);
+	SOUNDMANAGER->addSound("communication", "mp3/대화.mp3", false, false);
 
-	//SOUNDMANAGER->play("배경음", 0.1f);
+	SOUNDMANAGER->play("배경음", 0.1f);
 }

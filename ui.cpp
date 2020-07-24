@@ -136,7 +136,7 @@ void ui::update()
 	{
 		!_isPhone ? _isPhone = true : _isPhone = false;
 
-		if (_isPhone) SOUNDMANAGER->play("인벤토리창", 1.0f);
+		if (_isPhone) SOUNDMANAGER->play("inventory", 1.0f);
 
 	}
 
@@ -147,12 +147,14 @@ void ui::update()
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
+				SOUNDMANAGER->play("inventorySelect", 1.0f);
 				_itemSelectIndex--;
 				if (_itemSelectIndex < 0)
 					_itemSelectIndex = 9;
 			}
 			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 			{
+				SOUNDMANAGER->play("inventorySelect", 1.0f);
 				_itemSelectIndex++;
 				if (_itemSelectIndex > 9)
 					_itemSelectIndex = 0;
@@ -172,10 +174,12 @@ void ui::update()
 		{
 			if (KEYMANAGER->isOnceKeyDown(VK_UP))
 			{
+				SOUNDMANAGER->play("inventorySelect", 1.0f);
 				_select = true;
 			}
 			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 			{
+				SOUNDMANAGER->play("inventorySelect", 1.0f);
 				_select = false;
 			}
 

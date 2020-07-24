@@ -203,6 +203,7 @@ void stageManager::update()
 			}
 			else
 			{
+				SOUNDMANAGER->play("communication", 1.0f);
 				_dialogIndex += 1;
 				_dialogChatCount = 0;
 				_dialogPlayerX = -200;
@@ -481,24 +482,28 @@ void stageManager::collision()
 			//HP물약 충돌
 			if (_itemManager->getVItem()[i]->getitemstate() == HP)
 			{
+				SOUNDMANAGER->play("item", 0.7f);
 				_ui->setInventoryUI(_itemManager->getVItem()[i]);
 			}
 
 			//POWER물약 충돌
 			if (_itemManager->getVItem()[i]->getitemstate() == POWER)
 			{
+				SOUNDMANAGER->play("item", 0.7f);
 				_ui->setInventoryUI(_itemManager->getVItem()[i]);
 			}
 
 			//금동전 충돌
 			if (_itemManager->getVItem()[i]->getitemstate() == GOLD)
 			{
+				SOUNDMANAGER->play("money", 0.7f);
 				_player->setMoney(rndGold);
 			}
 
 			//은동전 충돌
 			if (_itemManager->getVItem()[i]->getitemstate() == SILVER)
 			{
+				SOUNDMANAGER->play("money", 0.7f);
 				_player->setMoney(rndSilver);
 			}
 
@@ -561,6 +566,7 @@ void stageManager::playerDead()
 {
 	if (_player->getGameOver())
 	{
+		SOUNDMANAGER->play("gameOver", 0.5f);
 		if (_curStageName == "STAGE1_SCENE")
 		{
 			_player->init();
