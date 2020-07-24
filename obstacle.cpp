@@ -87,14 +87,30 @@ void obstacle::render()
 	//Ã¥»ó
 	if (_obstacleState == DESK)
 	{
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 515, 705, 750);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 810, 705, 750);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1125, 705, 750);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1435, 705, 750);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 310, 940, 940);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 610, 940, 940);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 920, 940, 940);
-		ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1230, 940, 940);
+		//Ã¥»óÀ§ Z-order
+		if (_deskZOrder)
+		{
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 515, 705, 605);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 810, 705, 605);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1125, 705, 605);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1435, 705, 605);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 310, 940, 940);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 610, 940, 940);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 920, 940, 940);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1230, 940, 940);
+		}
+		//Ã¥»ó¹Ø Z-order
+		else
+		{
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 515, 705, 750);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 810, 705, 750);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1125, 705, 750);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1435, 705, 750);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 310, 940, 940);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 610, 940, 940);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 920, 940, 940);
+			ZORDERMANAGER->addRender(getMemDC(), renderType::RENDER, _obstacleImg, 1230, 940, 940);
+		}
 	}
 
 	//±âµÕ ÁÂ

@@ -348,12 +348,6 @@ void stageManager::collision()
 			_player->setAttack(0, 0, 0, 0);
 		}
 
-		//자판기하고 플레이어 충돌
-		if (IntersectRect(&temp, &_player->getPlayerRect(), &_obstacleManager->getVObstacle()[i]->getObsRc()))
-		{
-
-		}
-
 		//기둥과 충돌할때
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_obstacleManager->getVObstacle()[i]->getPillarRc()))
 		{
@@ -362,6 +356,12 @@ void stageManager::collision()
 		else
 		{
 			_obstacleManager->getVObstacle()[i]->setAlphaValue(false);
+		}
+
+		//책상 Z-Order
+		if (_player->getIsDesk() == true)
+		{
+			_obstacleManager->getVObstacle()[i]->getDestZOrder();
 		}
 	}
 

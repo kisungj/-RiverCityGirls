@@ -21,7 +21,7 @@ private:
 	float _x, _y, _z;					//장애물 위치값
 	int	_pillarAlpha;					//기둥 알파 수치
 	bool _alpha;						//기둥 알파 처리
-
+	bool _deskZOrder;					//데스크 ZOrder 처리
 
 public:
 	obstacle();
@@ -36,7 +36,8 @@ public:
 	RECT getPillarRc() { return _PillarRc; }					//기둥 렉트값 넘겨줌
 	OBSTACLESTATE getObstacleState() { return _obstacleState; }	//장애물 enum값 넘겨줌
 	void setAlphaValue(bool bol = TRUE) { _alpha = bol; }		//기둥 알파값 설정
-
+	bool getDestZOrder() { return _deskZOrder; }				//책상 Z-Order
+	//void setDeskZOrder()
 	void collision();											//기둥과 충돌했을때
 };
 
