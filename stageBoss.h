@@ -6,7 +6,8 @@ class stageBoss : public gameNode
 private:
 	class boss*   _boss;
 	class player* _player;
-	
+
+	int  _shakeTime;
 public:
 	stageBoss() {}
 	~stageBoss() {}

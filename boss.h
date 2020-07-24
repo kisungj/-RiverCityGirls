@@ -69,6 +69,14 @@ private:
 
 	player* _player;
 
+	// --------------- 카메라 관련 변수 ----------------- //
+	bool _isShake;
+	int  _shakePower;
+	int  _shakeTime;
+	// --------------- 카메라 관련 변수 ----------------- //
+
+
+
 public:
 	boss() {}
 	~boss() {}
@@ -91,6 +99,7 @@ public:
 	void    hit(float playerX, float playerZ, int damege);          // 충돌 판정 --> 옮겨야함
 	void    toPlayerCollision();                                    // 플레이어 때리는 판정
 	void    pixelCollision();                                       // 픽셀 충돌
+	void    shakeCamera(int power, int time);                       // 카메라 강도, 시간
 public:
 	STATEBOSS getState() { return _state; }
 	RECT*     getPointerRect() { return &_rc; }
@@ -99,6 +108,12 @@ public:
 	float     getBossZ() { return _z; }
 	int       getHP() { return _hp; }
 	int       getMaxHP() { return _maxHp; }
+	// -------- 카메라 getter
+	int       getShakePower() { return _shakePower; }
+	bool      getIsShake() { return _isShake; }
+	int       getShakeTime() { return _shakeTime; }
+public:
+	void      setIsShake(bool onoff) { _isShake = onoff; }
 public:
 	void      setPlayerMemoryAddressLink(player* player) { _player = player; }
 };

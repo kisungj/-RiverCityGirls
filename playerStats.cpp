@@ -270,11 +270,16 @@ void walkState::update(player & player)
 			}
 
 		}
+		else if (KEYMANAGER->isOnceKeyDown(VK_DOWN) || KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setState(player.getWalkState());
+		}
 		else
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
-			//player.setDirectionX(true);
+			player.setDirectionX(true);
 		}
 	}
 
@@ -291,11 +296,16 @@ void walkState::update(player & player)
 				player.setRunCount(0);
 			}
 		}
+		else if (KEYMANAGER->isOnceKeyDown(VK_DOWN) || KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setState(player.getWalkState());
+		}
 		else
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
-			//player.setDirectionX(false);
+			player.setDirectionX(false);
 		}
 	}
 	
@@ -307,22 +317,35 @@ void walkState::update(player & player)
 		{
 			
 		player.setRunCount(0);
-		if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
+			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 			{
 				if (player.getDirectionX())
 				{
-					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 				}
 				if (!player.getDirectionX())
 				{
-					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 				}
 			}
 			else if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 			{
 				return;
 			}
-
+			if (!player.getDirectionX())
+			{
+				if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+				{
+					player.setDirectionX(true);
+				}
+			}
+			if (player.getDirectionX())
+			{
+				if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+				{
+					player.setDirectionX(false);
+				}
+			}
 			if (player.getIsTop())
 			{
 				player.setShadowY(player.getShadowY() - 3);
@@ -352,6 +375,20 @@ void walkState::update(player & player)
 			{
 				return;
 			}
+			if (!player.getDirectionX())
+			{
+				if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+				{
+					player.setDirectionX(true);
+				}
+			}
+			if (player.getDirectionX())
+			{
+				if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+				{
+					player.setDirectionX(false);
+				}
+			}
 			if (player.getIsBottom())
 			{
 				player.setShadowY(player.getShadowY() + 3);
@@ -379,6 +416,7 @@ void walkState::update(player & player)
 				player.setState(player.getIdleState());
 			}
 		}
+		
 		else
 		{
 			player.setDirectionY(false);
@@ -551,6 +589,14 @@ void runState::update(player & player)
 			{
 				player.setDirectionY(false);
 			}
+			if (KEYMANAGER->isOnceKeyUp(VK_UP))
+			{
+				player.setDirectionX(false);
+			}
+			if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
+			{
+				player.setDirectionX(false);
+			}
 			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
@@ -561,7 +607,7 @@ void runState::update(player & player)
 			}
 			else if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_RUN"), IMAGEMANAGER->findImage("PLAYER_RUN"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			}
 			if (player.getIsLeft())
 			{
@@ -583,7 +629,14 @@ void runState::update(player & player)
 			{
 				player.setDirectionY(false);
 			}
-
+			if (KEYMANAGER->isOnceKeyUp(VK_UP))
+			{
+				player.setDirectionX(true);
+			}
+			if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
+			{
+				player.setDirectionX(true);
+			}
 			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
@@ -594,7 +647,7 @@ void runState::update(player & player)
 			}
 			else if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_RUN"), IMAGEMANAGER->findImage("PLAYER_RUN"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			}
 
 			if (player.getIsRight())
@@ -653,6 +706,22 @@ void runState::update(player & player)
 	{
 		if (KEYMANAGER->isStayKeyDown(VK_UP))
 		{
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+			{
+				player.setDirectionX(true);
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+			{
+				player.setDirectionX(false);
+			}
+			if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+			{
+				player.setDirectionX(true);
+			}
+			if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
+			{
+				player.setDirectionX(false);
+			}
 			if (KEYMANAGER->isOnceKeyDown(VK_DOWN))
 			{
 				if (player.getDirectionX())
@@ -680,6 +749,22 @@ void runState::update(player & player)
 		//¾Æ·¡
 		if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 		{
+			if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+			{
+				player.setDirectionX(true);
+			}
+			if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+			{
+				player.setDirectionX(false);
+			}
+			if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
+			{
+				player.setDirectionX(true);
+			}
+			if (KEYMANAGER->isOnceKeyUp(VK_LEFT))
+			{
+				player.setDirectionX(false);
+			}
 			if (KEYMANAGER->isOnceKeyDown(VK_UP))
 			{
 				if (!player.getDirectionX())
@@ -724,11 +809,11 @@ void runState::update(player & player)
 			player.setDirectionY(false);
 			if (!player.getDirectionX())
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_RUN"), IMAGEMANAGER->findImage("PLAYER_RUN"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			}
 			if (player.getDirectionX())
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_RUN"), IMAGEMANAGER->findImage("PLAYER_RUN"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			}
 	
 		}
@@ -755,11 +840,11 @@ void runState::update(player & player)
 			player.setDirectionY(true);
 			if (!player.getDirectionX())
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_RUN"), IMAGEMANAGER->findImage("PLAYER_RUN"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			}
 			if (player.getDirectionX())
 			{
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_RUN"), IMAGEMANAGER->findImage("PLAYER_RUN"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			}
 		}
 	}

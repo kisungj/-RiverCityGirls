@@ -263,6 +263,7 @@ void player::mouseCol()
 
 void player::pixelCol()
 {
+	//cout << "아래 : " << _isBottom << "   위  : " << _isTop << "   왼쪽 : " << _isLeft << "   오른쪽 : " << _isRight << endl;
 	if (!_isDesk && !_isObs)
 	{
 		//맵 충돌 하고 올라와있음 하지마
@@ -406,6 +407,7 @@ void player::pixelCol()
 					int r = GetRValue(color);
 					int g = GetGValue(color);
 					int b = GetBValue(color);
+					//cout << "r = " << r << " g : " << g << " b : " << b << endl;
 			
 					if (!(r == 255 && g == 0 && b == 0))
 					{
@@ -452,12 +454,16 @@ void player::pixelCol()
 				{
 					setAni(KEYANIMANAGER->findAnimation("P_LEFT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
 						setState(getJumpState());
+						_isJumping = true;
+						_isDesk = false;
 						//playerDamage(10);
 				}
 				if (_directionX)
 				{
 					setAni(KEYANIMANAGER->findAnimation("P_RIGHT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
 						setState(getJumpState());
+						_isJumping = true;
+						_isDesk = false;
 					//playerDamage(10);
 				}
 			}
@@ -663,6 +669,7 @@ void player::enemyCol()
 							
 							//_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 							_enemy->getVBoy()[i]->setOuch(true);
+							_enemy->getVBoy()[i]->setHitCount(1);
 							_enemy->getVBoy()[i]->setHP(10);
 							_attackRect = false;
 						}
@@ -716,6 +723,7 @@ void player::enemyCol()
 								}
 								_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
 								_enemy->getVGirl()[i]->setOuch(true);
+								_enemy->getVGirl()[i]->setHitCount(1);
 								_enemy->getVGirl()[i]->setHP(10);
 								_attackRect = false;
 							}
@@ -746,6 +754,58 @@ void player::enemyCol()
 
 			}
 			
+			for (int i = 0; i < _enemy->getVCheer().size(); ++i)
+			{
+
+				if (_shadowY + 15 > _enemy->getVCheer()[i]->getZ() && _shadowY - 15 < _enemy->getVCheer()[i]->getZ())
+				{
+					if (_enemy->getVCheer()[i]->getLay())
+					{
+						if (IntersectRect(&temp, &_attackRc, &_enemy->getVCheer()[i]->getRC()))
+						{
+							if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
+							{
+								if (_directionX)
+								{
+									EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
+								}
+								else
+								{
+									EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
+								}
+								_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+								_enemy->getVCheer()[i]->setOuch(true);
+								_enemy->getVCheer()[i]->setHitCount(1);
+								_enemy->getVCheer()[i]->setHP(10);
+								_attackRect = false;
+							}
+						}
+
+					}
+
+					else if (_shadowY + 15 > _enemy->getVCheer()[i]->getZ() && _shadowY - 15 < _enemy->getVCheer()[i]->getZ() && !_enemy->getVCheer()[i]->getLay())
+					{
+						if (IntersectRect(&temp, &_attackRc, &_enemy->getVCheer()[i]->getRC()))
+						{
+							if (_directionX)
+							{
+								EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
+							}
+							else
+							{
+								EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
+							}
+							_attackX = _attackY = _attackSizeX = _attackSizeY = 0;
+							_enemy->getVCheer()[i]->setOuch(true);
+							_enemy->getVCheer()[i]->setHitCount(1);
+							_enemy->getVCheer()[i]->setHP(10);
+							_attackRect = false;
+						}
+					}
+				}
+
+			}
+
 		}
 	}
 
