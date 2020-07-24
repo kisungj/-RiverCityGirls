@@ -50,8 +50,10 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 	_shadowImg = IMAGEMANAGER->findImage("enemy_shadow");
 
 	_mapStr = "background";
+	_pixel = PIXEL::TEMP;
+	_green = GREEN::TEMP;
 
-	_right = _isHit = false;
+	_right = _isHit = _isJumping = false;
 	_jumpPower = _gravity = 0;
 	_state = _idle;
 	_maxHP = 100;
@@ -114,8 +116,8 @@ void enemy::directionCheck(RECT rc, float x, float y)
 	}
 
 	//거리 체크
-	if (getDistance(x, y, _x, _z) < 200 && /*_condition != CONDITION::GREEN &&*/ _maxHP > 0) _condition = CONDITION::CLOSE;
-	if (getDistance(x, y, _x, _z) > 200 && /*_condition != CONDITION::GREEN &&*/ _maxHP > 0) _condition = CONDITION::SEARCH;
+	if (getDistance(x, y, _x, _z) < 200 && _maxHP > 0) _condition = CONDITION::CLOSE;
+	if (getDistance(x, y, _x, _z) > 200 && _maxHP > 0) _condition = CONDITION::SEARCH;
 }
 
 void enemy::draw()
@@ -174,8 +176,12 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_condition = CONDITION::GREEN;
+			_green = GREEN::TOP; 
 			_pixel = PIXEL::TOP;
+		}
+
+		if (r == 255 && g == 0 && b == 255)
+		{
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -201,8 +207,14 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_condition = CONDITION::GREEN;
+			_green = GREEN::BOTTOM; 
 			_pixel = PIXEL::BOTTOM;
+		}
+
+		if (r == 255 && g == 0 && b == 255)
+		{
+			_green = GREEN::TEMP;
+			_pixel = PIXEL::TEMP;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -227,13 +239,12 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_condition = CONDITION::GREEN;
+			_green = GREEN::LEFT;
 			_pixel = PIXEL::LEFT;
 		}
 
 		if (r == 255 && g == 0 && b == 255)
 		{
-			_pixel = PIXEL::TEMP;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -258,8 +269,12 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_condition = CONDITION::GREEN;
+			_green = GREEN::RIGHT;
 			_pixel = PIXEL::RIGHT;
+		}
+
+		if (r == 255 && g == 0 && b == 255)
+		{
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -298,33 +313,7 @@ void enemy::pixelCollision()
 
 void enemy::addImage()
 {
-	IMAGEMANAGER->addFrameImage("girl_idle", "image/enemy/girl_idle.bmp", 1170, 354, 10, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_walk", "image/enemy/girl_walk.bmp", 1296, 372, 12, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_run", "image/enemy/girl_run.bmp", 1470, 330, 10, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_jump", "image/enemy/girl_jump.bmp", 333, 366, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_attack1", "image/enemy/girl_attack1.bmp", 1239, 354, 7, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_attack2", "image/enemy/girl_attack2.bmp", 1197, 357, 7, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_attack3", "image/enemy/girl_attack3.bmp", 2412, 414, 12, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_hit1", "image/enemy/girl_hit1.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_hit2", "image/enemy/girl_hit2.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_hit3", "image/enemy/girl_hit3.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_groundhit", "image/enemy/girl_groundhit.bmp", 900, 360, 4, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_knockdown", "image/enemy/girl_knockdown.bmp", 7425, 360, 33, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_dizzy", "image/enemy/girl_dizzy.bmp", 456, 324, 4, 2, true, RGB(255, 0, 255));
-
-	IMAGEMANAGER->addFrameImage("cheer_idle", "image/enemy/cheer_idle.bmp", 1980, 432, 12, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_walk", "image/enemy/cheer_walk.bmp", 2736, 438, 12, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_run", "image/enemy/cheer_run.bmp", 1368, 318, 8, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_jump", "image/enemy/cheer_jump.bmp", 540, 474, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_attack1", "image/enemy/cheer_attack1.bmp", 1332, 468, 6, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_attack2", "image/enemy/cheer_attack2.bmp", 1827, 426, 7, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_attack3", "image/enemy/cheer_attack3.bmp", 3700, 408, 13, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_hit1", "image/enemy/cheer_hit1.bmp", 513, 426, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_hit2", "image/enemy/cheer_hit2.bmp", 513, 426, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_hit3", "image/enemy/cheer_hit3.bmp", 513, 426, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_knockdown", "image/enemy/cheer_knockdown.bmp", 8415, 414, 33, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_dizzy", "image/enemy/cheer_dizzy.bmp", 540, 390, 4, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("cheer_flip", "image/enemy/cheer_backflip.bmp", 6732, 612, 22, 2, true, RGB(255, 0, 255));
+	
 
 	/*
 	_idle

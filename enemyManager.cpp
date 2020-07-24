@@ -100,7 +100,7 @@ void enemyManager::setStage2()
 	{
 		enemy* cheer;
 		cheer = new enemyGirl;
-		cheer->init(WINSIZEX / 2, WINSIZEY / 2, ENEMYTYPE::CHEER);
+		cheer->init(WINSIZEX / 2 + 500, WINSIZEY / 2 + 500, ENEMYTYPE::CHEER);
 
 		_vCheer.push_back(cheer);
 	}
@@ -280,7 +280,7 @@ void enemyManager::cheerPlCollision()
 
 			if (_player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_GUARD") && _player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
 			{
-				if (_vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_attack3") || _vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_flip"));
+				if (/*_vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_attack3") || */_vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_flip"));
 				{
 					if (!_player->getDirectionX())
 					{

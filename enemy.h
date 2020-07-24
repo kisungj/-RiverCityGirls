@@ -6,13 +6,22 @@ enum class CONDITION
 {
 	SEARCH,			//플레이어와 멀 때
 	CLOSE,			//플레이어와 가까울 때
-	GREEN,			//초록바닥
 	DEAD			//주금
 };
 
 enum class PIXEL
 {
-	LEFT, RIGHT, TOP, BOTTOM, DESK, TEMP
+	LEFT, RIGHT, TOP, BOTTOM, TEMP
+};
+
+enum class GREEN
+{
+	LEFT, RIGHT, TOP, BOTTOM, TEMP
+};
+
+enum class DESK
+{
+	BOTTOM, TEMP
 };
 
 class enemy : public gameNode
@@ -22,6 +31,8 @@ protected:
 	CONDITION _condition;			//상태
 	ENEMYTYPE _et;					//에너미 타입
 	PIXEL _pixel;					//픽셀 충돌용
+	GREEN _green;					//점프용
+
 	string _mapStr;					//픽셀충돌 맵 바꾸는용
 
 	RECT _rc;						//에너미 렉트
@@ -41,7 +52,7 @@ protected:
 	bool _isHit;					//맞고 있는지
 	bool _isStop;					//프레임 조절용
 	bool _isLay;					//누웠는지
-	bool _isJump;					//점프하고 있는지
+	bool _isJumping;					//점프하고 있는지
 	bool _isStrike;					//맞았는지
 
 	int _hitCount;					//맞은 횟수
@@ -85,6 +96,7 @@ public:
 	image* getImage() { return _image; }						//이미지 가져가기
 	CONDITION getCondition() { return _condition; }				//CONDITION 가져가기
 	PIXEL getPixel() { return _pixel; }							//PIXEL 가져가기
+	GREEN getGreen() { return _green; }							//GREEN 가져가기
 
 	float getX() { return _x; }									//x축 가져가기
 	float getY() { return _y; }									//y축 가져가기
@@ -94,7 +106,7 @@ public:
 	bool getStop() { return _isStop; }							//_isStop 가져가기
 	bool getOuch() { return _isHit; }							//_isHit 가져가기
 	bool getLay() { return _isLay; }							//_isLay 가져가기
-	bool getJumping() { return _isJump; }						//_isJump 가져가기
+	bool getJumping() { return _isJumping; }					//_isJump 가져가기
 	bool getStrike() { return _isStrike; }						//_isStrike 가져가기
 
 	int getHitCount() { return _hitCount; }						//_hitCount 가져가기
@@ -130,7 +142,7 @@ public:
 	void setStop(BOOL stop = FALSE) { _isStop = stop; }			//_isStop 세팅해주기
 	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기			//플레이어한테 맞을 때 필요
 	void setLay(BOOL lay = FALSE) { _isLay = lay; }				//_isLay 세팅해주기
-	void setJump(BOOL jump = FALSE) { _isJump = jump; }			//_isJump 세팅해주기
+	void setJumping(BOOL jump = FALSE) { _isJumping = jump; }			//_isJump 세팅해주기
 	void setStrike(BOOL st = FALSE) { _isStrike = st; }			//_isStrike 세팅해주기
 
 	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기			//플레이어한테 맞을 때(약공격 1, 강공격 3 이상)
