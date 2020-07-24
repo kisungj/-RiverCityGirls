@@ -274,7 +274,7 @@ void walkState::update(player & player)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
-			player.setDirectionX(true);
+			//player.setDirectionX(true);
 		}
 	}
 
@@ -295,7 +295,7 @@ void walkState::update(player & player)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
-			player.setDirectionX(false);
+			//player.setDirectionX(false);
 		}
 	}
 	
@@ -836,7 +836,7 @@ void runState::update(player & player)
 		player.setIsAttackRect(true);
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
-		player.setAttack(player.getPlayerX(), player.getPlayerY() - 50, 120, 80);
+		player.setAttack(player.getPlayerX(), player.getPlayerY(), 300, 80);
 	}
 
 	//°­°ø°Ý
@@ -1203,21 +1203,17 @@ void attackState::update(player & player)
 			player.setShadowX(player.getShadowX() + 2);
 		}
 	}*/
-	cout << _kickCount << endl;
+	//cout << _kickCount << endl;
 	if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
 	{
 		_kickCount++;
 		if (_kickCount > 40)
 		{
-			
-			player.setIsAttackRect(true);
-			
-		}
-		if (_kickCount > 80)
-		{
 	
 			player.setIsAttackRect(true);
-		
+			player.setAttack(player.getPlayerX(), player.getPlayerY(), 300, 80);
+			_kickCount = 0;
+			
 		}
 	}
 

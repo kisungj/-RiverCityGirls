@@ -60,6 +60,7 @@ public:
 	virtual void release();
 public:
 	void collision();
+	void doorCol();
 
 };
 

@@ -18,5 +18,6 @@ public:
 	virtual void render();
 public:
 	void imageLoad();
+	void soundLoad();
 };
 

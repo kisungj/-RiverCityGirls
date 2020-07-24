@@ -180,11 +180,14 @@ void stageManager::update()
 		SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
 		_stageBoss->init(_player, _boss);
 		_curStageName = "STAGEBOSS_SCENE";
+		_player->setShadowX(WINSIZEX / 2 - 330);
+		_player->setShadowY(WINSIZEY / 2 + 230);
 	}
 
 	
 
 	collision();
+	doorCol();
 
 	_ui->setHpGauge(_player->getPlayerHp(), _player->getPlayerMaxHP());
 
@@ -283,4 +286,40 @@ void stageManager::collision()
 			_itemManager->removeItem(i);
 		}
 	}
+}
+
+void stageManager::doorCol()
+{
+	RECT temp;
+	if (IntersectRect(&temp, &_player->getPlayerRect(), &_stage1->getStage1Door()))
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			_obstacleManager->release();
+			_enemyManager->release();
+			_itemManager->release();
+			SCENEMANAGER->changeScene("STAGE2_SCENE");
+			_stage2->init(_obstacleManager, _itemManager, _enemyManager, _player);
+			_curStageName = "STAGE2_SCENE";
+			_player->setShadowX(_player->getShadowX() + 750);
+			_player->setShadowY(_player->getShadowY() + 30);
+		}
+	}
+	if (IntersectRect(&temp, &_player->getPlayerRect(), &_stage2->getBossDoor()))
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		{
+			_obstacleManager->release();
+			_enemyManager->release();
+			_itemManager->release();
+			_boss->init();
+			SCENEMANAGER->changeScene("STAGEBOSS_SCENE");
+			_stageBoss->init(_player, _boss);
+			_curStageName = "STAGEBOSS_SCENE";
+			_player->setShadowX(WINSIZEX / 2 - 330);
+			_player->setShadowY(WINSIZEY / 2 + 230);
+		}
+	}
+
+
 }
