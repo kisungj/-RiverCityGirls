@@ -111,7 +111,6 @@ public:
 	void boolCheck();
 	void enemyCol();
 	void bossCol();
-	void doorCol();
 
 public:
 	//=====================GET================================
