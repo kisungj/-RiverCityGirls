@@ -233,6 +233,7 @@ void player::keyAnimation()
 void player::playerDamage(float damage)
 {
 	_currentHP -= damage;
+	SOUNDMANAGER->play("플레맞기", 1.0f);
 }
 
 void player::mouseCol()

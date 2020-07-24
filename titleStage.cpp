@@ -22,6 +22,7 @@ HRESULT titleStage::init()
 	IMAGEMANAGER->addImage("second_stage_select_alpha", "image/ui/stage_select_alpha.bmp", 520, 270, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("character_select1", "image/ui/character_select1.bmp", 1600, 900, false , RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("character_select2", "image/ui/character_select2.bmp", 1600, 900, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("door_img", "image/ui/UI_UnLocked_Door.bmp", 78, 114, true, RGB(255, 0, 255));
 
 	_titleState = TITLE_FIRST;
 
