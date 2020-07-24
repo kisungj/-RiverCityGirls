@@ -78,7 +78,7 @@ void enemyManager::setStage1()
 	{
 		enemy* boy;
 		boy = new enemyBoy;
-		boy->init(300, WINSIZEY / 2 + 300, ENEMYTYPE::BOY);
+		boy->init(300, WINSIZEY / 2 + 300, ENEMYTYPE::BOY, "background");
 
 		_vBoy.push_back(boy);
 	}
@@ -87,7 +87,7 @@ void enemyManager::setStage1()
 	{
 		enemy* girl;
 		girl = new enemyGirl;
-		girl->init(2000, (WINSIZEY / 2 + 200), ENEMYTYPE::GIRL);
+		girl->init(2000, (WINSIZEY / 2 + 200), ENEMYTYPE::GIRL, "background");
 	
 		_vGirl.push_back(girl);
 	}
@@ -100,7 +100,7 @@ void enemyManager::setStage2()
 	{
 		enemy* cheer;
 		cheer = new enemyGirl;
-		cheer->init(WINSIZEX / 2 + 500, WINSIZEY / 2 + 500, ENEMYTYPE::CHEER);
+		cheer->init(WINSIZEX / 2 + 500, WINSIZEY / 2 + 500, ENEMYTYPE::CHEER, "stage2pixel");
 
 		_vCheer.push_back(cheer);
 	}
