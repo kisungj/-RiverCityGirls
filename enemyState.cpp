@@ -174,6 +174,8 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		if (enemy.getRight()) enemy.setFrameX(0);
 		else enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getJump());
+		enemy.setJumpPower(10.f);
+		enemy.setGravity(0.2f);
 
 		_waitCount = 0;
 		_randomCount = 0;
@@ -371,7 +373,8 @@ void enemyJumpState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 
 	enemy.setJump(true);
 	enemy.setY(enemy.getY() - enemy.getJumpPower());
-	enemy.setJumpPower(-enemy.getGravity());
+	enemy.setJumpPower(enemy.getJumpPower()-enemy.getGravity());
+	enemy.setGravity(enemy.getGravity());
 
 	if (enemy.getRight())
 	{
@@ -434,7 +437,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		{
 			if (_collisionCount == 0)
 			{
-				enemy.setAtk(enemy.getX() + 65, enemy.getY(), 95, 200);
+				enemy.setAtk(enemy.getX() - 65, enemy.getY(), 95, 200);
 			}
 			else
 			{

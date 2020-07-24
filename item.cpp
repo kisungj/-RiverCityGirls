@@ -33,10 +33,17 @@ HRESULT Item::init(ITEMSTATE itemstate)
 		_itemImg = IMAGEMANAGER->findImage("금동전");
 		break;
 
-
 	case SILVER:
 		_itemImg = IMAGEMANAGER->findImage("은동전");
 		break;
+
+	case PANTS:
+		_itemImg = IMAGEMANAGER->findImage("팬츠");
+		_itemName = "일찐팬츠";
+		_itemDiscription = "착용하면 학교에서 누구보다 쌜거같은 느낌의 팬츠이다.";
+
+		break;
+
 	}
 
 	return S_OK;

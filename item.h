@@ -6,7 +6,8 @@ enum ITEMSTATE
 	HP,
 	POWER,
 	GOLD,
-	SILVER
+	SILVER,
+	PANTS
 };
 
 class Item : public gameNode

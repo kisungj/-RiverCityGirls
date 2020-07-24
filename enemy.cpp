@@ -62,19 +62,17 @@ void enemy::release()
 
 void enemy::update()
 {
-	if (_isJump)
+	/*if (_isJump)
 	{
 		_jumpPower = 7.f;
 		_gravity = 0.2f;
-		_y -= _jumpPower;
-		_jumpPower -= _gravity;
 	}
 
 	if (!_isJump)
 	{
 		_jumpPower = 0;
 		_gravity = 0;
-	}
+	}*/
 
 	_rc = RectMakeCenter(_x, _y, _width, _height);
 	_shadow = RectMakeCenter(_x, _y + 100, 80, 30);
@@ -98,6 +96,11 @@ void enemy::render()
 	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	//CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
+
+	/*char str[256];
+	sprintf_s(str, "%d", _maxHP);
+	TextOut(getMemDC(), _x, _y - 50, str, strlen(str));*/
+
 	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z - 1, 200);
 	ZORDERMANAGER->addFrameRender(getMemDC(), renderType::FRAME_RENDER, _image, _x, _y, _z, _currentX, _currentY);
 }
@@ -314,9 +317,11 @@ void enemy::addImage()
 	IMAGEMANAGER->addFrameImage("girl_hit1", "image/enemy/girl_hit1.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_hit2", "image/enemy/girl_hit2.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_hit3", "image/enemy/girl_hit3.bmp", 477, 360, 3, 2, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addFrameImage("girl_groundhit", "image/enemy/girl_groundhit.bmp", 660, 360, 3, 2, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("girl_groundhit", "image/enemy/girl_groundhit.bmp", 900, 360, 4, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_knockdown", "image/enemy/girl_knockdown.bmp", 7425, 360, 33, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("girl_dizzy", "image/enemy/girl_dizzy.bmp", 456, 324, 4, 2, true, RGB(255, 0, 255));
+
+	IMAGEMANAGER->addFrameImage("cheer_idle", "image/enemy/cheer_idle.bmp", 1980, 432, 12, 2, true, RGB(255, 0, 255));
 
 	/*
 	_idle
