@@ -123,8 +123,8 @@ void playGround::imageLoad()
 
 
 	// ======= 보스
-	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1000, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("보스배경pixel", "image/map/bossMap1_collision.bmp", 2538, 1000, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스배경", "image/map/bossMap1.bmp", 2538, 1200, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("보스배경pixel", "image/map/bossMap1_collision.bmp", 2538, 1200, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("보스그림자", "image/boss/boss_shadow.bmp", 153, 45, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_idle", "image/boss/boss_idle.bmp", 2844, 582, 12, 2, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("boss_hit", "image/boss/boss_hit.bmp", 9300, 576, 31, 2, true, RGB(255, 0, 255));

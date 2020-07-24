@@ -295,29 +295,18 @@ void walkState::update(player & player)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
-			player.setDirectionX(false);
-			//얘는 런카운트 초기화 시켜준거
-		/*	if (player.getRunCount() > 6)
-			{
-				player.setRunCount(0);
-			}*/
+		}
 
-		}
-		//만약 왼쪽키를 뗐는데 아래키나 위키 누르면 왼쪽으로 가게,,?
-		else if (KEYMANAGER->isOnceKeyDown(VK_DOWN) || KEYMANAGER->isOnceKeyDown(VK_UP))
-		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
-			player.setState(player.getWalkState());
-		}
 		//나머지는 오른쪽 키를 누르면 오른쪽으로 가게
-		else if (KEYMANAGER->isOnceKeyDown(VK_RIGHT))
+		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
 			player.setDirectionX(true);
+			return;
 		}
 	}
-
+	cout << KEYMANAGER->getKeyUp() << endl;
 	//오른쪽도 똑같아
 	if (KEYMANAGER->isOnceKeyUp(VK_RIGHT))
 	{
@@ -325,22 +314,14 @@ void walkState::update(player & player)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
-			player.setDirectionX(true);
-			/*if (player.getRunCount() > 6)
-			{
-				player.setRunCount(0);
-			}*/
 		}
-		else if (KEYMANAGER->isOnceKeyDown(VK_DOWN) || KEYMANAGER->isOnceKeyDown(VK_UP))
-		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
-			player.setState(player.getWalkState());
-		}
-		else if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
+
+		else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
 			player.setDirectionX(false);
+			return;
 		}
 	}
 	
@@ -381,7 +362,7 @@ void walkState::update(player & player)
 				}
 			}
 			//이건 오른쪽일떄
-			if (player.getDirectionX())
+			else if (player.getDirectionX())
 			{
 				//왼쪽 키 누르면
 				if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
@@ -391,6 +372,7 @@ void walkState::update(player & player)
 					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 				}
 			}
+			
 			//탑일때만 움직여라
 			if (player.getIsTop())
 			{
@@ -429,7 +411,7 @@ void walkState::update(player & player)
 					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 				}
 			}
-			if (player.getDirectionX())
+			else if (player.getDirectionX())
 			{
 				if (KEYMANAGER->isOnceKeyDown(VK_LEFT))
 				{
@@ -452,7 +434,6 @@ void walkState::update(player & player)
 		//아무것도 안눌러져있으면 아이들로
 		if (KEYMANAGER->getKeyUp() == NULL)
 		{
-			player.setDirectionY(true);
 			if (!player.getDirectionX())
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
@@ -468,7 +449,6 @@ void walkState::update(player & player)
 		//다른키를 누르면
 		else
 		{
-			player.setDirectionY(false);
 			if (!player.getDirectionX())
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
@@ -488,7 +468,6 @@ void walkState::update(player & player)
 		
 		if (KEYMANAGER->getKeyUp() == NULL)
 		{
-			player.setDirectionY(false);
 			if (!player.getDirectionX())
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
@@ -502,7 +481,6 @@ void walkState::update(player & player)
 		}
 		else
 		{
-			player.setDirectionY(true);
 			if (!player.getDirectionX())
 			{
 				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
@@ -623,8 +601,6 @@ void walkState::update(player & player)
 			player.setState(player.getAttackState());
 		}
 	}
-
-	//player.mouseCol();
 }
 
 
@@ -719,11 +695,6 @@ void runState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
 			player.setDirectionX(false);
-			/*if (player.getRunCount() > 21)
-			{
-				player.setRunCount(0);
-			}*/
-
 		}
 		else
 		{
@@ -741,10 +712,6 @@ void runState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
 			player.setState(player.getIdleState());
 			player.setDirectionX(true);
-			/*if (player.getRunCount() > 21)
-			{
-				player.setRunCount(0);
-			}*/
 		}
 		else
 		{
@@ -910,7 +877,6 @@ void runState::update(player & player)
 		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
 			SOUNDMANAGER->play("플레점프", 1.0f);
-			//player.setJumpPower(player.getJumpPower() + 1);
 			player.setIsRun(true);
 			player.setJumpPower(10);
 			player.setGravity(0.8f);
@@ -1001,11 +967,6 @@ void runState::update(player & player)
 			player.setState(player.getAttackState());
 		}
 	}
-	/*if (player.getRunCount() > 6)
-	{
-		player.setRunCount(0);
-	}*/
-	//player.mouseCol();
 }
 
 
@@ -1120,7 +1081,6 @@ void jumpState::update(player & player)
 				player.setState(player.getRunState());
 				player.setDirectionX(false);
 				player.setIsRun(false);
-				//cout << "d" << endl;
 			}
 			else if (player.getDirectionX())
 			{
@@ -1129,7 +1089,6 @@ void jumpState::update(player & player)
 				player.setState(player.getRunState());
 				player.setDirectionX(true);
 				player.setIsRun(false);
-				//cout << "d" << endl;
 			}
 		}
 		//아님 걷기
@@ -1202,31 +1161,21 @@ void jumpState::update(player & player)
 	}
 
 	//강공격
-	//if (KEYMANAGER->isOnceKeyDown('Q'))
-	//{
-	//	/*if (player.getShadow() <= 200)
-	//	{
-	//		player.setShadow(player.getShadow() + 5);
-	//	}*/
-	//	if (!player.getDirectionX())
-	//	{
-	//		player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
-	//		player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 160, 170);
-	//		//player.setState(player.getAttackState());
-	//	}
-	//	if (player.getDirectionX())
-	//	{
-	//		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
-	//		player.setAttack(player.getPlayerX() + 50, player.getPlayerY(), 160, 170);
-	//		//player.setState(player.getAttackState());
-	//	}
-	//}
-
-	/*if (player.getRunCount() > 6)
+	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
-		player.setRunCount(0);
-	}*/
-	//player.mouseCol();
+		if (!player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+		}
+		if (player.getDirectionX())
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+		}
+	}
+	if (KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() && KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
+	{
+		player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 160, 170);
+	}
 }
 
 HRESULT attackState::init()
@@ -1255,10 +1204,6 @@ void attackState::update(player & player)
 		{
 			if (!KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK1")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_ATTACK1")->isPlay())
 			{
-				/*if (player.getRunCount() > 6)
-				{
-					player.setRunCount(0);
-				}*/
 				//키 누르면 어택 2로 넘거가게
 				if (player.getAttacked())
 				{
@@ -1349,7 +1294,6 @@ void attackState::update(player & player)
 			player.setShadowX(player.getShadowX() + 2);
 		}
 	}*/
-	//cout << _kickCount << endl;
 	if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
 	{
 		_kickCount++;
@@ -1414,11 +1358,6 @@ void attackState::update(player & player)
 			}
 		}
 	}
-	/*if (player.getRunCount() > 6)
-	{
-		player.setRunCount(0);
-	}*/
-	//player.mouseCol();
 } 
 
 HRESULT hitState::init()
@@ -1496,10 +1435,6 @@ void hitState::update(player & player)
 			player.setGameOver(false);
 		}
 	}
-	/*if (player.getRunCount() > 6)
-	{
-		player.setRunCount(0);
-	}*/
 }
 
 HRESULT downState::init()
@@ -1512,7 +1447,6 @@ void downState::update(player & player)
 {
 	_downCount++;
 
-	//cout << _downCount << endl;
 	if (player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_DOWN") || player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"))
 	{
 		if (!KEYANIMANAGER->findAnimation("P_RIGHT_DOWN")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_DOWN")->isPlay())
@@ -1523,16 +1457,12 @@ void downState::update(player & player)
 				if (!player.getDirectionX())
 				{
 					player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
-					//player.setState(player.getStartState());
 					player.setDirectionX(false);
-					//player.setGameOver(true);
 				}
 				if (player.getDirectionX())
 				{
 					player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_OVER"), IMAGEMANAGER->findImage("PLAYER_OVER"));
-					//player.setState(player.getStartState());
 					player.setDirectionX(true);
-					//player.setGameOver(false);
 				}
 			
 			}
@@ -1596,10 +1526,6 @@ void downState::update(player & player)
 			}
 		}
 	}
-	/*if (player.getRunCount() > 6)
-	{
-		player.setRunCount(0);
-	}*/
 }
 
 void startState::update(player & player)
@@ -1635,10 +1561,6 @@ void startState::update(player & player)
 		
 		}
 	}
-	/*if (player.getRunCount() > 6)
-	{
-		player.setRunCount(0);
-	}*/
 }
 void guardState::update(player & player)
 {
@@ -1692,10 +1614,6 @@ void guardState::update(player & player)
 			}
 		}
 	}
-	/*if (player.getRunCount() > 6)
-	{
-		player.setRunCount(0);
-	}*/
 }
 
 void overState::update(player & player)
@@ -1719,10 +1637,6 @@ void overState::update(player & player)
 			player.setPlayerHP(100);
 		}
 	}
-	/*if (player.getRunCount() > 6)
-	{
-		player.setRunCount(0);
-	}*/
 }
 
 void stunState::update(player & player)
