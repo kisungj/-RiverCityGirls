@@ -58,10 +58,8 @@ void boss::update(float playerX, float playerZ)
 		_y = _z - 137;
 	}
 
-
 	changePattern(playerX, playerZ);
 	toPlayerCollision();
-	pixelCollision();
 	_rc = RectMakeCenter(_x, _y, 100, 250);
 
 }
@@ -423,19 +421,13 @@ void boss::stateUpdate(float playerX, float playerZ)
 	case BOSS_LEFT_BLOCK:
 		if (_animPlayer->getNowIndex() > 0 && _animPlayer->getNowIndex() < 5)
 		{
-			if (_isPixelCollision)
+			_blockDistance -= _blockFriction;
+			_blockFriction += 0.01f;
+			if (isPixelCollision(_x += cosf(_angle) * _blockDistance, _z -= sinf(_angle) * _blockDistance))
 			{
-				_x += cosf(_angle) * 0;
-				_z -= sinf(_angle) * 0;
+				_x -= cosf(_angle) * _blockDistance;
+				_z += sinf(_angle) * _blockDistance;
 			}
-			else
-			{
-				_blockDistance -= _blockFriction;
-				_blockFriction += 0.01f;
-				_x += cosf(_angle) * _blockDistance;
-				_z -= sinf(_angle) * _blockDistance;
-			}
-
 
 		}
 		if (!_animPlayer->isPlay())
@@ -462,18 +454,14 @@ void boss::stateUpdate(float playerX, float playerZ)
 	case BOSS_RIGHT_BLOCK:
 		if (_animPlayer->getNowIndex() > 0 && _animPlayer->getNowIndex() < 5)
 		{
-			if (_isPixelCollision)
+			_blockDistance -= _blockFriction;
+			_blockFriction += 0.01f;
+			if (isPixelCollision(_x += cosf(_angle) * _blockDistance, _z -= sinf(_angle) * _blockDistance))
 			{
-				_x += cosf(_angle) * 0;
-				_z -= sinf(_angle) * 0;
+				_x -= cosf(_angle) * _blockDistance;
+				_z += sinf(_angle) * _blockDistance;
 			}
-			else
-			{
-				_blockDistance -= _blockFriction;
-				_blockFriction += 0.01f;
-				_x += cosf(_angle) * _blockDistance;
-				_z -= sinf(_angle) * _blockDistance;
-			}
+
 		}
 		if (!_animPlayer->isPlay())
 		{
@@ -564,17 +552,16 @@ void boss::stateUpdate(float playerX, float playerZ)
 		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 3 && _animPlayer->isPlay())
 		{
-			if (_isPixelCollision)
+			if (!isPixelCollision(_x += cosf(_angle) * _applySpeed, _z -= sinf(_angle) * _applySpeed))
 			{
-				_x += cosf(_angle) * 0;
-				_z -= sinf(_angle) * 0;
+				//_x += cosf(_angle) * _applySpeed;
+				//_z -= sinf(_angle) * _applySpeed;
 			}
 			else
 			{
-				_x += cosf(_angle) * _applySpeed;
-				_z -= sinf(_angle) * _applySpeed;
+				_x -= cosf(_angle) * _applySpeed;
+				_z += sinf(_angle) * _applySpeed;
 			}
-
 
 			if (_state == BOSS_LEFT_DASH) // 왼쪽으로 대쉬 할 경우 공격 범위.
 			{
@@ -614,7 +601,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 	case BOSS_LEFT_HIT1:
 		_hitDelay++;
-		if (_hitDelay > 100)
+		if (_hitDelay > 60)
 		{
 			_hitDelay = 0;
 			_hitCount = 0;
@@ -632,21 +619,16 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		if (_animPlayer->getNowIndex() < 2)
 		{
-			if (_isPixelCollision)
+			if (isPixelCollision(_x += cosf(_angle) * 0.4f, _z -= sinf(_angle) * 0.4f))
 			{
-				_x += cosf(_angle) * 0;
-				_z -= sinf(_angle) * 0;
-			}
-			else
-			{
-				_x += cosf(_angle) * 0.4f;
-				_z -= sinf(_angle) * 0.4f;
+				_x -= cosf(_angle) * 0.4f;
+				_z += sinf(_angle) * 0.4f;
 			}
 		}
 		break;
 	case BOSS_RIGHT_HIT1:
 		_hitDelay++;
-		if (_hitDelay > 100)
+		if (_hitDelay > 60)
 		{
 			_hitDelay = 0;
 			_hitCount = 0;
@@ -664,22 +646,17 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		if (_animPlayer->getNowIndex() < 2)
 		{
-			if (_isPixelCollision)
+			if (isPixelCollision(_x += cosf(_angle) * 0.4f, _z -= sinf(_angle) * 0.4f))
 			{
-				_x += cosf(_angle) * 0;
-				_z -= sinf(_angle) * 0;
-			}
-			else
-			{
-				_x += cosf(_angle) * 0.4f;
-				_z -= sinf(_angle) * 0.4f;
+				_x -= cosf(_angle) * 0.4f;
+				_z += sinf(_angle) * 0.4f;
 			}
 		}
 
 		break;
 	case BOSS_LEFT_HIT2:
 		_hitDelay++;
-		if (_hitDelay > 100)
+		if (_hitDelay > 60)
 		{
 			_hitDelay = 0;
 			_hitCount = 0;
@@ -699,21 +676,16 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		if (_animPlayer->getNowIndex() < 2)
 		{
-			if (_isPixelCollision)
+			if (isPixelCollision(_x += cosf(_angle) * 0.4f, _z -= sinf(_angle) * 0.4f))
 			{
-				_x += cosf(_angle) * 0;
-				_z -= sinf(_angle) * 0;
-			}
-			else
-			{
-				_x += cosf(_angle) * 0.4f;
-				_z -= sinf(_angle) * 0.4f;
+				_x -= cosf(_angle) * 0.4f;
+				_z += sinf(_angle) * 0.4f;
 			}
 		}
 		break;
 	case BOSS_RIGHT_HIT2:
 		_hitDelay++;
-		if (_hitDelay > 100)
+		if (_hitDelay > 60)
 		{
 			_hitDelay = 0;
 			_hitCount = 0;
@@ -733,15 +705,10 @@ void boss::stateUpdate(float playerX, float playerZ)
 		}
 		if (_animPlayer->getNowIndex() < 2) // 맞았을때 살짝 밀려남
 		{
-			if (_isPixelCollision)
+			if (isPixelCollision(_x += cosf(_angle) * 0.4f, _z -= sinf(_angle) * 0.4f))
 			{
-				_x += cosf(_angle) * 0;
-				_z -= sinf(_angle) * 0;
-			}
-			else
-			{
-				_x += cosf(_angle) * 0.4f;
-				_z -= sinf(_angle) * 0.4f;
+				_x -= cosf(_angle) * 0.4f;
+				_z += sinf(_angle) * 0.4f;
 			}
 		}
 		break;
@@ -764,27 +731,21 @@ void boss::stateUpdate(float playerX, float playerZ)
 			// 날아가는 동안 
 			if (_y >= _z - 137)
 			{
-				if (_isPixelCollision)
+				if (isPixelCollision(_x += cosf(_angle) * 0.6f, _z))
 				{
-					_x += 0;
+					_x -= cosf(_angle) * 0.6f;
 				}
-				else
-				{
-					_x += cosf(_angle) * 0.6f;
-				}
+
 				_y -= 1 - _gravity;
 				_gravity = 1;
 			}
 			else
 			{
-				if (_isPixelCollision)
+				if (isPixelCollision(_x += cosf(_angle) * 2, _z))
 				{
-					_x += 0;
+					_x -= cosf(_angle) * 2;
 				}
-				else
-				{
-					_x += cosf(_angle) * 2;
-				}
+
 				_y -= 5 - _gravity;
 			}
 			_gravity += 0.1f;
@@ -807,16 +768,21 @@ void boss::stateUpdate(float playerX, float playerZ)
 		else
 		{
 			// 날아가는 동안 
-
 			if (_y >= _z - 137)
 			{
-				_x += cosf(_angle) * 0.6f;
+				if (isPixelCollision(_x += cosf(_angle) * 0.6f, _z))
+				{
+					_x -= cosf(_angle) * 0.6f;
+				}
 				_y -= 1 - _gravity;
 				_gravity = 1;
 			}
 			else
 			{
-				_x += cosf(_angle) * 2;
+				if (isPixelCollision(_x += cosf(_angle) * 2, _z))
+				{
+					_x -= cosf(_angle) * 2;
+				}
 				_y -= 5 - _gravity;
 			}
 			_gravity += 0.1f;
@@ -872,7 +838,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 			SOUNDMANAGER->stop("보스점프엉덩방아");
 
 			if (!SOUNDMANAGER->isPlaySound("보스점프"))
-			SOUNDMANAGER->play("보스점프", 1.0f);
+				SOUNDMANAGER->play("보스점프", 1.0f);
 
 			_x += cosf(_angle) * _applySpeed;
 			_y -= sinf(_angle) * _applySpeed + _jumpPower;
@@ -918,10 +884,10 @@ void boss::stateUpdate(float playerX, float playerZ)
 				SOUNDMANAGER->stop("보스점프");
 				SOUNDMANAGER->play("보스점프엉덩방아", 1.0f);
 			}
-		
+
 			_attackPos.x = _x;
 			_attackPos.y = _y + 150;
-			_attackSize.x = 100;
+			_attackSize.x = 300;
 			_attackSize.y = 50;
 		}
 		else
@@ -936,15 +902,10 @@ void boss::stateUpdate(float playerX, float playerZ)
 		_applySpeed = 10;
 		if (_animPlayer->getNowIndex() > 11 && _animPlayer->getNowIndex() < 17 && _animPlayer->isPlay())
 		{
-			if (_isPixelCollision)
+			if (isPixelCollision(_x += cosf(_angle) * _applySpeed, _z -= sinf(_angle) * _applySpeed))
 			{
-				_x += cosf(_angle) * 0;
-				_z -= sinf(_angle) * 0;
-			}
-			else
-			{
-				_x += cosf(_angle) * _applySpeed;
-				_z -= sinf(_angle) * _applySpeed;
+				_x -= cosf(_angle) * _applySpeed;
+				_z += sinf(_angle) * _applySpeed;
 			}
 		}
 
@@ -1264,7 +1225,7 @@ void boss::jumpAttack(float playerX, float playerZ)
 
 	if (_jumpAndDownAttackCount > 100) // changePattern쪽에서 받아옴 
 	{
-		
+
 
 		_jumpAndDownAttackCount = 0;
 		if (_x >= playerX) // 보스가 오른쪽에있는경우 --> 왼쪽 봐야함
@@ -1500,7 +1461,7 @@ void boss::hit(float playerX, float playerZ, int damege)
 		if (_hitCount == 0)
 		{
 			int rndBlock = RND->getInt(10);
-			if (rndBlock < 2)
+			if (rndBlock < 0)
 			{
 				_characterImg = IMAGEMANAGER->findImage("boss_block");
 				_state = BOSS_LEFT_BLOCK;
@@ -1541,7 +1502,7 @@ void boss::hit(float playerX, float playerZ, int damege)
 		if (_hitCount == 0)
 		{
 			int rndBlock = RND->getInt(10);
-			if (rndBlock < 2)
+			if (rndBlock < 0)
 			{
 				_characterImg = IMAGEMANAGER->findImage("boss_block");
 				_blockDistance = 5;
@@ -1594,7 +1555,13 @@ void boss::toPlayerCollision()
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
 		{
-			if (IntersectRect(&temp, &_player->getPlayerRect(), &_attackRect))
+			int distance;
+			if (_player->getShadowY() > _z)
+				distance = _player->getShadowY() - _z;
+			else
+				distance = _z - _player->getShadowY();
+
+			if (IntersectRect(&temp, &_player->getPlayerRect(), &_attackRect) && distance < 50)
 			{
 				_attackPos.x = -100;
 				_attackPos.y = -100;
@@ -1652,48 +1619,6 @@ void boss::toPlayerCollision()
 
 }
 
-void boss::pixelCollision()
-{
-	_probeLeft = _x - 50;
-	_probeRight = _x + 50;
-	_probeUp = _z - 50;
-	_probeDown = _z + 50;
-	_isPixelCollision = false;
-
-	// 위쪽
-	_colorF = GetPixel(IMAGEMANAGER->findImage("보스배경pixel")->getMemDC(), _x, _probeUp);
-	_r = GetRValue(_colorF);
-	_g = GetGValue(_colorF);
-	_b = GetBValue(_colorF);
-	if (_r == 255 && _g == 0 && _b == 0)
-		_isPixelCollision = true;
-
-	// 아래쪽
-	_colorF = GetPixel(IMAGEMANAGER->findImage("보스배경pixel")->getMemDC(), _x, _probeDown);
-	_r = GetRValue(_colorF);
-	_g = GetGValue(_colorF);
-	_b = GetBValue(_colorF);
-	if (_r == 255 && _g == 0 && _b == 0)
-		_isPixelCollision = true;
-
-	// 왼쪽
-	_colorF = GetPixel(IMAGEMANAGER->findImage("보스배경pixel")->getMemDC(), _probeLeft, _z);
-	_r = GetRValue(_colorF);
-	_g = GetGValue(_colorF);
-	_b = GetBValue(_colorF);
-	if (_r == 255 && _g == 0 && _b == 0)
-		_isPixelCollision = true;
-
-	// 오른쪽
-	_colorF = GetPixel(IMAGEMANAGER->findImage("보스배경pixel")->getMemDC(), _probeRight, _z);
-	_r = GetRValue(_colorF);
-	_g = GetGValue(_colorF);
-	_b = GetBValue(_colorF);
-	if (_r == 255 && _g == 0 && _b == 0)
-		_isPixelCollision = true;
-
-}
-
 void boss::shakeCamera(int power, int time)
 {
 	_isShake = true;
@@ -1728,9 +1653,9 @@ void boss::soundAndCamShakeControl()
 
 	if (_state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK) // 점프는 항상 카메라가 흔들려서 빼놨음
 	{
-	
+
 	}
-	
+
 	if (_state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP)
 	{
 		CAMERAMANAGER->shakeCamera(6, 30);
@@ -1742,4 +1667,16 @@ void boss::soundAndCamShakeControl()
 		//SOUNDMANAGER->play("보스박치기", 1.0f);
 	}
 
+}
+
+bool boss::isPixelCollision(float x, float y)
+{
+	_colorF = GetPixel(IMAGEMANAGER->findImage("보스배경pixel")->getMemDC(), x, y);
+	_r = GetRValue(_colorF);
+	_g = GetGValue(_colorF);
+	_b = GetBValue(_colorF);
+	if (_r == 255 && _g == 0 && _b == 0)
+		return true;
+
+	return false;
 }

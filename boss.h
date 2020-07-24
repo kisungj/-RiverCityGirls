@@ -5,24 +5,24 @@
 class player;
 enum STATEBOSS
 {
-	BOSS_LEFT_IDLE,             BOSS_RIGHT_IDLE,          // 기본 상태                          
-	BOSS_LEFT_WALK,             BOSS_RIGHT_WALK,          // 걷는 상태						
-	BOSS_LEFT_DASH,             BOSS_RIGHT_DASH,          // 대쉬 공격	 		
-	BOSS_LEFT_TAUNT,            BOSS_RIGHT_TAUNT,         // 놀리기							
-	BOSS_LEFT_HIT1,             BOSS_RIGHT_HIT1,		  // 맞았을 때 1타					
-	BOSS_LEFT_HIT2,             BOSS_RIGHT_HIT2,		  // 맞았을 때 2타					
-	BOSS_LEFT_HIT3,             BOSS_RIGHT_HIT3,		  // 맞았을 때 3타					
-	BOSS_LEFT_HIT_GETUP,        BOSS_RIGHT_HIT_GETUP,	  // 맞았을 때 일어나서 공격			
-	BOSS_LEFT_BLOCK,            BOSS_RIGHT_BLOCK,	      // 막기                              
-	BOSS_LEFT_ROAR,             BOSS_RIGHT_ROAR,	      // 맞았을 때 다 못때리면 함성		
-	BOSS_LEFT_ATTACK,           BOSS_RIGHT_ATTACK,		  // 약 공격							
-	BOSS_LEFT_ATTACK_ELBOW,     BOSS_RIGHT_ATTACK_ELBOW,  // 엘보우 공격						
-	BOSS_LEFT_JUMP,             BOSS_RIGHT_JUMP,          // 점프							
-	BOSS_LEFT_JUMP_ATTACK,      BOSS_RIGHT_JUMP_ATTACK,   // 점프 공격						
-	BOSS_LEFT_HEAVY_ATTACK,     BOSS_RIGHT_HEAVY_ATTACK,  // 강 공격							
-	BOSS_LEFT_DEATH,            BOSS_RIGHT_DEATH,		  // 죽었을 때						
-	BOSS_LEFT_DEATH_LOOP,       BOSS_RIGHT_DEATH_LOOP,	  // 죽었을 때 루프					
-	BOSS_LEFT_ANGRY,            BOSS_RIGHT_ANGRY,         // 화남							
+	BOSS_LEFT_IDLE, BOSS_RIGHT_IDLE,          // 기본 상태                          
+	BOSS_LEFT_WALK, BOSS_RIGHT_WALK,          // 걷는 상태						
+	BOSS_LEFT_DASH, BOSS_RIGHT_DASH,          // 대쉬 공격	 		
+	BOSS_LEFT_TAUNT, BOSS_RIGHT_TAUNT,         // 놀리기							
+	BOSS_LEFT_HIT1, BOSS_RIGHT_HIT1,		  // 맞았을 때 1타					
+	BOSS_LEFT_HIT2, BOSS_RIGHT_HIT2,		  // 맞았을 때 2타					
+	BOSS_LEFT_HIT3, BOSS_RIGHT_HIT3,		  // 맞았을 때 3타					
+	BOSS_LEFT_HIT_GETUP, BOSS_RIGHT_HIT_GETUP,	  // 맞았을 때 일어나서 공격			
+	BOSS_LEFT_BLOCK, BOSS_RIGHT_BLOCK,	      // 막기                              
+	BOSS_LEFT_ROAR, BOSS_RIGHT_ROAR,	      // 맞았을 때 다 못때리면 함성		
+	BOSS_LEFT_ATTACK, BOSS_RIGHT_ATTACK,		  // 약 공격							
+	BOSS_LEFT_ATTACK_ELBOW, BOSS_RIGHT_ATTACK_ELBOW,  // 엘보우 공격						
+	BOSS_LEFT_JUMP, BOSS_RIGHT_JUMP,          // 점프							
+	BOSS_LEFT_JUMP_ATTACK, BOSS_RIGHT_JUMP_ATTACK,   // 점프 공격						
+	BOSS_LEFT_HEAVY_ATTACK, BOSS_RIGHT_HEAVY_ATTACK,  // 강 공격							
+	BOSS_LEFT_DEATH, BOSS_RIGHT_DEATH,		  // 죽었을 때						
+	BOSS_LEFT_DEATH_LOOP, BOSS_RIGHT_DEATH_LOOP,	  // 죽었을 때 루프					
+	BOSS_LEFT_ANGRY, BOSS_RIGHT_ANGRY,         // 화남							
 	BOSS_END,
 };
 
@@ -58,12 +58,10 @@ private:
 	float      _applySpeed;
 	int        _phaseCount;
 	// ----------------- 스텟 관련 변수 ----------------- //
-	
+
 	// ----------------- 픽셀 충돌 변수 ----------------- //
 	COLORREF _colorF;
-	int      _probeLeft, _probeRight, _probeUp, _probeDown;
 	int      _r, _g, _b;
-	bool     _isPixelCollision;
 	// ----------------- 픽셀 충돌 변수 ----------------- //
 
 	player* _player;
@@ -97,9 +95,9 @@ public:
 	void    death(float playerX, float playerZ);                    // 죽음 판정
 	void    hit(float playerX, float playerZ, int damege);          // 충돌 판정 --> 옮겨야함
 	void    toPlayerCollision();                                    // 플레이어 때리는 판정
-	void    pixelCollision();                                       // 픽셀 충돌
 	void    shakeCamera(int power, int time);                       // 카메라 강도, 시간
 	void    soundAndCamShakeControl();
+	bool    isPixelCollision(float x, float y);
 public:
 	STATEBOSS getState() { return _state; }
 	RECT*     getPointerRect() { return &_rc; }
