@@ -12,15 +12,15 @@ enemy::~enemy()
 HRESULT enemy::init(float x, float y, ENEMYTYPE et, string mapName)
 {
 	{
-		_idle	 = new enemyIdleState();
-		_move	 = new enemyMoveState();
-		_run	 = new enemyRunState();
-		_jump	 = new enemyJumpState();
-		_attack	 = new enemyAttackState();
-		_hit	 = new enemyHitState();
-		_down	 = new enemyDownState();
-		_dizzy	 = new enemyDizzyState();
-		_dead	 = new enemyDeadState();
+		_idle = new enemyIdleState();
+		_move = new enemyMoveState();
+		_run = new enemyRunState();
+		_jump = new enemyJumpState();
+		_attack = new enemyAttackState();
+		_hit = new enemyHitState();
+		_down = new enemyDownState();
+		_dizzy = new enemyDizzyState();
+		_dead = new enemyDeadState();
 	}
 
 	addImage();
@@ -59,7 +59,7 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et, string mapName)
 	_jumpPower = _gravity = 0;
 	_state = _idle;
 	_maxHP = 100;
-	
+
 	return S_OK;
 }
 
@@ -86,9 +86,9 @@ void enemy::update()
 
 void enemy::render()
 {
-	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
-	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
 	//CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
@@ -152,7 +152,7 @@ void enemy::draw()
 }
 
 void enemy::pixelCollision()
-{	
+{
 	int _probeU = _shadow.top;
 	int _probeB = _shadow.bottom;
 	int _probeL = _shadow.left;
@@ -179,7 +179,7 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_green = GREEN::TOP; 
+			_green = GREEN::TOP;
 			_pixel = PIXEL::TOP;
 		}
 
@@ -206,8 +206,15 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_green = GREEN::BOTTOM; 
+			_green = GREEN::BOTTOM;
 			_pixel = PIXEL::BOTTOM;
+			_isOnDesk = true;
+
+			if (_isJumping && _jumpPower < 0)
+			{
+				_z -= 100;
+				break;
+			}
 		}
 
 		if (r == 255 && g == 0 && b == 255)
@@ -215,6 +222,7 @@ void enemy::pixelCollision()
 			_green = GREEN::TEMP;
 			_pixel = PIXEL::TEMP;
 		}
+		break;
 	}
 
 	//¿ÞÂÊ
@@ -277,7 +285,7 @@ void enemy::pixelCollision()
 
 	if (_isJumping)
 	{
-		for (int i = _rc.bottom - 5; i < _rc.bottom + 5; ++i)
+		for (int i = _probeB - 5; i < _probeB + 5; ++i)
 		{
 			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), _x, i);
 
@@ -288,19 +296,20 @@ void enemy::pixelCollision()
 			if (r == 255 && g == 255 && b == 0)
 			{
 				_table = TABLE::BOTTOM;
-				_green = GREEN::TEMP;
 			}
+
 			else
 			{
 				_table = TABLE::TEMP;
 			}
+			break;
 		}
 	}
 }
 
 void enemy::addImage()
 {
-	
+
 
 	/*
 	_idle
