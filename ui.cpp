@@ -133,6 +133,9 @@ void ui::update()
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
 		!_isPhone ? _isPhone = true : _isPhone = false;
+
+		if (_isPhone) SOUNDMANAGER->play("인벤토리창", 1.0f);
+
 	}
 
 	// 인벤토리 조종키
