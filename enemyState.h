@@ -81,8 +81,10 @@ public:
 class enemyJumpState : public enemyState
 {
 private:
-	float _angle;
+	int _delayCount;
 public:
+	enemyJumpState() { _delayCount = 0; }
+
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };
 

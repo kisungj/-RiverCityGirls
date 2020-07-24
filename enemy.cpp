@@ -50,8 +50,11 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 	_shadowImg = IMAGEMANAGER->findImage("enemy_shadow");
 
 	_mapStr = "background";
+	_pixel = PIXEL::TEMP;
+	_green = GREEN::TEMP;
+	_desk = DESK::TEMP;
 
-	_right = _isHit = false;
+	_right = _isHit = _isJumping = false;
 	_jumpPower = _gravity = 0;
 	_state = _idle;
 	_maxHP = 100;
@@ -114,8 +117,8 @@ void enemy::directionCheck(RECT rc, float x, float y)
 	}
 
 	//거리 체크
-	if (getDistance(x, y, _x, _z) < 200 && /*_condition != CONDITION::GREEN &&*/ _maxHP > 0) _condition = CONDITION::CLOSE;
-	if (getDistance(x, y, _x, _z) > 200 && /*_condition != CONDITION::GREEN &&*/ _maxHP > 0) _condition = CONDITION::SEARCH;
+	if (getDistance(x, y, _x, _z) < 200 && _maxHP > 0) _condition = CONDITION::CLOSE;
+	if (getDistance(x, y, _x, _z) > 200 && _maxHP > 0) _condition = CONDITION::SEARCH;
 }
 
 void enemy::draw()
@@ -174,8 +177,12 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_condition = CONDITION::GREEN;
+			_green = GREEN::TOP; 
 			_pixel = PIXEL::TOP;
+		}
+
+		if (r == 255 && g == 0 && b == 255)
+		{
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -201,8 +208,14 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_condition = CONDITION::GREEN;
+			_green = GREEN::BOTTOM; 
 			_pixel = PIXEL::BOTTOM;
+		}
+
+		if (r == 255 && g == 0 && b == 255)
+		{
+			_green = GREEN::TEMP;
+			_pixel = PIXEL::TEMP;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -227,13 +240,12 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_condition = CONDITION::GREEN;
+			_green = GREEN::LEFT;
 			_pixel = PIXEL::LEFT;
 		}
 
 		if (r == 255 && g == 0 && b == 255)
 		{
-			_pixel = PIXEL::TEMP;
 		}
 
 		if (r == 255 && g == 255 && b == 0)
@@ -258,8 +270,12 @@ void enemy::pixelCollision()
 
 		if (r == 160 && g == 255 && b == 0)
 		{
-			_condition = CONDITION::GREEN;
+			_green = GREEN::RIGHT;
 			_pixel = PIXEL::RIGHT;
+		}
+
+		if (r == 255 && g == 0 && b == 255)
+		{
 		}
 
 		if (r == 255 && g == 255 && b == 0)
