@@ -16,6 +16,7 @@ HRESULT playGround::init()
 {
 	gameNode::init(true);
 	imageLoad();
+	soundLoad();
 	_stageManager = new stageManager;
 	_stageManager->init();
 
@@ -167,4 +168,19 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addFrameImage("boss_heavyAttack_effect", "image/effect/superTackle.bmp", 160, 74, 4, 1, true, RGB(255, 0, 255));
 	EFFECTMANAGER->addEffect("boss_heavyAttack_effect", "boss_heavyAttack_effect", 160, 74, 40, 74, 1, 0.7f, 10);
 
+}
+
+void playGround::soundLoad()
+{
+	SOUNDMANAGER->addSound("배경음", "mp3/리버시티걸즈-배경음.mp3", true, false);
+	SOUNDMANAGER->addSound("돈소리", "mp3/돈소리.mp3", true, false);
+	SOUNDMANAGER->addSound("발차기스윙", "mp3/발차기스윙.mp3", true, false);
+	SOUNDMANAGER->addSound("인벤토리창", "mp3/인벤토리창.mp3", true, false);
+	SOUNDMANAGER->addSound("자판기", "mp3/자판기.mp3", true, false);
+	SOUNDMANAGER->addSound("플레점프", "mp3/플레점프.mp3", true, false);
+	SOUNDMANAGER->addSound("플레1타", "mp3/플레1타.mp3", true, false);
+	SOUNDMANAGER->addSound("플레2타", "mp3/플레2타.mp3", true, false);
+	SOUNDMANAGER->addSound("플레3타", "mp3/플레3타.mp3", true, false);
+	SOUNDMANAGER->addSound("플레q공격", "mp3/플레q공격.mp3", true, false);
+	SOUNDMANAGER->play("배경음", 1.0f);
 }
