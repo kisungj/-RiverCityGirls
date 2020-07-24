@@ -83,6 +83,7 @@ void idleState::update(player & player)
 		player.setIsRun(false);
 		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
+			SOUNDMANAGER->play("플레점프", 1.0f);
 			player.setJumpPower(10);
 			player.setGravity(0.8f);
 			player.setIsJumping(true);
@@ -103,6 +104,7 @@ void idleState::update(player & player)
 	//기본공격
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
+		SOUNDMANAGER->play("플레1타", 1.0f);
 		player.setIsAttack(true);
 		player.setIsAttackRect(true);
 		if (!player.getDirectionX())
@@ -123,6 +125,7 @@ void idleState::update(player & player)
 	{
 		if (KEYMANAGER->isOnceKeyDown('S'))
 		{
+			SOUNDMANAGER->play("플레밟기", 0.5f);
 			player.setIsAttackRect(true);
 			if (!player.getDirectionX())
 			{
@@ -142,6 +145,7 @@ void idleState::update(player & player)
 	//회오리킥
 	if (KEYMANAGER->isOnceKeyDown('D'))
 	{
+		SOUNDMANAGER->play("발차기스윙", 1.0f);
 		player.setIsAttackRect(true);
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
@@ -166,6 +170,7 @@ void idleState::update(player & player)
 	//강공격
 	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
+		SOUNDMANAGER->play("플레q공격", 1.0f);
 		player.setIsAttackRect(true);
 		if (!player.getDirectionX())
 		{
@@ -472,6 +477,7 @@ void walkState::update(player & player)
 		player.setIsRun(false);
 		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
+			SOUNDMANAGER->play("플레점프", 1.0f);
 			player.setJumpPower(10);
 			player.setGravity(0.8f);
 			player.setIsJumping(true);
@@ -491,6 +497,7 @@ void walkState::update(player & player)
 	//기본 공격
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
+		SOUNDMANAGER->play("플레1타", 1.0f);
 		player.setIsAttackRect(true);
 		player.setIsAttack(true);
 		if (!player.getDirectionX())
@@ -512,6 +519,7 @@ void walkState::update(player & player)
 	{
 		if (KEYMANAGER->isOnceKeyDown('S'))
 		{
+			SOUNDMANAGER->play("플레밟기", 0.5f);
 			player.setIsAttackRect(true);
 			if (!player.getDirectionX())
 			{
@@ -531,6 +539,7 @@ void walkState::update(player & player)
 	//회오리킥
 	if (KEYMANAGER->isOnceKeyDown('D'))
 	{
+		SOUNDMANAGER->play("발차기스윙", 1.0f);
 		player.setIsAttackRect(true);
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
@@ -556,6 +565,7 @@ void walkState::update(player & player)
 	//강공격
 	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
+		SOUNDMANAGER->play("플레q공격", 1.0f);
 		if (!player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
@@ -855,6 +865,7 @@ void runState::update(player & player)
 	{
 		if (KEYMANAGER->isOnceKeyDown('Z'))
 		{
+			SOUNDMANAGER->play("플레점프", 1.0f);
 			//player.setJumpPower(player.getJumpPower() + 1);
 			player.setIsRun(true);
 			player.setJumpPower(10);
@@ -877,6 +888,7 @@ void runState::update(player & player)
 	//기본공격
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
+		SOUNDMANAGER->play("플레1타", 1.0f);
 		player.setIsAttackRect(true);
 		player.setIsAttack(true);
 		if (!player.getDirectionX())
@@ -896,6 +908,7 @@ void runState::update(player & player)
 	//슬라이딩
 	if (KEYMANAGER->isOnceKeyDown('S'))
 	{
+		SOUNDMANAGER->play("플레슬라이딩펀치", 1.0f);
 		player.setIsAttackRect(true);
 		if (!player.getDirectionX())
 		{
@@ -918,6 +931,7 @@ void runState::update(player & player)
 	//회오리킥
 	if (KEYMANAGER->isOnceKeyDown('D'))
 	{
+			SOUNDMANAGER->play("발차기스윙", 1.0f);
 		player.setIsAttackRect(true);
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
@@ -927,6 +941,7 @@ void runState::update(player & player)
 	//강공격
 	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
+		SOUNDMANAGER->play("플레q공격", 1.0f);
 		player.setIsAttackRect(true);
 		if (!player.getDirectionX())
 		{
@@ -1203,6 +1218,7 @@ void attackState::update(player & player)
 				//키 누르면 어택 2로 넘거가게
 				if (player.getAttacked())
 				{
+					SOUNDMANAGER->play("플레1타", 1.0f);
 					player.setIsAttack(true);
 					if (!player.getDirectionX())
 					{
@@ -1223,6 +1239,7 @@ void attackState::update(player & player)
 		{
 			if (!KEYANIMANAGER->findAnimation("P_RIGHT_ATTACK2")->isPlay() && !KEYANIMANAGER->findAnimation("P_LEFT_ATTACK2")->isPlay())
 			{
+				SOUNDMANAGER->play("플레1타", 1.0f);
 				//키 누르면 어택 3으로 넘어가게
 				if (player.getAttacked())
 				{
@@ -1311,6 +1328,7 @@ void attackState::update(player & player)
 		!KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay()&&
 		!KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
 	{
+		SOUNDMANAGER->stop("발차기스윙");
 		player.setIsAttackRect(false);
 		player.setAttacked(false);
 		_kickCount = 0;
