@@ -54,7 +54,8 @@ protected:
 	bool _isHit;					//맞고 있는지
 	bool _isStop;					//프레임 조절용
 	bool _isLay;					//누웠는지
-	bool _isJumping;					//점프하고 있는지
+	bool _isJumping;				//점프하고 있는지
+	bool _isOnDesk;					//책상 위에 있는지
 	bool _isStrike;					//맞았는지
 
 	int _hitCount;					//맞은 횟수
@@ -111,6 +112,7 @@ public:
 	bool getLay() { return _isLay; }							//_isLay 가져가기
 	bool getJumping() { return _isJumping; }					//_isJump 가져가기
 	bool getStrike() { return _isStrike; }						//_isStrike 가져가기
+	bool getDesk() { return _isOnDesk; }						//_isOnDesk 가져가기
 
 	int getHitCount() { return _hitCount; }						//_hitCount 가져가기
 	int getLayCount() { return _layCount; }						//_layCount 가져가기
@@ -145,8 +147,9 @@ public:
 	void setStop(BOOL stop = FALSE) { _isStop = stop; }			//_isStop 세팅해주기
 	void setOuch(BOOL hit = FALSE) { _isHit = hit; }			//_isHit 세팅해주기			//플레이어한테 맞을 때 필요
 	void setLay(BOOL lay = FALSE) { _isLay = lay; }				//_isLay 세팅해주기
-	void setJumping(BOOL jump = FALSE) { _isJumping = jump; }			//_isJump 세팅해주기
+	void setJumping(BOOL jump = FALSE) { _isJumping = jump; }	//_isJump 세팅해주기
 	void setStrike(BOOL st = FALSE) { _isStrike = st; }			//_isStrike 세팅해주기
+	void setDesk(BOOL desk = FALSE) { _isOnDesk = desk; }		//_isOnDesk 세팅해주기
 
 	void setHitCount(int count) { _hitCount += count; }			//_hitCount 올려주기			//플레이어한테 맞을 때(약공격 1, 강공격 3 이상)
 	void setLayCount(int count) { _layCount += count; }			//_layCount 올려주기
