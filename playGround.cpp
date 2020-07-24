@@ -186,9 +186,9 @@ void playGround::soundLoad()
 	SOUNDMANAGER->addSound("플레슬라이딩펀치", "mp3/플레슬라이딩펀치.wav", false, false);
 	SOUNDMANAGER->addSound("게임시작", "mp3/게임시작.mp3", false, false);
 	SOUNDMANAGER->addSound("게임오버", "mp3/게임오버.mp3", false, false);
+	SOUNDMANAGER->addSound("보스내려찍기", "mp3/보스내려찍기.wav", false, false);
 	SOUNDMANAGER->addSound("남자히트", "mp3/남자히트.mp3", false, false);
 	SOUNDMANAGER->addSound("보스강펀치", "mp3/보스강펀치.wav", false, false);
-	SOUNDMANAGER->addSound("보스내려찍기", "mp3/보스내려찍기.wav", false, false);
 	SOUNDMANAGER->addSound("보스박치기", "mp3/보스박치기.wav", false, false);
 	SOUNDMANAGER->addSound("보스뺨갈기기", "mp3/보스뺨갈기기.wav", false, false);
 	SOUNDMANAGER->addSound("보스점프엉덩방아", "mp3/보스점프엉덩방아.wav", false, false);
