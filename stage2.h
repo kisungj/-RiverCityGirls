@@ -11,6 +11,9 @@ private:
 	RECT				   _stage2DoorRc;
 	RECT				   _bossDoorRc;
 
+	int		 			   _doorAlpha;
+	int					   _bossDoorAlpha;
+
 public:
 	stage2() {}
 	~stage2() {}

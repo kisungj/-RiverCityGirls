@@ -9,6 +9,8 @@ private:
 	class player*          _player;
 	RECT				   _doorRc;				//æ¿¿Ãµø ∑∫∆Æ
 
+	int		 			   _doorAlpha;
+
 public:
 	stage1() {}
 	~stage1() {}

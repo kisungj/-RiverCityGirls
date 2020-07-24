@@ -20,6 +20,8 @@ HRESULT stage1::init(obstacleManager * obstacleManager, itemManager* itemManager
 	//---- юс╫ц
 	_doorRc = RectMakeCenter(1700, 420, 200, 30);
 
+	_doorAlpha = 150;
+
 	return S_OK;
 }
 
@@ -29,7 +31,7 @@ void stage1::render()
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage1"), IMAGEMANAGER->findImage("stage1")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage1")->getHeight() * 0.5f);
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _doorRc);
-
+	CAMERAMANAGER->alphaRender(getMemDC(), IMAGEMANAGER->findImage("door_img"), (_doorRc.left + _doorRc.right) / 2, _doorRc.top, _doorAlpha);
 }
 
 void stage1::update()
@@ -37,6 +39,16 @@ void stage1::update()
 	CAMERAMANAGER->settingCamera(0, 0, WINSIZEX, WINSIZEY, 0, 0, 2395 - WINSIZEX, 1100 - WINSIZEY);
 	CAMERAMANAGER->setX(_player->getPlayerX());
 	CAMERAMANAGER->setY(_player->getPlayerY());
+
+	RECT _temp;
+	if (IntersectRect(&_temp, &_player->getPlayerRect(), &_doorRc))
+	{
+		_doorAlpha = 255;
+	}
+	else
+	{
+		_doorAlpha = 150;
+	}
 }
 
 void stage1::release()
