@@ -2,24 +2,25 @@
 #include "gameNode.h"
 #include "enemyState.h"
 
-enum class CONDITION
+enum class CONDITION							//에너미 상태(간단)
 {
 	SEARCH,			//플레이어와 멀 때
 	CLOSE,			//플레이어와 가까울 때
 	DEAD			//주금
 };
 
-enum class PIXEL
+enum class PIXEL								//이동 막기용
 {
 	LEFT, RIGHT, TOP, BOTTOM, TEMP
 };
 
-enum class GREEN
+enum class GREEN								//책상 바닥 확인용 (점프)
 {
 	LEFT, RIGHT, TOP, BOTTOM, TEMP
 };
 
-enum class DESK
+
+enum class TABLE								//책상 위에 닿았을 때 확인용
 {
 	BOTTOM, TEMP
 };
@@ -32,8 +33,9 @@ protected:
 	ENEMYTYPE _et;					//에너미 타입
 	PIXEL _pixel;					//픽셀 충돌용
 	GREEN _green;					//점프용
+	TABLE _table;					//책상 위
 
-	string _mapStr;					//픽셀충돌 맵 바꾸는용
+	string _mapName;				//픽셀충돌 맵 바꾸는용
 
 	RECT _rc;						//에너미 렉트
 	RECT _shadow;					//에너미 그림자 렉트
@@ -78,7 +80,7 @@ public:
 	enemy();
 	~enemy();
 
-	virtual HRESULT init(float x, float y, ENEMYTYPE et);
+	virtual HRESULT init(float x, float y, ENEMYTYPE et, string mapName);
 	virtual void release();
 	virtual void update();
 	virtual void render();
@@ -97,6 +99,7 @@ public:
 	CONDITION getCondition() { return _condition; }				//CONDITION 가져가기
 	PIXEL getPixel() { return _pixel; }							//PIXEL 가져가기
 	GREEN getGreen() { return _green; }							//GREEN 가져가기
+	TABLE getTable() { return _table; }							//TABLE 가져가기
 
 	float getX() { return _x; }									//x축 가져가기
 	float getY() { return _y; }									//y축 가져가기

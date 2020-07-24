@@ -142,6 +142,7 @@ public:
 	bool getEnemyBLay() { return _enemyBLay; }
 	bool getEnemyGLay() { return _enemyGLay; }
 	bool getIsAttackRect() { return _attackRect; }
+	bool getIsDesk() { return _isDesk; }
 	RECT getAttackRect() { return _attackRc; }
 	RECT getPlayerRect() { return _player; }
 	image* getImgge() { return _img; }
@@ -190,6 +191,7 @@ public:
 	void setIsDown(bool down) { _isDown = down; }
 	void setGameOver(bool over) { _gameOver = over; }
 	void setIsAttackRect(bool att) { _attackRect = att; }
+	void setIsDesk(bool desk) { _isDesk = desk; }
 	void setAttackRect(RECT attackRc) { _attackRc = attackRc; }
 	void setMapStr(string str) { _mapStr = str; }
 	void setAni(animation* ani, image* img) { _img = img;  _playerMotion = ani; _playerMotion->start(); }

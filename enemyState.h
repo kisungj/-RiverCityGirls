@@ -82,6 +82,7 @@ class enemyJumpState : public enemyState
 {
 private:
 	int _delayCount;
+	float _angle;
 public:
 	enemyJumpState() { _delayCount = 0; }
 

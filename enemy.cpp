@@ -9,7 +9,7 @@ enemy::~enemy()
 {
 }
 
-HRESULT enemy::init(float x, float y, ENEMYTYPE et)
+HRESULT enemy::init(float x, float y, ENEMYTYPE et, string mapName)
 {
 	{
 		_idle	 = new enemyIdleState();
@@ -47,11 +47,13 @@ HRESULT enemy::init(float x, float y, ENEMYTYPE et)
 		_image = IMAGEMANAGER->findImage("cheer_idle");
 		break;
 	}
+
 	_shadowImg = IMAGEMANAGER->findImage("enemy_shadow");
 
-	_mapStr = "background";
+	_mapName = mapName;
 	_pixel = PIXEL::TEMP;
 	_green = GREEN::TEMP;
+	_table = TABLE::TEMP;
 
 	_right = _isHit = _isJumping = false;
 	_jumpPower = _gravity = 0;
@@ -84,6 +86,7 @@ void enemy::update()
 
 void enemy::render()
 {
+	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
 	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
@@ -162,7 +165,7 @@ void enemy::pixelCollision()
 	//위
 	for (int i = _probeU - 5; i < _probeU + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _x, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), _x, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -182,10 +185,6 @@ void enemy::pixelCollision()
 
 		if (r == 255 && g == 0 && b == 255)
 		{
-		}
-
-		if (r == 255 && g == 255 && b == 0)
-		{
 
 		}
 
@@ -194,7 +193,7 @@ void enemy::pixelCollision()
 	//아래
 	for (int i = _probeB - 5; i < _probeB + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _x, i);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), _x, i);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -216,17 +215,12 @@ void enemy::pixelCollision()
 			_green = GREEN::TEMP;
 			_pixel = PIXEL::TEMP;
 		}
-
-		if (r == 255 && g == 255 && b == 0)
-		{
-
-		}
 	}
 
 	//왼쪽
 	for (int i = _probeL - 5; i < _probeL + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, _z);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), i, _z);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -245,10 +239,6 @@ void enemy::pixelCollision()
 
 		if (r == 255 && g == 0 && b == 255)
 		{
-		}
-
-		if (r == 255 && g == 255 && b == 0)
-		{
 
 		}
 	}
@@ -256,7 +246,7 @@ void enemy::pixelCollision()
 	//오른쪽
 	for (int i = _probeR - 5; i < _probeR + 5; ++i)
 	{
-		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), i, _z);
+		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), i, _z);
 
 		int r = GetRValue(color);
 		int g = GetGValue(color);
@@ -275,10 +265,6 @@ void enemy::pixelCollision()
 
 		if (r == 255 && g == 0 && b == 255)
 		{
-		}
-
-		if (r == 255 && g == 255 && b == 0)
-		{
 
 		}
 	}
@@ -289,26 +275,27 @@ void enemy::pixelCollision()
 	//}
 	////cout << _isJumping << endl;
 
-	//if (_isJumping)
-	//{
-	//	for (int i = _playerProbe - 10; i < _playerProbe + 10; ++i)
-	//	{
-	//		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapStr)->getMemDC(), _playerX, i);
+	if (_isJumping)
+	{
+		for (int i = _rc.bottom - 5; i < _rc.bottom + 5; ++i)
+		{
+			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), _x, i);
 
-	//		int r = GetRValue(color);
-	//		int g = GetGValue(color);
-	//		int b = GetBValue(color);
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
 
-	//		if (r == 255 && g == 255 && b == 0)
-	//		{
-	//			_isDesk = true;
-	//		}
-	//		else
-	//		{
-	//			_isDesk = false;
-	//		}
-	//	}
-	//}
+			if (r == 255 && g == 255 && b == 0)
+			{
+				_table = TABLE::BOTTOM;
+				_green = GREEN::TEMP;
+			}
+			else
+			{
+				_table = TABLE::TEMP;
+			}
+		}
+	}
 }
 
 void enemy::addImage()
