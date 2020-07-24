@@ -64,7 +64,7 @@ void obstacle::update()
 		//기둥과 충돌했을때
 		if (_alpha)
 		{
-			_pillarAlpha = 122;
+			_pillarAlpha = 160;
 		}
 		//아닐때
 		else
@@ -108,9 +108,6 @@ void obstacle::render()
 	{
 		ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2 + 300, _PillarRc.bottom + 210, _pillarAlpha);
 	}
-
-	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.bottom + _PillarRc.top) / 2 + 300, _PillarRc.bottom + 200, 122);
-	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _obstacleImg, (_PillarRc.left + _PillarRc.right) / 2, (_PillarRc.top + _PillarRc.bottom) / 2 + 300, _PillarRc.bottom + 210, 122);
 
 	if (KEYMANAGER->isToggleKey('V'))
 	{

@@ -18,17 +18,18 @@ HRESULT stage1::init(obstacleManager * obstacleManager, itemManager* itemManager
 	_obstacleManager->setObstacle(DESK);
 	_enemyManager->setStage1();
 	//---- юс╫ц
-	_doorRc = RectMakeCenter(1700, 600, 200, 30);
+	_doorRc = RectMakeCenter(1700, 420, 200, 30);
 
 	return S_OK;
 }
 
 void stage1::render()
 {
-	CAMERAMANAGER->renderRectangle(getMemDC(), _doorRc);
 	//IMAGEMANAGER->addImage("stage2", "image/map/stage2.bmp", 4000, 1200, false, RGB(0, 0, 0));
 	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
 	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage1"), IMAGEMANAGER->findImage("stage1")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage1")->getHeight() * 0.5f);
+	CAMERAMANAGER->renderRectangle(getMemDC(), _doorRc);
+
 }
 
 void stage1::update()
