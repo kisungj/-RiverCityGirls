@@ -3,6 +3,16 @@
 #include "enemyBoy.h"
 #include "enemyGirl.h"
 
+enum class STAGE
+{
+
+};
+
+enum class WAVE
+{
+	FIRST, SECOND, REPEAT
+};
+
 class player;
 
 class enemyManager : public gameNode
@@ -21,6 +31,10 @@ private:
 	getVEnemy _vCheer;
 	getVIEnemy _viCheer;
 
+	int _waveCount;
+	int _rnd;
+	WAVE _wave;
+
 public:
 	enemyManager() {}
 	~enemyManager() {}
@@ -32,6 +46,8 @@ public:
 
 	void setStage1();							//스테이지1 에너미
 	void setStage2();							//스테이지2 에너미
+	void waveStage1();							//시간이 지나면 에너미 추가
+	void waveStage2();							//다 잡을 때마다 에너미 추가
 
 	void boyPlCollision();						//플레이어와 남자애 충돌 함수
 	void girlPlCollision();						//플레이어와 여자애

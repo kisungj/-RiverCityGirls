@@ -60,6 +60,7 @@ protected:
 
 	int _hitCount;					//맞은 횟수
 	int _layCount;					//누운 시간
+	int _jumpCount;					
 	int _maxHP;						//최대 HP
 
 	float _playerX, _playerY;		//플레이어 x, y축

@@ -47,6 +47,8 @@ void stage2::update()
 	CAMERAMANAGER->setX(_player->getPlayerX());
 	CAMERAMANAGER->setY(_player->getPlayerY());
 
+	_enemyManager->waveStage2();
+
 	RECT _temp;
 	if (IntersectRect(&_temp, &_player->getPlayerRect(), &_stage2DoorRc))
 	{

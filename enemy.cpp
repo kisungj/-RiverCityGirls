@@ -157,10 +157,6 @@ void enemy::pixelCollision()
 	int _probeB = _shadow.bottom;
 	int _probeL = _shadow.left;
 	int _probeR = _shadow.right;
-	//int _probeV = _shadow.bottom;
-	//int _probeH = (_shadow.left + _shadow.right) / 2;
-	//_playerX = _shadowX;
-	//_playerProbe = _player.bottom;
 
 	//À§
 	for (int i = _probeU - 5; i < _probeU + 5; ++i)
@@ -208,13 +204,6 @@ void enemy::pixelCollision()
 		{
 			_green = GREEN::BOTTOM;
 			_pixel = PIXEL::BOTTOM;
-			_isOnDesk = true;
-
-			if (_isJumping && _jumpPower < 0)
-			{
-				_z -= 100;
-				break;
-			}
 		}
 
 		if (r == 255 && g == 0 && b == 255)
@@ -277,34 +266,55 @@ void enemy::pixelCollision()
 		}
 	}
 
-	//if (!_isJumping)
+	//if (_isJumping)
 	//{
-	//	_playerY = _shadowY - 110;
+	//	for (int i = _probeB - 5; i < _probeB + 5; ++i)
+	//	{
+	//		COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), _x, i);
+
+	//		int r = GetRValue(color);
+	//		int g = GetGValue(color);
+	//		int b = GetBValue(color);
+
+	//		if (_jumpPower < 0)
+	//		{
+	//			if ((r == 160 && g == 255 && b == 0))
+	//			{
+	//				_table = TABLE::BOTTOM;
+	//				_isOnDesk = true;
+	//				_z -= 100;
+	//			}
+	//		}
+	//		
+	//		break;
+	//	}
 	//}
-	////cout << _isJumping << endl;
 
-	if (_isJumping)
-	{
-		for (int i = _probeB - 5; i < _probeB + 5; ++i)
-		{
-			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), _x, i);
+	//if (_table == TABLE::BOTTOM)
+	//{
+	//	_jumpCount++;
+	//	if (_jumpCount > 100)
+	//	{
+	//		for (int i = _probeB - 5; i < _probeB + 5; ++i)
+	//		{
+	//			COLORREF color = GetPixel(IMAGEMANAGER->findImage(_mapName)->getMemDC(), _x, i);
 
-			int r = GetRValue(color);
-			int g = GetGValue(color);
-			int b = GetBValue(color);
+	//			int r = GetRValue(color);
+	//			int g = GetGValue(color);
+	//			int b = GetBValue(color);
 
-			if (r == 255 && g == 255 && b == 0)
-			{
-				_table = TABLE::BOTTOM;
-			}
-
-			else
-			{
-				_table = TABLE::TEMP;
-			}
-			break;
-		}
-	}
+	//			if (!(r == 255 && g == 255 && b == 0))
+	//			{
+	//				_table = TABLE::TEMP;
+	//				_isJumping = false;
+	//				_isOnDesk = false;
+	//				_z += 100;
+	//			}
+	//			break;
+	//		}
+	//	}
+	//	_jumpCount = 0;
+	//}	
 }
 
 void enemy::addImage()
