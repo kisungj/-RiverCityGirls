@@ -338,7 +338,7 @@ void enemyManager::boyPlCollision()
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
 		{
-			_player->playerDamage(2);
+			_player->playerDamage(7);
 			_vBoy[i]->setAtk(0, 0, 0, 0);
 			_vBoy[i]->setStrike(true);
 
@@ -408,7 +408,7 @@ void enemyManager::girlPlCollision()
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
 		{
-			_player->playerDamage(2);
+			_player->playerDamage(7);
 			_vGirl[i]->setAtk(0, 0, 0, 0);
 			_vGirl[i]->setStrike(true);
 
@@ -476,7 +476,7 @@ void enemyManager::cheerPlCollision()
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
 		{
-			_player->playerDamage(2);
+			_player->playerDamage(7);
 			_vCheer[i]->setAtk(0, 0, 0, 0);
 			_vCheer[i]->setStrike(true);
 

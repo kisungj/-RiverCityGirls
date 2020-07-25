@@ -285,12 +285,12 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 	if (!enemy.getStop() && !_isKick)
 	{
-		if (enemy.getZ() < y - 20 && enemy.getPixel() != PIXEL::BOTTOM)
+		if (enemy.getZ() < y - 10 && enemy.getPixel() != PIXEL::BOTTOM)
 		{
 			enemy.setZ(enemy.getZ() + 1);
 		}
 
-		if (enemy.getZ() > y + 20 && enemy.getPixel() != PIXEL::TOP)
+		if (enemy.getZ() > y + 10 && enemy.getPixel() != PIXEL::TOP)
 		{
 			enemy.setZ(enemy.getZ() - 1);
 		}
