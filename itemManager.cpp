@@ -11,6 +11,8 @@ itemManager::~itemManager()
 
 HRESULT itemManager::init()
 {
+	_itemMove = false;
+
 	return S_OK;
 }
 
@@ -48,28 +50,67 @@ void itemManager::setItem(RECT rc)
 	if (rnditempercent >= 0 && rnditempercent <= 25)
 	{
 		Item* _item = new Item;
-		_item->init(HP, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+
+		if(!_itemMove)
+		{
+			_item->init(HP, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+		}
+
+		if (_itemMove)
+		{
+			_item->init(HP, PointMake((rc.left + rc.right) / 2, rc.top - 130));
+		}
 		_vItems.push_back(_item);
 	}
 
 	if (rnditempercent >= 26 && rnditempercent <= 50)
 	{
 		Item* _item = new Item;
-		_item->init(POWER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+
+		if (!_itemMove)
+		{
+			_item->init(POWER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+		}
+
+		if (_itemMove)
+		{
+			_item->init(POWER, PointMake((rc.left + rc.right) / 2, rc.top - 130));
+		}
+		
 		_vItems.push_back(_item);
 	}
 
 	if (rnditempercent >= 51 && rnditempercent <= 75)
 	{
 		Item* _item = new Item;
-		_item->init(GOLD, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+
+		if (!_itemMove)
+		{
+			_item->init(GOLD, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+		}
+
+		if (_itemMove)
+		{
+			_item->init(GOLD, PointMake((rc.left + rc.right) / 2, rc.top - 130));
+		}
+
 		_vItems.push_back(_item);
 	}
 
 	if (rnditempercent >= 76 && rnditempercent <= 100)
 	{
 		Item* _item = new Item;
-		_item->init(SILVER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+
+		if (!_itemMove)
+		{
+			_item->init(SILVER, PointMake((rc.left + rc.right) / 2, (rc.bottom + rc.top) / 2));
+		}
+
+		if (_itemMove)
+		{
+			_item->init(SILVER, PointMake((rc.left + rc.right) / 2, rc.top - 130));
+		}
+
 		_vItems.push_back(_item);
 	}
 }

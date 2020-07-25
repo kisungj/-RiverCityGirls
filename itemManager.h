@@ -12,6 +12,8 @@ private:
 private:
 	vItem _vItems;
 
+	bool _itemMove;
+
 public:
 	itemManager();
 	~itemManager();
@@ -26,5 +28,7 @@ public:
 
 
 	vector<Item*> getVItem() { return _vItems; }		//아이템 벡터값
+	bool getItemMove() { return _itemMove; }
+	void setItemMove(bool move) { _itemMove = move; }
 };
 

@@ -84,7 +84,7 @@ HRESULT Item::init(ITEMSTATE itemstate, POINT position)
 
 	_x = position.x;
 	_y = position.y;
-	_gravity = 20.0f;
+	_gravity = 27.0f;
 	_itemRc = RectMakeCenter(_x, _y, _itemImg->getWidth(), _itemImg->getHeight());
 
 	_gravityBool = true;
