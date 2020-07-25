@@ -170,8 +170,27 @@ void enemyManager::waveStage2()
 		if (_vBoy.size() <= 0 && _vGirl.size() <= 0)
 		{
 			_wave = WAVE::SECOND;
+
 			if (_waveCount == 0)
 			{
+				for (int i = 0; i < RND->getFromIntTo(1,2); ++i)
+				{
+					enemy* boy;
+					boy = new enemyBoy;
+					boy->init(2400 - i * 1600, 600, ENEMYTYPE::BOY, "stage2pixel");
+
+					_vBoy.push_back(boy);
+				}
+
+				for (int i = 0; i < RND->getFromIntTo(1, 2); ++i)
+				{
+					enemy* girl;
+					girl = new enemyGirl;
+					girl->init(1300 + i * 1000, 550, ENEMYTYPE::GIRL, "stage2pixel");
+
+					_vGirl.push_back(girl);
+				}
+
 				for (int i = 0; i < 3; ++i)
 				{
 					enemy* cheer;
@@ -183,27 +202,123 @@ void enemyManager::waveStage2()
 			}
 			_waveCount++;
 		}
-		
 		break;
 	case WAVE::SECOND:
+		_waveCount = 0;
+
+		if (_vCheer.size() <= 0 && _vBoy.size() <= 0 && _vGirl.size() <= 0)
+		{
+			_wave = WAVE::REPEAT;
+
+			if (_waveCount == 0)
+			{
+				for (int i = 0; i < 2; ++i)
+				{
+					enemy* boy;
+					boy = new enemyBoy;
+					boy->init(2400 - i * 1600, 600, ENEMYTYPE::BOY, "stage2pixel");
+
+					_vBoy.push_back(boy);
+				}
+
+				for (int i = 0; i < 2; ++i)
+				{
+					enemy* girl;
+					girl = new enemyGirl;
+					girl->init(1300 + i * 1100, 550, ENEMYTYPE::GIRL, "stage2pixel");
+
+					_vGirl.push_back(girl);
+				}
+
+				for (int i = 0; i < 2; ++i)
+				{
+					enemy* cheer;
+					cheer = new enemyGirl;
+					cheer->init(1200 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
+
+					_vCheer.push_back(cheer);
+				}
+			}
+			_waveCount++;
+		}
+
 		break;
 	case WAVE::REPEAT:
+		_waveCount++;
+
+		if (_vCheer.size() <= 1 || _vBoy.size() <= 1 || _vGirl.size() <= 1)
+		{
+			if (_waveCount % 1000 == 0)
+			{
+				_rnd = RND->getFromIntTo(1, 3);
+
+				if (_rnd == 1)
+				{
+					for (int i = 0; i < 1; ++i)
+					{
+						enemy* boy;
+						boy = new enemyBoy;
+						boy->init(1300, 600, ENEMYTYPE::BOY, "stage2pixel");
+
+						_vBoy.push_back(boy);
+					}
+
+					for (int i = 0; i < 1; ++i)
+					{
+						enemy* girl;
+						girl = new enemyGirl;
+						girl->init(2500, 550, ENEMYTYPE::GIRL, "stage2pixel");
+
+						_vGirl.push_back(girl);
+					}
+
+					for (int i = 0; i < 2; ++i)
+					{
+						enemy* cheer;
+						cheer = new enemyGirl;
+						cheer->init(1200 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
+
+						_vCheer.push_back(cheer);
+					}
+				}
+				
+				if (_rnd == 2)
+				{
+					for (int i = 0; i < 2; ++i)
+					{
+						enemy* boy;
+						boy = new enemyBoy;
+						boy->init(2400 - i * 1600, 600, ENEMYTYPE::BOY, "stage2pixel");
+
+						_vBoy.push_back(boy);
+					}
+
+					for (int i = 0; i < 2; ++i)
+					{
+						enemy* girl;
+						girl = new enemyGirl;
+						girl->init(1300 + i * 1100, 550, ENEMYTYPE::GIRL, "stage2pixel");
+
+						_vGirl.push_back(girl);
+					}
+				}
+
+				if (_rnd == 3)
+				{
+					for (int i = 0; i < 3; ++i)
+					{
+						enemy* cheer;
+						cheer = new enemyGirl;
+						cheer->init(1200 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
+
+						_vCheer.push_back(cheer);
+					}
+				}
+				_waveCount = 0;
+			}
+		}
 		break;
 	default:
-		break;
-	}
-
-	switch (_wave)
-	{
-	case WAVE::FIRST:
-		break;
-	case WAVE::SECOND:
-		
-		
-		break;
-
-	case WAVE::REPEAT:
-
 		break;
 	}
 
@@ -384,7 +499,7 @@ void enemyManager::cheerPlCollision()
 
 			if (_player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_GUARD") && _player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_GUARD"))
 			{
-				if (_vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_attack3") || _vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_flip"));
+				if (_vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_attack3") || _vCheer[i]->getImage() == IMAGEMANAGER->findImage("cheer_flip"))
 				{
 					if (!_player->getDirectionX())
 					{

@@ -122,9 +122,16 @@ void enemy::draw()
 {
 	_frameCount++;
 
+	if ((_image == IMAGEMANAGER->findImage("boy_knockdown")) || (_image == IMAGEMANAGER->findImage("girl_knockdown")) || (_image == IMAGEMANAGER->findImage("cheer_knockdown")) ||
+		(_image == IMAGEMANAGER->findImage("cheer_flip")) || (_image == IMAGEMANAGER->findImage("cheer_attack3")))
+	{
+		_count = 5;
+	}
+	else _count = 7;
+
 	if (!_isStop)
 	{
-		if (_frameCount % 7 == 0)
+		if (_frameCount % _count == 0)
 		{
 			if (_right)
 			{

@@ -44,6 +44,7 @@ protected:
 	image* _shadowImg;				//쉐도우 이미지
 	int _currentX, _currentY;		//프레임 x축 , y축
 	int _frameCount;				//프레임 돌리는 용도
+	int _count;						//프레임 속도 조절용
 
 	float _x, _y, _z;				//에너미 x, y, z축
 	float _width, _height;			//에너미 너비, 높이
