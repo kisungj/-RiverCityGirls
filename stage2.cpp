@@ -32,11 +32,11 @@ HRESULT stage2::init(obstacleManager* obstacleManager, itemManager* itemManager,
 
 void stage2::render()
 {
-
-	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2pixel"), IMAGEMANAGER->findImage("stage2pixel")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2pixel")->getHeight() * 0.5f);
-	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2"), IMAGEMANAGER->findImage("stage2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2")->getHeight() * 0.5f);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _stage2DoorRc);
 	CAMERAMANAGER->renderRectangle(getMemDC(), _bossDoorRc);
+	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2pixel"), IMAGEMANAGER->findImage("stage2pixel")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2pixel")->getHeight() * 0.5f);
+	CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("stage2"), IMAGEMANAGER->findImage("stage2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("stage2")->getHeight() * 0.5f);
+
 	CAMERAMANAGER->alphaRender(getMemDC(), IMAGEMANAGER->findImage("door_img"), (_bossDoorRc.left + _bossDoorRc.right) / 2, _bossDoorRc.top, _bossDoorAlpha);
 	CAMERAMANAGER->alphaRender(getMemDC(), IMAGEMANAGER->findImage("door_img"), (_stage2DoorRc.left + _stage2DoorRc.right) / 2, _stage2DoorRc.top, _doorAlpha);
 }
