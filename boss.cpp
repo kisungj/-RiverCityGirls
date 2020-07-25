@@ -1657,12 +1657,12 @@ void boss::soundAndCamShakeControl()
 	if (_state == BOSS_LEFT_HIT_GETUP || _state == BOSS_RIGHT_HIT_GETUP)
 	{
 		CAMERAMANAGER->shakeCamera(6, 30);
-		//SOUNDMANAGER->play("보스박치기", 1.0f);
+		SOUNDMANAGER->play("보스땅바닥", 1.0f);
 	}
 
 	if (_state == BOSS_LEFT_ROAR || _state == BOSS_RIGHT_ROAR)
 	{
-		//SOUNDMANAGER->play("보스박치기", 1.0f);
+		SOUNDMANAGER->play("보스분노", 1.0f);
 	}
 
 }

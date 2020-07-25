@@ -402,6 +402,7 @@ void stageManager::collision()
 			//자판기 때릴때는 아이템 무적권 하나만
 			if (_itemCount == 0)
 			{
+				SOUNDMANAGER->play("vending", 1.0f);
 				_itemManager->setItem(_obstacleManager->getVObstacle()[i]->getObsRc());
 				_itemCount++;
 			}
