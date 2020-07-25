@@ -1388,7 +1388,7 @@ void hitState::update(player & player)
 			if (!player.getDirectionX())
 			{
 				player.setIsJumping(false);
-				player.setAni(KEYANIMANAGER->findAnimation("P_HIT_IDLE"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
 				//player.setState(player.getIdleState());
 				player.setDirectionX(false);
 			}
