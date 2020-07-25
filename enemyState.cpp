@@ -297,12 +297,12 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT)
 		{
-			enemy.setX(enemy.getX() + 5);
+			enemy.setX(enemy.getX() + 6);
 		}
 
 		if (!enemy.getRight() && enemy.getPixel() != PIXEL::LEFT)
 		{
-			enemy.setX(enemy.getX() - 5);
+			enemy.setX(enemy.getX() - 6);
 		}
 
 		enemy.setY(enemy.getZ() - 100);
@@ -383,7 +383,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 				_collisionCount = 0;
 			}
 
-			if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 15)
+			if (enemy.getFrameX() == 1)
 			{
 				enemy.setStop(true);
 				enemy.setStrike(false);
@@ -503,12 +503,12 @@ void enemyJumpState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		{
 			enemy.setY(enemy.getZ() - 100);
 			enemy.setJumping(false);
-			enemy.setStop(false);
 		}
 	}
 	
 	if (_delayCount > 100 && !enemy.getJumping())
 	{
+		enemy.setStop(false);
 		if (enemyType == ENEMYTYPE::GIRL)
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("girl_idle"));
@@ -906,13 +906,6 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 		if (enemy.getLayCount() >= DELAYMAX || _downCount >= 3)
 		{
-			if (enemyType == ENEMYTYPE::BOY)
-			enemy.setImage(IMAGEMANAGER->findImage("boy_knockdown"));
-			if (enemyType == ENEMYTYPE::GIRL)
-			enemy.setImage(IMAGEMANAGER->findImage("girl_knockdown"));
-			if (enemyType == ENEMYTYPE::CHEER)
-			enemy.setImage(IMAGEMANAGER->findImage("cheer_knockdown"));
-
 			if (enemy.getRight())
 			{
 				if (_downCount == 3 || enemy.getLayCount() == DELAYMAX)
@@ -934,6 +927,13 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 						enemy.setFrameX(10);
 				}
 			}
+
+			if (enemyType == ENEMYTYPE::BOY)
+			enemy.setImage(IMAGEMANAGER->findImage("boy_knockdown"));
+			if (enemyType == ENEMYTYPE::GIRL)
+			enemy.setImage(IMAGEMANAGER->findImage("girl_knockdown"));
+			if (enemyType == ENEMYTYPE::CHEER)
+			enemy.setImage(IMAGEMANAGER->findImage("cheer_knockdown"));
 
 			enemy.setOuch(false);
 			enemy.setStop(false);
@@ -979,22 +979,24 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		}
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+
+		enemy.setJumpPower(3);
+		enemy.setGravity(0.1);
+
 		enemy.setState(enemy.getDown());
 		enemy.setStop(false);
 
-		enemy.setHitCount(-enemy.getHitCount());
-		
+		enemy.setHitCount(-enemy.getHitCount());		
 	}
 
 	//==================아이들 클래스로 이동==================//
-	if ((enemy.getCondition() == CONDITION::SEARCH || !enemy.getOuch()) && !enemy.getLay())
+	if (!enemy.getOuch() && !enemy.getLay())
 	{
 		_oneCount = 0;
 		_twoCount = 0;
 		_downCount = 0;
 
 		enemy.setStop(false);
-		_delayCount++;
 
 		if (enemyType == ENEMYTYPE::BOY)
 		{
@@ -1008,15 +1010,13 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("cheer_idle"));
 		}
-		if (_delayCount > 50)
-		{
-			if (enemy.getRight()) enemy.setFrameX(0);
-			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
-			enemy.setState(enemy.getIdle());
 
-			enemy.setHitCount(-enemy.getHitCount());
-			_delayCount = 0;
-		}
+		if (enemy.getRight()) enemy.setFrameX(0);
+		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+
+		enemy.setState(enemy.getIdle());
+		enemy.setHitCount(-enemy.getHitCount());
+		
 	}
 
 	//==================데드 클래스로 이동==================//
@@ -1040,6 +1040,9 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			}
 			if (enemy.getRight()) enemy.setFrameX(0);
 			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+
+			enemy.setJumpPower(3);
+			enemy.setGravity(0.1);
 		}
 
 		if (enemy.getLay())
@@ -1073,6 +1076,28 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 //===================================================다운 클래스===================================================//
 void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {
+	enemy.setY(enemy.getY() - enemy.getJumpPower());
+	enemy.setJumpPower(enemy.getJumpPower() - enemy.getGravity());
+	enemy.setGravity(enemy.getGravity());
+
+	if (enemy.getJumpPower() > 0)
+	{		
+		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT)
+		{
+			enemy.setX(enemy.getX() - 3);			
+		}
+
+		if (!enemy.getRight() && enemy.getPixel() != PIXEL::LEFT)
+		{
+			enemy.setX(enemy.getX() + 3);
+		}		
+	}
+
+	if (enemy.getY() >= enemy.getZ() - 100)
+	{
+		enemy.setY(enemy.getZ() - 100);
+	}
+
 	if (enemy.getRight()) 
 	{
 		if ((enemyType == ENEMYTYPE::BOY && enemy.getFrameX() == 24) ||
@@ -1289,7 +1314,34 @@ void enemyDizzyState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE
 void enemyDeadState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {
 	_deadCount++;
-	enemy.setY(enemy.getZ() - 100);
+
+	enemy.setY(enemy.getY() - enemy.getJumpPower());
+	enemy.setJumpPower(enemy.getJumpPower() - enemy.getGravity());
+	enemy.setGravity(enemy.getGravity());
+
+	if (enemy.getJumpPower() > 0)
+	{
+		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT &&
+			(enemyType == ENEMYTYPE::BOY && enemy.getFrameX() != 24) ||
+			(enemyType == ENEMYTYPE::GIRL && enemy.getFrameX() != 22) ||
+			(enemyType == ENEMYTYPE::CHEER && enemy.getFrameX() != 24))
+		{
+			enemy.setX(enemy.getX() - 3);
+		}
+
+		if (!enemy.getRight() && enemy.getPixel() != PIXEL::LEFT &&
+			(enemyType == ENEMYTYPE::BOY && enemy.getFrameX() == 8) ||
+			(enemyType == ENEMYTYPE::GIRL && enemy.getFrameX() == 10) ||
+			(enemyType == ENEMYTYPE::CHEER && enemy.getFrameX() == 10))
+		{
+			enemy.setX(enemy.getX() + 3);
+		}
+	}
+
+	if (enemy.getY() >= enemy.getZ() - 100)
+	{
+		enemy.setY(enemy.getZ() - 100);
+	}
 
 	if (enemy.getRight())
 	{

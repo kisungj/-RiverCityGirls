@@ -333,7 +333,7 @@ void enemyManager::boyPlCollision()
 	for (int i = 0; i < _vBoy.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vBoy[i]->getAtk()) &&
-			(_player->getShadowY() - _vBoy[i]->getZ() < 15 && _vBoy[i]->getZ() - _player->getShadowY() < 15) &&
+			(_player->getShadowY() - _vBoy[i]->getZ() < 20 && _vBoy[i]->getZ() - _player->getShadowY() < 20) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
@@ -403,7 +403,7 @@ void enemyManager::girlPlCollision()
 	for (int i = 0; i < _vGirl.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vGirl[i]->getAtk()) &&
-			(_player->getShadowY() - _vGirl[i]->getZ() < 15 && _vGirl[i]->getZ() - _player->getShadowY() < 15) &&
+			(_player->getShadowY() - _vGirl[i]->getZ() < 20 && _vGirl[i]->getZ() - _player->getShadowY() < 20) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
@@ -471,7 +471,7 @@ void enemyManager::cheerPlCollision()
 	for (int i = 0; i < _vCheer.size(); ++i)
 	{
 		if (IntersectRect(&temp, &_player->getPlayerRect(), &_vCheer[i]->getAtk()) &&
-			(_player->getShadowY() - _vCheer[i]->getZ() < 15 && _vCheer[i]->getZ() - _player->getShadowY() < 15) &&
+			(_player->getShadowY() - _vCheer[i]->getZ() < 20 && _vCheer[i]->getZ() - _player->getShadowY() < 20) &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_DOWN") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_DOWN") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_STAND_UP") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_STAND_UP") &&
 			_player->getAni() != KEYANIMANAGER->findAnimation("P_RIGHT_OVER") && _player->getAni() != KEYANIMANAGER->findAnimation("P_LEFT_OVER"))
