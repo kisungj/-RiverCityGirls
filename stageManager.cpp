@@ -402,6 +402,7 @@ void stageManager::collision()
 			//자판기 때릴때는 아이템 무적권 하나만
 			if (_itemCount == 0)
 			{
+				_itemManager->setItemMove(false);
 				SOUNDMANAGER->play("vending", 1.0f);
 				_itemManager->setItem(_obstacleManager->getVObstacle()[i]->getObsRc());
 				_itemCount++;
@@ -438,6 +439,7 @@ void stageManager::collision()
 		{
 			if (rndItem <= 4)
 			{
+				_itemManager->setItemMove(true);
 				_itemManager->setItem(_enemyManager->getVBoy()[i]->getRC());
 			}
 			_enemyManager->eraseBoy(i);
@@ -451,6 +453,7 @@ void stageManager::collision()
 		{
 			if (rndItem <= 4)
 			{
+				_itemManager->setItemMove(true);
 				_itemManager->setItem(_enemyManager->getVGirl()[i]->getRC());
 			}
 			_enemyManager->eraseGirl(i);
@@ -464,6 +467,7 @@ void stageManager::collision()
 		{
 			if (rndItem <= 4)
 			{
+				_itemManager->setItemMove(true);
 				_itemManager->setItem(_enemyManager->getVCheer()[i]->getRC());
 			}
 			_enemyManager->eraseCheer(i);

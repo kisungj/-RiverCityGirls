@@ -20,7 +20,7 @@ HRESULT obstacle::init(OBSTACLESTATE obstacleState, POINT position)
 	{
 	case VENDING:
 		_obstacleImg = IMAGEMANAGER->findImage("자판기");
-		_obstacleRc = RectMakeCenter(_x, _y, _obstacleImg->getFrameWidth(), _obstacleImg->getFrameHeight());
+		_obstacleRc = RectMakeCenter(_x, _y - 170, _obstacleImg->getFrameWidth(), _obstacleImg->getFrameHeight());
 		break;
 
 	case DESK:
@@ -79,7 +79,7 @@ void obstacle::render()
 	//자판기
 	if (_obstacleState == VENDING)
 	{
-		CAMERAMANAGER->frameRender(getMemDC(), _obstacleImg, (_obstacleRc.left + _obstacleRc.right) / 2, (_obstacleRc.top + _obstacleRc.bottom) / 2, _obstacleImg->getFrameX(), _obstacleImg->getFrameY());
+		CAMERAMANAGER->frameRender(getMemDC(), _obstacleImg, (_obstacleRc.left + _obstacleRc.right) / 2, (_obstacleRc.top + _obstacleRc.bottom) / 2 + 170, _obstacleImg->getFrameX(), _obstacleImg->getFrameY());
 	}
 
 	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
