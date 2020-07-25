@@ -190,10 +190,12 @@ void ui::update()
 					// 아이템 사용
 					if (_inventory[_itemSelectIndex].item->getitemstate() == HP)
 					{
+						SOUNDMANAGER->play("itemUse", 1.0f);
 						_useHP = true;
 					}
 					if (_inventory[_itemSelectIndex].item->getitemstate() == POWER)
 					{
+						SOUNDMANAGER->play("itemUse", 1.0f);
 						_usePower = true;
 					}
 					_inventory[_itemSelectIndex].isNull = true;

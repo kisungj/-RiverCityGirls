@@ -39,7 +39,7 @@ void playGround::update()
 
 	if (KEYMANAGER->isOnceKeyDown('Y'))
 	{
-		SOUNDMANAGER->play("보스점프", 0.5f);
+		SOUNDMANAGER->play("girlHit", 1.0f);
 	}
 }
 
@@ -224,17 +224,22 @@ void playGround::soundLoad()
 	SOUNDMANAGER->addSound("gameOver", "mp3/게임오버.wav", false, false);
 	SOUNDMANAGER->addSound("보스내려찍기", "mp3/보스내려찍기.wav", false, false);
 	SOUNDMANAGER->addSound("boyHit", "mp3/남자히트.wav", false, false);
+	SOUNDMANAGER->addSound("girlHit", "mp3/여자히트.wav", false, false);
 	SOUNDMANAGER->addSound("보스강펀치", "mp3/보스강펀치.wav", false, false);
 	SOUNDMANAGER->addSound("보스박치기", "mp3/보스박치기.wav", false, false);
 	SOUNDMANAGER->addSound("보스뺨갈기기", "mp3/보스뺨갈기기.wav", false, false);
 	SOUNDMANAGER->addSound("보스점프엉덩방아", "mp3/보스점프엉덩방아.wav", false, false);
 	SOUNDMANAGER->addSound("보스점프", "mp3/보스점프.wav", false, false);
+	SOUNDMANAGER->addSound("보스분노", "mp3/보스분노.wav", false, false);
+	SOUNDMANAGER->addSound("보스땅바닥", "mp3/보스땅바닥.wav", false, false);
 	SOUNDMANAGER->addSound("item", "mp3/아이템획득.mp3", false, false);
 	SOUNDMANAGER->addSound("inventorySelect", "mp3/인벤토리선택.wav", false, false);
 	SOUNDMANAGER->addSound("informationSelect", "mp3/정보선택.mp3", false, false);
 	SOUNDMANAGER->addSound("select", "mp3/선택.mp3", false, false);
 	SOUNDMANAGER->addSound("init", "mp3/init.mp3", false, false);
 	SOUNDMANAGER->addSound("communication", "mp3/대화.mp3", false, false);
+	SOUNDMANAGER->addSound("itemUse", "mp3/아이템사용.wav", false, false);
+
 
 	SOUNDMANAGER->play("배경음", 0.1f);
 }

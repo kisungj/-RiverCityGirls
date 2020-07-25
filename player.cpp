@@ -688,6 +688,7 @@ void player::enemyCol()
 					{
 						if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
 						{
+							SOUNDMANAGER->play("girlHit", 1.0f);
 							if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
 							{
 								if (_directionX)
@@ -712,6 +713,7 @@ void player::enemyCol()
 					{
 						if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
 						{
+							SOUNDMANAGER->play("girlHit", 1.0f);
 							if (_directionX)
 							{
 								EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
@@ -740,6 +742,7 @@ void player::enemyCol()
 					{
 						if (IntersectRect(&temp, &_attackRc, &_enemy->getVCheer()[i]->getRC()))
 						{
+							SOUNDMANAGER->play("girlHit", 1.0f);
 							if (KEYANIMANAGER->findAnimation("P_RIGHT_STOMP")->isPlay() || KEYANIMANAGER->findAnimation("P_LEFT_STOMP")->isPlay())
 							{
 								if (_directionX)
@@ -764,6 +767,7 @@ void player::enemyCol()
 					{
 						if (IntersectRect(&temp, &_attackRc, &_enemy->getVCheer()[i]->getRC()))
 						{
+							SOUNDMANAGER->play("girlHit", 1.0f);
 							if (_directionX)
 							{
 								EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
