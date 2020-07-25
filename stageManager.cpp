@@ -93,6 +93,20 @@ void stageManager::render()
 	SetBkMode(getMemDC(), TRANSPARENT);
 	HFONT font, oldFont;
 	RECT rcText = RectMake(400, WINSIZEY - 75, 1100, 400);
+	RECT moneyRC = RectMake(220, 105, 200, 200);
+	//string moneyText = _player->getMomey();
+	char moneyStr[255];
+	sprintf_s(moneyStr, "%d",_player->getMomey());
+
+
+	font = CreateFont(30, 0, 0, 0, 100, 0, 0, 0, HANGUL_CHARSET, 0, 0, 0, 0, TEXT("HY°ß°íµñ"));
+	oldFont = (HFONT)SelectObject(getMemDC(), font);
+	SetTextColor(getMemDC(), RGB(255, 255, 255));
+
+	DrawText(getMemDC(), TEXT(moneyStr), strlen(moneyStr), &moneyRC, DT_RIGHT | DT_WORDBREAK);
+	SelectObject(getMemDC(), oldFont);
+	DeleteObject(font);
+
 
 	font = CreateFont(30, 0, 0, 0, 100, 0, 0, 0, HANGUL_CHARSET, 0, 0, 0, 0, TEXT("HY°ß°íµñ"));
 	oldFont = (HFONT)SelectObject(getMemDC(), font);
