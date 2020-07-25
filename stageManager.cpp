@@ -522,7 +522,7 @@ void stageManager::doorCol()
 	RECT temp;
 	if (IntersectRect(&temp, &_player->getPlayerRect(), &_stage1->getStage1Door()))
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		if (KEYMANAGER->isOnceKeyDown('C'))
 		{
 			_changeStageNum = 2;
 			_isLoading = true;
@@ -537,7 +537,7 @@ void stageManager::doorCol()
 
 	if (IntersectRect(&temp, &_player->getPlayerRect(), &_stage2->getStage2Door()))
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		if (KEYMANAGER->isOnceKeyDown('C'))
 		{
 			_changeStageNum = 1;
 			_isLoading = true;
@@ -551,7 +551,7 @@ void stageManager::doorCol()
 	}
 	if (IntersectRect(&temp, &_player->getPlayerRect(), &_stage2->getBossDoor()))
 	{
-		if (KEYMANAGER->isOnceKeyDown(VK_UP))
+		if (KEYMANAGER->isOnceKeyDown('C'))
 		{
 			_changeStageNum = 3;
 			_isLoading = true;
