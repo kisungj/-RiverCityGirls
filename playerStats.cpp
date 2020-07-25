@@ -1297,35 +1297,6 @@ void attackState::update(player & player)
 		}
 		player.setAttack(player.getPlayerX() - 60, player.getPlayerY() + 50, 120, 80);
 	}
-	if (player.getIsJumping())
-	{
-		if (KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
-		{
-			player.setPlayerY(player.getPlayerY() - player.getJumpPower());
-			player.setJumpPower(player.getJumpPower() - player.getGravity());
-			player.setGravity(player.getGravity());
-		}
-	}
-	if (player.getPlayerY() >= player.getShadowY() - 110)
-	{
-		player.setShadow(200);
-		//아무것도 안누르면 아이들로
-
-		if (!player.getDirectionX())
-		{
-			player.setIsJumping(false);
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
-			player.setState(player.getIdleState());
-			player.setDirectionX(false);
-		}
-		if (player.getDirectionX())
-		{
-			player.setIsJumping(false);
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
-			player.setState(player.getIdleState());
-			player.setDirectionX(true);
-		}
-	}
 
 	//회오리할떄 움직일 수 있게 하려면 이거 주석 풀면 돼
 	/*if (player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_KICK"))
@@ -1428,23 +1399,8 @@ void hitState::update(player & player)
 	{
 		player.setShadow(200);
 		//아무것도 안누르면 아이들로
-		if (KEYMANAGER->getKeyUp() == NULL)
-		{
-			if (!player.getDirectionX())
-			{
-				player.setIsJumping(false);
-				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				//player.setState(player.getIdleState());
-				player.setDirectionX(false);
-			}
-			if (player.getDirectionX())
-			{
-				player.setIsJumping(false);
-				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
-				//player.setState(player.getIdleState());
-				player.setDirectionX(true);
-			}
-		}
+		player.setIsJumping(false);
+		
 	}
 		if (player.getIsDown())
 		{
@@ -1520,6 +1476,19 @@ HRESULT downState::init()
 void downState::update(player & player)
 {
 	_downCount++;
+	if (player.getIsJumping())
+	{
+		player.setPlayerY(player.getPlayerY() - player.getJumpPower());
+		player.setJumpPower(player.getJumpPower() - player.getGravity());
+		player.setGravity(player.getGravity());
+	}
+	if (player.getPlayerY() >= player.getShadowY() - 110)
+	{
+		player.setShadow(200);
+		//아무것도 안누르면 아이들로
+		player.setIsJumping(false);
+
+	}
 
 	if (player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_DOWN") || player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"))
 	{
@@ -1694,6 +1663,20 @@ void guardState::update(player & player)
 
 void overState::update(player & player)
 {
+
+	if (player.getIsJumping())
+	{
+		player.setPlayerY(player.getPlayerY() - player.getJumpPower());
+		player.setJumpPower(player.getJumpPower() - player.getGravity());
+		player.setGravity(player.getGravity());
+	}
+	if (player.getPlayerY() >= player.getShadowY() - 110)
+	{
+		player.setShadow(200);
+		//아무것도 안누르면 아이들로
+		player.setIsJumping(false);
+
+	}
 	if (!player.getAni() == KEYANIMANAGER->findAnimation("P_RIGHT_OVER")->isPlay() && !player.getAni() == KEYANIMANAGER->findAnimation("P_LEFT_OVER")->isPlay())
 	{
 		player.setGameOver(true);
