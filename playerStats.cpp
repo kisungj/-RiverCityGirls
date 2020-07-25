@@ -151,7 +151,7 @@ void idleState::update(player & player)
 		player.setIsAttackRect(true);
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
-		player.setAttack(player.getPlayerX(), player.getPlayerY(), 300, 80);
+		player.setAttack(player.getPlayerX(), player.getPlayerY(), 400, 140);
 	}
 
 	//가드
@@ -565,7 +565,7 @@ void walkState::update(player & player)
 		player.setIsAttackRect(true);
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
-		player.setAttack(player.getPlayerX(), player.getPlayerY(), 300, 80);
+		player.setAttack(player.getPlayerX(), player.getPlayerY(), 400, 140);
 	}
 
 
@@ -945,7 +945,7 @@ void runState::update(player & player)
 		player.setIsAttackRect(true);
 		player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_KICK"), IMAGEMANAGER->findImage("PLAYER_KICK"));
 		player.setState(player.getAttackState());
-		player.setAttack(player.getPlayerX(), player.getPlayerY(), 300, 80);
+		player.setAttack(player.getPlayerX(), player.getPlayerY(), 400, 140);
 	}
 
 	//강공격
@@ -1372,69 +1372,98 @@ HRESULT hitState::init()
 void hitState::update(player & player)
 {
 	_hitCount++;
-	
-	if (player.getIsDown())
+
+	if (player.getIsJumping())
 	{
-		if (!player.getDirectionX())
-		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
-			player.setState(player.getDownState());
-			player.setDirectionX(false);
-			_hitCount = 0;
-			_hitNum = 0;
-		}
-		if (player.getDirectionX())
-		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
-			player.setState(player.getDownState());
-			player.setDirectionX(true);
-			_hitCount = 0;
-			_hitNum = 0;
-		}
-		player.setIsDown(false);
+		player.setPlayerY(player.getPlayerY() - player.getJumpPower());
+		player.setJumpPower(player.getJumpPower() - player.getGravity());
+		player.setGravity(player.getGravity());
 	}
-	
-	
-	if (_hitCount > 40)
+	if (player.getPlayerY() >= player.getShadowY() - 110)
 	{
-		if (!player.getDirectionX())
+		player.setShadow(200);
+		//아무것도 안누르면 아이들로
+		if (KEYMANAGER->getKeyUp() == NULL)
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
-			player.setState(player.getIdleState());
-			player.setDirectionX(false);
-			_hitCount = 0;
-			_hitNum = 0;
-		}
-		if (player.getDirectionX())
-		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
-			player.setState(player.getIdleState());
-			player.setDirectionX(true);
-			_hitCount = 0;
-			_hitNum = 0;
+			if (!player.getDirectionX())
+			{
+				player.setIsJumping(false);
+				player.setAni(KEYANIMANAGER->findAnimation("P_HIT_IDLE"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				//player.setState(player.getIdleState());
+				player.setDirectionX(false);
+			}
+			if (player.getDirectionX())
+			{
+				player.setIsJumping(false);
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_HIT"), IMAGEMANAGER->findImage("PLAYER_HIT"));
+				//player.setState(player.getIdleState());
+				player.setDirectionX(true);
+			}
 		}
 	}
-	if (player.getPlayerHp() <= 0)
-	{
-		if (!player.getDirectionX())
+		if (player.getIsDown())
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
-			player.setState(player.getDownState());
-			player.setDirectionX(false);
-			_hitCount = 0;
-			_hitNum = 0;
-			player.setGameOver(true);
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+				player.setState(player.getDownState());
+				player.setDirectionX(false);
+				_hitCount = 0;
+				_hitNum = 0;
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+				player.setState(player.getDownState());
+				player.setDirectionX(true);
+				_hitCount = 0;
+				_hitNum = 0;
+			}
+			player.setIsDown(false);
 		}
-		if (player.getDirectionX())
+
+
+		if (_hitCount > 40)
 		{
-			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
-			player.setState(player.getDownState());
-			player.setDirectionX(true);
-			_hitCount = 0;
-			_hitNum = 0;
-			player.setGameOver(false);
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setState(player.getIdleState());
+				player.setDirectionX(false);
+				_hitCount = 0;
+				_hitNum = 0;
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+				player.setState(player.getIdleState());
+				player.setDirectionX(true);
+				_hitCount = 0;
+				_hitNum = 0;
+			}
 		}
-	}
+		if (player.getPlayerHp() <= 0)
+		{
+			if (!player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+				player.setState(player.getDownState());
+				player.setDirectionX(false);
+				_hitCount = 0;
+				_hitNum = 0;
+				player.setGameOver(true);
+			}
+			if (player.getDirectionX())
+			{
+				player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_DOWN"), IMAGEMANAGER->findImage("PLAYER_DOWN"));
+				player.setState(player.getDownState());
+				player.setDirectionX(true);
+				_hitCount = 0;
+				_hitNum = 0;
+				player.setGameOver(false);
+			}
+		}
+	
 }
 
 HRESULT downState::init()
