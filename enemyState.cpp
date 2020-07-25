@@ -130,12 +130,12 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 			enemy.setX(enemy.getX() - 2);
 		}
 
-		if (enemy.getZ() < y - 20 && enemy.getPixel() != PIXEL::BOTTOM)
+		if (enemy.getZ() < y - 10 && enemy.getPixel() != PIXEL::BOTTOM)
 		{
 			enemy.setZ(enemy.getZ() + 1);
 		}
 
-		if (enemy.getZ() > y + 20 && enemy.getPixel() != PIXEL::TOP)
+		if (enemy.getZ() > y + 10 && enemy.getPixel() != PIXEL::TOP)
 		{
 			enemy.setZ(enemy.getZ() - 1);
 		}
@@ -241,12 +241,12 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 
 		enemy.setY(enemy.getZ() - 100);
 
-		if (enemy.getZ() < y - 20 && enemy.getPixel() != PIXEL::BOTTOM)
+		if (enemy.getZ() < y - 10 && enemy.getPixel() != PIXEL::BOTTOM)
 		{
 			enemy.setZ(enemy.getZ() + 1);
 		}
 
-		if (enemy.getZ() > y + 20 && enemy.getPixel() != PIXEL::TOP)
+		if (enemy.getZ() > y + 10 && enemy.getPixel() != PIXEL::TOP)
 		{
 			enemy.setZ(enemy.getZ() - 1);
 		}
