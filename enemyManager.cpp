@@ -193,7 +193,7 @@ void enemyManager::waveStage2()
 				for (int i = 0; i < 3; ++i)
 				{
 					enemy* cheer;
-					cheer = new enemyGirl;
+					cheer = new enemyCheer;
 					cheer->init(1200 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
 
 					_vCheer.push_back(cheer);
@@ -232,8 +232,8 @@ void enemyManager::waveStage2()
 				for (int i = 0; i < 2; ++i)
 				{
 					enemy* cheer;
-					cheer = new enemyGirl;
-					cheer->init(1200 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
+					cheer = new enemyCheer;
+					cheer->init(1200 + i * 1000, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
 
 					_vCheer.push_back(cheer);
 				}
@@ -274,8 +274,8 @@ void enemyManager::waveStage2()
 					for (int i = 0; i < 2; ++i)
 					{
 						enemy* cheer;
-						cheer = new enemyGirl;
-						cheer->init(1200 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
+						cheer = new enemyCheer;
+						cheer->init(1200 + i * 1000, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
 
 						_vCheer.push_back(cheer);
 					}
@@ -307,7 +307,7 @@ void enemyManager::waveStage2()
 					for (int i = 0; i < 3; ++i)
 					{
 						enemy* cheer;
-						cheer = new enemyGirl;
+						cheer = new enemyCheer;
 						cheer->init(1200 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
 
 						_vCheer.push_back(cheer);
