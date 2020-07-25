@@ -15,6 +15,7 @@ struct tagZoder
 {
 	HDC		   hdc;
 	image*     img;
+	RECT	   rc;
 	renderType rendertype;
 	POINTFLOAT pt;
 	float	   z;
@@ -27,7 +28,7 @@ class zOrderManager : public singletonBase<zOrderManager>
 {
 private:
 	vector<tagZoder> _vZorder;
-
+	bool			 _isRect;
 public:
 	zOrderManager() {}
 	~zOrderManager() {}
@@ -55,5 +56,17 @@ public:
 	void zOrderRender();
 
 	int zOrderSize() { return _vZorder.size(); }
+
+	void DebugMod() 
+	{
+		if (_isRect)
+		{
+			_isRect = false;
+		}
+		else
+		{
+			_isRect = true;
+		}
+	}
 };
 

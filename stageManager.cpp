@@ -75,6 +75,11 @@ void stageManager::render()
 
 	EFFECTMANAGER->render();
 
+	if (KEYMANAGER->isOnceKeyDown('V'))
+	{
+		ZORDERMANAGER->DebugMod();
+	}
+
 	if(_curStageName != "TITLE_SCENE")
 		_ui->render();
 

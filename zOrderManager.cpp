@@ -22,6 +22,7 @@ void zOrderManager::addRender(HDC hdc, renderType rendertype, image * img, float
 
 	tempZorder.hdc = hdc;
 	tempZorder.rendertype = rendertype;
+	tempZorder.rc = RectMakeCenter(x, y, img->getWidth(), img->getHeight());
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
@@ -40,6 +41,7 @@ void zOrderManager::addFrameRender(HDC hdc, renderType rendertype, image * img, 
 
 	tempZorder.hdc = hdc;
 	tempZorder.rendertype = rendertype;
+	tempZorder.rc = RectMakeCenter(x, y, img->getFrameWidth(), img->getFrameHeight());
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
@@ -58,6 +60,7 @@ void zOrderManager::addAlphaRender(HDC hdc, renderType rendertype, image * img, 
 
 	tempZorder.hdc = hdc;
 	tempZorder.rendertype = rendertype;
+	tempZorder.rc = RectMakeCenter(x, y, img->getWidth(), img->getHeight());
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
@@ -76,6 +79,7 @@ void zOrderManager::addAniRender(HDC hdc, renderType rendertype, image * img, fl
 
 	tempZorder.hdc = hdc;
 	tempZorder.rendertype = rendertype;
+	tempZorder.rc = RectMakeCenter(x, y, img->getFrameWidth(), img->getFrameHeight());
 	tempZorder.img = img;
 	tempZorder.pt.x = x;
 	tempZorder.pt.y = y;
@@ -122,15 +126,23 @@ void zOrderManager::zOrderRender()
 		{
 		case renderType::RENDER:
 			CAMERAMANAGER->render(_vZorder[i].hdc, _vZorder[i].img, _vZorder[i].pt.x, _vZorder[i].pt.y);
+			if (_isRect)
+				CAMERAMANAGER->renderRectangle(_vZorder[i].hdc, _vZorder[i].rc);
 			break;
 		case renderType::FRAME_RENDER:
 			CAMERAMANAGER->frameRender(_vZorder[i].hdc, _vZorder[i].img, _vZorder[i].pt.x, _vZorder[i].pt.y, _vZorder[i].frame.x, _vZorder[i].frame.y);
+			if (_isRect)
+				CAMERAMANAGER->renderRectangle(_vZorder[i].hdc, _vZorder[i].rc);
 			break;
 		case renderType::ALPHA_RENDER:
 			CAMERAMANAGER->alphaRender(_vZorder[i].hdc, _vZorder[i].img, _vZorder[i].pt.x, _vZorder[i].pt.y, _vZorder[i].alpha);
+			if (_isRect)
+				CAMERAMANAGER->renderRectangle(_vZorder[i].hdc, _vZorder[i].rc);
 			break;
 		case renderType::ANI_RENDER:
 			CAMERAMANAGER->aniRender(_vZorder[i].hdc, _vZorder[i].img, _vZorder[i].pt.x, _vZorder[i].pt.y, _vZorder[i].ani);
+			if (_isRect)
+				CAMERAMANAGER->renderRectangle(_vZorder[i].hdc, _vZorder[i].rc);
 			break;
 		}
 
