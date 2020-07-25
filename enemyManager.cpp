@@ -197,7 +197,7 @@ void enemyManager::waveStage2()
 		break;
 	}
 
-	cout << _vBoy.size() << ", " << _vGirl.size() << endl;
+	//cout << _vBoy.size() << ", " << _vGirl.size() << endl;
 }
 
 //==================================³²ÀÚ¾Ö==================================//
