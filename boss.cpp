@@ -388,9 +388,11 @@ void boss::stateUpdate(float playerX, float playerZ)
 
 			else
 				_attackPos.x = _x + 100;
+
 			_attackPos.y = _y;
 			_attackSize.x = 100;
 			_attackSize.y = 100;
+
 		}
 		else
 		{
@@ -512,10 +514,11 @@ void boss::stateUpdate(float playerX, float playerZ)
 		{
 			if (_animPlayer->getNowIndex() >= 5)
 			{
+
 				if (!_isEffect)
 				{
-					_isEffect = true;
 					EFFECTMANAGER->play("boss_explosion1", _x + IMAGEMANAGER->findImage("boss_explosion1")->getFrameWidth() / 2, _y + IMAGEMANAGER->findImage("boss_explosion1")->getFrameHeight() / 2);
+					_isEffect = true;
 				}
 				CAMERAMANAGER->shakeCamera(6, 30);
 				_attackPos.x = _x;
@@ -842,7 +845,7 @@ void boss::stateUpdate(float playerX, float playerZ)
 		_applySpeed = 6;
 		if (_animPlayer->getNowIndex() > 5)
 		{
-			if(!SOUNDMANAGER->isPlaySound("보스점프")) SOUNDMANAGER->play("보스점프", 1.0f);
+			if (!SOUNDMANAGER->isPlaySound("보스점프")) SOUNDMANAGER->play("보스점프", 1.0f);
 
 			_x += cosf(_angle) * _applySpeed;
 			_y -= sinf(_angle) * _applySpeed + _jumpPower;
@@ -1637,17 +1640,53 @@ void boss::soundAndCamShakeControl()
 	{
 		CAMERAMANAGER->shakeCamera(6, 30);
 		SOUNDMANAGER->play("보스내려찍기", 1.0f);
+
+
+		int imgW = IMAGEMANAGER->findImage("boss_hit_effect1")->getFrameWidth() / 2;
+		int imgH = IMAGEMANAGER->findImage("boss_hit_effect1")->getFrameHeight() / 2;
+
+		if (_state == BOSS_LEFT_ATTACK_ELBOW)
+			imgW -= 100;
+		else
+			imgW += 100;
+		EFFECTMANAGER->play("boss_hit_effect1", _x + imgW, _y + imgH);
+
+
 	}
 	if (_state == BOSS_LEFT_ATTACK || _state == BOSS_RIGHT_ATTACK)
 	{
 		CAMERAMANAGER->shakeCamera(6, 30);
 		SOUNDMANAGER->play("보스뺨갈기기", 1.0f);
+
+
+		int imgW = IMAGEMANAGER->findImage("boss_hit_effect1")->getFrameWidth() / 2;
+		int imgH = IMAGEMANAGER->findImage("boss_hit_effect1")->getFrameHeight() / 2;
+
+		if (_state == BOSS_LEFT_ATTACK)
+			imgW -= 100;
+		else
+			imgW += 100;
+		EFFECTMANAGER->play("boss_hit_effect1", _x + imgW, _y + imgH);
+
+
 	}
 
 	if (_state == BOSS_LEFT_DASH || _state == BOSS_RIGHT_DASH)
 	{
 		CAMERAMANAGER->shakeCamera(6, 30);
 		SOUNDMANAGER->play("보스박치기", 1.0f);
+
+
+		int imgW = IMAGEMANAGER->findImage("boss_hit_effect1")->getFrameWidth() / 2;
+		int imgH = IMAGEMANAGER->findImage("boss_hit_effect1")->getFrameHeight() / 2;
+
+		if (_state == BOSS_LEFT_DASH)
+			imgW -= 100;
+		else
+			imgW += 100;
+		EFFECTMANAGER->play("boss_hit_effect1", _x + imgW, _y + imgH);
+
+
 	}
 
 	if (_state == BOSS_LEFT_JUMP_ATTACK || _state == BOSS_RIGHT_JUMP_ATTACK) // 점프는 항상 카메라가 흔들려서 빼놨음
@@ -1682,5 +1721,7 @@ bool boss::isPixelCollision(float x, float y)
 void boss::loadEffect()
 {
 	IMAGEMANAGER->addFrameImage("boss_explosion1", "image/effect/explosion1.bmp", 12480, 900, 10, 1, true, RGB(255, 0, 255));
-	EFFECTMANAGER->addEffect("boss_explosion1", "boss_explosion1", 12480, 900, 1248, 900, 1, 0.5f, 10);
+	EFFECTMANAGER->addEffect("boss_explosion1", "boss_explosion1", 12480, 900, 1248, 900, 1, 0.5f, 1);
+	IMAGEMANAGER->addFrameImage("boss_hit_effect1", "image/effect/explosion2.bmp", 1701, 247, 7, 1, true, RGB(255, 0, 255));
+	EFFECTMANAGER->addEffect("boss_hit_effect1", "boss_hit_effect1", 1701, 247, 243, 247, 1, 0.5f, 1);
 }
