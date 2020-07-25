@@ -1022,6 +1022,9 @@ void enemyHitState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 	//==================데드 클래스로 이동==================//
 	if (enemy.getHP() <= 0)
 	{
+		_oneCount = 0;
+		_twoCount = 0;
+		_downCount = 0;
 		enemy.setStop(false);
 
 		if (!enemy.getLay())
@@ -1321,18 +1324,12 @@ void enemyDeadState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 
 	if (enemy.getJumpPower() > 0)
 	{
-		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT &&
-			(enemyType == ENEMYTYPE::BOY && enemy.getFrameX() != 24) ||
-			(enemyType == ENEMYTYPE::GIRL && enemy.getFrameX() != 22) ||
-			(enemyType == ENEMYTYPE::CHEER && enemy.getFrameX() != 24))
+		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT)
 		{
 			enemy.setX(enemy.getX() - 3);
 		}
 
-		if (!enemy.getRight() && enemy.getPixel() != PIXEL::LEFT &&
-			(enemyType == ENEMYTYPE::BOY && enemy.getFrameX() == 8) ||
-			(enemyType == ENEMYTYPE::GIRL && enemy.getFrameX() == 10) ||
-			(enemyType == ENEMYTYPE::CHEER && enemy.getFrameX() == 10))
+		if (!enemy.getRight() && enemy.getPixel() != PIXEL::LEFT)
 		{
 			enemy.setX(enemy.getX() + 3);
 		}

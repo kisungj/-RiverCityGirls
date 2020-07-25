@@ -2,11 +2,7 @@
 #include "gameNode.h"
 #include "enemyBoy.h"
 #include "enemyGirl.h"
-
-enum class STAGE
-{
-
-};
+#include "enemyCheer.h"
 
 enum class WAVE
 {
