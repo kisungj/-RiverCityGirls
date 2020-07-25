@@ -86,9 +86,13 @@ void enemy::update()
 
 void enemy::render()
 {
-	//CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);									//공격렉트
-	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);											//에너미 렉트
-	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);									//그림자 렉트
+	if (KEYMANAGER->isToggleKey('R'))
+	{
+		CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);									//공격렉트
+		CAMERAMANAGER->renderRectangle(getMemDC(), _rc);										//에너미 렉트
+		CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);									//그림자 렉트
+	}
+	
 	//CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);										//그림자 렌더
 	//CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);			//에너미 프레임렌더
 
@@ -123,7 +127,7 @@ void enemy::draw()
 	_frameCount++;
 
 	if ((_image == IMAGEMANAGER->findImage("boy_knockdown")) || (_image == IMAGEMANAGER->findImage("girl_knockdown")) || (_image == IMAGEMANAGER->findImage("cheer_knockdown")) ||
-		(_image == IMAGEMANAGER->findImage("cheer_flip")) || (_image == IMAGEMANAGER->findImage("cheer_attack3")))
+		(_image == IMAGEMANAGER->findImage("girl_attack3")) || (_image == IMAGEMANAGER->findImage("cheer_flip")) || (_image == IMAGEMANAGER->findImage("cheer_attack3")))
 	{
 		_count = 5;
 	}
