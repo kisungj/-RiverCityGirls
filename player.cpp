@@ -654,10 +654,10 @@ void player::enemyCol()
 					}
 
 				}
-				else if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
-				{
-					if (_shadowY + 100 > _enemy->getVBoy()[i]->getZ() && _shadowY - 100 < _enemy->getVBoy()[i]->getZ() && !_enemy->getVBoy()[i]->getLay())
+					else if (_shadowY + 100 > _enemy->getVBoy()[i]->getZ() && _shadowY - 100 < _enemy->getVBoy()[i]->getZ() && !_enemy->getVBoy()[i]->getLay())
 					{
+				if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
+				{
 						if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
 						{
 							SOUNDMANAGER->play("boyHit", 1.0f);
@@ -733,13 +733,14 @@ void player::enemyCol()
 
 					}
 
-					else if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
+					else if (_shadowY + 100 > _enemy->getVGirl()[i]->getZ() && _shadowY - 100 < _enemy->getVGirl()[i]->getZ() && !_enemy->getVGirl()[i]->getLay())
 					{
-						if (_shadowY + 100 > _enemy->getVGirl()[i]->getZ() && _shadowY - 100 < _enemy->getVGirl()[i]->getZ() && !_enemy->getVGirl()[i]->getLay())
-						{
+					if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
+					{
+						//cout << "e0" << endl;
 							if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
 							{
-								SOUNDMANAGER->play("boyHit", 1.0f);
+								SOUNDMANAGER->play("girlHit", 1.0f);
 
 								if (_directionX)
 								{
@@ -809,13 +810,13 @@ void player::enemyCol()
 						}
 
 					}
-					else if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
-					{
-						if (_shadowY + 100 > _enemy->getVCheer()[i]->getZ() && _shadowY - 100 < _enemy->getVCheer()[i]->getZ() && !_enemy->getVCheer()[i]->getLay())
+						else if (_shadowY + 100 > _enemy->getVCheer()[i]->getZ() && _shadowY - 100 < _enemy->getVCheer()[i]->getZ() && !_enemy->getVCheer()[i]->getLay())
 						{
+				if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
+					{
 							if (IntersectRect(&temp, &_attackRc, &_enemy->getVCheer()[i]->getRC()))
 							{
-								SOUNDMANAGER->play("boyHit", 1.0f);
+								SOUNDMANAGER->play("girlHit", 1.0f);
 
 								if (_directionX)
 								{
