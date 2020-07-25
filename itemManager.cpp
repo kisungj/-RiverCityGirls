@@ -58,7 +58,7 @@ void itemManager::setItem(RECT rc)
 
 		if (_itemMove)
 		{
-			_item->init(HP, PointMake((rc.left + rc.right) / 2, rc.top - 130));
+			_item->init(HP, PointMake((rc.left + rc.right) / 2, rc.top - 150));
 		}
 		_vItems.push_back(_item);
 	}
@@ -74,7 +74,7 @@ void itemManager::setItem(RECT rc)
 
 		if (_itemMove)
 		{
-			_item->init(POWER, PointMake((rc.left + rc.right) / 2, rc.top - 130));
+			_item->init(POWER, PointMake((rc.left + rc.right) / 2, rc.top - 150));
 		}
 		
 		_vItems.push_back(_item);
@@ -91,7 +91,7 @@ void itemManager::setItem(RECT rc)
 
 		if (_itemMove)
 		{
-			_item->init(GOLD, PointMake((rc.left + rc.right) / 2, rc.top - 130));
+			_item->init(GOLD, PointMake((rc.left + rc.right) / 2, rc.top - 150));
 		}
 
 		_vItems.push_back(_item);
@@ -108,7 +108,7 @@ void itemManager::setItem(RECT rc)
 
 		if (_itemMove)
 		{
-			_item->init(SILVER, PointMake((rc.left + rc.right) / 2, rc.top - 130));
+			_item->init(SILVER, PointMake((rc.left + rc.right) / 2, rc.top - 150));
 		}
 
 		_vItems.push_back(_item);
