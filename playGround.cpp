@@ -122,8 +122,8 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addImage("±âµÕÁÂ", "image/obstacle/±âµÕÁÂ.bmp", 200, 880, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("±âµÕ¿ì", "image/obstacle/±âµÕ¿ì.bmp", 200, 880, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("Ã¥»ó", "image/obstacle/Ã¥»ó.bmp", 195, 215, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("ÆÒÃ÷", "image/item/ÆÒÃ÷.bmp", 70, 60, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("Èä±â;", "image/item/Èä±â.bmp", 70, 60, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("ÆÒÃ÷", "image/item/ÆÒÃ÷.bmp", 110, 115, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("Èä±â", "image/item/Èä±â.bmp", 110, 115, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addFrameImage("ÀÚÆÇ±â", "image/obstacle/ÀÚÆÇ±â.bmp", 700, 346, 2, 1, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("background", "image/map/01_Detention_BG_x3_start_second.bmp", 2395, 1100, false, RGB(0, 0, 0));
 
