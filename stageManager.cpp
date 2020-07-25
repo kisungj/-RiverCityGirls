@@ -28,7 +28,7 @@ HRESULT stageManager::init()
 	_ui->setEquipInventoryUI(_temp1);
 
 	Item* _temp2 = new Item;
-	_temp2->init(PANTS);
+	_temp2->init(WEAPON);
 	_ui->setEquipInventoryUI(_temp2);
 
 	Item* _temp3 = new Item;

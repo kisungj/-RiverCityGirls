@@ -3,21 +3,6 @@
 
 HRESULT titleStage::init()
 {
-	IMAGEMANAGER->addImage("start_back", "image/ui/StartScene_Background.bmp", 1600, 900, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("start_frame", "image/ui/StartScene_Frame.bmp", 1600, 900, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("start_menu", "image/ui/StartScene_Menu.bmp", 150, 114, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("start_title", "image/ui/StartScene_Title.bmp", 537, 308, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("start_kyoko", "image/ui/StartScene_Kyoko.bmp", 550, 828, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("start_misako", "image/ui/StartScene_Misako.bmp", 440, 756, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("start_effect", "image/ui/start_effect.bmp", 1600, 900, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("second_ui", "image/ui/second_ui.bmp", 871, 900, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("second_character", "image/ui/second_character.bmp", 1005, 1716, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("second_stage_select", "image/ui/stage_select.bmp", 520, 270, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("second_stage_select_alpha", "image/ui/stage_select_alpha.bmp", 520, 270, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("character_select1", "image/ui/character_select1.bmp", 1600, 900, false , RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("character_select2", "image/ui/character_select2.bmp", 1600, 900, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("door_img", "image/ui/UI_UnLocked_Door.bmp", 78, 114, true, RGB(255, 0, 255));
-
 	_titleState = TITLE_FIRST;
 
 	_selectArrow = IMAGEMANAGER->findImage("select_arrow");

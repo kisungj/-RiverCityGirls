@@ -82,6 +82,24 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addFrameImage("loading_sprite", "image/ui/loadingSprite4x1.bmp", 1152, 227, 4, 1, false, RGB(0, 0, 0));
 	IMAGEMANAGER->addImage("select_arrow", "image/ui/select_arrow.bmp", 66, 76, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("full_hd", "image/ui/hpBar.bmp", 389, 21, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("cancel", "image/ui/Cancel.bmp", 95, 27, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("select_use", "image/ui/use_select.bmp", 14, 17, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("boss_background_hp", "image/ui/boss_backgroundhp.bmp", 898, 120, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("boss_hp", "image/ui/boss_hp.bmp", 687, 52, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("start_back", "image/ui/StartScene_Background.bmp", 1600, 900, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("start_frame", "image/ui/StartScene_Frame.bmp", 1600, 900, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("start_menu", "image/ui/StartScene_Menu.bmp", 150, 114, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("start_title", "image/ui/StartScene_Title.bmp", 537, 308, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("start_kyoko", "image/ui/StartScene_Kyoko.bmp", 550, 828, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("start_misako", "image/ui/StartScene_Misako.bmp", 440, 756, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("start_effect", "image/ui/start_effect.bmp", 1600, 900, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("second_ui", "image/ui/second_ui.bmp", 871, 900, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("second_character", "image/ui/second_character.bmp", 1005, 1716, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("second_stage_select", "image/ui/stage_select.bmp", 520, 270, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("second_stage_select_alpha", "image/ui/stage_select_alpha.bmp", 520, 270, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("character_select1", "image/ui/character_select1.bmp", 1600, 900, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("character_select2", "image/ui/character_select2.bmp", 1600, 900, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("door_img", "image/ui/UI_UnLocked_Door.bmp", 78, 114, true, RGB(255, 0, 255));
 	// ======= UI
 
 	// ======= player

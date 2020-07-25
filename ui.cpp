@@ -3,11 +3,6 @@
 
 HRESULT ui::init()
 {
-	IMAGEMANAGER->addImage("cancel", "image/ui/Cancel.bmp", 95, 27, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("select_use", "image/ui/use_select.bmp", 14, 17, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("boss_background_hp", "image/ui/boss_backgroundhp.bmp", 898, 120, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("boss_hp", "image/ui/boss_hp.bmp", 687, 52, true, RGB(255, 0, 255));
-
 	_hpUI = IMAGEMANAGER->findImage("full_hd");
 
 	// ¿Â∫Ò√¢

@@ -1176,19 +1176,22 @@ void jumpState::update(player & player)
 	//강공격
 	if (KEYMANAGER->isOnceKeyDown('Q'))
 	{
+		_isJump = true;
 		if (!player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
+			player.setState(player.getAttackState());
+			
 		}
 		if (player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
+			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
+			player.setState(player.getAttackState());
 		}
 	}
-	if (KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() && KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
-	{
-		player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 160, 170);
-	}
+
 }
 
 HRESULT attackState::init()
@@ -1293,6 +1296,35 @@ void attackState::update(player & player)
 			}
 		}
 		player.setAttack(player.getPlayerX() - 60, player.getPlayerY() + 50, 120, 80);
+	}
+	if (player.getIsJumping())
+	{
+		if (KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
+		{
+			player.setPlayerY(player.getPlayerY() - player.getJumpPower());
+			player.setJumpPower(player.getJumpPower() - player.getGravity());
+			player.setGravity(player.getGravity());
+		}
+	}
+	if (player.getPlayerY() >= player.getShadowY() - 110)
+	{
+		player.setShadow(200);
+		//아무것도 안누르면 아이들로
+
+		if (!player.getDirectionX())
+		{
+			player.setIsJumping(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			player.setState(player.getIdleState());
+			player.setDirectionX(false);
+		}
+		if (player.getDirectionX())
+		{
+			player.setIsJumping(false);
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_IDLE"), IMAGEMANAGER->findImage("PLAYER_IDLE"));
+			player.setState(player.getIdleState());
+			player.setDirectionX(true);
+		}
 	}
 
 	//회오리할떄 움직일 수 있게 하려면 이거 주석 풀면 돼
