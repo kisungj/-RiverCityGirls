@@ -696,7 +696,7 @@ void runState::update(player & player)
 			player.setState(player.getIdleState());
 			player.setDirectionX(false);
 		}
-		else
+		else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
@@ -713,7 +713,7 @@ void runState::update(player & player)
 			player.setState(player.getIdleState());
 			player.setDirectionX(true);
 		}
-		else
+		else if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
