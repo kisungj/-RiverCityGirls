@@ -606,6 +606,7 @@ void walkState::update(player & player)
 
 void runState::update(player & player)
 {
+
 	//¿ÞÂÊ
 	if (!player.getDirectionX())
 	{
@@ -702,6 +703,12 @@ void runState::update(player & player)
 			player.setState(player.getWalkState());
 			player.setDirectionX(true);
 		}
+		else
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setState(player.getWalkState());
+			player.setDirectionX(false);
+		}
 	}
 
 	//¿À¸¥ÂÊ
@@ -718,6 +725,12 @@ void runState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
 			player.setState(player.getWalkState());
 			player.setDirectionX(false);
+		}
+		else
+		{
+			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_WALK"), IMAGEMANAGER->findImage("PLAYER_WALK"));
+			player.setState(player.getWalkState());
+			player.setDirectionX(true);
 		}
 	}
 
