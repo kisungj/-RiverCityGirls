@@ -57,6 +57,25 @@ void enemyIdleState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		enemy.setState(enemy.getHit());
 	}
 
+	if (_searchCount > 300)
+	{		
+		if (enemyType == ENEMYTYPE::BOY)
+		{
+			enemy.setImage(IMAGEMANAGER->findImage("boy_run"));
+		}
+		if (enemyType == ENEMYTYPE::GIRL)
+		{
+			enemy.setImage(IMAGEMANAGER->findImage("girl_run"));
+		}
+		if (enemyType == ENEMYTYPE::CHEER)
+		{
+			enemy.setImage(IMAGEMANAGER->findImage("cheer_run"));
+		}
+		if (enemy.getRight()) enemy.setFrameX(0);
+		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
+		enemy.setState(enemy.getRun());
+		_searchCount = 0;
+	}
 	//cout << "idle class" << endl;
 }
 
@@ -99,7 +118,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		}
 	}
 
-	if (_waitCount > 200)
+	if (_waitCount > 100)
 	{
 		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT)
 		{
@@ -122,9 +141,8 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		}
 
 		enemy.setY(enemy.getZ() - 100);
-
 		
-		if (getDistance(x, y, enemy.getX(), enemy.getZ()) > 600)
+		if (getDistance(x, y, enemy.getX(), enemy.getZ()) > 500)
 		{
 			int rnd = RND->getInt(3);
 			//==================런 클래스로 이동==================//
@@ -221,6 +239,18 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 	{
 		_delayCount++;	
 
+		enemy.setY(enemy.getZ() - 100);
+
+		if (enemy.getZ() < y - 20 && enemy.getPixel() != PIXEL::BOTTOM)
+		{
+			enemy.setZ(enemy.getZ() + 1);
+		}
+
+		if (enemy.getZ() > y + 20 && enemy.getPixel() != PIXEL::TOP)
+		{
+			enemy.setZ(enemy.getZ() - 1);
+		}
+
 		if (_delayCount > 50)
 		{
 			if (enemyType == ENEMYTYPE::BOY)
@@ -252,7 +282,6 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 {
 	RECT temp;
 	_limitCount++;
-
 
 	if (!enemy.getStop() && !_isKick)
 	{
@@ -386,6 +415,7 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("cheer_idle"));
 		}
+
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getIdle());
@@ -493,7 +523,7 @@ void enemyJumpState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		_delayCount = 0;
 	}
 
-	cout << "jump class" << endl;
+	//cout << "jump class" << endl;
 }
 
 
@@ -1080,7 +1110,8 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		enemy.setOuch(false);
 	}
 
-	if (enemy.getLayCount() > DELAYMAX)
+	if ((enemy.getLayCount() > DELAYMAX && (enemyType == ENEMYTYPE::BOY || enemyType == ENEMYTYPE::GIRL)) ||
+		(enemy.getLayCount() > 20 && enemyType == ENEMYTYPE::CHEER))
 	{
 		enemy.setStop(false);
 	}
@@ -1109,7 +1140,8 @@ void enemyDownState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		enemy.setState(enemy.getHit());
 	}
 
-	if (!enemy.getLay() && enemy.getLayCount() >= DELAYMAX)
+	if (!enemy.getLay() && ((enemy.getLayCount() > DELAYMAX && (enemyType == ENEMYTYPE::BOY || enemyType == ENEMYTYPE::GIRL)) ||
+		(enemy.getLayCount() > 20 && enemyType == ENEMYTYPE::CHEER)))
 	{
 		int _rndstun = RND->getInt(100);
 
