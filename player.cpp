@@ -433,6 +433,7 @@ void player::pixelCol()
 			}
 		}
 	}
+	cout << _money << endl;
 	//cout << "데스크: " << _isDesk << "자판기" << _isObs << endl;
 	if (_isDesk)
 	{
@@ -653,6 +654,29 @@ void player::enemyCol()
 					}
 
 				}
+				else if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
+				{
+					if (_shadowY + 100 > _enemy->getVBoy()[i]->getZ() && _shadowY - 100 < _enemy->getVBoy()[i]->getZ() && !_enemy->getVBoy()[i]->getLay())
+					{
+						if (IntersectRect(&temp, &_attackRc, &_enemy->getVBoy()[i]->getRC()))
+						{
+							SOUNDMANAGER->play("boyHit", 1.0f);
+
+							if (_directionX)
+							{
+								EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
+							}
+							else
+							{
+								EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
+							}
+							_enemy->getVBoy()[i]->setOuch(true);
+							_enemy->getVBoy()[i]->setHitCount(1);
+							_enemy->getVBoy()[i]->setHP(_attackPower);
+							_attackRect = false;
+						}
+					}
+				}
 				else if (_shadowY + 15 > _enemy->getVBoy()[i]->getZ() && _shadowY - 15 < _enemy->getVBoy()[i]->getZ() && !_enemy->getVBoy()[i]->getLay())
 				{
 
@@ -709,6 +733,29 @@ void player::enemyCol()
 
 					}
 
+					else if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
+					{
+						if (_shadowY + 100 > _enemy->getVGirl()[i]->getZ() && _shadowY - 100 < _enemy->getVGirl()[i]->getZ() && !_enemy->getVGirl()[i]->getLay())
+						{
+							if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
+							{
+								SOUNDMANAGER->play("boyHit", 1.0f);
+
+								if (_directionX)
+								{
+									EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
+								}
+								else
+								{
+									EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
+								}
+								_enemy->getVGirl()[i]->setOuch(true);
+								_enemy->getVGirl()[i]->setHitCount(1);
+								_enemy->getVGirl()[i]->setHP(_attackPower);
+								_attackRect = false;
+							}
+						}
+					}
 					else if (_shadowY + 20 > _enemy->getVGirl()[i]->getZ() && _shadowY - 20 < _enemy->getVGirl()[i]->getZ() && !_enemy->getVGirl()[i]->getLay())
 					{
 						if (IntersectRect(&temp, &_attackRc, &_enemy->getVGirl()[i]->getRC()))
@@ -761,6 +808,29 @@ void player::enemyCol()
 							}
 						}
 
+					}
+					else if (KEYANIMANAGER->findAnimation("P_RIGHT_KICK")->isPlay())
+					{
+						if (_shadowY + 100 > _enemy->getVCheer()[i]->getZ() && _shadowY - 100 < _enemy->getVCheer()[i]->getZ() && !_enemy->getVCheer()[i]->getLay())
+						{
+							if (IntersectRect(&temp, &_attackRc, &_enemy->getVCheer()[i]->getRC()))
+							{
+								SOUNDMANAGER->play("boyHit", 1.0f);
+
+								if (_directionX)
+								{
+									EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f + 60, (temp.top + temp.bottom) * 0.5f);
+								}
+								else
+								{
+									EFFECTMANAGER->play("hit_effect", (temp.left + temp.right) * 0.5f, (temp.top + temp.bottom) * 0.5f);
+								}
+								_enemy->getVCheer()[i]->setOuch(true);
+								_enemy->getVCheer()[i]->setHitCount(1);
+								_enemy->getVCheer()[i]->setHP(_attackPower);
+								_attackRect = false;
+							}
+						}
 					}
 
 					else if (_shadowY + 20 > _enemy->getVCheer()[i]->getZ() && _shadowY - 20 < _enemy->getVCheer()[i]->getZ() && !_enemy->getVCheer()[i]->getLay())
