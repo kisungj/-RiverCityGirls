@@ -53,8 +53,6 @@ public:
 class enemyMoveState : public enemyState
 {
 private:
-	int _randomCount;
-	int _rnd;
 	int _waitCount;
 	int _delayCount;
 public:
@@ -96,9 +94,10 @@ private:
 	int _comboCount;
 	int _strikeCount;
 	int  _collisionCount;
+	int _delayCount;
 	bool _isAttack;
 public:
-	enemyAttackState() { _comboCount = 0; _strikeCount = 0; _isAttack = false; }
+	enemyAttackState() { _comboCount = 0; _strikeCount = 0; _delayCount = 0; _isAttack = false; }
 
 	virtual void update(enemy& enemy, RECT rc, float x, float y, ENEMYTYPE enemyType) override;
 };

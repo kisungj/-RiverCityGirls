@@ -86,16 +86,11 @@ void enemy::update()
 
 void enemy::render()
 {
-	//CAMERAMANAGER->render(getMemDC(), IMAGEMANAGER->findImage("pixel2"), IMAGEMANAGER->findImage("pixel2")->getWidth() * 0.5f, IMAGEMANAGER->findImage("pixel2")->getHeight() * 0.5f);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _rc);
-	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);
-	CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);
-	//CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);
-
-	/*char str[256];
-	sprintf_s(str, "%d", _maxHP);
-	TextOut(getMemDC(), _x, _y - 50, str, strlen(str));*/
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _attackRC);									//공격렉트
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _rc);											//에너미 렉트
+	//CAMERAMANAGER->render(getMemDC(), _shadowImg, _x, _z);									//그림자 렉트
+	//CAMERAMANAGER->renderRectangle(getMemDC(), _shadow);										//그림자 렌더
+	//CAMERAMANAGER->frameRender(getMemDC(), _image, _x , _y , _currentX, _currentY);			//에너미 프레임렌더
 
 	ZORDERMANAGER->addAlphaRender(getMemDC(), renderType::ALPHA_RENDER, _shadowImg, _x, _z, _z - 1, 200);
 	ZORDERMANAGER->addFrameRender(getMemDC(), renderType::FRAME_RENDER, _image, _x, _y, _z, _currentX, _currentY);

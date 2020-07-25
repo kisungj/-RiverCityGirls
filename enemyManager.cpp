@@ -107,7 +107,7 @@ void enemyManager::setStage2()
 		{
 			enemy* boy;
 			boy = new enemyBoy;
-			boy->init(1500 + i * 1000, WINSIZEY / 2 + 500, ENEMYTYPE::BOY, "stage2pixel");
+			boy->init(1500 + i * 1000, WINSIZEY / 2 + 300, ENEMYTYPE::BOY, "stage2pixel");
 
 			_vBoy.push_back(boy);
 		}
@@ -116,7 +116,7 @@ void enemyManager::setStage2()
 		{
 			enemy* girl;
 			girl = new enemyGirl;
-			girl->init(1700 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::GIRL, "stage2pixel");
+			girl->init(1700 + i * 500, WINSIZEY / 2 + 600, ENEMYTYPE::GIRL, "stage2pixel");
 
 			_vGirl.push_back(girl);
 		}
@@ -167,7 +167,23 @@ void enemyManager::waveStage2()
 	switch (_wave)
 	{
 	case WAVE::FIRST:
-		if (_vBoy.size() <= 0 && _vGirl.size() <= 0) _wave = WAVE::SECOND;
+		if (_vBoy.size() <= 0 && _vGirl.size() <= 0)
+		{
+			_wave = WAVE::SECOND;
+			if (_waveCount == 0)
+			{
+				for (int i = 0; i < 3; ++i)
+				{
+					enemy* cheer;
+					cheer = new enemyGirl;
+					cheer->init(1200 + i * 500, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
+
+					_vCheer.push_back(cheer);
+				}
+			}
+			_waveCount++;
+		}
+		
 		break;
 	case WAVE::SECOND:
 		break;
@@ -182,14 +198,8 @@ void enemyManager::waveStage2()
 	case WAVE::FIRST:
 		break;
 	case WAVE::SECOND:
-		/*for (int i = 0; i < 1; ++i)
-		{
-			enemy* cheer;
-			cheer = new enemyGirl;
-			cheer->init(1700, WINSIZEY / 2 + 800, ENEMYTYPE::CHEER, "stage2pixel");
-
-			_vCheer.push_back(cheer);
-		}*/
+		
+		
 		break;
 
 	case WAVE::REPEAT:

@@ -64,12 +64,6 @@ void enemyIdleState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE enemyType)
 {	
 	_waitCount++;
-	_randomCount++;
-
-	if (_randomCount % 100 == 0)
-	{
-		_rnd = RND->getInt(3);
-	}
 
 	if(_waitCount < 200 && enemy.getCondition() == CONDITION::SEARCH)
 	{
@@ -105,7 +99,7 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		}
 	}
 
-	if (_waitCount > 200 && enemy.getCondition() == CONDITION::SEARCH)
+	if (_waitCount > 200)
 	{
 		if (enemy.getRight() && enemy.getPixel() != PIXEL::RIGHT)
 		{
@@ -132,9 +126,9 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		
 		if (getDistance(x, y, enemy.getX(), enemy.getZ()) > 600)
 		{
-			int rnd = RND->getInt(2);
+			int rnd = RND->getInt(3);
 			//==================런 클래스로 이동==================//
-			if (rnd == 0)
+			if (rnd == 0 || rnd == 1)
 			{
 				if (enemyType == ENEMYTYPE::BOY)
 				{
@@ -152,7 +146,6 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 				if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 				enemy.setState(enemy.getRun());
 				_waitCount = 0;
-				_randomCount = 0;
 			}
 			
 			//==================아이들 클래스로 이동==================//
@@ -174,13 +167,12 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 				if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 				enemy.setState(enemy.getIdle());
 				_waitCount = 0;
-				_randomCount = 0;
 			}			
 		}
 	}
 
 	//==================점프 클래스로 이동==================//
-	if (/*enemy.getTable() != TABLE::BOTTOM &&*/ (enemyType == ENEMYTYPE::GIRL || enemyType == ENEMYTYPE::CHEER) &&
+	if ((enemyType == ENEMYTYPE::GIRL || enemyType == ENEMYTYPE::CHEER) &&
 		(enemy.getRight() && enemy.getGreen() == GREEN::RIGHT) || 
 		(!enemy.getRight() && enemy.getGreen() == GREEN::LEFT) ||
 		(y > enemy.getZ() && enemy.getGreen() == GREEN::BOTTOM) || 
@@ -201,7 +193,6 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		enemy.setGravity(0.5f);
 
 		_waitCount = 0;
-		_randomCount = 0;
 	}
 
 	//==================힛 클래스로 이동==================//
@@ -223,7 +214,6 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getHit());
 		_waitCount = 0;
-		_randomCount = 0;
 	}
 
 	//==================공격 클래스로 이동==================//
@@ -250,7 +240,6 @@ void enemyMoveState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 			enemy.setState(enemy.getAttack());
 			_delayCount = 0;
 			_waitCount = 0;
-			_randomCount = 0;
 		}		
 	}
 
@@ -293,9 +282,6 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 		{
 			_isKick = true;
 
-			if (enemy.getRight()) enemy.setFrameX(1);
-			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX() - 1);
-
 			if (enemyType == ENEMYTYPE::BOY)
 			{
 				enemy.setImage(IMAGEMANAGER->findImage("boy_sidekick"));
@@ -308,6 +294,9 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 			{
 				enemy.setImage(IMAGEMANAGER->findImage("cheer_flip"));
 			}
+
+			if (enemy.getRight()) enemy.setFrameX(1);
+			if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX() - 1);
 		}
 	}
 
@@ -362,10 +351,10 @@ void enemyRunState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE e
 
 			else
 			{
-			_collisionCount = 0;
+				_collisionCount = 0;
 			}
 
-			if (enemy.getFrameX() == 1)
+			if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 15)
 			{
 				enemy.setStop(true);
 				enemy.setStrike(false);
@@ -517,7 +506,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 	//==================공격 렉트 생성==================//
 	if (enemy.getRight())
 	{
-		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 3)
+		if (enemy.getFrameX() == enemy.getImage()->getMaxFrameX() - 2)
 		{
 			if (_collisionCount == 0)
 			{
@@ -544,14 +533,13 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 				_comboCount++;
 				enemy.setStrike(false);
 			}
-			else enemy.setAtk(0, 0, 0, 0);
 		}
 	
 	}
 
 	if (!enemy.getRight())
 	{
-		if (enemy.getFrameX() == 3)
+		if (enemy.getFrameX() == 2)
 		{
 			if (_collisionCount == 0)
 			{
@@ -578,7 +566,6 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 				_comboCount++;
 				enemy.setStrike(false);
 			}
-			else enemy.setAtk(0, 0, 0, 0);
 		}
 	}
 
@@ -701,6 +688,7 @@ void enemyAttackState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYP
 		{
 			enemy.setImage(IMAGEMANAGER->findImage("cheer_idle"));
 		}
+
 		if (enemy.getRight()) enemy.setFrameX(0);
 		if (!enemy.getRight()) enemy.setFrameX(enemy.getImage()->getMaxFrameX());
 		enemy.setState(enemy.getIdle());
@@ -1278,7 +1266,7 @@ void enemyDeadState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 			(enemyType == ENEMYTYPE::CHEER && enemy.getFrameX() == 24))
 		{
 			enemy.setStop(true);
-			if (_deadCount % 150 == 0 || _deadCount > 150)
+			if (_deadCount % 150 == 0)
 			{
 				enemy.setCond(CONDITION::DEAD);
 				enemy.setStop(false);
@@ -1294,7 +1282,7 @@ void enemyDeadState::update(enemy & enemy, RECT rc, float x, float y, ENEMYTYPE 
 			(enemyType == ENEMYTYPE::CHEER && enemy.getFrameX() == 10))
 		{
 			enemy.setStop(true);
-			if (_deadCount % 150 == 0 || _deadCount > 150)
+			if (_deadCount % 150 == 0)
 			{
 				enemy.setCond(CONDITION::DEAD);
 				enemy.setStop(false);

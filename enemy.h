@@ -19,7 +19,6 @@ enum class GREEN								//책상 바닥 확인용 (점프)
 	LEFT, RIGHT, TOP, BOTTOM, TEMP
 };
 
-
 enum class TABLE								//책상 위에 닿았을 때 확인용
 {
 	BOTTOM, TEMP
