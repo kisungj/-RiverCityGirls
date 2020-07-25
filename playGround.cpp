@@ -75,7 +75,7 @@ void playGround::imageLoad()
 	IMAGEMANAGER->addImage("status_hud_back", "image/ui/NULL_UHD_BAR.bmp", 414, 94, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("title_background", "image/ui/titleBackGround.bmp", WINSIZEX, WINSIZEY, false, RGB(0, 0, 0));
 	IMAGEMANAGER->addImage("coin_ui", "image/ui/coin.bmp", 36, 36, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("phone_ui", "image/ui/Phone.bmp", 463, 800, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("phone_ui", "image/ui/Phone.bmp", 462, 800, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("phone_active", "image/ui/phone_active.bmp", 1600, 900, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("select_item", "image/ui/select_item.bmp", 63, 61, true, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("equip_select", "image/ui/equip_select.bmp", 42, 25, true, RGB(255, 0, 255));

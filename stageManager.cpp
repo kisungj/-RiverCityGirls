@@ -103,7 +103,8 @@ void stageManager::render()
 	oldFont = (HFONT)SelectObject(getMemDC(), font);
 	SetTextColor(getMemDC(), RGB(255, 255, 255));
 
-	DrawText(getMemDC(), TEXT(moneyStr), strlen(moneyStr), &moneyRC, DT_RIGHT | DT_WORDBREAK);
+	if(!_isLoading)
+		DrawText(getMemDC(), TEXT(moneyStr), strlen(moneyStr), &moneyRC, DT_RIGHT | DT_WORDBREAK);
 	SelectObject(getMemDC(), oldFont);
 	DeleteObject(font);
 
