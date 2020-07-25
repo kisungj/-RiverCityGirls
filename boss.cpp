@@ -4,6 +4,7 @@
 HRESULT boss::init()
 {
 	loadAnimation();
+	loadEffect();
 	_hp = _maxHp = 200;
 	_phaseCount = 100;
 	_jumpAlphaMax = _jumpAlpha = 200;
@@ -505,11 +506,17 @@ void boss::stateUpdate(float playerX, float playerZ)
 			_attackPos.y = -100;
 			_animPlayer->start();
 			_isDelayTime = true;
+			_isEffect = false;
 		}
 		else
 		{
 			if (_animPlayer->getNowIndex() >= 5)
 			{
+				if (!_isEffect)
+				{
+					_isEffect = true;
+					EFFECTMANAGER->play("boss_explosion1", _x + IMAGEMANAGER->findImage("boss_explosion1")->getFrameWidth() / 2, _y + IMAGEMANAGER->findImage("boss_explosion1")->getFrameHeight() / 2);
+				}
 				CAMERAMANAGER->shakeCamera(6, 30);
 				_attackPos.x = _x;
 				_attackPos.y = _y;
@@ -1670,4 +1677,10 @@ bool boss::isPixelCollision(float x, float y)
 		return true;
 
 	return false;
+}
+
+void boss::loadEffect()
+{
+	IMAGEMANAGER->addFrameImage("boss_explosion1", "image/effect/explosion1.bmp", 12480, 900, 10, 1, true, RGB(255, 0, 255));
+	EFFECTMANAGER->addEffect("boss_explosion1", "boss_explosion1", 12480, 900, 1248, 900, 1, 0.5f, 10);
 }

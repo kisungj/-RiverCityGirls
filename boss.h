@@ -71,7 +71,7 @@ private:
 	int  _shakePower;
 	int  _shakeTime;
 	// --------------- 카메라 관련 변수 ----------------- //
-
+	bool _isEffect;
 
 
 public:
@@ -98,6 +98,7 @@ public:
 	void    shakeCamera(int power, int time);                       // 카메라 강도, 시간
 	void    soundAndCamShakeControl();
 	bool    isPixelCollision(float x, float y);
+	void    loadEffect();
 public:
 	STATEBOSS getState() { return _state; }
 	RECT*     getPointerRect() { return &_rc; }
