@@ -8,8 +8,11 @@ HRESULT stageManager::init()
 
 	_player = new player;
 	_player->init();
+
 	_ui = new ui;
 	_ui->init();
+	_ui->setPlayerMemoryAddressLink(_player);
+
 	_itemManager = new itemManager;
 	_obstacleManager = new obstacleManager;
 	_enemyManager = new enemyManager;
