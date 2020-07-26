@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ui.h"
+#include "player.h"
 
 HRESULT ui::init()
 {
@@ -46,6 +47,7 @@ HRESULT ui::init()
 
 void ui::render()
 {
+	// ======================== 기본 UI 랜더 ================================
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 0);
 	IMAGEMANAGER->findImage("letter_box")->render(getMemDC(), 0, 800);
 	IMAGEMANAGER->findImage("status_hud_back")->render(getMemDC(), 270, 50);
@@ -54,14 +56,31 @@ void ui::render()
 	IMAGEMANAGER->findImage("coin_ui")->render(getMemDC(), 290, 105);
 	IMAGEMANAGER->findImage("character_hud")->render(getMemDC(), 140, 0);
 
+	SetBkMode(getMemDC(), TRANSPARENT);
+	HFONT font, oldFont;
+	RECT moneyRC = RectMake(220, 105, 200, 200);
+	char moneyStr[255];
+	sprintf_s(moneyStr, "%d", _player->getMomey());
+
+
+	font = CreateFont(30, 0, 0, 0, 100, 0, 0, 0, HANGUL_CHARSET, 0, 0, 0, 0, TEXT("HY견고딕"));
+	oldFont = (HFONT)SelectObject(getMemDC(), font);
+	SetTextColor(getMemDC(), RGB(255, 255, 255));
+	DrawText(getMemDC(), TEXT(moneyStr), strlen(moneyStr), &moneyRC, DT_RIGHT | DT_WORDBREAK);
+	SelectObject(getMemDC(), oldFont);
+	DeleteObject(font);
+
+
+	// ======================= 보스 HP UI 랜더 =============================
 	if (_isBossStage)
 	{
 		IMAGEMANAGER->findImage("boss_background_hp")->render(getMemDC(), WINSIZEX / 2 - 430, WINSIZEY / 2 + 240);
 		IMAGEMANAGER->findImage("boss_hp")->render(getMemDC(), _bossHpRc.left, _bossHpRc.top, 0,0, _bossHpWidth, IMAGEMANAGER->findImage("boss_hp")->getHeight());
 	}
 
+
+	// ======================= 핸드폰 UI 랜더 ==============================
 	SetBkMode(getMemDC(), TRANSPARENT);
-	HFONT font, oldFont;
 	RECT itemNameText = RectMake(200, WINSIZEY / 2 + 180, 1100, 400);
 	RECT itemDiscriptionText = RectMake(220, WINSIZEY / 2 + 220, 250, 400);
 

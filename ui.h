@@ -3,7 +3,7 @@
 #include "item.h"
 
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-
+class player;
 struct tagInvenUi
 {
 	RECT rc;
@@ -15,6 +15,7 @@ struct tagInvenUi
 class ui : public gameNode
 {
 private:
+	player* _player;
 	image* _hpUI;
 	image* _selectArrow;
 	RECT _hpRC;
@@ -37,6 +38,7 @@ private:
 	bool _useHP;
 	bool _usePower;
 
+	
 
 public:
 	ui() {}
@@ -56,6 +58,7 @@ public:
 	bool getUsePower() { return _usePower; }
 	void setUseHP(bool arg) { _useHP = arg; }
 	void setUsePower(bool arg) { _usePower = arg; }
+	void setPlayerMemoryAddressLink(player* player) { _player = player; }
 
 	void setInventoryUI(Item* item) 
 	{
