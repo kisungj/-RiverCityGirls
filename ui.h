@@ -15,6 +15,7 @@ struct tagInvenUi
 class ui : public gameNode
 {
 private:
+	player* _player;
 	image* _hpUI;
 	image* _selectArrow;
 	RECT _hpRC;
@@ -37,8 +38,7 @@ private:
 	bool _useHP;
 	bool _usePower;
 
-	 
-	player* _player;
+	
 
 public:
 	ui() {}
