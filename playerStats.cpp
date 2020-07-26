@@ -1021,7 +1021,7 @@ void jumpState::update(player & player)
 	}
 
 	//제일 높게 있는 상태면 떨어지는 자세로 바뀌기
-	if (player.getJumpPower() < 0 && !_isJump && (!KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay()))
+	if (player.getJumpPower() < 0 && !_isJump) //&& (!KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() && !KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay()))
 	{
 		if (player.getDirectionX())
 		{
@@ -1182,13 +1182,14 @@ void jumpState::update(player & player)
 			player.setAni(KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
 			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
 			player.setState(player.getAttackState());
-			
+			_jumpCount = 0;
 		}
 		if (player.getDirectionX())
 		{
 			player.setAni(KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK"), IMAGEMANAGER->findImage("PLAYER_STRONG"));
 			player.setAttack(player.getPlayerX() - 50, player.getPlayerY(), 120, 100);
 			player.setState(player.getAttackState());
+			_jumpCount = 0;
 		}
 	}
 
@@ -1320,6 +1321,21 @@ void attackState::update(player & player)
 			player.setAttack(player.getPlayerX(), player.getPlayerY(), 300, 80);
 			_kickCount = 0;
 			
+		}
+	}
+	if (KEYANIMANAGER->findAnimation("P_LEFT_STRONG_ATTACK")->isPlay() || KEYANIMANAGER->findAnimation("P_RIGHT_STRONG_ATTACK")->isPlay())
+	{
+		if (player.getIsJumping())
+		{
+			player.setPlayerY(player.getPlayerY() - player.getJumpPower());
+			player.setJumpPower(player.getJumpPower() - player.getGravity());
+			player.setGravity(player.getGravity());
+		}
+
+		if (player.getPlayerY() >= player.getShadowY() - 110)
+		{
+			player.setShadow(200);
+			player.setIsJumping(false);
 		}
 	}
 

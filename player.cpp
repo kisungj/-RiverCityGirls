@@ -402,7 +402,6 @@ void player::pixelCol()
 				int r = GetRValue(color);
 				int g = GetGValue(color);
 				int b = GetBValue(color);
-				//cout << "r = " << r << " g : " << g << " b : " << b << endl;
 
 				if (!(r == 255 && g == 0 && b == 0))
 				{
@@ -433,7 +432,7 @@ void player::pixelCol()
 			}
 		}
 	}
-	//cout << "데스크: " << _isDesk << "자판기" << _isObs << endl;
+
 	if (_isDesk)
 	{
 		_deskTimer++;
@@ -441,25 +440,25 @@ void player::pixelCol()
 		if (_deskTimer > 20)
 		{
 			_deskTimer = 0;
-			if (KEYMANAGER->isOnceKeyDown('Z'))
-			{
-				if (!_directionX)
-				{
-					setAni(KEYANIMANAGER->findAnimation("P_LEFT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
-					setState(getJumpState());
-					_isJumping = true;
-					_isDesk = false;
-					//playerDamage(10);
-				}
-				if (_directionX)
-				{
-					setAni(KEYANIMANAGER->findAnimation("P_RIGHT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
-					setState(getJumpState());
-					_isJumping = true;
-					_isDesk = false;
-					//playerDamage(10);
-				}
-			}
+			//if (KEYMANAGER->isOnceKeyDown('Z'))
+			//{
+			//	if (!_directionX)
+			//	{
+			//		setAni(KEYANIMANAGER->findAnimation("P_LEFT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+			//		setState(getJumpState());
+			//		_isJumping = true;
+			//		_isDesk = false;
+			//		//playerDamage(10);
+			//	}
+			//	if (_directionX)
+			//	{
+			//		setAni(KEYANIMANAGER->findAnimation("P_RIGHT_JUMP"), IMAGEMANAGER->findImage("PLAYER_JUMP"));
+			//		setState(getJumpState());
+			//		_isJumping = true;
+			//		_isDesk = false;
+			//		//playerDamage(10);
+			//	}
+			//}
 
 			for (int i = _probeV - 20; i < _probeV - 15; ++i)
 			{
